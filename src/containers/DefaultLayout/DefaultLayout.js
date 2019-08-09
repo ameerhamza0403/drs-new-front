@@ -14,6 +14,8 @@ import {
   AppSidebarMinimizer,
   AppSidebarNav,
 } from '@coreui/react';
+
+import MyNavBar from './navbtn';
 // sidebar nav config
 import navigation from '../../_nav';
 // routes config
@@ -39,6 +41,7 @@ class DefaultLayout extends Component {
             <DefaultHeader onLogout={e=>this.signOut(e)}/>
           </Suspense>
         </AppHeader>
+
         <div className="app-body">
           <AppSidebar fixed display="lg">
             <AppSidebarHeader />
@@ -49,8 +52,10 @@ class DefaultLayout extends Component {
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
+
           <main className="main">
-            <AppBreadcrumb appRoutes={routes}/>
+          <AppBreadcrumb appRoutes={routes} />
+<br></br>
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>
@@ -71,6 +76,7 @@ class DefaultLayout extends Component {
               </Suspense>
             </Container>
           </main>
+
           <AppAside fixed>
             <Suspense fallback={this.loading()}>
               <DefaultAside />

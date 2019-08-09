@@ -57,6 +57,20 @@ const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
 const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
 
+// my components
+
+const ResourceGroupListing = React.lazy(() => import('./components/myaccount/admin/resources/group/listing'));
+const ResourceSkillListing = React.lazy(() => import('./components/myaccount/admin/resources/skills/listing'));
+const AddeditListing = React.lazy(() => import('./components/myaccount/admin/resources/addedit/listing'));
+const CustomFieldListing = React.lazy(() => import('./components/myaccount/admin/resources/customfield/listing'));
+const AbsenceListing = React.lazy(() => import('./components/myaccount/admin/resources/absencetype/listing'));
+const CurrencyListing = React.lazy(() => import('./components/myaccount/admin/resources/currency/listing'));
+const ContactsGroupListingTable = React.lazy(() => import('./components/myaccount/admin/contactnote/contactgroup/listing'));
+const NotesFlagListingTable = React.lazy(() => import('./components/myaccount/admin/contactnote/notesflag/listing'));
+const NotesTypeListing = React.lazy(() => import('./components/myaccount/admin/contactnote/notetype/listing'));
+const PersonFlagListing = React.lazy(() => import('./components/myaccount/admin/contactnote/personflag/listing'));
+
+
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -122,7 +136,18 @@ const routes = [
   { path: '/apps/invoicing', name: 'Invoice', component: Invoice, exact: true },
   { path: '/apps/invoicing/invoice', name: 'Invoice', component: Invoice },
   { path: '/users', exact: true,  name: 'Users', component: Users },
-  { path: '/users/:id', exact: true, name: 'User Details', component: User }
-];
+  { path: '/users/:id', exact: true, name: 'User Details', component: User },
+  //my routes
+  { path: '/admin/resources/group', exact: true, name: 'Groups', component: ResourceGroupListing },
+  { path: '/admin/resources/skills', exact: true, name: 'Resource Skills', component: ResourceSkillListing },
+  { path: '/admin/resources/custom', exact: true, name: 'Custom Fields', component: CustomFieldListing },
+  { path: '/admin/resources/manage', exact: true, name: 'Manage', component: AddeditListing },
+  { path: '/admin/resources/absencetype', exact: true, name: 'Absence Types', component: AbsenceListing },
+  { path: '/admin/contact/group', exact: true, name: 'Contact Groups', component: ContactsGroupListingTable },
+  { path: '/admin/contact/flag', exact: true, name: 'Person Flags', component: PersonFlagListing },
+  { path: '/admin/contact/type', exact: true, name: 'Note types', component: NotesTypeListing },
+  { path: '/admin/currency', exact: true, name: 'Currency', component: CurrencyListing },
+  { path: '/admin/note/flag', exact: true, name: 'Note Flags', component: NotesFlagListingTable },
 
+];
 export default routes;

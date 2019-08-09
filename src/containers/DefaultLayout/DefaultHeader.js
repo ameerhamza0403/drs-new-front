@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 
 import { AppAsideToggler, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import DefaultHeaderDropdown  from './DefaultHeaderDropdown'
-import logo from '../../assets/img/brand/logo.svg'
-import sygnet from '../../assets/img/brand/sygnet.svg'
+import logo from '../../assets/img/brand/drslogo.png'
+import sygnet from '../../assets/img/brand/drslogo.png'
 
 const propTypes = {
   children: PropTypes.node,
@@ -24,19 +24,19 @@ class DefaultHeader extends Component {
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
         <AppNavbarBrand
-          full={{ src: logo, width: 89, height: 25, alt: 'CoreUI Logo' }}
-          minimized={{ src: sygnet, width: 30, height: 30, alt: 'CoreUI Logo' }}
+          full={{ src: logo, width: 89, height: 25, alt: 'DRS DOORS' }}
+          minimized={{ src: sygnet, width: 30, height: 30, alt: 'DRS DOORS' }}
         />
         <AppSidebarToggler className="d-md-down-none" display="lg" />
         <Nav className="d-md-down-none" navbar>
           <NavItem className="px-3">
-            <NavLink to="/dashboard" className="nav-link" >Dashboard</NavLink>
+            <NavLink to="/dashboard" className="nav-link" ><i className='cui-dashboard'></i>&nbsp;Dashboard</NavLink>
           </NavItem>
           <NavItem className="px-3">
-            <NavLink to="/users" className="nav-link">Users</NavLink>
+            <NavLink to="/users" className="nav-link"><i className='cui-people'></i>&nbsp;Users</NavLink>
           </NavItem>
           <NavItem className="px-3">
-            <NavLink to="#" className="nav-link">Settings</NavLink>
+            <NavLink to="#" className="nav-link"><i className='cui-settings'></i>&nbsp;Settings</NavLink>
           </NavItem>
         </Nav>
         <Nav className="ml-auto" navbar>
@@ -48,7 +48,7 @@ class DefaultHeader extends Component {
           </NavItem>
           <DefaultHeaderDropdown onLogout={this.props.onLogout} accnt/>
         </Nav>
-        <AppAsideToggler className="d-md-down-none" />
+        {/* <AppAsideToggler className="d-md-down-none" /> */}
         {/*<AppAsideToggler className="d-lg-none" mobile />*/}
       </React.Fragment>
     );

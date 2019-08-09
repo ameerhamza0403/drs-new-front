@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Progress } from 'reactstrap';
-
+import imgbran from '..//..//assets/img/brand/brain.PNG';
 const propTypes = {
   notif: PropTypes.bool,
   accnt: PropTypes.bool,
@@ -40,6 +40,8 @@ class DefaultHeaderDropdown extends Component {
           <i className="icon-bell"></i><Badge pill color="danger">{itemsCount}</Badge>
         </DropdownToggle>
         <DropdownMenu right>
+          <DropdownItem header tag="div" className="text-center"><strong>Alerts Raised Today</strong></DropdownItem>
+         {/*
           <DropdownItem header tag="div" className="text-center"><strong>You have {itemsCount} notifications</strong></DropdownItem>
           <DropdownItem><i className="icon-user-follow text-success"></i> New user registered</DropdownItem>
           <DropdownItem><i className="icon-user-unfollow text-danger"></i> User deleted</DropdownItem>
@@ -67,7 +69,7 @@ class DefaultHeaderDropdown extends Component {
             </div>
             <Progress className="progress-xs" color="danger" value={90} />
             <small className="text-muted">243GB/256GB</small>
-          </DropdownItem>
+          </DropdownItem>*/}
         </DropdownMenu>
       </Dropdown>
     );
@@ -77,11 +79,11 @@ class DefaultHeaderDropdown extends Component {
     return (
       <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
         <DropdownToggle nav>
-          <img src={'assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+          <img src={imgbran} className="img-avatar" alt="drsdoorman" />
         </DropdownToggle>
         <DropdownMenu right>
-          <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-          <DropdownItem><i className="fa fa-bell-o"></i> Updates<Badge color="info">42</Badge></DropdownItem>
+          <DropdownItem header tag="div" className="text-center"><strong>Brain Thomas</strong></DropdownItem>
+          {/* <DropdownItem><i className="fa fa-bell-o"></i> Updates<Badge color="info">42</Badge></DropdownItem>
           <DropdownItem><i className="fa fa-envelope-o"></i> Messages<Badge color="success">42</Badge></DropdownItem>
           <DropdownItem><i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge></DropdownItem>
           <DropdownItem><i className="fa fa-comments"></i> Comments<Badge color="warning">42</Badge></DropdownItem>
@@ -92,7 +94,7 @@ class DefaultHeaderDropdown extends Component {
           <DropdownItem><i className="fa fa-file"></i> Projects<Badge color="primary">42</Badge></DropdownItem>
           <DropdownItem divider />
           <DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem>
-          <DropdownItem onClick={this.props.onLogout}><i className="fa fa-lock"></i> Logout</DropdownItem>
+          <DropdownItem onClick={this.props.onLogout}><i className="fa fa-lock"></i> Logout</DropdownItem> */}
           {/*<DropdownItem><i className="fa fa-lock"></i> Logout</DropdownItem>*/}
         </DropdownMenu>
       </Dropdown>
@@ -107,6 +109,8 @@ class DefaultHeaderDropdown extends Component {
           <i className="icon-list"></i><Badge pill color="warning">{itemsCount}</Badge>
         </DropdownToggle>
         <DropdownMenu right className="dropdown-menu-lg">
+        <DropdownItem header tag="div" className="text-center"><strong>Schedule Jobs </strong></DropdownItem>
+          {/*
           <DropdownItem header tag="div" className="text-center"><strong>You have {itemsCount} pending tasks</strong></DropdownItem>
           <DropdownItem>
             <div className="small mb-1">Upgrade NPM &amp; Bower <span
@@ -132,7 +136,7 @@ class DefaultHeaderDropdown extends Component {
             <div className="small mb-1">Angular 2 Cli Version <span className="float-right"><strong>100%</strong></span></div>
             <Progress className="progress-xs" color="success" value={100} />
           </DropdownItem>
-          <DropdownItem className="text-center"><strong>View all tasks</strong></DropdownItem>
+          <DropdownItem className="text-center"><strong>View all tasks</strong></DropdownItem> */}
         </DropdownMenu>
       </Dropdown>
     );
@@ -146,7 +150,8 @@ class DefaultHeaderDropdown extends Component {
           <i className="icon-envelope-letter"></i><Badge pill color="info">{itemsCount}</Badge>
         </DropdownToggle>
         <DropdownMenu right className="dropdown-menu-lg">
-          <DropdownItem header tag="div"><strong>You have {itemsCount} messages</strong></DropdownItem>
+          <DropdownItem header tag="div"><strong>Messages</strong></DropdownItem>
+          {/* <DropdownItem header tag="div"><strong>You have {itemsCount} messages</strong></DropdownItem>
           <DropdownItem href="#">
             <div className="message">
               <div className="pt-3 mr-3 float-left">
@@ -215,7 +220,7 @@ class DefaultHeaderDropdown extends Component {
               </div>
             </div>
           </DropdownItem>
-          <DropdownItem href="#" className="text-center"><strong>View all messages</strong></DropdownItem>
+          <DropdownItem href="#" className="text-center"><strong>View all messages</strong></DropdownItem> */}
         </DropdownMenu>
       </Dropdown>
     );
