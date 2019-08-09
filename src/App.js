@@ -4,7 +4,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 import './App.scss';
 
 const loading = () => <div className="animated fadeIn pt-3 text-center"><div className="sk-spinner sk-spinner-pulse"></div></div>;
-
+//Ameer
 // Containers
 const DefaultLayout = React.lazy(() => import('./containers/DefaultLayout'));
 
