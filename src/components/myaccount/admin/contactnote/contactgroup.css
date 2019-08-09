@@ -1,0 +1,17 @@
+.switch{
+    width: 30%;
+}
+
+.switch li{
+    background: rgb(0, 0, 0);
+    cursor: pointer;
+    margin: 10px;
+    color: white;
+    list-style: none;
+    text-align: center;
+}
+
+.switch li:hover{
+    height: 110%;
+    background: red;
+}

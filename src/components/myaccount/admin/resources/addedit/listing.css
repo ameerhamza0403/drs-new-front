@@ -1,0 +1,36 @@
+
+.row.icon p{
+    font-size: 10px;
+    align-content: center;
+    margin: 2px;
+    font-weight: bold;
+
+}
+
+
+/* .row.icon.em p{
+    font-size: 15px;
+    align-content: center;
+    padding-left: 18px;
+    
+} */
+
+
+.row.icon{
+    align-content: center;
+    margin: 0px;
+    
+}
+
+.row.pop{
+    padding: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+.container.pop{
+    border: 2px solid  rgba(185, 39, 39, 0.2);
+    border-radius: 3px;
+    width: 70%;
+    background-color: rgba(226, 226, 226, 0.5);
+}

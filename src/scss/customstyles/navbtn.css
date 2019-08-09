@@ -1,0 +1,13 @@
+.row.bread{
+  background-color: #ffffff;
+  margin-left: -30px;
+  height: 46px;
+  border-bottom: 0.2px solid #c8ced3;
+}
+
+.nav.bread{
+  display: inline-flex;
+  text-align: right;
+}
+
+

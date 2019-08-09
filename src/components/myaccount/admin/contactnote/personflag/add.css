@@ -1,0 +1,27 @@
+.ColorCodes{
+    width: 20px;
+    height: 20px;
+    border: 0.5px solid black;
+    cursor: pointer;
+    margin: 1px;
+
+}
+.ColorCodes:hover{
+    margin-top: -5px;
+    margin-left: -2px;
+    margin-right: -2px;
+    height: 25px;
+    width: 25px;
+}
+
+/* .ColorCodes.FFFFE0{
+    background: #FFFFE0;
+} */
+
+
+.ColorCodesl{
+    width: 20px;
+    height: 20px;
+    border: 0.5px solid black;
+    margin: 1px;
+}
