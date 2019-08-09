@@ -88,12 +88,9 @@ let ResourceSkillListing = () => {
   async function getlistapi() {
     const { data: Atlist } = await GetListingForResourceSkill();
     setAtlist(Atlist);
+    settabledistatus(Tabledistatus=true)
   }
 
-  if (count) {
-    getlistapi();
-    count = false;
-  }
 
   async function Dellistapi() {
     await DeleteResourceSkillDataById(idofEdit);
