@@ -88,7 +88,7 @@ let AddeditAdd = (props) => {
             hideParentInfo: true
   });
 
-  //***************    APIs */
+  // * *************    APIs */
 
   async function postlistapi() {
     await PostListingForAddEdit(values);
@@ -126,19 +126,19 @@ let AddeditAdd = (props) => {
   async function GetGroupResource() {
     let { data: resvalue } = await GetListingForResourceGroup();
     setResvalue(resvalue);
-    
+
   }
 
   async function GetList() {
     let { data: listvalue } = await GetListingForAddEdit();
     setListvalue(listvalue);
-    
+
   }
 
   async function GetCurrency() {
     let { data: currvalue } = await GetListingForcurrency();
     setCurrvalue(currvalue);
-    
+
   }
 
   //********************************* */
@@ -294,7 +294,7 @@ let AddeditAdd = (props) => {
                   <div className="row">
                     <div className="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                       <label className="form-check-label" for="defaultCheck1">
-                        Name
+                        Name *
                       </label>
                     </div>
                     <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
@@ -334,7 +334,7 @@ let AddeditAdd = (props) => {
                   <div className="row">
                     <div className="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                       <label className="form-check-label" for="defaultCheck3">
-                        Group
+                        Group *
                       </label>
                     </div>
                     <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
@@ -760,7 +760,7 @@ let AddeditAdd = (props) => {
                   <div className="row">
                     <div className="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                       <label className="form-check-label" for="defaultCheck16">
-                        Manager
+                        Manager *
                       </label>
                     </div>
                     <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
@@ -896,7 +896,7 @@ let AddeditAdd = (props) => {
                   <div className="row">
                     <div className="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                       <label className="form-check-label" for="defaultCheck19">
-                        Default hourly rate
+                        Default hourly rate *
                       </label>
                     </div>
                     <div className="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
