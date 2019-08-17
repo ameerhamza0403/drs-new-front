@@ -1,21 +1,49 @@
 import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
-import "./listing.css";
+import "./listing.scss";
 import EditAbsence from "./edit";
-import { GetListingForAbsence, DeleteAbsenceDataById } from "..//shared/absencetype";
-import AddPersonFlag from './add';
-import LinearProgress from '@material-ui/core/LinearProgress';
-
+import {
+  GetListingForAbsence,
+  DeleteAbsenceDataById
+} from "..//shared/absencetype";
+import AddAbsencetype from "./add";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
-let count=false;
+let count = false;
 
+const classes = {
+  linearprogress: {
+    // backgroundColor: '#EE7647',
+    backgroundColor: "rgb(243, 153, 117)"
+  },
+  header: {
+    backgroundColor: "#EE7647",
+    height: "40px",
+    borderRadius: "5px",
+    width: "99%",
+    marginLeft: "0.5%",
+    alignContent: "center",
+    color: "white"
+  },
+  heading: {
+    marginRight: "10%",
+    textAlign: "right"
+  },
+  plusign: {
+    marginLeft: "80%"
+  },
+  actions: {
+    cursor: "pointer",
+    float: "left",
+    marginLeft: "70%"
+  }
+};
 
 let AbsenceListing = () => {
   let [Atlist, setAtlist] = useState([]);
-
 
   const columns = [
     {
@@ -44,45 +72,63 @@ let AbsenceListing = () => {
         display: false
       }
     }
+    //   {
+    //     name: "action",
+    //     label: "Action",
+    //     options: {
+    //       filter: false,
+    //       sort: false,
+    //       display: true
+    //     }
+    // }
   ];
 
   const options = {
     filterType: "multiselect",
     onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+    customToolbar: () => console.log("rowData"),
     rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
     selectableRows: "none",
     viewColumns: true
+
     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
   };
 
-  let Tabledisplay=<LinearProgress />
-  let [Tabledistatus, settabledistatus]=useState(false)
-  if(Tabledistatus){
-    Tabledisplay=<MUIDataTable 
-    title={"Absence Type"} 
-    data={Atlist} 
-    columns={columns} 
-    options={options} 
-    
-/>;
+  let Tabledisplay = (
+    <LinearProgress style={classes.linearprogress} color="secondary" />
+  );
+  let [Tabledistatus, settabledistatus] = useState(false);
+  if (Tabledistatus) {
+    Tabledisplay = (
+      <MUIDataTable
+        title={"Actions & Filters"}
+        data={Atlist}
+        columns={columns}
+        options={options}
+      />
+    );
+  } else {
+    Tabledisplay = (
+      <LinearProgress style={classes.linearprogress} color="secondary" />
+    );
   }
-  else{
-    Tabledisplay=<LinearProgress />
-  }
-  let refreshfn=()=>{
-    settabledistatus(Tabledistatus=false)
+  let refreshfn = () => {
+    settabledistatus((Tabledistatus = false));
     getlistapi();
-  }
+  };
 
   useEffect(() => {
     getlistapi();
-  },[]
-  );
+  }, []);
 
   async function getlistapi() {
     const { data: Atlist } = await GetListingForAbsence();
     setAtlist(Atlist);
-    settabledistatus(Tabledistatus=true)
+    // Atlist.map((e,i)=>
+    //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
+
+    //                 )
+    settabledistatus((Tabledistatus = true));
   }
 
   async function Dellistapi() {
@@ -90,9 +136,6 @@ let AbsenceListing = () => {
     Handlerowclose();
     refreshfn();
   }
-
-  
-
 
   let [Editstate, setEditstate] = React.useState(false);
   let HandleEditforlisting = () => {
@@ -110,10 +153,9 @@ let AbsenceListing = () => {
   if (Editstate) {
     EditshowModel = (
       <EditAbsence
-        click={Editstate}
         IDforAPI={idofEdit}
-        cross={HandleCrossEditforlisting}
         refresh={refreshfn}
+        cross={HandleCrossEditforlisting}
       />
     );
   } else {
@@ -131,23 +173,17 @@ let AbsenceListing = () => {
   };
   if (menushow) {
     menuDiv = (
-      <div className="container menu">
-        <div className="row menu">
-          <div
-            className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 menu"
-            onClick={HandleEditforlisting}
-          >
-            Edit
-          </div>
-          <div className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 menu" onClick={Dellistapi}>
-            Delete
-          </div>
-          <div
-            className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 menu"
-            onClick={Handlerowclose}
-          >
-            Close
-          </div>
+      <div className="row" style={classes.actions}>
+        <div onClick={HandleEditforlisting}>
+          <i className="fa fa-pencil-square fa-2x" />
+        </div>
+        <div onClick={Dellistapi}>
+          &nbsp;&nbsp;
+          <i className="fa fa-archive fa-2x" />
+        </div>
+        <div onClick={Handlerowclose}>
+          &nbsp;&nbsp;
+          <i className="fa fa-times-rectangle fa-2x" />
         </div>
       </div>
     );
@@ -157,11 +193,24 @@ let AbsenceListing = () => {
 
   return (
     <div>
-      <AddPersonFlag refresh={refreshfn}/>
-      {menuDiv}
+      <div className="row" style={classes.header}>
+        <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
+          <h3 style={classes.heading}>ABSENCE TYPE</h3>
+        </div>
+        <div className="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+          {menuDiv}
+        </div>
+        <div className="col-12 col-sm-6 col-md-1 col-lg-1 col-xl-1">
+          <div className="row" style={classes.plusign}>
+            <AddAbsencetype refresh={refreshfn} />
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+      <br />
       {EditshowModel}
       {Tabledisplay}
-
     </div>
   );
 };
