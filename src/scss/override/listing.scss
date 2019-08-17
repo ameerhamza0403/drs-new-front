@@ -1,0 +1,58 @@
+$color_1: #ee7647;
+$color_2: white;
+
+.MuiToolbar-regular {
+  background: #e9ecef;
+  h6 {
+    font-size: 15px;
+    font-weight: bolder;
+  }
+}
+.MuiTablePagination-toolbar {
+  background: white;
+}
+.MuiTableCell-root {
+  &:last-child {
+    font-size: 14px;
+    // font-weight: 500;
+    line-height: 0.7285em;
+  }
+}
+
+// .MuiTableCell-root {
+// 	padding: 10px 10px 10px 10px;
+// }
+
+// header
+
+
+.row.header {
+	background: $color_1;
+	height: 40px;
+	border-radius: 5px;
+	width: 99%;
+	margin-left: 0.5%;
+	align-content: center;
+	color: $color_2;
+	position: relative;
+}
+h3 {
+	text-align: left;
+}
+.tool {
+	li {
+		display: flex;
+		float: left;
+		align-items: right;
+	}
+	margin-left: -10%;
+}
+@media screen and (max-width: 500px) {
+	.row.header {
+		height: 80px;
+	}
+	h3 {
+		text-align: center;
+		margin-left: 15%;
+	}
+}

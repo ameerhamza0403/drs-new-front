@@ -18,7 +18,8 @@ import {
 } from "reactstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 
@@ -42,8 +43,26 @@ const classes = {
 
 let EditAbsence = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
+
+    //Toast
+
+    function errort() {
+      // add type: 'error' to options
+      return toast.error('Failed with Error...', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+
+    }
+    function success() {
+      return toast.success("Saved Successfully... ", {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+    }
+
+
+
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PutAbsenceDataById(props.IDforAPI, values);
+    await PutAbsenceDataById(props.IDforAPI, values).then(()=>success()).catch(error=>errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);

@@ -210,16 +210,16 @@ export default {
   },
   class: "" // optional class names space delimited list for title item ex: "text-center"
 },
-// {
-//   name: 'Colors',
-//   url: '/theme/colors',
-//   icon: 'icon-drop',
-// },
-// {
-//   name: 'Typography',
-//   url: '/theme/typography',
-//   icon: 'icon-pencil',
-// },
+{
+  name: 'Colors',
+  url: '/theme/colors',
+  icon: 'icon-drop',
+},
+{
+  name: 'Typography',
+  url: '/theme/typography',
+  icon: 'icon-pencil',
+},
 {
   name: "ADMINISTRATION",
   url: "/admin",
@@ -479,11 +479,11 @@ export default {
     //           url: '/base/list-groups',
     //           icon: 'icon-puzzle',
     //         },
-    //         {
-    //           name: 'Navs',
-    //           url: '/base/navs',
-    //           icon: 'icon-puzzle',
-    //         },
+            {
+              name: 'Navs',
+              url: '/base/navs',
+              icon: 'icon-puzzle',
+            },
     //         {
     //           name: 'Paginations',
     //           url: '/base/paginations',
@@ -685,15 +685,15 @@ export default {
               url: '/notifications/modals',
               icon: 'icon-bell'
             },
-    //         {
-    //           name: 'Toastr',
-    //           url: '/notifications/toastr',
-    //           icon: 'icon-bell',
-    //           badge: {
-    //             variant: 'danger',
-    //             text: 'PRO'
-    //           }
-    //         }
+            {
+              name: 'Toastr',
+              url: '/notifications/toastr',
+              icon: 'icon-bell',
+              badge: {
+                variant: 'danger',
+                text: 'PRO'
+              }
+            },
     //       ]
     //     },
     //     {

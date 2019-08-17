@@ -18,6 +18,8 @@ import {
 } from "reactstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const classes = {
   button: {
@@ -38,8 +40,32 @@ const classes = {
 
 let EditCurrency = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
+
+
+    //Toast
+
+    function errort() {
+      // add type: 'error' to options
+      return toast.error('Failed with Error...', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+
+    }
+    function success(response) {
+      if (response == "Exception Error") {
+        return toast.error('Failed with Error "' + response + '"', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      } else {
+        return toast.success(response, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      }
+    }
+
+
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PutcurrencyDataById(props.IDforAPI, values);
+    await PutcurrencyDataById(props.IDforAPI, values).then(res => success(res.data.message)).catch(error=>errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);
@@ -51,7 +77,7 @@ let EditCurrency = props => {
         .min(4, `Currency Name has to be at least 4 characters`)
         .required("Currency Name is required"),
       code: Yup.string()
-        .min(3, `Currency Code has to be at least 3 characters`)
+        .max(3, `Currency Code should be 3 characters`)
         .required("Currency Code is required")
     });
   };
@@ -194,6 +220,7 @@ let EditCurrency = props => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.code}
+                              maxlength={3}
                             />
                             <FormFeedback>{errors.code}</FormFeedback>
                             <br />
