@@ -35,7 +35,7 @@ let ContactsGroupListingTable=()=>{
     //     ['ZCake', iconset()],
     // ];
 
-    
+
 
     const columns = [
         {
@@ -73,7 +73,7 @@ let ContactsGroupListingTable=()=>{
             }
           }
       ];
-    
+
       const options = {
         filterType: "multiselect",
         onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
@@ -86,12 +86,12 @@ let ContactsGroupListingTable=()=>{
       let Tabledisplay=<LinearProgress />
       let [Tabledistatus, settabledistatus]=useState(false)
       if(Tabledistatus){
-        Tabledisplay=<MUIDataTable 
-        title={"Contact Groups"} 
-        data={Atlist} 
-        columns={columns} 
-        options={options} 
-        
+        Tabledisplay=<MUIDataTable
+        title={"Contact Groups"}
+        data={Atlist}
+        columns={columns}
+        options={options}
+
     />;
       }
       else{
@@ -101,7 +101,7 @@ let ContactsGroupListingTable=()=>{
         settabledistatus(Tabledistatus=false)
         getlistapi();
       }
-      
+
     const StyledMenuItem = withStyles(theme => ({
         root: {
           '&:focus': {
@@ -113,7 +113,7 @@ let ContactsGroupListingTable=()=>{
         },
       }))(MenuItem);
 
-    
+
     let [Editstate, setEditstate] = React.useState(false);
     let HandleEditforlisting=()=>{
         return(
@@ -122,13 +122,13 @@ let ContactsGroupListingTable=()=>{
               // handleMenuClose()
         )
     }
-  
+
     let HandleCrossEditforlisting=()=>{
         return(
             setEditstate(Editstate= false)
         )
     }
-      
+
         if(Editstate){
             EditshowModel=<EditButton click={Editstate} cross={HandleCrossEditforlisting} refresh={refreshfn} IDforAPI={idofEdit}/>
     }
@@ -141,27 +141,27 @@ let ContactsGroupListingTable=()=>{
       },[count]
       );
 
-      
+
 
       async function getlistapi() {
         let { data: Atlist } = await GetListingForContactGroup()
                 setAtlist(Atlist)
                 Atlist.map((e,i)=>
                         Atlist[i].icon=<img src={e.icon}/>
-                        
+
                     )
                     settabledistatus(Tabledistatus=true)
-        
+
       }
 
-      
-      
+
+
       async function Dellistapi() {
         await DeleteContactGroupDataById(idofEdit);
         Handlerowclose();
         refreshfn();
       }
-    
+
 
     let [menushow, setMenushow]= useState(false);
     let HandlerowSelect=(data,meta)=>{
@@ -186,8 +186,8 @@ let ContactsGroupListingTable=()=>{
         else if(!menushow){
             menuDiv=<div className='container empty'></div>;
         }
-        
- 
+
+
     return(
         <div>
           <AddButton click={refreshfn}/>
@@ -195,7 +195,7 @@ let ContactsGroupListingTable=()=>{
             {EditshowModel}
             {Tabledisplay}
         </div>
-           
+
     )
 }
 

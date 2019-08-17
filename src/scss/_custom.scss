@@ -1,7 +1,13 @@
 // Here you can add other styles
-//main
 
-//my group listing Resource
+// modal
+.modal-primary .modal-header{
+  background: #EE7647;
+}
+
+.modal-primary .modal-content{
+  border: none;
+}
 
 
 
@@ -87,7 +93,9 @@
     font-weight: 700;
     color: $sidebar-nav-title-color;
     text-transform: uppercase;
-
+    // text-decoration: underline;
+    text-align: center;
+    color: #EE7647;
   }
 
   .nav-divider {

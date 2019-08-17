@@ -13,7 +13,7 @@ function ApiwithidAbsencetype(Id) {
 
 //-------- GetAPi
 export function GetListingForAbsence() {
-    return axios.get(apiurlAbsenceType, 
+    return axios.get(apiurlAbsenceType,
              {headers: {
                  //"Authorization": authIt,
                  //"accept": "application/json",
@@ -27,7 +27,7 @@ export function GetListingForAbsence() {
 //---------Edit APi
 export function GetAbsenceDataById(id) {
     // console.log(id)
-    return axios.get(ApiwithidAbsencetype(id), 
+    return axios.get(ApiwithidAbsencetype(id),
              {headers: {
                  'Content-Type': 'application/json',
                 }}
