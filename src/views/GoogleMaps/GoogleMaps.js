@@ -107,13 +107,7 @@ class ReactGoogleMaps extends Component {
     <div className="animated fadeIn">
       <Card>
         <CardHeader>
-          <i className="icon-map"></i> React Google Maps{' '}
-          <a href="https://coreui.io/pro/react/" className="badge badge-danger">CoreUI Pro Component</a>
-          <div className="card-header-actions">
-            <a href="https://github.com/tomchentw/react-google-maps" rel="noreferrer noopener" target="_blank" className="card-header-action">
-              <small className="text-muted">docs</small>
-            </a>
-          </div>
+
         </CardHeader>
         <CardBody>
           <GoogleMapsComponent

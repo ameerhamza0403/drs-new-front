@@ -109,7 +109,7 @@ const routes = [
   { path: '/forms/advanced-forms', name: 'Advanced Forms', component: AdvancedForms },
   { path: '/forms/basic-forms', name: 'Basic Forms', component: BasicForms },
   { path: '/forms/validation-forms', name: 'Form Validation', component: ValidationForms },
-  { path: '/google-maps', name: 'Google Maps', component: GoogleMaps },
+  { path: '/map', name: 'Maps', component: GoogleMaps },
   { path: '/icons', exact: true, name: 'Icons', component: CoreUIIcons },
   { path: '/icons/coreui-icons', name: 'CoreUI Icons', component: CoreUIIcons },
   { path: '/icons/flags', name: 'Flags', component: Flags },

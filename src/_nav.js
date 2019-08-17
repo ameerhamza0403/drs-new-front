@@ -210,16 +210,16 @@ export default {
   },
   class: "" // optional class names space delimited list for title item ex: "text-center"
 },
-// {
-//   name: 'Colors',
-//   url: '/theme/colors',
-//   icon: 'icon-drop',
-// },
-// {
-//   name: 'Typography',
-//   url: '/theme/typography',
-//   icon: 'icon-pencil',
-// },
+{
+  name: 'Colors',
+  url: '/theme/colors',
+  icon: 'icon-drop',
+},
+{
+  name: 'Typography',
+  url: '/theme/typography',
+  icon: 'icon-pencil',
+},
 {
   name: "ADMINISTRATION",
   url: "/admin",
@@ -479,11 +479,11 @@ export default {
     //           url: '/base/list-groups',
     //           icon: 'icon-puzzle',
     //         },
-    //         {
-    //           name: 'Navs',
-    //           url: '/base/navs',
-    //           icon: 'icon-puzzle',
-    //         },
+            {
+              name: 'Navs',
+              url: '/base/navs',
+              icon: 'icon-puzzle',
+            },
     //         {
     //           name: 'Paginations',
     //           url: '/base/paginations',
@@ -591,36 +591,36 @@ export default {
     //         }
     //       ]
     //     },
-    //     {
-    //       name: 'Forms',
-    //       url: '/forms',
-    //       icon: 'icon-note',
-    //       children: [
-    //         {
-    //           name: 'Basic Forms',
-    //           url: '/forms/basic-forms',
-    //           icon: 'icon-note'
-    //         },
-    //         {
-    //           name: 'Advanced Forms',
-    //           url: '/forms/advanced-forms',
-    //           icon: 'icon-note',
-    //           badge: {
-    //             variant: 'danger',
-    //             text: 'PRO'
-    //           }
-    //         },
-    //         {
-    //           name: 'Validation',
-    //           url: '/forms/validation-forms',
-    //           icon: 'icon-note',
-    //           badge: {
-    //             variant: 'danger',
-    //             text: 'PRO'
-    //           }
-    //         }
-    //       ]
-    //     },
+        {
+          name: 'Forms',
+          url: '/forms',
+          icon: 'icon-note',
+          children: [
+            {
+              name: 'Basic Forms',
+              url: '/forms/basic-forms',
+              icon: 'icon-note'
+            },
+            {
+              name: 'Advanced Forms',
+              url: '/forms/advanced-forms',
+              icon: 'icon-note',
+              badge: {
+                variant: 'danger',
+                text: 'PRO'
+              }
+            },
+            {
+              name: 'Validation',
+              url: '/forms/validation-forms',
+              icon: 'icon-note',
+              badge: {
+                variant: 'danger',
+                text: 'PRO'
+              }
+            }
+          ]
+        },
     //     {
     //       name: 'Google Maps',
     //       url: '/google-maps',
@@ -630,41 +630,41 @@ export default {
     //         text: 'PRO'
     //       }
     //     },
-    //     {
-    //       name: 'Icons',
-    //       url: '/icons',
-    //       icon: 'icon-star',
-    //       children: [
-    //         {
-    //           name: 'CoreUI Icons',
-    //           url: '/icons/coreui-icons',
-    //           icon: 'icon-star',
-    //           badge: {
-    //             variant: 'info',
-    //             text: 'NEW',
-    //           },
-    //         },
-    //         {
-    //           name: 'Flags',
-    //           url: '/icons/flags',
-    //           icon: 'icon-star',
-    //         },
-    //         {
-    //           name: 'Font Awesome',
-    //           url: '/icons/font-awesome',
-    //           icon: 'icon-star',
-    //           badge: {
-    //             variant: 'secondary',
-    //             text: '4.7',
-    //           },
-    //         },
-    //         {
-    //           name: 'Simple Line Icons',
-    //           url: '/icons/simple-line-icons',
-    //           icon: 'icon-star',
-    //         },
-    //       ],
-    //     },
+        {
+          name: 'Icons',
+          url: '/icons',
+          icon: 'icon-star',
+          children: [
+            {
+              name: 'CoreUI Icons',
+              url: '/icons/coreui-icons',
+              icon: 'icon-star',
+              badge: {
+                variant: 'info',
+                text: 'NEW',
+              },
+            },
+            {
+              name: 'Flags',
+              url: '/icons/flags',
+              icon: 'icon-star',
+            },
+            {
+              name: 'Font Awesome',
+              url: '/icons/font-awesome',
+              icon: 'icon-star',
+              badge: {
+                variant: 'secondary',
+                text: '4.7',
+              },
+            },
+            {
+              name: 'Simple Line Icons',
+              url: '/icons/simple-line-icons',
+              icon: 'icon-star',
+            },
+          ],
+        },
     //     {
     //       name: 'Notifications',
     //       url: '/notifications',
@@ -680,20 +680,20 @@ export default {
     //           url: '/notifications/badges',
     //           icon: 'icon-bell',
     //         },
-    //         {
-    //           name: 'Modals',
-    //           url: '/notifications/modals',
-    //           icon: 'icon-bell'
-    //         },
-    //         {
-    //           name: 'Toastr',
-    //           url: '/notifications/toastr',
-    //           icon: 'icon-bell',
-    //           badge: {
-    //             variant: 'danger',
-    //             text: 'PRO'
-    //           }
-    //         }
+            {
+              name: 'Modals',
+              url: '/notifications/modals',
+              icon: 'icon-bell'
+            },
+            {
+              name: 'Toastr',
+              url: '/notifications/toastr',
+              icon: 'icon-bell',
+              badge: {
+                variant: 'danger',
+                text: 'PRO'
+              }
+            },
     //       ]
     //     },
     //     {
@@ -730,27 +730,27 @@ export default {
     //         }
     //       ]
     //         },
-    //     {
-    //       name: 'Tables',
-    //       url: '/tables',
-    //       icon: 'icon-list',
-    //       children: [
-    //         {
-    //           name: 'Data Table',
-    //           url: '/tables/data-table',
-    //           icon: 'icon-list',
-    //           badge: {
-    //             variant: 'danger',
-    //             text: 'PRO'
-    //           }
-    //         },
-    //         {
-    //           name: 'Tables',
-    //           url: '/tables/tables',
-    //           icon: 'icon-list'
-    //         }
-    //       ]
-    //     },
+        {
+          name: 'Tables',
+          url: '/tables',
+          icon: 'icon-list',
+          children: [
+            {
+              name: 'Data Table',
+              url: '/tables/data-table',
+              icon: 'icon-list',
+              badge: {
+                variant: 'danger',
+                text: 'PRO'
+              }
+            },
+            {
+              name: 'Tables',
+              url: '/tables/tables',
+              icon: 'icon-list'
+            }
+          ]
+        },
     //     {
     //       name: 'Widgets',
     //       url: '/widgets',
