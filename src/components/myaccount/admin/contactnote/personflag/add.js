@@ -63,7 +63,7 @@ let AddPersonFlag = props => {
     }
   }
 
-  let ColorCode = [
+  let listColorCode = [
     "FFFFE0",
     "FFFACD",
     "FFEFD5",
@@ -126,9 +126,7 @@ let AddPersonFlag = props => {
       name: Yup.string()
         .min(4, `Currency name has to be at least 4 characters`)
         .required("Name is required"),
-      code: Yup.string()
-        .max(3, `Currency Code has to be at least 3 characters`)
-        .required("Code is required")
+
     });
   };
 
@@ -265,8 +263,6 @@ let AddPersonFlag = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
-                            <br />
-                            <br />
                             <input
                               name="active"
                               id="active"
@@ -296,7 +292,7 @@ let AddPersonFlag = props => {
                               {showSlccode}
                             </div>
                             <div className="row">
-                              {ColorCode.map(e => (
+                              {listColorCode.map(e => (
                                 <div
                                   className="ColorCodes"
                                   style={ColorStyleFn(e)}
