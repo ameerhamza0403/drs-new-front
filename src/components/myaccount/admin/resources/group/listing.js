@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
-import "./listing.scss";
+import "../../../../../scss/override/listing.scss";
 import EditGroup from "./edit";
 import {
   GetListingForResourceGroup,
@@ -8,6 +8,8 @@ import {
 } from "..//shared/resourcegroup";
 import ResourceAddGroup from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -121,8 +123,26 @@ let ResourceGroupListing = () => {
     settabledistatus((Tabledistatus = true));
   }
 
+ // Toast
+
+ function errort() {
+  // add type: 'error' to options
+  return toast.error('Failed with Error...', {
+    position: toast.POSITION.BOTTOM_RIGHT
+  });
+
+}
+function success() {
+  return toast.success("Deleted Successfully... ", {
+    position: toast.POSITION.BOTTOM_RIGHT
+  });
+}
   async function Dellistapi() {
-    await DeleteResourceGroupDataById(idofEdit);
+    await DeleteResourceGroupDataById(idofEdit).then(() => {
+      success();
+    }).catch(error => {
+        errort();
+      });
     Handlerowclose();
     refreshfn();
   }
@@ -163,41 +183,43 @@ let ResourceGroupListing = () => {
   };
   if (menushow) {
     menuDiv = (
-      <div className="row" style={classes.actions}>
-        <div onClick={HandleEditforlisting}>
+      <ul className="tool">
+        <li>
+          <ResourceAddGroup refresh={refreshfn} />
+        </li>
+        <li onClick={HandleEditforlisting}>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <i className="fa fa-pencil-square fa-2x" />
-        </div>
-        <div onClick={Dellistapi}>
+        </li>
+        <li onClick={Dellistapi}>
           &nbsp;&nbsp;
           <i className="fa fa-archive fa-2x" />
-        </div>
-        <div onClick={Handlerowclose}>
+        </li>
+        <li onClick={Handlerowclose}>
           &nbsp;&nbsp;
           <i className="fa fa-times-rectangle fa-2x" />
-        </div>
-      </div>
+        </li>
+      </ul>
     );
   } else if (!menushow) {
-    menuDiv = <div className="container empty" />;
+    menuDiv = (
+      <ul className="tool">
+        <li />
+        <ResourceAddGroup refresh={refreshfn} />
+      </ul>
+    );
   }
 
   return (
     <div>
-      <div className="row" style={classes.header}>
-        <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 style={classes.heading}>RESOURCE GROUP</h3>
-        </div>
-        <div className="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+      <div className="row header">
+        <div className="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5">
           {menuDiv}
         </div>
-        <div className="col-12 col-sm-6 col-md-1 col-lg-1 col-xl-1">
-          <div className="row" style={classes.plusign}>
-            <ResourceAddGroup refresh={refreshfn} />
-          </div>
+        <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
+          <h3 className="heading">RESOURCE GROUP</h3>
         </div>
       </div>
-      <br />
-      <br />
       <br />
       {EditshowModel}
       {Tabledisplay}

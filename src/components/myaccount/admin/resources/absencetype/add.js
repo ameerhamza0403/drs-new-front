@@ -18,6 +18,8 @@ import {
 } from "reactstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const classes = {
   button: {
@@ -39,8 +41,25 @@ const classes = {
 
 let AddAbsencetype = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
+
+      //Tost
+
+      function errort() {
+        // add type: 'error' to options
+        return toast.error('Failed with Error...', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+
+      }
+      function success() {
+        return toast.success("Saved Successfully... ", {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      }
+
+
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PostListingForAbsence(values);
+    await PostListingForAbsence(values).then(()=>success()).catch(error=>errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);
