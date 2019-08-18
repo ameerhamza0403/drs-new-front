@@ -1,60 +1,49 @@
-import React, { Component, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Modal from "@material-ui/core/Modal";
-import TextField from "@material-ui/core/TextField";
-import clsx from "clsx";
-// import iconpack from '..//..//..//..//images/air-b.png';
 import {
   GetContactGroupDataById,
   PutContactGroupDataById
 } from "..//shared/contact";
-
-import "./comon.css";
+import React, { Component, useState, useEffect } from "react";
+import { PostListingForContactGroup } from "..//shared/contact";
+import {
+  Button,
+  Card,
+  CardBody,
+  Col,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row,
+  Form,
+  FormFeedback,
+  FormGroup,
+  Label,
+  Input
+} from "reactstrap";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 let iconpack = "https://cdn.bigchangeapps.com/img/Map/cn/40/air-n.png";
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`
-  };
-}
-
-const useStyles = makeStyles(theme => ({
+const classes = {
   button: {
-    margin: theme.spacing(1),
-    backgroundColor: "#F4662F",
-    color: "white"
+    color: "white",
+    backgroundColor: "#EE7647",
+    border: "none"
   },
-  input: {
-    display: "none"
+  plusbutton: {
+    color: "white",
+    borderRadius: "50px",
+    width: "10px",
+    cursor: "pointer",
+    float: "left"
+    // marginTop: '10px',
+    // marginLeft: '5px',
   },
-  paper: {
-    position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #F4662F",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 4),
-    outline: "none"
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1)
-  },
-  dense: {
-    marginTop: theme.spacing(2)
+  icon: {
+    cursor: "pointer"
   }
-}));
+};
 
 let EditButton = props => {
   let iconData = [
@@ -73,77 +62,91 @@ let EditButton = props => {
     iconpack,
     iconpack,
     iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
     iconpack
   ];
 
-  const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(false);
+  //Tost
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  function errort() {
+    // add type: 'error' to options
+    return toast.error("Failed with Error...", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+  function success() {
+    return toast.success("Saved Successfully... ", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
 
-  const handleClose = () => {
-    // setOpen(false);
-    props.cross();
-  };
+  async function postlistapi() {
+    await PutContactGroupDataById(props.IDforAPI, values)
+      .then(() => success())
+      .catch(error => errort());
 
-  const [openMT, setOpenMT] = React.useState(false);
+    handleOpen();
+    props.refresh();
 
-  const handleOpenMT = () => {
-    setOpenMT(true);
-  };
-
-  const handleCloseMT = () => {
-    setOpenMT(false);
-  };
-
-
-
-  const handleiconChange = event => {
-    let name = "icon";
-    let valofCod;
-    valofCod = event.target.getAttribute("value");
-    seteditValues({ ...editvalues, [name]: valofCod });
-    handleCloseMT();
-  };
+  }
 
   useEffect(() => {
     getlistapi();
   }, []);
 
   async function getlistapi() {
-    const { data: editvalues } = await GetContactGroupDataById(props.IDforAPI);
-    seteditValues(editvalues);
+    const { data: values } = await GetContactGroupDataById(props.IDforAPI);
+    setValues(values);
   }
 
-  const [editvalues, seteditValues] = React.useState({});
 
-  const handleEditChange = name => event => {
+
+  const [values, setValues] = React.useState({
+    name: "",
+    icon: "",
+    active: false
+  });
+
+  const handleChange = name => event => {
     if (name != "active") {
-      seteditValues({ ...editvalues, [name]: event.target.value });
+      setValues({ ...values, [name]: event.target.value });
     } else {
-      seteditValues({ ...editvalues, [name]: event.target.checked });
+      setValues({ ...values, [name]: event.target.checked });
     }
   };
 
-  async function putlistapi() {
-    await PutContactGroupDataById(props.IDforAPI, editvalues);
-    handleClose();
-    props.refresh();
-  }
+  const handleiconChange = event => {
+    let name = "icon";
+    let valofCod;
+    valofCod = event.target.getAttribute("value");
+    setValues({ ...values, [name]: valofCod });
+    handleOpenMT();
+  };
+
+  let [modalMT, setModalMT] = useState(false);
+
+  let [modal, setModal] = useState(true);
+
+  let handleOpen = () => {
+    return setModal((modal = false)), setTimeout(() => props.cross(), 200);
+  };
+
+
+  let handleOpenMT = () => {
+    return setModalMT((modalMT = !modalMT));
+  };
 
   return (
     <div>
       <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        open={props.click}
-        onClose={handleClose}
+        isOpen={modal}
+        toggle={handleOpen}
+        className={"modal-primary " + props.className}
       >
-        <div style={modalStyle} className={classes.paper}>
+        <ModalHeader toggle={handleOpen}>Note Type</ModalHeader>
+        <ModalBody>
           <div className="container">
             <div className="row">
               <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -154,15 +157,29 @@ let EditButton = props => {
                     className="form-control"
                     id="exampleInputEmail1"
                     aria-describedby="emailHelp"
-                    placeholder={editvalues.name}
-                    onChange={handleEditChange("name")}
+                    placeholder={values.name}
+                    onChange={handleChange("name")}
                   />
                 </div>
+              </div>
+              <br />
+              <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value="true"
+                  id="defaultCheck1"
+                  onChange={handleChange("active")}
+                />
+                <label className="form-check-label" for="defaultCheck1">
+                  Active
+                </label>
               </div>
               <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div className="form-group">
                   <label for="exampleInputEmail1">Icon</label>
-                  <img src={editvalues.icon} />
+                  <img src={values.icon} />
                   <br />
                 </div>
                 <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -175,34 +192,21 @@ let EditButton = props => {
                   </Button>
                   <br />
                 </div>
-                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    value="true"
-                    id="defaultCheck1"
-                    onChange={handleEditChange("active")}
-                  />
-                  <label className="form-check-label" for="defaultCheck1">
-                    Active
-                  </label>{" "}
-                </div>
               </div>
               <Modal
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-                open={openMT}
-                onClose={handleCloseMT}
+                isOpen={modalMT}
+                toggle={handleOpenMT}
+                className={"modal-primary " + props.className}
               >
-                <div style={modalStyle} className={classes.paper}>
+                <ModalHeader toggle={handleOpenMT}>Note Type</ModalHeader>
+                <ModalBody>
                   <div className="container">
                     <div className="row">
                       {iconData.map(element => (
                         <div className="col">
                           <img
                             src={element}
-                            className="icon"
+                            style={classes.icon}
                             value={element}
                             onClick={handleiconChange}
                           />
@@ -210,19 +214,21 @@ let EditButton = props => {
                       ))}
                     </div>
                   </div>
-                </div>
+                </ModalBody>
               </Modal>
             </div>
           </div>
 
-          <Button
-            variant="contained"
-            className={classes.button}
-            onClick={putlistapi}
-          >
-            Save
-          </Button>
-        </div>
+          <ModalFooter>
+            <Button
+              variant="contained"
+              className={classes.button}
+              onClick={postlistapi}
+            >
+              Save
+            </Button>
+          </ModalFooter>
+        </ModalBody>
       </Modal>
     </div>
   );

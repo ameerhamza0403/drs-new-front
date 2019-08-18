@@ -1,85 +1,50 @@
-import React, { Component, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Modal from "@material-ui/core/Modal";
-import TextField from "@material-ui/core/TextField";
-import clsx from "clsx";
-import "./add.css";
 import { GetNoteflagDataById, PutNoteflagDataById } from "..//shared/notesflag";
+import {
+  GetPersonflagDataById,
+  PutPersonflagDataById
+} from "..//shared/personflag";
+import {
+  Button,
+  Card,
+  CardBody,
+  Col,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row,
+  Form,
+  FormFeedback,
+  FormGroup,
+  Label,
+  Input
+} from "reactstrap";
+import './add.scss';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import React, {useState, useEffect} from 'react';
+
 
 let valofCod = "";
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`
-  };
-}
-
-const useStyles = makeStyles(theme => ({
+const classes = {
   button: {
-    margin: theme.spacing(1),
-    backgroundColor: "#F4662F",
-    color: "white"
+    color: "white",
+    backgroundColor: "#EE7647",
+    border: "none"
   },
-  input: {
-    display: "none"
-  },
-  paper: {
-    position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #F4662F",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 4),
-    outline: "none"
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1)
-  },
-  dense: {
-    marginTop: theme.spacing(2)
+  plusbutton: {
+    color: "white",
+    borderRadius: "50px",
+    width: "10px",
+    cursor: "pointer",
+    float: "left"
+    // marginTop: '10px',
+    // marginLeft: '5px',
   }
-}));
+};
 
 let EditButtonForNotesFlag = props => {
-  const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(false);
-
-  // const handleOpen = () => {
-  // setOpen(true);
-  // };
-
-  const handleClose = () => {
-    setOpen(false);
-    props.cross();
-  };
-
-  // const [values, setValues] = React.useState({
-  //   name: "",
-  //   colorCode: "",
-  //   active: false
-  // });
-
-  // const handleChange = name => event => {
-  //   if (name != "active") {
-  //     setValues({ ...values, [name]: event.target.value });
-  //   } else {
-  //     setValues({ ...values, [name]: event.target.checked });
-  //   }
-  // };
-
   let ColorCode = [
     "FFFFE0",
     "FFFACD",
@@ -128,6 +93,27 @@ let EditButtonForNotesFlag = props => {
     });
   };
 
+      //Toast
+
+      function errort() {
+        // add type: 'error' to options
+        return toast.error('Failed with Error...', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+
+      }
+      function success(response) {
+        if (response == "Exception Error") {
+          return toast.error('Failed with Error "' + response + '"', {
+            position: toast.POSITION.BOTTOM_RIGHT
+          });
+        } else {
+          return toast.success(response, {
+            position: toast.POSITION.BOTTOM_RIGHT
+          });
+        }
+      }
+
   useEffect(() => {
     getlistapi();
   }, []);
@@ -139,8 +125,8 @@ let EditButtonForNotesFlag = props => {
 
   async function putlistapi() {
     console.log(editvalues);
-    await PutNoteflagDataById(props.IDforAPI, editvalues);
-    handleClose();
+    await PutNoteflagDataById(props.IDforAPI, editvalues).then(res => success(res.data.message)).catch(error=>errort());
+    handleOpen();
     props.refresh();
   }
 
@@ -178,15 +164,22 @@ let EditButtonForNotesFlag = props => {
       <div className="ColorCodesl" style={ColorStyleFn("000000")} />
     );
   }
+
+  let [modal, setModal] = useState(true);
+
+  let handleOpen = () => {
+    return setModal((modal = false)), setTimeout(() => props.cross(), 200);
+  };
+
   return (
     <div>
       <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        open={props.click}
-        onClose={handleClose}
+        isOpen={modal}
+        toggle={handleOpen}
+        className={"modal-primary " + props.className}
       >
-        <div style={modalStyle} className={classes.paper}>
+        <ModalHeader toggle={handleOpen}>Notes Flag</ModalHeader>
+        <ModalBody>
           <div className="container">
             <form>
               <div class="form-group">
@@ -233,15 +226,24 @@ let EditButtonForNotesFlag = props => {
               </div>
             </div>
           </div>
+          <ModalFooter>
+            <Button
+              variant="contained"
+              className={classes.button}
+              onClick={putlistapi}
+            >
+              Save
+            </Button>
 
-          <Button
-            variant="contained"
-            className={classes.button}
-            onClick={putlistapi}
-          >
-            Save
-          </Button>
-        </div>
+            <Button
+              color="secondary"
+              onClick={handleOpen}
+              style={classes.button}
+            >
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalBody>
       </Modal>
     </div>
   );

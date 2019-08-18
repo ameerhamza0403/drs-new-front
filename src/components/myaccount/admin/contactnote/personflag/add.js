@@ -16,10 +16,11 @@ import {
   Label,
   Input
 } from "reactstrap";
-import { Formik } from "formik";
-import * as Yup from "yup";
+import './add.scss';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+let valofCod = "";
 
 const classes = {
   button: {
@@ -35,35 +36,26 @@ const classes = {
     float: "left"
     // marginTop: '10px',
     // marginLeft: '5px',
-  }
+  },
+
 };
 
-
-let valofCod;
 let AddPersonFlag = props => {
-  // getModalStyle is not a pure function, we roll the style only on the first render
+  const [values, setValues] = React.useState({
+    name: "",
+    colorCode: "",
+    active: false
+  });
 
-  //Tost
-
-  function errort() {
-    // add type: 'error' to options
-    return toast.error("Failed with Error...", {
-      position: toast.POSITION.BOTTOM_RIGHT
-    });
-  }
-  function success(response) {
-    if (response == "Exception Error") {
-      return toast.error('Failed with Error "' + response + '"', {
-        position: toast.POSITION.BOTTOM_RIGHT
-      });
+  const handleChange = name => event => {
+    if (name != "active") {
+      setValues({ ...values, [name]: event.target.value });
     } else {
-      return toast.success(response, {
-        position: toast.POSITION.BOTTOM_RIGHT
-      });
+      setValues({ ...values, [name]: event.target.checked });
     }
-  }
+  };
 
-  let listColorCode = [
+  let ColorCode = [
     "FFFFE0",
     "FFFACD",
     "FFEFD5",
@@ -107,97 +99,53 @@ let AddPersonFlag = props => {
   let ColorStyleFn = mycolor => {
     let code = "#" + mycolor;
     return (ColorStyle = {
-      background: code
+      backgroundColor: code,
     });
   };
 
-  async function onSubmit(values, { setSubmitting, setErrors }) {
-    console.log(values)
-    await PostListingForPersonflag(values)
-      .then(res => success(res.data.message))
-      .catch(error => errort());
+      //Toast
+
+      function errort() {
+        // add type: 'error' to options
+        return toast.error('Failed with Error...', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+
+      }
+      function success(response) {
+        if (response == "Exception Error") {
+          return toast.error('Failed with Error "' + response + '"', {
+            position: toast.POSITION.BOTTOM_RIGHT
+          });
+        } else {
+          return toast.success(response, {
+            position: toast.POSITION.BOTTOM_RIGHT
+          });
+        }
+      }
+
+  async function postlistapi() {
+    await PostListingForPersonflag(values).then(res => success(res.data.message)).catch(error=>errort());
     handleOpen();
     props.refresh();
-    setSubmitting(false);
   }
-
-  const validationSchema = function(values) {
-    return Yup.object().shape({
-      name: Yup.string()
-        .min(4, `Currency name has to be at least 4 characters`)
-        .required("Name is required"),
-
-    });
-  };
-
-  const validate = getValidationSchema => {
-    return values => {
-      const validationSchema = getValidationSchema(values);
-      try {
-        validationSchema.validateSync(values, { abortEarly: false });
-        return {};
-      } catch (error) {
-        return getErrorsFromValidationError(error);
-      }
-    };
-  };
-
-  const getErrorsFromValidationError = validationError => {
-    const FIRST_ERROR = 0;
-    return validationError.inner.reduce((errors, error) => {
-      return {
-        ...errors,
-        [error.path]: error.errors[FIRST_ERROR]
-      };
-    }, {});
-  };
-
-  const [initialValues, setInitialValues] = useState({
-    name: "",
-    colorCode: "",
-    active: false
-  });
-
-  function findFirstError(formName, hasError) {
-    const form = document.forms[formName];
-    for (let i = 0; i < form.length; i++) {
-      if (hasError(form[i].name)) {
-        form[i].focus();
-        break;
-      }
-    }
-  }
-
-  function validateForm(errors) {
-    findFirstError("simpleForm", fieldName => {
-      return Boolean(errors[fieldName]);
-    });
-  }
-
-  function touchAll(setTouched, errors) {
-    setTouched({
-      name: true
-    });
-    validateForm(errors);
-  }
-
-  let [modal, setModal] = useState(false);
-
-  let handleOpen = () => {
-    return setModal((modal = !modal));
-  };
 
   let showSlccode = (
     <div className="ColorCodesl" style={ColorStyleFn("000000")} />
   );
+  // let [Slctdcode, setSlctdcode]= React.useState('000000');
   let [codeswitch, setCodeswitch] = React.useState("false");
   let SelectColor = event => {
     let namer = "colorCode";
+    //console.log(event.target.getAttribute('value'))
+    // setSlctdcode({ Slctdcode: event.target.getAttribute('value')})
     valofCod = event.target.getAttribute("value");
-    setInitialValues({ ...initialValues, [namer]: valofCod });
+    setValues({ ...values, [namer]: valofCod });
     setCodeswitch({ codeswitch: true });
+    // console.log(Slctdcode + 'Hello')
   };
   if (codeswitch) {
+    // console.log(valofCod + 'helooo')
     showSlccode = (
       <div className="ColorCodesl" style={ColorStyleFn(valofCod)} />
     );
@@ -206,6 +154,12 @@ let AddPersonFlag = props => {
       <div className="ColorCodesl" style={ColorStyleFn("000000")} />
     );
   }
+
+  let [modal, setModal] = useState(false);
+
+  let handleOpen = () => {
+    return setModal((modal = !modal));
+  };
 
   return (
     <div>
@@ -218,119 +172,70 @@ let AddPersonFlag = props => {
         toggle={handleOpen}
         className={"modal-primary " + props.className}
       >
-        <ModalHeader toggle={handleOpen}>Add Currency</ModalHeader>
+        <ModalHeader toggle={handleOpen}>Add Person Flag</ModalHeader>
         <ModalBody>
           <div className="container">
-            <Formik
-              initialValues={initialValues}
-              validate={validate(validationSchema)}
-              onSubmit={onSubmit}
-              render={({
-                values,
-                errors,
-                touched,
-                status,
-                dirty,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-                isValid,
-                handleReset,
-                setTouched
-              }) => (
-                <Row>
-                  <Col lg="12">
-                    <Form onSubmit={handleSubmit} noValidate name="simpleForm">
-                      <FormGroup>
-                        <div className="row">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Flag Name</Label>
-                          </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                            <Input
-                              type="text"
-                              name="name"
-                              id="name"
-                              placeholder="i.e. Person"
-                              autoComplete="given-name"
-                              valid={!errors.name}
-                              invalid={touched.name && !!errors.name}
-                              autoFocus={true}
-                              required
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.name}
-                            />
-                            <FormFeedback>{errors.name}</FormFeedback>
-                            <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
-                              onClick={handleChange}
-                              onBlur={handleBlur}
-                              value={values.active}
-                              type="checkbox"
-                            />
-                            &nbsp;&nbsp;&nbsp;
-                            <label
-                              className="form-check-label"
-                              for="defaultCheck1"
-                            >
-                              Active
-                            </label>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Color</Label>
-                          </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                            <div className="row">
-                              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                              {showSlccode}
-                            </div>
-                            <div className="row">
-                              {listColorCode.map(e => (
-                                <div
-                                  className="ColorCodes"
-                                  style={ColorStyleFn(e)}
-                                  value={e}
-                                  onClick={SelectColor}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </FormGroup>
-                      <FormGroup>
-                        <ModalFooter>
-                          <Button
-                            type="submit"
-                            color="primary"
-                            className="mr-1"
-                            style={classes.button}
-                            disabled={isSubmitting || !isValid}
-                          >
-                            {isSubmitting ? "Wait..." : "Submit"}
-                          </Button>
-
-                          <Button
-                            color="secondary"
-                            onClick={handleOpen}
-                            style={classes.button}
-                          >
-                            Cancel
-                          </Button>
-                        </ModalFooter>
-                      </FormGroup>
-                    </Form>
-                  </Col>
-                </Row>
-              )}
-            />
+            <div className="container">
+              <form>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter Name"
+                    onChange={handleChange("name")}
+                  />
+                </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value="true"
+                  id="defaultCheck2"
+                  onChange={handleChange("active")}
+                />
+                <label className="form-check-label" for="defaultCheck2">
+                  Active
+                </label>
+              </form>
+              <br />
+              <div class="form-group">
+                <div className="row">
+                  <p>Color&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                  {showSlccode}
+                </div>
+                <div className="row">
+                  {ColorCode.map(e => (
+                    <div
+                      className="ColorCodes"
+                      style={ColorStyleFn(e)}
+                      value={e}
+                      onClick={SelectColor}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
+          <ModalFooter>
+            <Button
+              variant="contained"
+              className={classes.button}
+              onClick={postlistapi}
+            >
+              Save
+            </Button>
+
+            <Button
+              color="secondary"
+              onClick={handleOpen}
+              style={classes.button}
+            >
+              Cancel
+            </Button>
+          </ModalFooter>
         </ModalBody>
       </Modal>
     </div>
