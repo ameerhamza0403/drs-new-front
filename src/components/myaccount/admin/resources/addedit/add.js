@@ -15,9 +15,12 @@ import iconForForm from "..//..//..//..//images/icon-1.png";
 import SkillsAdd from "./skilladd";
 import SpecialHourlyRate from "./specialrate";
 import AlwaysAssits from "./alwaysassist";
-import {PostListingForAddEdit, GetListingForAddEdit} from '..//shared/addedit';
-import {GetListingForcurrency} from '..//shared/currency';
-import {GetListingForResourceGroup} from '..//..//resources/shared/resourcegroup';
+import {
+  PostListingForAddEdit,
+  GetListingForAddEdit
+} from "..//shared/addedit";
+import { GetListingForcurrency } from "..//shared/currency";
+import { GetListingForResourceGroup } from "..//..//resources/shared/resourcegroup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -30,14 +33,17 @@ const classes = {
   plusbutton: {
     color: "white",
     borderRadius: "50px",
-    width: '10px',
-    cursor: 'pointer',
-    float: 'left',
+    width: "10px",
+    cursor: "pointer",
+    float: "left"
     // marginTop: '10px',
     // marginLeft: '5px',
   },
-
+  star: {
+    color: "red"
+  }
 };
+
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: "#F4662F",
@@ -45,10 +51,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
-let count=0;
+let count = 0;
 let showWebUser = "";
-let AddeditAdd = (props) => {
+let AddeditAdd = props => {
   const classesM = useStyles();
   const [open, setOpen] = React.useState(false);
   const [openicon, setOpenicon] = React.useState(false);
@@ -66,95 +71,119 @@ let AddeditAdd = (props) => {
   }
 
   function handleClose() {
-    console.log(values)
+    setValues(resetvalues);
+    // console.log(resetvalues);
+    // console.log(values);
     setOpen(false);
   }
   function handleCloseicon() {
     setOpenicon(false);
   }
-  const [values, setValues] = React.useState({
-            name: "",
-            timeZone: "",
-            mobilePhone: "",
-            maxTravelDistance: 0,
-            jobWatchSetting: "",
-            reference: "",
-            code: "",
-            businessKey: "",
-            privateKey: "",
-            tachoCard: "",
-            fuelCard: "",
-            payrollNumber: "",
-            managerId: 0,
-            holidaysStartDate: "",
-            workingHours: JSON.stringify(["Mon 08:00 - 17:30",
-            "Tue 08:00 - 17:30",
-            "Wed 08:00 - 17:30",
-            "Thu 08:00 - 17:30",
-            "Fri 08:00 - 17:30"]),
-            hourlyRate: 0,
-            specialHourlyRate: "",
-            currencyId: 0,
-            webUser: "",
-            vacations: 0,
-            skills: "",
-            newUser: true,
-            email: "",
-            role: "",
-            viewOwnResource: true,
-            tracked: false,
-            owhtPrivate: true,
-            hideParentInfo: true
+  const [values, setValues] = useState({
+    name: "",
+    timeZone: "",
+    mobilePhone: "",
+    maxTravelDistance: 0,
+    jobWatchSetting: "",
+    reference: "",
+    code: "",
+    businessKey: "",
+    privateKey: "",
+    tachoCard: "",
+    fuelCard: "",
+    payrollNumber: "",
+    managerId: 0,
+    holidaysStartDate: "",
+    workingHours: JSON.stringify([
+      "Mon 08:00 - 17:30",
+      "Tue 08:00 - 17:30",
+      "Wed 08:00 - 17:30",
+      "Thu 08:00 - 17:30",
+      "Fri 08:00 - 17:30"
+    ]),
+    hourlyRate: 0,
+    specialHourlyRate: "",
+    currencyId: 0,
+    resourceGroupId: 0,
+    webUser: "",
+    vacations: 0,
+    skills: "",
+    newUser: true,
+    email: "",
+    role: "",
+    viewOwnResource: true,
+    tracked: false,
+    owhtPrivate: true,
+    hideParentInfo: true
   });
+
+  let [resetvalues, setResetValues] = useState(values);
 
   // * *************    APIs */
 
-
-        //Tost
-        function errort() {
-          // add type: 'error' to options
-          return toast.error("Failed with Error...", {
-            position: toast.POSITION.BOTTOM_RIGHT
-          });
-        }
-        function success(response) {
-          if (response == "Exception Error") {
-            return toast.error('Failed with Error "' + response + '"', {
-              position: toast.POSITION.BOTTOM_RIGHT
-            });
-          } else {
-            return toast.success(response, {
-              position: toast.POSITION.BOTTOM_RIGHT
-            });
-          }
-        }
-
-
-  async function postlistapi() {
-    await PostListingForAddEdit(values).then(res => success(res.data.message))
-    .catch(error => errort());
-    handleClose();
-    props.refresh();
+  //Tost
+  function errort() {
+    // add type: 'error' to options
+    return toast.error("Failed with Error...", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+  function success(response) {
+    if (response == "Exception Error") {
+      return toast.error('Failed with Error "' + response + '"', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+    } else {
+      return toast.success(response, {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+    }
   }
 
-  let [resvalue, setResvalue]=useState([
+  async function postlistapi() {
+    if (values.name === "") {
+      return toast.error("Name is Required", {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+    } else if (values.resourceGroupId === 0) {
+      return toast.error("Group is Required", {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+    } else if (values.managerId === 0) {
+      return toast.error("Manager is Required", {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+    } else if (values.hourlyRate === 0) {
+      return toast.error("Hourly Rate is Required", {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+    } else {
+      await PostListingForAddEdit(values)
+        .then(res => success(res.data.message))
+        .catch(error => errort());
+      handleClose();
+      props.refresh();
+    }
+  }
+
+  let [resvalue, setResvalue] = useState([
     {
       resourceGroupId: 0,
       name: "",
-      active: true,
+      active: true
     }
   ]);
-  let [listvalue, setListvalue]=useState([
+  let [listvalue, setListvalue] = useState([
     {
       name: "",
-      managerId: 19,
-  }
+      managerId: 0
+    }
   ]);
-  let [currvalue, setCurrvalue]=useState([
+  let [currvalue, setCurrvalue] = useState([
     {
-      currencyId: 3,
-      name: "Arab Emirates Dirham",
-      code: "AED",
+      currencyId: 0,
+      name: "",
+      code: ""
     }
   ]);
 
@@ -167,58 +196,66 @@ let AddeditAdd = (props) => {
   async function GetGroupResource() {
     let { data: resvalue } = await GetListingForResourceGroup();
     setResvalue(resvalue);
-
   }
 
   async function GetList() {
     let { data: listvalue } = await GetListingForAddEdit();
     setListvalue(listvalue);
-
   }
 
   async function GetCurrency() {
     let { data: currvalue } = await GetListingForcurrency();
     setCurrvalue(currvalue);
-
   }
 
   //********************************* */
 
   const handleChange = name => event => {
-    if((name==='viewOwnResource')||(name==='tracked')||(name==='hideParentInfo')||(name==='owhtPrivate')){
+    if (
+      name === "viewOwnResource" ||
+      name === "tracked" ||
+      name === "hideParentInfo" ||
+      name === "owhtPrivate"
+    ) {
       setValues({ ...values, [name]: event.target.checked });
-    }
-    else{
-    setValues({ ...values, [name]: event.target.value });
+    } else if (
+      name === "resourceGroupId" ||
+      name === "managerId" ||
+      name === "currencyId" ||
+      name === "hourlyRate"
+    ) {
+      setValues({ ...values, [name]: parseInt(event.target.value, 10) });
+    } else {
+      setValues({ ...values, [name]: event.target.value });
     }
   };
 
   let [webuserstatus, setWebuserstatus] = useState(false);
   let showWebUserfnn = () => {
-    let name='newUser'
+    let name = "newUser";
     setValues({ ...values, [name]: true });
     return setWebuserstatus((webuserstatus = true));
   };
   let showWebUserfno = () => {
-    let name='newUser'
+    let name = "newUser";
     setValues({ ...values, [name]: false });
     return setWebuserstatus((webuserstatus = false));
   };
 
-  let HandleSHR=(val)=>{
-    let name='specialHourlyRate'
-    setValues({ ...values, [name]:  val});
-  }
+  let HandleSHR = val => {
+    let name = "specialHourlyRate";
+    setValues({ ...values, [name]: val });
+  };
 
-  let HandleWKH=(val)=>{
-    let name='workingHours'
-    setValues({ ...values, [name]:  val});
-  }
+  let HandleWKH = val => {
+    let name = "workingHours";
+    setValues({ ...values, [name]: val });
+  };
 
-  let HandleSkills=(val)=>{
-    let name='skills'
-    setValues({ ...values, [name]:  val});
-  }
+  let HandleSkills = val => {
+    let name = "skills";
+    setValues({ ...values, [name]: val });
+  };
 
   if (webuserstatus) {
     showWebUser = (
@@ -245,7 +282,7 @@ let AddeditAdd = (props) => {
                   type="checkbox"
                   value="true"
                   id="defaultCheck22"
-                  onClick={handleChange('viewOwnResource')}
+                  onClick={handleChange("viewOwnResource")}
                 />
                 <label className="form-check-label" for="defaultCheck22">
                   Web user only allowed to view his own resource
@@ -261,18 +298,23 @@ let AddeditAdd = (props) => {
                 </label>
               </div>
               <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
-              <select className="custom-select" id="inputGroupSelect01" onChange={handleChange('webUser')}>
-	<option value=""></option>
-	<option value="Accounts">Accounts</option>
-	<option value="Administrator">Administrator</option>
-	<option value="Basic Admin User">Basic Admin User</option>
-	<option value="Basic user">Basic user</option>
-	<option value="Dept Manager">Dept Manager</option>
-	<option value="Engineers">Engineers</option>
-	<option value="JobWatch Basic User">JobWatch Basic User</option>
-	<option value="Manager">Manager</option>
-
-</select>
+                <select
+                  className="custom-select"
+                  id="inputGroupSelect01"
+                  onChange={handleChange("webUser")}
+                >
+                  <option value="" />
+                  <option value="Accounts">Accounts</option>
+                  <option value="Administrator">Administrator</option>
+                  <option value="Basic Admin User">Basic Admin User</option>
+                  <option value="Basic user">Basic user</option>
+                  <option value="Dept Manager">Dept Manager</option>
+                  <option value="Engineers">Engineers</option>
+                  <option value="JobWatch Basic User">
+                    JobWatch Basic User
+                  </option>
+                  <option value="Manager">Manager</option>
+                </select>
               </div>
             </div>
           </div>
@@ -289,16 +331,19 @@ let AddeditAdd = (props) => {
             <div className="row">
               <div className="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2" />
               <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
-              <select className="custom-select" id="inputGroupSelect01" onChange={handleChange('role')}>
-	<option value={0}></option>
-	<option value={38394}>Dave Bunting</option>
-	<option value={42100}>Natasha Gower</option>
-	<option value={19374}>Ridgeworks</option>
-	<option value={39669}>SageSync</option>
-	<option value={39176}>Service</option>
-	<option value={39699}>Temp2</option>
-
-</select>
+                <select
+                  className="custom-select"
+                  id="inputGroupSelect01"
+                  onChange={handleChange("role")}
+                >
+                  <option value={0} />
+                  <option value={38394}>Dave Bunting</option>
+                  <option value={42100}>Natasha Gower</option>
+                  <option value={19374}>Ridgeworks</option>
+                  <option value={39669}>SageSync</option>
+                  <option value={39176}>Service</option>
+                  <option value={39699}>Temp2</option>
+                </select>
               </div>
             </div>
           </div>
@@ -313,7 +358,7 @@ let AddeditAdd = (props) => {
   return (
     <div>
       <div onClick={handleClickOpen} style={classes.plusbutton}>
-      <i className="fa fa-plus-circle fa-2x"></i>
+        <i className="fa fa-plus-circle fa-2x" />
       </div>
       <Dialog
         fullScreen={fullScreen}
@@ -328,14 +373,14 @@ let AddeditAdd = (props) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-          <br></br>
+            <br />
             <div className="container form">
               <div className="row">
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                   <div className="row">
                     <div className="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                       <label className="form-check-label" for="defaultCheck1">
-                        Name *
+                        <p style={classes.star}>Name*</p>
                       </label>
                     </div>
                     <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
@@ -375,13 +420,19 @@ let AddeditAdd = (props) => {
                   <div className="row">
                     <div className="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                       <label className="form-check-label" for="defaultCheck3">
-                        Group *
+                        <p style={classes.star}>Group*</p>
                       </label>
                     </div>
                     <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
-                    <select className="custom-select" id="inputGroupSelect01" onChange={handleChange('resourceGroupId')}>
-                        <option value='1'></option>
-                        {resvalue.map((e)=><option value={e.resourceGroupId}>{e.name}</option>)}
+                      <select
+                        className="custom-select"
+                        id="inputGroupSelect01"
+                        onChange={handleChange("resourceGroupId")}
+                      >
+                        <option value={1} />
+                        {resvalue.map(e => (
+                          <option value={e.resourceGroupId}>{e.name}</option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -456,7 +507,11 @@ let AddeditAdd = (props) => {
                       </label>
                     </div>
                     <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
-                      <select className="custom-select" id="inputGroupSelect01" onChange={handleChange('timeZone')}>
+                      <select
+                        className="custom-select"
+                        id="inputGroupSelect01"
+                        onChange={handleChange("timeZone")}
+                      >
                         <option value="Pacific Standard Time">
                           (GMT-08:00) Pacific Time (US, Canada), Tijuana
                         </option>
@@ -586,9 +641,9 @@ let AddeditAdd = (props) => {
                       <input
                         className="form-check-input"
                         type="checkbox"
-                        value='true'
+                        value="true"
                         id="defaultCheck1"
-                        onClick={handleChange('tracked')}
+                        onClick={handleChange("tracked")}
                       />
                       <label className="form-check-label" for="defaultCheck10">
                         Resource is tracked
@@ -645,7 +700,7 @@ let AddeditAdd = (props) => {
                           name="inlineRadioOptions"
                           id="inlineRadio1"
                           value="not active for jobwatch"
-                          onClick={handleChange('jobWatchSetting')}
+                          onClick={handleChange("jobWatchSetting")}
                         />
                         <label className="form-check-label" for="inlineRadio1">
                           Not active for Jobwatch
@@ -658,7 +713,7 @@ let AddeditAdd = (props) => {
                           name="inlineRadioOptions"
                           id="inlineRadio2"
                           value="only visible on schedule"
-                          onClick={handleChange('jobWatchSetting')}
+                          onClick={handleChange("jobWatchSetting")}
                         />
                         <label className="form-check-label" for="inlineRadio2">
                           Only visible on schedule
@@ -672,7 +727,7 @@ let AddeditAdd = (props) => {
                           name="inlineRadioOptions"
                           id="inlineRadio3"
                           value="active for jobwatch"
-                          onClick={handleChange('jobWatchSetting')}
+                          onClick={handleChange("jobWatchSetting")}
                         />
                         <label className="form-check-label" for="inlineRadio3">
                           Active for Jobwatch(1 licence(s) remaining)
@@ -685,7 +740,7 @@ let AddeditAdd = (props) => {
                           name="inlineRadioOptions"
                           id="inlineRadio4"
                           value="resource is subcontractor"
-                          onClick={handleChange('jobWatchSetting')}
+                          onClick={handleChange("jobWatchSetting")}
                         />
                         <label className="form-check-label" for="inlineRadio4">
                           Resource is subcontractor(0 licence(s) remaining)
@@ -730,7 +785,7 @@ let AddeditAdd = (props) => {
                         type="checkbox"
                         value="true"
                         id="true"
-                        onClick={handleChange('hideParentInfo')}
+                        onClick={handleChange("hideParentInfo")}
                       />
                       <label className="form-check-label" for="defaultCheck1">
                         Hide contacts' parent info on the device
@@ -801,13 +856,19 @@ let AddeditAdd = (props) => {
                   <div className="row">
                     <div className="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                       <label className="form-check-label" for="defaultCheck16">
-                        Manager *
+                        <p style={classes.star}>Manager*</p>
                       </label>
                     </div>
                     <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
-                      <select className="custom-select" id="inputGroupSelect02" onChange={handleChange('managerId')}>
-                        <option selected="selected" value="19"></option>
-                        {listvalue.map((e)=><option value={e.managerId}>{e.name}</option>)}
+                      <select
+                        className="custom-select"
+                        id="inputGroupSelect02"
+                        onChange={handleChange("managerId")}
+                      >
+                        <option selected="selected" value={19} />
+                        {listvalue.map(e => (
+                          <option value={e.managerId}>{e.name}</option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -834,7 +895,7 @@ let AddeditAdd = (props) => {
                         InputLabelProps={{
                           shrink: true
                         }}
-                        onChange={handleChange('holidaysStartDate')}
+                        onChange={handleChange("holidaysStartDate")}
                       />
                     </div>
                   </div>
@@ -869,13 +930,13 @@ let AddeditAdd = (props) => {
                       </label>
                     </div>
                     <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
-                      <WorkingHours addwh={HandleWKH}/>
+                      <WorkingHours addwh={HandleWKH} />
                       <input
                         className="form-check-input"
                         type="checkbox"
                         value="true"
                         id="defaultCheck1"
-                        onClick={handleChange('owhtPrivate')}
+                        onClick={handleChange("owhtPrivate")}
                       />
                       <label className="form-check-label" for="defaultCheck17">
                         Out of working hour tracking data is private
@@ -937,7 +998,7 @@ let AddeditAdd = (props) => {
                   <div className="row">
                     <div className="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                       <label className="form-check-label" for="defaultCheck19">
-                        Default hourly rate *
+                        <p style={classes.star}>Default hourly rate*</p>
                       </label>
                     </div>
                     <div className="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
@@ -950,9 +1011,15 @@ let AddeditAdd = (props) => {
                       />
                     </div>
                     <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                      <select className="custom-select" id="inputGroupSelect02" onClick={handleChange('currencyId')}>
-                        <option value="1"></option>
-                        {currvalue.map((e)=><option value={e.currencyId}>{e.code}</option>)}
+                      <select
+                        className="custom-select"
+                        id="inputGroupSelect02"
+                        onClick={handleChange("currencyId")}
+                      >
+                        <option value={1} />
+                        {currvalue.map(e => (
+                          <option value={e.currencyId}>{e.code}</option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -976,7 +1043,7 @@ let AddeditAdd = (props) => {
                       </label>
                     </div>
                     <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
-                      <SkillsAdd Savalue={HandleSkills}/>
+                      <SkillsAdd Savalue={HandleSkills} />
                     </div>
                   </div>
                 </div>
