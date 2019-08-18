@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
-import "../../../../../scss/override/listing.scss";
 import EditGroup from "./edit";
 import {
   GetListingForResourceGroup,
@@ -10,6 +9,8 @@ import ResourceAddGroup from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "../../../../../scss/override/listing.scss";
+
 
 let menuDiv = "";
 let EditshowModel = "";

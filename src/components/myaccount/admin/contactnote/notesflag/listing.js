@@ -1,31 +1,50 @@
 import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
-import icon1 from "..//..//..//..//images/icon-1.png";
-import DeleteIcon from "@material-ui/icons/Delete";
-import CancelIcon from "@material-ui/icons/HighlightOff";
-import EditIcon from "@material-ui/icons/Edit";
-import AutoIcon from "@material-ui/icons/WbIridescent";
-import "./listing.css";
-import EditButton from "./edit";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import { withStyles } from "@material-ui/core/styles";
-import MenuItem from "@material-ui/core/MenuItem";
 import EditButtonForNotesFlag from "./edit";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import AddButtonForNotesFlag from './add';
-
-
 import {
   DeleteNoteflagDataById,
   GetListingForNoteflag
 } from "..//shared/notesflag";
+import "../../../../../scss/override/listing.scss";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 let menuDiv = "";
 let EditshowModel = "";
 let ColorStyle = {};
 let idofEdit = 0;
 let count = 0;
+
+const classes = {
+  linearprogress: {
+    // backgroundColor: '#EE7647',
+    backgroundColor: "rgb(243, 153, 117)"
+  },
+  header: {
+    backgroundColor: "#EE7647",
+    height: "40px",
+    borderRadius: "5px",
+    width: "99%",
+    marginLeft: "0.5%",
+    alignContent: "center",
+    color: "white"
+  },
+  heading: {
+    marginRight: "10%",
+    textAlign: "right"
+  },
+  plusign: {
+    marginLeft: "80%"
+  },
+  actions: {
+    cursor: "pointer",
+    float: "left",
+    marginLeft: "70%"
+  }
+};
+
 let NotesFlagListingTable = () => {
   let ColorStyleFn = mycolor => {
     let code = "#" + mycolor;
@@ -37,7 +56,8 @@ let NotesFlagListingTable = () => {
   let [Atlist, setAtlist] = useState([
     {
       colorCode: "",
-      name: ""
+      name: "",
+      active: '',
     }
   ]);
 
@@ -77,11 +97,6 @@ let NotesFlagListingTable = () => {
       }
     }
   ];
-  // const data = [
-  //     ['Cupcake', <div className='ColorCodesl' style={ColorStyleFn('00000')}></div>],
-  //     ['BCake', <div className='ColorCodesl' style={ColorStyleFn('E0200')}></div>],
-  //     ['ZCake', <div className='ColorCodesl' style={ColorStyleFn('F0F00')}></div>],
-  // ];
 
   const options = {
     filterType: "multiselect",
@@ -92,24 +107,29 @@ let NotesFlagListingTable = () => {
     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
   };
 
-  let Tabledisplay=<LinearProgress />
-      let [Tabledistatus, settabledistatus]=useState(false)
-      if(Tabledistatus){
-        Tabledisplay=<MUIDataTable 
-        title={"Notes Flag"} 
-        data={Atlist} 
-        columns={columns} 
-        options={options} 
-        
-    />;
-      }
-      else{
-        Tabledisplay=<LinearProgress />
-      }
-      let refreshfn=()=>{
-        settabledistatus(Tabledistatus=false)
-        getlistapi();
-      }
+  let Tabledisplay = (
+    <LinearProgress style={classes.linearprogress} color="secondary" />
+  );
+  let [Tabledistatus, settabledistatus] = useState(false);
+  if (Tabledistatus) {
+    Tabledisplay = (
+      <MUIDataTable
+        title={"Actions & Filters"}
+        data={Atlist}
+        columns={columns}
+        options={options}
+      />
+    );
+  } else {
+    Tabledisplay = (
+      <LinearProgress style={classes.linearprogress} color="secondary" />
+    );
+  }
+
+  let refreshfn = () => {
+    settabledistatus((Tabledistatus = false));
+    getlistapi();
+  };
 
   useEffect(() => {
     getlistapi();
@@ -124,25 +144,33 @@ let NotesFlagListingTable = () => {
           <div className="ColorCodesl" style={ColorStyleFn(e.colorCode)} />
         ))
     );
-    settabledistatus(Tabledistatus=true)
+    settabledistatus((Tabledistatus = true));
+  }
+
+  // Toast
+  function errort() {
+    // add type: 'error' to options
+    return toast.error("Failed with Error...", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+  function success() {
+    return toast.success("Deleted Successfully... ", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
   }
 
   async function Dellistapi() {
-    await DeleteNoteflagDataById(idofEdit);
+    await DeleteNoteflagDataById(idofEdit)
+      .then(() => {
+        success();
+      })
+      .catch(error => {
+        errort();
+      });
     Handlerowclose();
     refreshfn();
   }
-
-  const StyledMenuItem = withStyles(theme => ({
-    root: {
-      "&:focus": {
-        backgroundColor: theme.palette.primary.main,
-        "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-          color: theme.palette.common.white
-        }
-      }
-    }
-  }))(MenuItem);
 
   let [Editstate, setEditstate] = React.useState(false);
   let HandleEditforlisting = () => {
@@ -160,10 +188,9 @@ let NotesFlagListingTable = () => {
   if (Editstate) {
     EditshowModel = (
       <EditButtonForNotesFlag
-        click={Editstate}
-        cross={HandleCrossEditforlisting}
         IDforAPI={idofEdit}
         refresh={refreshfn}
+        cross={HandleCrossEditforlisting}
       />
     );
   } else {
@@ -181,41 +208,50 @@ let NotesFlagListingTable = () => {
   };
   if (menushow) {
     menuDiv = (
-      <div className="container menu">
-        <div className="row menu">
-          <div
-            className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 menu"
-            onClick={HandleEditforlisting}
-          >
-            Edit
-          </div>
-          <div
-            className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 menu"
-            onClick={Dellistapi}
-          >
-            Delete
-          </div>
-          <div
-            className="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 menu"
-            onClick={Handlerowclose}
-          >
-            Close
-          </div>
-        </div>
-      </div>
+      <ul className="tool">
+        <li>
+          <AddButtonForNotesFlag refresh={refreshfn} />
+        </li>
+        <li onClick={HandleEditforlisting}>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <i className="fa fa-pencil-square fa-2x" />
+        </li>
+        <li onClick={Dellistapi}>
+          &nbsp;&nbsp;
+          <i className="fa fa-archive fa-2x" />
+        </li>
+        <li onClick={Handlerowclose}>
+          &nbsp;&nbsp;
+          <i className="fa fa-times-rectangle fa-2x" />
+        </li>
+      </ul>
     );
   } else if (!menushow) {
-    menuDiv = <div className="container empty" />;
+    menuDiv = (
+      <ul className="tool">
+        <li />
+        <AddButtonForNotesFlag refresh={refreshfn} />
+      </ul>
+    );
   }
 
   return (
     <div>
-      <AddButtonForNotesFlag refresh={refreshfn}/>
-      {menuDiv}
+      <div className="row header">
+        <div className="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5">
+          {menuDiv}
+        </div>
+        <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
+          <h3 className="heading">PERSON FLAG</h3>
+        </div>
+      </div>
+      <br />
       {EditshowModel}
       {Tabledisplay}
     </div>
   );
 };
+
+
 
 export default NotesFlagListingTable;

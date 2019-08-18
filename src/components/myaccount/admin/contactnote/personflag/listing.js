@@ -187,10 +187,9 @@ let PersonFlagListing = () => {
   if (Editstate) {
     EditshowModel = (
       <EditButtonForPersonFlag
-        click={Editstate}
-        cross={HandleCrossEditforlisting}
-        refresh={refreshfn}
         IDforAPI={idofEdit}
+        refresh={refreshfn}
+        cross={HandleCrossEditforlisting}
       />
     );
   } else {

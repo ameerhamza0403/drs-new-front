@@ -1,70 +1,46 @@
-import React, { Component } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Modal from "@material-ui/core/Modal";
-import TextField from "@material-ui/core/TextField";
-import clsx from "clsx";
-import "./add.css";
 import { PostListingForNoteflag } from "..//shared/notesflag";
+import React, { Component, useState } from "react";
+import {
+  Button,
+  Card,
+  CardBody,
+  Col,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row,
+  Form,
+  FormFeedback,
+  FormGroup,
+  Label,
+  Input
+} from "reactstrap";
+import './add.scss';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 let valofCod = "";
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`
-  };
-}
-
-const useStyles = makeStyles(theme => ({
+const classes = {
   button: {
-    margin: theme.spacing(1),
-    backgroundColor: "#F4662F",
-    color: "white"
+    color: "white",
+    backgroundColor: "#EE7647",
+    border: "none"
   },
-  input: {
-    display: "none"
+  plusbutton: {
+    color: "white",
+    borderRadius: "50px",
+    width: "10px",
+    cursor: "pointer",
+    float: "left"
+    // marginTop: '10px',
+    // marginLeft: '5px',
   },
-  paper: {
-    position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #F4662F",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 4),
-    outline: "none"
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1)
-  },
-  dense: {
-    marginTop: theme.spacing(2)
-  }
-}));
+
+};
 
 let AddButtonForNotesFlag = (props) => {
-  const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const [values, setValues] = React.useState({
     name: "",
     colorCode: "",
@@ -123,13 +99,34 @@ let AddButtonForNotesFlag = (props) => {
   let ColorStyleFn = mycolor => {
     let code = "#" + mycolor;
     return (ColorStyle = {
-      background: code
+      backgroundColor: code,
     });
   };
 
+      //Toast
+
+      function errort() {
+        // add type: 'error' to options
+        return toast.error('Failed with Error...', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+
+      }
+      function success(response) {
+        if (response == "Exception Error") {
+          return toast.error('Failed with Error "' + response + '"', {
+            position: toast.POSITION.BOTTOM_RIGHT
+          });
+        } else {
+          return toast.success(response, {
+            position: toast.POSITION.BOTTOM_RIGHT
+          });
+        }
+      }
+
   async function postlistapi() {
-    await PostListingForNoteflag(values);
-    handleClose();
+    await PostListingForNoteflag(values).then(res => success(res.data.message)).catch(error=>errort());
+    handleOpen();
     props.refresh();
   }
 
@@ -157,79 +154,93 @@ let AddButtonForNotesFlag = (props) => {
       <div className="ColorCodesl" style={ColorStyleFn("000000")} />
     );
   }
+
+  let [modal, setModal] = useState(false);
+
+  let handleOpen = () => {
+    return setModal((modal = !modal));
+  };
+
   return (
     <div>
-      <Button
-        variant="contained"
-        className={classes.button}
-        onClick={handleOpen}
-      >
-        Add
-      </Button>
-      <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        open={open}
-        onClose={handleClose}
-      >
-        <div style={modalStyle} className={classes.paper}>
-          <div className="container">
-            <form>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                  placeholder="Enter Name"
-                  onChange={handleChange("name")}
-                />
-              </div>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <input
-                className="form-check-input"
-                type="checkbox"
-                value="true"
-                id="defaultCheck2"
-                onChange={handleChange("active")}
-              />
-              <label className="form-check-label" for="defaultCheck2">
-                Active
-              </label>
-            </form>
-            <br />
-            <br />
+      <div onClick={handleOpen} style={classes.plusbutton}>
+        <i className="fa fa-plus-circle fa-2x" />
+      </div>
 
-            <div class="form-group">
-              <div className="row">
-                <p>Color&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                {showSlccode}
-              </div>
-              <div className="row">
-                {ColorCode.map(e => (
-                  <div
-                    className="ColorCodes"
-                    style={ColorStyleFn(e)}
-                    value={e}
-                    onClick={SelectColor}
+      <Modal
+        isOpen={modal}
+        toggle={handleOpen}
+        className={"modal-primary " + props.className}
+      >
+        <ModalHeader toggle={handleOpen}>Add Notes Flag</ModalHeader>
+        <ModalBody>
+          <div className="container">
+            <div className="container">
+              <form>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter Name"
+                    onChange={handleChange("name")}
                   />
-                ))}
+                </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value="true"
+                  id="defaultCheck2"
+                  onChange={handleChange("active")}
+                />
+                <label className="form-check-label" for="defaultCheck2">
+                  Active
+                </label>
+              </form>
+              <br />
+              <div class="form-group">
+                <div className="row">
+                  <p>Color&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                  {showSlccode}
+                </div>
+                <div className="row">
+                  {ColorCode.map(e => (
+                    <div
+                      className="ColorCodes"
+                      style={ColorStyleFn(e)}
+                      value={e}
+                      onClick={SelectColor}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
+          <ModalFooter>
+            <Button
+              variant="contained"
+              className={classes.button}
+              onClick={postlistapi}
+            >
+              Save
+            </Button>
 
-          <Button
-            variant="contained"
-            className={classes.button}
-            onClick={postlistapi}
-          >
-            Save
-          </Button>
-        </div>
+            <Button
+              color="secondary"
+              onClick={handleOpen}
+              style={classes.button}
+            >
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalBody>
       </Modal>
     </div>
   );
 };
+
 
 export default AddButtonForNotesFlag;
