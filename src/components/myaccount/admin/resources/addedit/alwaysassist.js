@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./addedit.css";
+import "./addedit.scss";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -214,7 +214,7 @@ let AlwaysAssits = () => {
         </div>
         <Button onClick={PopHrHandAdd}>Add</Button>
       </div>
-      
+
       <Dialog
         fullScreen={fullScreen}
         fullWidth={fullWidth}
@@ -278,8 +278,8 @@ let AlwaysAssits = () => {
               </div>
               <br />
               </div>
-                      
-                   
+
+
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -291,7 +291,7 @@ let AlwaysAssits = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      
+
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./addedit.css";
+import "./addedit.scss";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -286,7 +286,7 @@ let SpecialHourlyRate = (props) => {
   async function GetCurrency() {
     let { data: currvalue } = await GetListingForcurrency();
     setCurrvalue(currvalue);
-    
+
   }
 
 
@@ -398,7 +398,7 @@ let SpecialHourlyRate = (props) => {
     }
   };
 
-  
+
   let PopHrHandAdd = event => {
     setAnchorEladd(event.currentTarget);
   };
@@ -430,7 +430,7 @@ let SpecialHourlyRate = (props) => {
         </div>
         <Button onClick={PopHrHandAdd}>Add</Button>
       </div>
-      
+
       <Dialog
         fullScreen={fullScreen}
         fullWidth={fullWidth}
@@ -473,7 +473,7 @@ let SpecialHourlyRate = (props) => {
                     </div>
                   </div>
                 </div>
-                
+
               </div>
               <br />
 
@@ -503,7 +503,7 @@ let SpecialHourlyRate = (props) => {
                     </div>
                   </div>
                 </div>
-                
+
               </div>
               <br />
               <div className="row">
@@ -532,7 +532,7 @@ let SpecialHourlyRate = (props) => {
                     </div>
                   </div>
                 </div>
-                
+
               </div>
               <br />
 
