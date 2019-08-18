@@ -8,7 +8,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Divider } from "@material-ui/core";
-import "./addedit.css";
+import "./addedit.scss";
 import TextField from "@material-ui/core/TextField";
 import WorkingHours from "./workinghrs";
 import iconForForm from "..//..//..//..//images/icon-1.png";
@@ -18,7 +18,26 @@ import AlwaysAssits from "./alwaysassist";
 import {PostListingForAddEdit, GetListingForAddEdit} from '..//shared/addedit';
 import {GetListingForcurrency} from '..//shared/currency';
 import {GetListingForResourceGroup} from '..//..//resources/shared/resourcegroup';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+const classes = {
+  button: {
+    color: "white",
+    backgroundColor: "#EE7647",
+    border: "none"
+  },
+  plusbutton: {
+    color: "white",
+    borderRadius: "50px",
+    width: '10px',
+    cursor: 'pointer',
+    float: 'left',
+    // marginTop: '10px',
+    // marginLeft: '5px',
+  },
+
+};
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: "#F4662F",
@@ -30,7 +49,7 @@ const useStyles = makeStyles(theme => ({
 let count=0;
 let showWebUser = "";
 let AddeditAdd = (props) => {
-  const classes = useStyles();
+  const classesM = useStyles();
   const [open, setOpen] = React.useState(false);
   const [openicon, setOpenicon] = React.useState(false);
   const theme = useTheme();
@@ -90,10 +109,32 @@ let AddeditAdd = (props) => {
 
   // * *************    APIs */
 
+
+        //Tost
+        function errort() {
+          // add type: 'error' to options
+          return toast.error("Failed with Error...", {
+            position: toast.POSITION.BOTTOM_RIGHT
+          });
+        }
+        function success(response) {
+          if (response == "Exception Error") {
+            return toast.error('Failed with Error "' + response + '"', {
+              position: toast.POSITION.BOTTOM_RIGHT
+            });
+          } else {
+            return toast.success(response, {
+              position: toast.POSITION.BOTTOM_RIGHT
+            });
+          }
+        }
+
+
   async function postlistapi() {
-    await PostListingForAddEdit(values);
+    await PostListingForAddEdit(values).then(res => success(res.data.message))
+    .catch(error => errort());
     handleClose();
-    props.click();
+    props.refresh();
   }
 
   let [resvalue, setResvalue]=useState([
@@ -271,9 +312,9 @@ let AddeditAdd = (props) => {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen}>
-        Add
-      </Button>
+      <div onClick={handleClickOpen} style={classes.plusbutton}>
+      <i className="fa fa-plus-circle fa-2x"></i>
+      </div>
       <Dialog
         fullScreen={fullScreen}
         fullWidth={fullWidth}
@@ -282,7 +323,7 @@ let AddeditAdd = (props) => {
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title" className={classes.root}>
+        <DialogTitle id="responsive-dialog-title" className={classesM.root}>
           {"New Resources"}
         </DialogTitle>
         <DialogContent>
@@ -865,7 +906,7 @@ let AddeditAdd = (props) => {
                       >
                         <DialogTitle
                           id="responsive-dialog-title"
-                          className={classes.root}
+                          className={classesM.root}
                         >
                           Import Working Hour
                         </DialogTitle>

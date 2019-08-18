@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./addedit.css";
+import "./addedit.scss";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -409,12 +409,12 @@ let WorkingHours = (props) => {
             {ValuesAHshowfn()}
           </div>
         </div>
-        
+
       </div>
       <br></br>
       <Button onClick={PopHrHandAdd}>Add</Button>
       <Button onClick={PopHrHandImport}>Import</Button>
-      
+
       <Dialog
         fullScreen={fullScreen}
         fullWidth={fullWidth}

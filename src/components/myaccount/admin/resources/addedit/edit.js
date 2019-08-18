@@ -8,7 +8,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Divider } from "@material-ui/core";
-import "./addedit.css";
+import "./addedit.scss";
 import TextField from "@material-ui/core/TextField";
 import WorkingHours from "./workinghrsedit";
 import iconForForm from "..//..//..//..//images/icon-1.png";
@@ -19,7 +19,8 @@ import {GetListingForAddEdit} from "..//shared/addedit";
 import { GetListingForcurrency } from "..//shared/currency";
 import { GetListingForResourceGroup } from "..//..//resources/shared/resourcegroup";
 import {GetAddEditDataById, PutAddEditDataById} from '..//shared/addedit';
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -144,9 +145,28 @@ let AddeditEdit = (props) => {
     const { data: values } = await GetAddEditDataById(props.IDforAPI);
     setValues(values);
   }
+//Tost
+function errort() {
+  // add type: 'error' to options
+  return toast.error("Failed with Error...", {
+    position: toast.POSITION.BOTTOM_RIGHT
+  });
+}
+function success(response) {
+  if (response == "Exception Error") {
+    return toast.error('Failed with Error "' + response + '"', {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  } else {
+    return toast.success(response, {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+}
 
   async function putlistapi() {
-    await PutAddEditDataById(props.IDforAPI, values);
+    await PutAddEditDataById(props.IDforAPI, values).then(res => success(res.data.message))
+    .catch(error => errort());
     handleClose();
     props.clickref();
   }

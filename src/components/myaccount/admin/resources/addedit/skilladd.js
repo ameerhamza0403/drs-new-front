@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./addedit.css";
+import "./addedit.scss";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -215,7 +215,7 @@ let SkillsAdd = (props) => {
         </div>
         <Button onClick={PopHrHandAdd}>Add</Button>
       </div>
-      
+
       <Dialog
         fullScreen={fullScreen}
         fullWidth={fullWidth}
@@ -279,8 +279,8 @@ let SkillsAdd = (props) => {
               </div>
               <br />
               </div>
-                      
-                   
+
+
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -292,7 +292,7 @@ let SkillsAdd = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-      
+
     </div>
   );
 };

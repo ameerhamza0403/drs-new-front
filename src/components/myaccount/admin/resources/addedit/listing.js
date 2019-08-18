@@ -1,20 +1,52 @@
 import React, {useState, useEffect} from 'react';
 import MUIDataTable from "mui-datatables";
-import './listing.css';
+import "../../../../../scss/override/listing.scss";
 import AddeditEdit from './edit';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import Icon2 from '@material-ui/icons/Clear';
 import {GetListingForAddEdit, DeleteAddEditDataById} from '..//shared/addedit';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import AddeditAdd from './add';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 let idofEdit = 0;
 let count=0;
 let menuDiv='';
 let EditshowModel='';
+
+const classes = {
+  linearprogress: {
+    // backgroundColor: '#EE7647',
+    backgroundColor: "rgb(243, 153, 117)"
+  },
+  header: {
+    backgroundColor: "#EE7647",
+    height: "40px",
+    borderRadius: "5px",
+    width: "99%",
+    marginLeft: "0.5%",
+    alignContent: "center",
+    color: "white"
+  },
+  heading: {
+    marginRight: "10%",
+    textAlign: "right"
+  },
+  plusign: {
+    marginLeft: "80%"
+  },
+  actions: {
+    cursor: "pointer",
+    float: "left",
+    marginLeft: "70%"
+  }
+};
+
+
 let AddeditListing=()=>{
 
-  let Tabledisplay=<LinearProgress />
+  let Tabledisplay=<LinearProgress style={classes.linearprogress} color="secondary" />
     let [Tabledistatus, settabledistatus]=useState(false)
     let icon=(status)=>{
         let iconvalue = <Icon2 />
@@ -145,7 +177,7 @@ let AddeditListing=()=>{
           }
       ];
 
-    
+
       const options = {
         filterType: "multiselect",
         onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
@@ -157,7 +189,7 @@ let AddeditListing=()=>{
       useEffect(() => {
         getlistapi();
       }, [count]);
-    
+
       async function getlistapi() {
         let { data: Atlist } = await GetListingForAddEdit();
         setAtlist(Atlist);
@@ -171,23 +203,43 @@ let AddeditListing=()=>{
         settabledistatus(Tabledistatus=true)
       }
       if(Tabledistatus){
-        Tabledisplay=<MUIDataTable 
-        title={"Add-Edit"} 
-        data={Atlist} 
-        columns={columns} 
-        options={options} 
-        
+        Tabledisplay=<MUIDataTable
+        title={"Filters/Actions"}
+        data={Atlist}
+        columns={columns}
+        options={options}
+
     />;
       }
       else{
-        Tabledisplay=<LinearProgress />
+        Tabledisplay=<LinearProgress style={classes.linearprogress} color="secondary" />
       }
     let refreshfn=()=>{
       settabledistatus(Tabledistatus=false)
       getlistapi();
     }
+
+     // Toast
+
+ function errort() {
+  // add type: 'error' to options
+  return toast.error('Failed with Error...', {
+    position: toast.POSITION.BOTTOM_RIGHT
+  });
+
+}
+function success() {
+  return toast.success("Deleted Successfully... ", {
+    position: toast.POSITION.BOTTOM_RIGHT
+  });
+}
+
       async function Dellistapi() {
-        await DeleteAddEditDataById(idofEdit);
+        await DeleteAddEditDataById(idofEdit).then(() => {
+          success();
+        }).catch(error => {
+            errort();
+          });
         Handlerowclose();
         refreshfn();
       }
@@ -200,13 +252,13 @@ let AddeditListing=()=>{
               // handleMenuClose()
         )
     }
-  
+
     let HandleCrossEditforlisting=()=>{
         return(
             setEditstate(Editstate= false)
         )
     }
-      
+
         if(Editstate){
             EditshowModel=<AddeditEdit click={Editstate} cross={HandleCrossEditforlisting} clickref={refreshfn} IDforAPI={idofEdit}/>
         }
@@ -214,7 +266,7 @@ let AddeditListing=()=>{
         EditshowModel='';
     }
 
-      
+
 
     let [menushow, setMenushow]= useState(false);
     let HandlerowSelect=(data,meta)=>{
@@ -225,29 +277,52 @@ let AddeditListing=()=>{
     let Handlerowclose=(data,meta)=>{
         return setMenushow(menushow= false)
     }
-        if(menushow){
-            menuDiv=<div className='container menu'>
-                        <div className='row menu'>
-                            <div className='col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 menu' onClick={HandleEditforlisting}>Edit</div>
-                            <div className='col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 menu' onClick={Dellistapi}>Delete</div>
-                            <div className='col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 menu' onClick={Handlerowclose}>Close</div>
-                        </div>
-                    </div>
-        }
-        else if(!menushow){
-            menuDiv=<div className='container empty'></div>;
-        }
-    
-    return(
-        <div>
-            <AddeditAdd click={refreshfn}/>
+    if (menushow) {
+      menuDiv = (
+        <ul className="tool">
+          <li>
+            <AddeditAdd refresh={refreshfn} />
+          </li>
+          <li onClick={HandleEditforlisting}>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <i className="fa fa-pencil-square fa-2x" />
+          </li>
+          <li onClick={Dellistapi}>
+            &nbsp;&nbsp;
+            <i className="fa fa-archive fa-2x" />
+          </li>
+          <li onClick={Handlerowclose}>
+            &nbsp;&nbsp;
+            <i className="fa fa-times-rectangle fa-2x" />
+          </li>
+        </ul>
+      );
+    } else if (!menushow) {
+      menuDiv = (
+        <ul className="tool">
+          <li />
+          <AddeditAdd refresh={refreshfn} />
+        </ul>
+      );
+    }
+
+    return (
+      <div>
+        <div className="row header">
+          <div className="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5">
             {menuDiv}
+          </div>
+          <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
+            <h3 className="heading">MANAGE</h3>
+          </div>
+        </div>
+        <br />
             {EditshowModel}
             {Tabledisplay}
-            
-            
+
+
         </div>
-           
+
     )
 }
 
