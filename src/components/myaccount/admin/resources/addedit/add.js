@@ -41,6 +41,9 @@ const classes = {
   },
   star: {
     color: "red"
+  },
+  field:{
+    // height: '25px',
   }
 };
 
@@ -390,6 +393,7 @@ let AddeditAdd = props => {
                         id="exampleFormControlInput1"
                         placeholder=""
                         onChange={handleChange("name")}
+                        style={classes.field}
                       />
                     </div>
                   </div>

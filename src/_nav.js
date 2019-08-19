@@ -278,8 +278,13 @@ export default {
           icon: "fa fa-truck"
         },
         {
-          name: "Groups",
+          name: "Vehicle Group",
           url: "/admin/vehicle/group",
+          icon: "fa fa-truck"
+        },
+        {
+          name: "Vehicle Type",
+          url: "/admin/vehicle/type",
           icon: "fa fa-truck"
         },
         {
