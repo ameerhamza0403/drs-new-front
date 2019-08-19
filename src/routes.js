@@ -69,6 +69,9 @@ const ContactsGroupListingTable = React.lazy(() => import('./components/myaccoun
 const NotesFlagListingTable = React.lazy(() => import('./components/myaccount/admin/contactnote/notesflag/listing'));
 const NotesTypeListing = React.lazy(() => import('./components/myaccount/admin/contactnote/notetype/listing'));
 const PersonFlagListing = React.lazy(() => import('./components/myaccount/admin/contactnote/personflag/listing'));
+const VehicleGroupListing = React.lazy(() => import('./components/myaccount/admin/vehicle/group/listing'));
+const VehicleTypeListing = React.lazy(() => import('./components/myaccount/admin/vehicle/type/listing'));
+const DriverBehaviour = React.lazy(() => import('./components/myaccount/admin/resources/driverbehaviour/main'));
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -148,6 +151,8 @@ const routes = [
   { path: '/admin/contact/type', exact: true, name: 'Note types', component: NotesTypeListing },
   { path: '/admin/currency', exact: true, name: 'Currency', component: CurrencyListing },
   { path: '/admin/note/flag', exact: true, name: 'Note Flags', component: NotesFlagListingTable },
-
+  { path: '/admin/vehicle/group', exact: true, name: 'Vehicle Group', component: VehicleGroupListing },
+  { path: '/admin/vehicle/type', exact: true, name: 'Vehicle Type', component: VehicleTypeListing },
+  { path: '/admin/resources/driver', exact: true, name: 'Driver Behaviour', component: DriverBehaviour },
 ];
 export default routes;
