@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import kpi from "../../../../images/gauge-kpi.jpg";
 import "./table.scss";
 import Slider from "@material-ui/core/Slider";
-import {GetListingForDriverBeh} from '../shared/driverbeh';
+import {GetListingForDriverBeh,PostListingForDriverBehSet} from '../shared/driverbeh';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 let classes = {
   equal: {
@@ -34,7 +36,7 @@ let classes = {
     marginLeft: '20%',
   },
 };
-let DriverBehListing = (props) => {
+let DriverBehListingdefault = (props) => {
 
   let [Atlist, setAtlist]=useState({
     name: "",
@@ -93,7 +95,7 @@ let DriverBehListing = (props) => {
         </thead>
         <tbody>
           {Atlist.map(e=>(
-          <tr key={e.drvBehKPIId}>
+          <tr>
             <td style={classes.equal}>
               <h3 style={classes.heading}>{e.name}</h3>{e.notes}
             </td>
@@ -106,7 +108,8 @@ let DriverBehListing = (props) => {
                     maxlength="2"
                     autocomplete="off"
                     style={classes.input}
-                    value={e.minVal}
+                    value={e.defaultMinVal}
+                    placeholder={e.defaultMinVal}
                   />
                 </div>
                 <div className="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
@@ -116,7 +119,8 @@ let DriverBehListing = (props) => {
                     maxlength="2"
                     autocomplete="off"
                     style={classes.input}
-                    value={e.maxVal}
+                    value={e.defaultMaxVal}
+                    placeholder={e.defaultMaxVal}
                   />
                 </div>
               </div>
@@ -149,7 +153,32 @@ let DriverBehListing = (props) => {
     settabledistatus((Tabledistatus = false));
     getlistapi();
   };
+ //Tost
 
+ function errort() {
+  // add type: 'error' to options
+  return toast.error("Failed with Error...", {
+    position: toast.POSITION.BOTTOM_RIGHT
+  });
+}
+function success(response) {
+  if (response == "Exception Error") {
+    return toast.error('Failed with Error "' + response + '"', {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  } else {
+    return toast.success(response, {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+}
+
+  async function savelistapi(){
+    console.log(Atlist)
+    await PostListingForDriverBehSet(Atlist)
+    .then(res => success(res.data.message))
+    .catch(error => errort());
+  }
   useEffect(() => {
     getlistapi();
   }, []);
@@ -158,6 +187,11 @@ let DriverBehListing = (props) => {
     // const { data: Atlist } = await GetListingForDriverBeh();
     setAtlist((Atlist=props.data));
     settabledistatus((Tabledistatus = true));
+    if(props.createnew){
+      Atlist.map(e=>e.resourceGroupId=props.resource)
+      savelistapi();
+    }
+
   }
   return (
     <div>
@@ -166,4 +200,4 @@ let DriverBehListing = (props) => {
   );
 };
 
-export default DriverBehListing;
+export default DriverBehListingdefault;
