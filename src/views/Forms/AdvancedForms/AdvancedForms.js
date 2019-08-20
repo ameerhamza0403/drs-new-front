@@ -181,7 +181,7 @@ class AdvancedForms extends React.Component {
                 value={this.state.value}
                 options={options}
                 onChange={this.saveChanges}
-                multi
+                // multi
               />
             </CardBody>
           </Card>
