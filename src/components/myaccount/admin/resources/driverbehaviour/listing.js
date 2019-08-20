@@ -29,9 +29,9 @@ let classes = {
     backgroundColor: "rgb(243, 153, 117)"
   },
   table:{
-    width: '60%',
-    height: '80%',
-    marginLeft: '20%',
+    // width: '60%',
+    // height: '80%',
+    // marginLeft: '20%',
   },
 };
 let DriverBehListing = (props) => {
