@@ -174,7 +174,6 @@ function success(response) {
 }
 
   async function savelistapi(){
-    console.log(Atlist)
     await PostListingForDriverBehSet(Atlist)
     .then(res => success(res.data.message))
     .catch(error => errort());
@@ -188,7 +187,12 @@ function success(response) {
     setAtlist((Atlist=props.data));
     settabledistatus((Tabledistatus = true));
     if(props.createnew){
-      Atlist.map(e=>e.resourceGroupId=props.resource)
+      Atlist.map(e=>{
+        e.resourceGroupId=props.resource
+        e.minVal=e.defaultMinVal
+        e.maxVal=e.defaultMinVal
+        e.active=true
+      })
       savelistapi();
     }
 
