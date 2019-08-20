@@ -190,7 +190,7 @@ function success(response) {
       Atlist.map(e=>{
         e.resourceGroupId=props.resource
         e.minVal=e.defaultMinVal
-        e.maxVal=e.defaultMinVal
+        e.maxVal=e.defaultMaxVal
         e.active=true
       })
       savelistapi();
