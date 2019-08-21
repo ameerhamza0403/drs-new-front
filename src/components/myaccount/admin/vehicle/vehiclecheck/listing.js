@@ -3,6 +3,7 @@ import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
 import EditCurrency from "./edit";
 import { GetListingForVehicleCheck, DeleteVehicleCheckDataById } from "..//shared/vehiclecheck";
+import {GetListingForVehicleChecktype} from '..//shared/vehiclechecktype';
 import AddCurrency from './add';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { toast } from "react-toastify";
@@ -40,12 +41,16 @@ const classes = {
   }
 };
 
+
 let VehicleCheck = () => {
   let [Atlist, setAtlist] = useState([]);
+  let [checktype, setChecktype] = useState([]);
+  let [selectdistatus,setSelectdistatus]=useState(false);
+
 
   const columns = [
     {
-      name: "currencyId",
+      name: "vehicleCheckId",
       label: "ID",
       options: {
         filter: false,
@@ -54,8 +59,44 @@ let VehicleCheck = () => {
       }
     },
     {
+      name: "vehicleCheckTypeId",
+      label: "Vehicle Check ID",
+      options: {
+        filter: false,
+        sort: false,
+        display: true
+      }
+    },
+    {
       name: "name",
-      label: "Currency Name",
+      label: "Vehicle Check",
+      options: {
+        filter: false,
+        sort: false,
+        display: true
+      }
+    },
+    {
+      name: "defectName",
+      label: "Defect Name",
+      options: {
+        filter: false,
+        sort: false,
+        display: true
+      }
+    },
+    {
+      name: "atRisk",
+      label: "At Risk",
+      options: {
+        filter: false,
+        sort: false,
+        display: true
+      }
+    },
+    {
+      name: "active",
+      label: "Status",
       options: {
         filter: false,
         sort: false,
@@ -63,16 +104,8 @@ let VehicleCheck = () => {
       }
     },
     {
-      name: "code",
-      label: "Currency",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "active",
-      label: "Status",
+      name: "requiresPhoto",
+      label: "Requires Photo",
       options: {
         filter: false,
         sort: false,
@@ -110,6 +143,29 @@ let VehicleCheck = () => {
       <LinearProgress style={classes.linearprogress} color="secondary" />
     );
   }
+
+  let selectdisplay = (
+    <LinearProgress style={classes.linearprogress} color="secondary" />
+  );
+  if (selectdistatus) {
+    selectdisplay = (
+      <select
+        className="custom-select"
+        id="inputGroupSelect01"
+        onChange={handleChange}
+      >
+        <option selected value={"none"}>
+          None
+        </option>
+        {checktype.map(e => (
+          <option value={e.vehicleCheckTypeId}>{e.name}</option>
+        ))}
+      </select>
+    );
+  } else {
+    selectdisplay = (
+      <LinearProgress style={classes.linearprogress} color="secondary" />
+    );
   let refreshfn = () => {
     settabledistatus((Tabledistatus = false));
     getlistapi();
@@ -119,14 +175,24 @@ let VehicleCheck = () => {
     getlistapi();
   }, []);
 
+  function atriskicon(status){
+    if(status){
+      return <i className='fa fa-thumbs-o-up'></i>
+    }
+    else{
+        return <i className='fa fa-thumbs-o-down'></i>
+    }
+  }
   async function getlistapi() {
-    const { data: Atlist } = await GetListingForVehicleCheck();
-    setAtlist(Atlist);
+    // const { data: Atlist } = await GetListingForVehicleCheck();
+    const {data: checktype} = await GetListingForVehicleChecktype();
+    setChecktype(checktype);
+    setSelectdistatus(selectdistatus=true)
+    // setAtlist(Atlist);
     // Atlist.map((e,i)=>
-    //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
-
-    //                 )
-    settabledistatus((Tabledistatus = true));
+    //   e.atRisk=atriskicon(e.atRisk)
+    //   )
+    // settabledistatus((Tabledistatus = true));
   }
 
    // Toast
@@ -228,6 +294,7 @@ let VehicleCheck = () => {
         </div>
       </div>
       <br />
+      {selectdisplay}
       {EditshowModel}
       {Tabledisplay}
     </div>
