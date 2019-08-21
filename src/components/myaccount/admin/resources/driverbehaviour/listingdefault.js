@@ -70,7 +70,7 @@ let DriverBehListingdefault = (props) => {
             <th scope="col" style={classes.equal}>
               <div className="row">
                 <div
-                  className="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7"
+                  className="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5"
                   style={classes.equal}
                 >
                   <span>10/10</span>
@@ -177,6 +177,7 @@ function success(response) {
     await PostListingForDriverBehSet(Atlist)
     .then(res => success(res.data.message))
     .catch(error => errort());
+      props.refresh();
   }
   useEffect(() => {
     getlistapi();

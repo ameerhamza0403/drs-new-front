@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import kpi from "../../../../images/gauge-kpi.jpg";
 import "./table.scss";
 import Slider from "@material-ui/core/Slider";
-import {GetListingForDriverBeh} from '../shared/driverbeh';
+import {GetListingForDriverBeh, PutDriverBehDataSetById} from '../shared/driverbeh';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { Button } from "reactstrap";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 let classes = {
   equal: {
@@ -33,16 +36,78 @@ let classes = {
     // height: '80%',
     // marginLeft: '20%',
   },
+  button: {
+    color: "white",
+    backgroundColor: "#EE7647",
+    border: "none"
+  },
 };
 let DriverBehListing = (props) => {
 
   let [Atlist, setAtlist]=useState({
     name: "",
-    defaultMaxVal: 0,
-    defaultMinVal: 0,
+    maxVal: 0,
+    minVal: 0,
     importance: 0,
     active: null
   });
+  let [newdata, setnewData] =useState(props.data);
+
+  let handleChange = (name, id )=> (event,value) => {
+    return newdata.map((e,i)=>{
+      console.log(id)
+      if(i===id){
+        if(name==='importance'){
+          e.importance=parseInt(value, 10)
+          // setnewData(newdata[id].importance= parseInt(value, 10) );
+        }
+        else{
+          if(name==='minVal'){
+            e.minVal=parseInt(event.target.value, 10)
+            // setnewData({ ...newdata, [name]: parseInt(event.target.value, 10) })
+          }
+          else{
+            e.maxVal=parseInt(event.target.value, 10)
+            // setnewData({ ...newdata, [name]: parseInt(event.target.value, 10) })
+          }
+        }
+      }
+    })
+
+  }
+
+   //Tost
+
+ function errort() {
+  // add type: 'error' to options
+  return toast.error("Failed with Error...", {
+    position: toast.POSITION.BOTTOM_RIGHT
+  });
+}
+function success(response) {
+  if (response == "Exception Error") {
+    return toast.error('Failed with Error "' + response + '"', {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  } else {
+    return toast.success(response, {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+}
+
+  function HandleUpdate(){
+    editlisting();
+  }
+
+  async function editlisting(){
+    await PutDriverBehDataSetById(props.resource, newdata).then(res => success(res.data.message)).catch(error=>errort());
+    props.refresh();
+  }
+
+  function valuetext(value) {
+    return {value};
+  }
 
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
@@ -50,6 +115,7 @@ let DriverBehListing = (props) => {
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
+      <div>
       <table className="table" style={classes.table}>
         <thead className="thead-dark">
           <tr>
@@ -68,7 +134,7 @@ let DriverBehListing = (props) => {
             <th scope="col" style={classes.equal}>
               <div className="row">
                 <div
-                  className="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7"
+                  className="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5"
                   style={classes.equal}
                 >
                   <span>10/10</span>
@@ -92,8 +158,8 @@ let DriverBehListing = (props) => {
           </tr>
         </thead>
         <tbody>
-          {Atlist.map(e=>(
-          <tr key={e.drvBehKPIId}>
+          {Atlist.map((e,i)=>(
+          <tr key={i}>
             <td style={classes.equal}>
               <h3 style={classes.heading}>{e.name}</h3>{e.notes}
             </td>
@@ -106,7 +172,8 @@ let DriverBehListing = (props) => {
                     maxlength="2"
                     autocomplete="off"
                     style={classes.input}
-                    value={e.minVal}
+                    defaultValue ={e.minVal}
+                    onChange={handleChange('minVal', i)}
                   />
                 </div>
                 <div className="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
@@ -116,7 +183,9 @@ let DriverBehListing = (props) => {
                     maxlength="2"
                     autocomplete="off"
                     style={classes.input}
-                    value={e.maxVal}
+                    defaultValue ={e.maxVal}
+                    onChange={handleChange('maxVal', i)}
+
                   />
                 </div>
               </div>
@@ -125,13 +194,14 @@ let DriverBehListing = (props) => {
               <div  style={classes.eighty}>
                 <Slider
                   defaultValue={e.importance}
-                  // getAriaValueText={valuetext}
+                  getAriaValueText={valuetext}
                   aria-labelledby="discrete-slider"
                   valueLabelDisplay="auto"
                   step={1}
                   marks
                   min={0}
                   max={10}
+                  onChange={handleChange('importance', i)}
                 />
               </div>
             </td>
@@ -139,6 +209,27 @@ let DriverBehListing = (props) => {
           ))}
         </tbody>
       </table>
+      <br />
+      <br />
+      <Button
+          type="submit"
+          color="primary"
+          className="mr-1"
+          style={classes.button}
+          onClick={HandleUpdate}
+        >
+          Update
+        </Button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <Button
+          type="submit"
+          color="primary"
+          className="mr-1"
+          style={classes.button}
+          // onClick={HandleDelete}
+        >
+          Delete
+        </Button>
+        </div>
     );
   } else {
     Tabledisplay = (
@@ -158,10 +249,13 @@ let DriverBehListing = (props) => {
     // const { data: Atlist } = await GetListingForDriverBeh();
     setAtlist((Atlist=props.data));
     settabledistatus((Tabledistatus = true));
+    console.log(newdata)
   }
   return (
     <div>
       {Tabledisplay}
+
+
     </div>
   );
 };

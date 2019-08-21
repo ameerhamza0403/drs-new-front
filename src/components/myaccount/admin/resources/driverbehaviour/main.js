@@ -47,7 +47,6 @@ let classes = {
   }
 };
 let showlist = "";
-let menuDiv = "";
 
 let DriverBehaviour = () => {
   let [Atlist, setAtlist] = useState([]);
@@ -55,13 +54,13 @@ let DriverBehaviour = () => {
   let [showliststate, setShowliststate] = useState(false);
   let [reselect, setReselect] = useState('any');
   let [reslist, setReslist] = useState([]);
-  let [menushow, setMenushow] = useState(false);
+  // let [menushow, setMenushow] = useState(false);
   let [newbtn, setnewbtn]= useState(false);
 
   let handleChange = event => {
     setReselect((reselect = event.target.value));
     setShowliststate(false);
-    setMenushow(false);
+    // setMenushow(false);
     setnewbtn(false);
     getlistByResID(reselect);
   };
@@ -83,16 +82,16 @@ let DriverBehaviour = () => {
     if (id === "any") {
       const { data: reslist } = await GetListingForDriverBeh();
       setReslist(reslist);
-      setMenushow(true);
+      // setMenushow(true);
       return setShowliststate(true);
     } else {
       const { data: reslist } = await GetDriverBehDataByResId(id);
       setReslist(reslist);
       if (reslist.length === 0) {
-        setMenushow(false);
+        // setMenushow(false);
         return setShowliststate(false);
       } else {
-        setMenushow(true);
+        // setMenushow(true);
         return setShowliststate(true);
       }
     }
@@ -103,7 +102,11 @@ let DriverBehaviour = () => {
     setnewbtn(true);
   }
 
-
+  let refreshfn = () => {
+    setShowliststate((showliststate = false));
+    setnewbtn(false);
+    getlistByResID(reselect);
+  };
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
   );
@@ -132,10 +135,10 @@ let DriverBehaviour = () => {
       showlist = <DriverBehListingdefault data={reslist} />;
     } else {
       if(newbtn){
-        showlist = <DriverBehListingdefault data={reslist} createnew={newbtn} resource={reselect}/>;
+        showlist = <DriverBehListingdefault data={reslist} createnew={newbtn} resource={reselect} refresh={refreshfn}/>;
       }
       else{
-        showlist = <DriverBehListing data={reslist} />;
+        showlist = <DriverBehListing data={reslist} resource={reselect} refresh={refreshfn}/>;
 
       }
     }
@@ -162,42 +165,39 @@ let DriverBehaviour = () => {
       </div>
     );
   }
-  let refreshfn = () => {
-    settabledistatus((Tabledistatus = false));
-    getlistapi();
-  };
-  if (menushow) {
-    if (reselect === "any") {
-      menuDiv = "";
-    } else {
-      menuDiv = (
-        <ul className="tool">
-          <li
-            // onClick={Dellistapi}
-            title={"Update"}
-          >
-            &nbsp;&nbsp;
-            <i className="fa fa-save fa-2x" />
-          </li>
-          <li
-            // onClick={Handlerowclose}
-            title={"Delete"}
-          >
-            &nbsp;&nbsp;
-            <i className="fa fa-times-rectangle fa-2x" />
-          </li>
-        </ul>
-      );
-    }
-  } else if (!menushow) {
-    menuDiv = "";
-  }
+
+  // if (menushow) {
+  //   if (reselect === "any") {
+  //     menuDiv = "";
+  //   } else {
+  //     menuDiv = (
+  //       <ul className="tool">
+  //         <li
+  //           // onClick={Dellistapi}
+  //           title={"Update"}
+  //         >
+  //           &nbsp;&nbsp;
+  //           <i className="fa fa-save fa-2x" />
+  //         </li>
+  //         <li
+  //           // onClick={Handlerowclose}
+  //           title={"Delete"}
+  //         >
+  //           &nbsp;&nbsp;
+  //           <i className="fa fa-times-rectangle fa-2x" />
+  //         </li>
+  //       </ul>
+  //     );
+  //   }
+  // } else if (!menushow) {
+  //   menuDiv = "";
+  // }
 
   return (
     <div>
       <div className="row header">
         <div className="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5">
-          {menuDiv}
+          {/* {menuDiv} */}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
           <h3 className="heading">DRIVER BEHAVIOUR</h3>
