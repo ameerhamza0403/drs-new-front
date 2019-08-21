@@ -303,6 +303,11 @@ export default {
           icon: "fa fa-truck"
         },
         {
+          name: "Vehicle Check Type",
+          url: "/admin/vehicle/check/type",
+          icon: "fa fa-truck"
+        },
+        {
           name: "Fuel Cost",
           url: "/admin/vehicle/fuel",
           icon: "fa fa-truck"
