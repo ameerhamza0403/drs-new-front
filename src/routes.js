@@ -74,7 +74,7 @@ const VehicleTypeListing = React.lazy(() => import('./components/myaccount/admin
 const DriverBehaviour = React.lazy(() => import('./components/myaccount/admin/resources/driverbehaviour/main'));
 const VehicleAttribute = React.lazy(() => import('./components/myaccount/admin/vehicle/attribute/listing'));
 const VehicleCheckTypeListing = React.lazy(() => import('./components/myaccount/admin/vehicle/checktype/listing'));
-const VehicleCheck = React.lazy(() => import('./components/myaccount/admin/vehicle/check/listing'));
+const VehicleCheck = React.lazy(() => import('./components/myaccount/admin/vehicle/vehiclecheck/listing'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [

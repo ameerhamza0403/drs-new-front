@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { PostListingForcurrency } from "..//shared/currency";
+import { PostListingForVehicleCheck } from "..//shared/vehiclecheck";
 import {
   Button,
   Card,
@@ -62,7 +62,7 @@ let AddCurrency = props => {
   }
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PostListingForcurrency(values)
+    await PostListingForVehicleCheck(values)
       .then(res => success(res.data.message))
       .catch(error => errort());
     handleOpen();

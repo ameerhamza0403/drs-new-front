@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
 import EditCurrency from "./edit";
-import { GetListingForcurrency, DeletecurrencyDataById } from "..//shared/currency";
+import { GetListingForVehicleCheck, DeleteVehicleCheckDataById } from "..//shared/vehiclecheck";
 import AddCurrency from './add';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { toast } from "react-toastify";
@@ -120,7 +120,7 @@ let VehicleCheck = () => {
   }, []);
 
   async function getlistapi() {
-    const { data: Atlist } = await GetListingForcurrency();
+    const { data: Atlist } = await GetListingForVehicleCheck();
     setAtlist(Atlist);
     // Atlist.map((e,i)=>
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
@@ -145,7 +145,7 @@ let VehicleCheck = () => {
   }
 
   async function Dellistapi() {
-    await DeletecurrencyDataById(idofEdit).then(() => {
+    await DeleteVehicleCheckDataById(idofEdit).then(() => {
       success();
     }).catch(error => {
         errort();
