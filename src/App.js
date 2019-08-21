@@ -35,7 +35,7 @@ class App extends Component {
           </React.Suspense>
           <ToastContainer
         position="top-right"
-        autoClose={2000}
+        autoClose={5000}
         style={classes.containerStyle}
       />
       </HashRouter>
