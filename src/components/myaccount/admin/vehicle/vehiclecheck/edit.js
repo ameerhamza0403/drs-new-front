@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import { GetcurrencyDataById, PutcurrencyDataById } from "..//shared/currency";
+import { GetVehicleCheckDataById, PutVehicleCheckDataById } from "..//shared/vehiclecheck";
 import {
   Button,
   Card,
@@ -65,7 +65,7 @@ let EditCurrency = props => {
 
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PutcurrencyDataById(props.IDforAPI, values).then(res => success(res.data.message)).catch(error=>errort());
+    await PutVehicleCheckDataById(props.IDforAPI, values).then(res => success(res.data.message)).catch(error=>errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);
@@ -143,7 +143,7 @@ let EditCurrency = props => {
   }, []);
 
   async function getlistapi() {
-    const { data: initialValues } = await GetcurrencyDataById(props.IDforAPI);
+    const { data: initialValues } = await GetVehicleCheckDataById(props.IDforAPI);
     setInitialValues(initialValues);
   }
 
