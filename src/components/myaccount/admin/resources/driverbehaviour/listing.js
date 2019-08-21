@@ -260,7 +260,7 @@ function success(response) {
     // const { data: Atlist } = await GetListingForDriverBeh();
     setAtlist((Atlist=props.data));
     settabledistatus((Tabledistatus = true));
-    console.log(newdata)
+    newdata.map(e=>e.active=true);
   }
   return (
     <div>
