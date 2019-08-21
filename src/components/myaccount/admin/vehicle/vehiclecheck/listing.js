@@ -166,6 +166,7 @@ let VehicleCheck = () => {
     selectdisplay = (
       <LinearProgress style={classes.linearprogress} color="secondary" />
     );
+  }
   let refreshfn = () => {
     settabledistatus((Tabledistatus = false));
     getlistapi();
