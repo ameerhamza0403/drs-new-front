@@ -158,6 +158,6 @@ const routes = [
   { path: '/admin/resources/driver', exact: true, name: 'Driver Behaviour', component: DriverBehaviour },
   { path: '/admin/vehicle/attribute', exact: true, name: 'Vehicle Attributes', component: VehicleAttribute },
   { path: '/admin/vehicle/check', exact: true, name: 'Vehicle Check', component: VehicleCheck },
-  { path: '/admin/vehicle/check/type', exact: true, name: 'Vehicle Check Type', component: VehicleCheckType },
+  { path: '/admin/vehicle/check/type', exact: true, name: 'Vehicle Check Type', component: VehicleCheckTypeListing },
 ];
 export default routes;
