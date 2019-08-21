@@ -229,7 +229,7 @@ function success(response) {
                   type="text"
                   className="form-control"
                   id="exampleFormControlInput1"
-                  placeholder={values.email}
+                  defaultValue={values.email}
                   onChange={handleChange("email")}
                 />
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -341,7 +341,7 @@ function success(response) {
                         type="text"
                         className="form-control"
                         id="exampleFormControlInput1"
-                        placeholder={values.name}
+                        defaultValue={values.name}
                         onChange={handleChange("name")}
                       />
                     </div>
@@ -359,7 +359,7 @@ function success(response) {
                         type="text"
                         className="form-control"
                         id="exampleFormControlInput1"
-                        placeholder={values.reference}
+                        defaultValue={values.reference}
                         onChange={handleChange("reference")}
                       />
                     </div>
@@ -402,7 +402,7 @@ function success(response) {
                         type="text"
                         className="form-control"
                         id="exampleFormControlInput1"
-                        placeholder={values.code}
+                        defaultValue={values.code}
                         onChange={handleChange("code")}
                       />
                     </div>
@@ -424,7 +424,7 @@ function success(response) {
                         type="text"
                         className="form-control"
                         id="exampleFormControlInput1"
-                        placeholder={values.mobilePhone}
+                        defaultValue={values.mobilePhone}
                         onChange={handleChange("mobilePhone")}
                       />
                     </div>
@@ -442,7 +442,7 @@ function success(response) {
                         type="text"
                         className="form-control"
                         id="exampleFormControlInput1"
-                        placeholder={values.businessKey}
+                        defaultValue={values.businessKey}
                         onChange={handleChange("businessKey")}
                       />
                     </div>
@@ -572,7 +572,7 @@ function success(response) {
                         type="text"
                         className="form-control"
                         id="exampleFormControlInput1"
-                        placeholder={values.privateKey}
+                        defaultValue={values.privateKey}
                         onChange={handleChange("privateKey")}
                       />
                     </div>
@@ -628,7 +628,7 @@ function success(response) {
                         type="text"
                         className="form-control"
                         id="exampleFormControlInput1"
-                        placeholder={values.tachoCard}
+                        defaultValue={values.tachoCard}
                         onChange={handleChange("tachoCard")}
                       />
                     </div>
@@ -714,7 +714,7 @@ function success(response) {
                         type="text"
                         className="form-control"
                         id="exampleFormControlInput1"
-                        placeholder={values.fuelCard}
+                        defaultValue={values.fuelCard}
                         onChange={handleChange("fuelCard")}
                       />
                     </div>
@@ -764,7 +764,7 @@ function success(response) {
                         type="number"
                         className="form-control"
                         id="exampleFormControlInput1"
-                        placeholder={values.maxTravelDistance}
+                        defaultValue={values.maxTravelDistance}
                         onChange={handleChange("maxTravelDistance")}
                       />
                     </div>
@@ -794,7 +794,7 @@ function success(response) {
                         type="text"
                         className="form-control"
                         id="exampleFormControlInput1"
-                        placeholder={values.payrollNumber}
+                        defaultValue={values.payrollNumber}
                         onChange={handleChange("payrollNumber")}
                       />
                     </div>
@@ -865,7 +865,7 @@ function success(response) {
                         type="number"
                         className="form-control"
                         id="exampleFormControlInput1"
-                        placeholder={values.vacations}
+                        defaultValue={values.vacations}
                         onChange={handleChange("vacations")}
                       />
                     </div>
@@ -959,7 +959,7 @@ function success(response) {
                         type="number"
                         className="form-control"
                         id="exampleFormControlInput1"
-                        placeholder={values.hourlyRate}
+                        defaultValue={values.hourlyRate}
                         onChange={handleChange("hourlyRate")}
                       />
                     </div>
