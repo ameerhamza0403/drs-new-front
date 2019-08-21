@@ -49,7 +49,7 @@ let DriverBehListing = (props) => {
     maxVal: 0,
     minVal: 0,
     importance: 0,
-    active: null
+    active: true
   });
   let [newdata, setnewData] =useState(props.data);
 
