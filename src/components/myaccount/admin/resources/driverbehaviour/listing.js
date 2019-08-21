@@ -55,10 +55,11 @@ let DriverBehListing = (props) => {
 
   let handleChange = (name, id )=> (event,value) => {
     return newdata.map((e,i)=>{
-      console.log(id)
       if(i===id){
         if(name==='importance'){
+          console.log(value)
           e.importance=parseInt(value, 10)
+          console.log(e.importance)
           // setnewData(newdata[id].importance= parseInt(value, 10) );
         }
         else{
@@ -97,6 +98,7 @@ function success(response) {
 }
 
   function HandleUpdate(){
+    console.log(newdata)
     editlisting();
   }
 

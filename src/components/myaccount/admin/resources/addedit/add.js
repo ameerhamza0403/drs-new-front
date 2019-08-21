@@ -95,7 +95,7 @@ let AddeditAdd = props => {
     tachoCard: "",
     fuelCard: "",
     payrollNumber: "",
-    managerId: 0,
+    managerId: null,
     holidaysStartDate: "",
     workingHours: JSON.stringify([
       "Mon 08:00 - 17:30",
@@ -106,7 +106,7 @@ let AddeditAdd = props => {
     ]),
     hourlyRate: 0,
     specialHourlyRate: "",
-    currencyId: 0,
+    currencyId: null,
     resourceGroupId: 0,
     webUser: "",
     vacations: 0,
@@ -117,7 +117,7 @@ let AddeditAdd = props => {
     viewOwnResource: true,
     tracked: false,
     owhtPrivate: true,
-    hideParentInfo: true
+    hideParentInfo: true,
   });
 
   let [resetvalues, setResetValues] = useState(values);
@@ -152,15 +152,18 @@ let AddeditAdd = props => {
       return toast.error("Group is Required", {
         position: toast.POSITION.BOTTOM_RIGHT
       });
-    } else if (values.managerId === 0) {
-      return toast.error("Manager is Required", {
-        position: toast.POSITION.BOTTOM_RIGHT
-      });
-    } else if (values.hourlyRate === 0) {
-      return toast.error("Hourly Rate is Required", {
-        position: toast.POSITION.BOTTOM_RIGHT
-      });
-    } else {
+    }
+    // else if (values.managerId === 0) {
+    //   return toast.error("Manager is Required", {
+    //     position: toast.POSITION.BOTTOM_RIGHT
+    //   });
+    // }
+    // else if (values.hourlyRate === 0) {
+    //   return toast.error("Hourly Rate is Required", {
+    //     position: toast.POSITION.BOTTOM_RIGHT
+    //   });
+    // }
+    else {
       await PostListingForAddEdit(values)
         .then(res => success(res.data.message))
         .catch(error => errort());
@@ -860,7 +863,7 @@ let AddeditAdd = props => {
                   <div className="row">
                     <div className="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                       <label className="form-check-label" for="defaultCheck16">
-                        <p style={classes.star}>Manager*</p>
+                        {/* <p style={classes.star}>Manager*</p> */}Manager
                       </label>
                     </div>
                     <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
