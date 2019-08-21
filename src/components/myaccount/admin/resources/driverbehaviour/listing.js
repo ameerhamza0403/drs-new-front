@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import kpi from "../../../../images/gauge-kpi.jpg";
 import "./table.scss";
 import Slider from "@material-ui/core/Slider";
-import {GetListingForDriverBeh, PutDriverBehDataSetById} from '../shared/driverbeh';
+import {GetListingForDriverBeh, PutDriverBehDataSetById, DeleteDriverBehSetDataById} from '../shared/driverbeh';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Button } from "reactstrap";
 import { toast } from "react-toastify";
@@ -102,6 +102,15 @@ function success(response) {
 
   async function editlisting(){
     await PutDriverBehDataSetById(props.resource, newdata).then(res => success(res.data.message)).catch(error=>errort());
+    props.refresh();
+  }
+
+  function HandleDelete(){
+    deletelisting();
+  }
+
+  async function deletelisting(){
+    await DeleteDriverBehSetDataById(props.resource).then(res => success(res.data.message)).catch(error=>errort());
     props.refresh();
   }
 
@@ -225,10 +234,12 @@ function success(response) {
           color="primary"
           className="mr-1"
           style={classes.button}
-          // onClick={HandleDelete}
+          onClick={HandleDelete}
         >
           Delete
         </Button>
+        <br />
+        <br />
         </div>
     );
   } else {
