@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
 import EditCurrency from "./edit";
-import { GetListingForVehicleCheck, DeleteVehicleCheckDataById } from "..//shared/vehiclecheck";
-import {GetListingForVehicleChecktype} from '..//shared/vehiclechecktype';
-import AddCurrency from './add';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import {
+  GetListingForVehicleCheck,
+  DeleteVehicleCheckDataById
+} from "..//shared/vehiclecheck";
+import { GetListingForVehicleChecktype } from "..//shared/vehiclechecktype";
+import AddCurrency from "./add";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -41,12 +44,11 @@ const classes = {
   }
 };
 
-
 let VehicleCheck = () => {
   let [Atlist, setAtlist] = useState([]);
   let [checktype, setChecktype] = useState([]);
-  let [selectdistatus,setSelectdistatus]=useState(false);
-
+  let [selectdistatus, setSelectdistatus] = useState(false);
+  let [reselect, setReselect] = useState("none");
 
   const columns = [
     {
@@ -125,9 +127,7 @@ let VehicleCheck = () => {
     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
   };
 
-  let Tabledisplay = (
-    <LinearProgress style={classes.linearprogress} color="secondary" />
-  );
+  let Tabledisplay = "";
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
@@ -139,9 +139,13 @@ let VehicleCheck = () => {
       />
     );
   } else {
-    Tabledisplay = (
-      <LinearProgress style={classes.linearprogress} color="secondary" />
-    );
+    if (reselect === "none") {
+      Tabledisplay = "";
+    } else {
+      Tabledisplay = (
+        <LinearProgress style={classes.linearprogress} color="secondary" />
+      );
+    }
   }
 
   let selectdisplay = (
@@ -168,9 +172,18 @@ let VehicleCheck = () => {
     );
   }
 
-  let handleChange=()=>{
-    return null
+  async function getlistByResID(id) {
+    const { data: Atlist } = await GetListingForVehicleCheck();
+    setAtlist(Atlist);
+    Atlist.map((e, i) => (e.atRisk = atriskicon(e.atRisk)));
+    settabledistatus((Tabledistatus = true));
   }
+  let handleChange = event => {
+    setReselect((reselect = event.target.value));
+    settabledistatus(true);
+    getlistByResID(reselect);
+  };
+
   let refreshfn = () => {
     settabledistatus((Tabledistatus = false));
     getlistapi();
@@ -180,34 +193,26 @@ let VehicleCheck = () => {
     getlistapi();
   }, []);
 
-  function atriskicon(status){
-    if(status){
-      return <i className='fa fa-thumbs-o-up'></i>
-    }
-    else{
-        return <i className='fa fa-thumbs-o-down'></i>
+  function atriskicon(status) {
+    if (status) {
+      return <i className="fa fa-thumbs-o-up" />;
+    } else {
+      return <i className="fa fa-thumbs-o-down" />;
     }
   }
   async function getlistapi() {
-    // const { data: Atlist } = await GetListingForVehicleCheck();
-    const {data: checktype} = await GetListingForVehicleChecktype();
+    const { data: checktype } = await GetListingForVehicleChecktype();
     setChecktype(checktype);
-    setSelectdistatus(selectdistatus=true)
-    // setAtlist(Atlist);
-    // Atlist.map((e,i)=>
-    //   e.atRisk=atriskicon(e.atRisk)
-    //   )
-    // settabledistatus((Tabledistatus = true));
+    setSelectdistatus((selectdistatus = true));
   }
 
-   // Toast
+  // Toast
 
-   function errort() {
+  function errort() {
     // add type: 'error' to options
-    return toast.error('Failed with Error...', {
+    return toast.error("Failed with Error...", {
       position: toast.POSITION.BOTTOM_RIGHT
     });
-
   }
   function success() {
     return toast.success("Deleted Successfully... ", {
@@ -216,9 +221,11 @@ let VehicleCheck = () => {
   }
 
   async function Dellistapi() {
-    await DeleteVehicleCheckDataById(idofEdit).then(() => {
-      success();
-    }).catch(error => {
+    await DeleteVehicleCheckDataById(idofEdit)
+      .then(() => {
+        success();
+      })
+      .catch(error => {
         errort();
       });
     Handlerowclose();
