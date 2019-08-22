@@ -265,10 +265,10 @@ let JobFlagListing = () => {
   let PageSizeComp = (
     <select onChange={handlePageSize}>
       <option selected value={PageSize}>{PageSize}</option>
-      <option  value={PageSize+5}>{PageSize+5}</option>
-      <option  value={PageSize+15}>{PageSize+15}</option>
-      <option  value={PageSize+25}>{PageSize+25}</option>
-      <option  value={PageSize+50}>{PageSize+50}</option>
+      <option  value={10}>10</option>
+      <option  value={20}>20</option>
+      <option  value={25}>25</option>
+      <option  value={50}>50</option>
     </select>
   );
 
