@@ -17,7 +17,7 @@ let ColorStyle = {};
 let idofEdit = 0;
 let count = 0;
 let Page = 0;
-let PageSize = 0;
+let PageSize = 10;
 
 const classes = {
   linearprogress: {
@@ -102,6 +102,8 @@ let JobFlagListing = () => {
   const options = {
     filterType: "multiselect",
     onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+    onChangePage: (currentPage)=> Page=currentPage,
+    onChangeRowsPerPage: (numberOfRows)=> PageSize=numberOfRows,
     rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
     selectableRows: "none",
     viewColumns: true
