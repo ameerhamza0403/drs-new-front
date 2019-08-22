@@ -10,15 +10,16 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import AddJobFlag from "./add";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 
 let menuDiv = "";
 let EditshowModel = "";
 let ColorStyle = {};
 let idofEdit = 0;
 let count = 0;
-let Page = 0;
+let Page = 1;
 let PageSize = 10;
-
+let paging = "";
 const classes = {
   linearprogress: {
     // backgroundColor: '#EE7647',
@@ -54,6 +55,8 @@ let JobFlagListing = () => {
       background: code
     });
   };
+
+  let [paginate, setPaginate] = useState();
 
   let [Atlist, setAtlist] = useState([
     {
@@ -102,13 +105,172 @@ let JobFlagListing = () => {
   const options = {
     filterType: "multiselect",
     onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-    onChangePage: (currentPage)=> Page=currentPage,
-    onChangeRowsPerPage: (numberOfRows)=> PageSize=numberOfRows,
-    rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+    onChangePage: currentPage => (Page = currentPage),
+    onChangeRowsPerPage: numberOfRows => (PageSize = numberOfRows),
+    // rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
     selectableRows: "none",
+    customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) =>
+      "",
     viewColumns: true
     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
   };
+
+  let [pgin, setPgin] = useState(true);
+
+  function handlepagin() {
+    setPgin(false);
+    setTimeout(() => setPgin(true), 100);
+    // refreshfn();
+  }
+
+  if (pgin) {
+    if (Page > 2 || Page === 2) {
+      paging = (
+        <Pagination>
+          <PaginationItem>
+            <PaginationLink
+              previous
+              tag="button"
+              onClick={() => {
+                Page = Page - 1;
+                handlepagin();
+                console.log(Page);
+              }}
+            />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              tag="button"
+              onClick={() => {
+                Page = Page - 1;
+                handlepagin();
+                console.log(Page);
+              }}
+            >
+              {Page - 1}
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              tag="button"
+              onClick={() => {
+                Page = Page;
+                handlepagin();
+                console.log(Page);
+              }}
+            >
+              {Page}
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              tag="button"
+              onClick={() => {
+                Page = Page + 1;
+                handlepagin();
+                console.log(Page);
+              }}
+            >
+              {Page + 1}
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              tag="button"
+              onClick={() => {
+                Page = Page + 2;
+                handlepagin();
+                console.log(Page);
+              }}
+            >
+              {Page + 2}
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              next
+              tag="button"
+              onClick={() => {
+                Page = Page + 1;
+                handlepagin();
+                console.log(Page);
+              }}
+            />
+          </PaginationItem>
+        </Pagination>
+      );
+    } else if (Page < 2) {
+      paging = (
+        <Pagination>
+          <PaginationItem>
+            <PaginationLink
+              tag="button"
+              onClick={() => {
+                Page = Page;
+                handlepagin();
+                console.log(Page);
+              }}
+            >
+              {Page}
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              tag="button"
+              onClick={() => {
+                Page = Page + 1;
+                handlepagin();
+                console.log(Page);
+              }}
+            >
+              {Page + 1}
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              tag="button"
+              onClick={() => {
+                Page = Page + 2;
+                handlepagin();
+                console.log(Page);
+              }}
+            >
+              {Page + 2}
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              next
+              tag="button"
+              onClick={() => {
+                Page = Page + 1;
+                handlepagin();
+                console.log(Page);
+              }}
+            />
+          </PaginationItem>
+        </Pagination>
+      );
+    }
+  } else {
+    paging = "";
+  }
+  function handlePageSize(event) {
+    PageSize = event.target.value;
+    console.log(PageSize);
+    refreshfn();
+    PageSize=10;
+  }
+
+  let PageSizeComp = (
+    <select onChange={handlePageSize}>
+      <option selected value={PageSize}>{PageSize}</option>
+      <option  value={PageSize+5}>{PageSize+5}</option>
+      <option  value={PageSize+15}>{PageSize+15}</option>
+      <option  value={PageSize+25}>{PageSize+25}</option>
+      <option  value={PageSize+50}>{PageSize+50}</option>
+    </select>
+  );
 
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
@@ -116,12 +278,20 @@ let JobFlagListing = () => {
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
-      <MUIDataTable
-        title={"Actions & Filters"}
-        data={Atlist}
-        columns={columns}
-        options={options}
-      />
+      <div>
+        {" "}
+        <MUIDataTable
+          title={"Actions & Filters"}
+          data={Atlist}
+          columns={columns}
+          options={options}
+        />
+        <br />
+        <div className="row">
+          <div className="col">{PageSizeComp}</div>
+          <div className="col">{paging}</div>
+        </div>
+      </div>
     );
   } else {
     Tabledisplay = (
@@ -139,8 +309,12 @@ let JobFlagListing = () => {
   }, [count]);
 
   async function getlistapi() {
-    let { data: Atlist } = await GetListingForJobflag(Page,PageSize);
-    setAtlist(Atlist);
+    // let { data: Atlist } =
+    await GetListingForJobflag(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = res.data));
+    });
+    console.log(paginate);
     Atlist.map(
       (e, i) =>
         (Atlist[i].colorCode = (

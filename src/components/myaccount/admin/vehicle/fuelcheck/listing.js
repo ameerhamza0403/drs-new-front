@@ -17,7 +17,7 @@ let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
 let Page = 0;
-let PageSize = 0;
+let PageSize = 10;
 
 const classes = {
   linearprogress: {
@@ -55,10 +55,9 @@ let VehicleFuelCost = () => {
     sortIndicator: true,
     page: Page,
     // hideSizePerPage: true,
-    paginationSize: 3,
-    pageStartIndex: 1,
+    paginationSize:  5,
     hidePageListOnlyOnePage: false,
-    clearSearch: true,
+    // clearSearch: true,
     alwaysShowAllBtns: true,
     withFirstAndLast: true,
     onPageChange: onPageChange,
