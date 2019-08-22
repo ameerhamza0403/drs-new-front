@@ -1,5 +1,8 @@
-import React, { Component, useState } from "react";
-import { PostListingForPersonflag } from "..//shared/personflag";
+import React, { Component, useEffect, useState } from "react";
+import {
+  GetJobflagDataById,
+  PutJobflagDataById
+} from "..//shared/jobflag";
 import {
   Button,
   Card,
@@ -20,6 +23,8 @@ import './add.scss';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
+
 let valofCod = "";
 
 const classes = {
@@ -36,25 +41,10 @@ const classes = {
     float: "left"
     // marginTop: '10px',
     // marginLeft: '5px',
-  },
-
+  }
 };
 
-let AddPersonFlag = props => {
-  const [values, setValues] = React.useState({
-    name: "",
-    colorCode: "",
-    active: false
-  });
-
-  const handleChange = name => event => {
-    if (name != "active") {
-      setValues({ ...values, [name]: event.target.value });
-    } else {
-      setValues({ ...values, [name]: event.target.checked });
-    }
-  };
-
+let EditButtonForJobFlag = props => {
   let ColorCode = [
     "FFFFE0",
     "FFFACD",
@@ -99,7 +89,7 @@ let AddPersonFlag = props => {
   let ColorStyleFn = mycolor => {
     let code = "#" + mycolor;
     return (ColorStyle = {
-      backgroundColor: code,
+      background: code
     });
   };
 
@@ -124,11 +114,31 @@ let AddPersonFlag = props => {
         }
       }
 
-  async function postlistapi() {
-    await PostListingForPersonflag(values).then(res => success(res.data.message)).catch(error=>errort());
+  useEffect(() => {
+    getlistapi();
+  }, []);
+
+  async function getlistapi() {
+    const { data: editvalues } = await GetJobflagDataById(props.IDforAPI);
+    seteditValues(editvalues);
+  }
+
+  async function putlistapi() {
+    console.log(editvalues);
+    await PutJobflagDataById(props.IDforAPI, editvalues).then(res => success(res.data.message)).catch(error=>errort());
     handleOpen();
     props.refresh();
   }
+
+  let [editvalues, seteditValues] = React.useState({});
+
+  const handleEditChange = name => event => {
+    if (name != "active") {
+      seteditValues({ ...editvalues, [name]: event.target.value });
+    } else {
+      seteditValues({ ...editvalues, [name]: event.target.checked });
+    }
+  };
 
   let showSlccode = (
     <div className="ColorCodesl" style={ColorStyleFn("000000")} />
@@ -140,7 +150,7 @@ let AddPersonFlag = props => {
     //console.log(event.target.getAttribute('value'))
     // setSlctdcode({ Slctdcode: event.target.getAttribute('value')})
     valofCod = event.target.getAttribute("value");
-    setValues({ ...values, [namer]: valofCod });
+    seteditValues({ ...editvalues, [namer]: valofCod });
     setCodeswitch({ codeswitch: true });
     // console.log(Slctdcode + 'Hello')
   };
@@ -155,75 +165,72 @@ let AddPersonFlag = props => {
     );
   }
 
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
-    return setModal((modal = !modal));
+    return setModal((modal = false)), setTimeout(() => props.cross(), 200);
   };
 
   return (
     <div>
-      <div onClick={handleOpen} style={classes.plusbutton}>
-        <i className="fa fa-plus-circle fa-2x" />
-      </div>
-
       <Modal
         isOpen={modal}
         toggle={handleOpen}
         className={"modal-primary " + props.className}
       >
-        <ModalHeader toggle={handleOpen}>Add Person Flag</ModalHeader>
+        <ModalHeader toggle={handleOpen}>Add Currency</ModalHeader>
         <ModalBody>
           <div className="container">
-            <div className="container">
-              <form>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
-                    placeholder="Enter Name"
-                    onChange={handleChange("name")}
-                  />
-                </div>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value="true"
-                  id="defaultCheck2"
-                  onChange={handleChange("active")}
-                />
-                <label className="form-check-label" for="defaultCheck2">
-                  Active
-                </label>
-              </form>
-              <br />
+            <form>
               <div class="form-group">
-                <div className="row">
-                  <p>Color&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                  {showSlccode}
-                </div>
-                <div className="row">
-                  {ColorCode.map(e => (
-                    <div
-                      className="ColorCodes"
-                      style={ColorStyleFn(e)}
-                      value={e}
-                      onClick={SelectColor}
-                    />
-                  ))}
-                </div>
+                <label for="exampleInputEmail1">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  placeholder={editvalues.name}
+                  // value={values.name}
+                  onChange={handleEditChange("name")}
+                />
+              </div>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input
+                className="form-check-input"
+                type="checkbox"
+                // value={values.active}
+                // placeholder={values.active}
+                id="defaultCheck2"
+                onChange={handleEditChange("active")}
+              />
+              <label className="form-check-label" for="defaultCheck2">
+                Active
+              </label>
+            </form>
+            <br />
+            <br />
+            <div class="form-group">
+              <div className="row">
+                <p>Color&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                {showSlccode}
+              </div>
+              <div className="row">
+                {ColorCode.map(e => (
+                  <div
+                    className="ColorCodes"
+                    style={ColorStyleFn(e)}
+                    value={e}
+                    onClick={SelectColor}
+                  />
+                ))}
               </div>
             </div>
           </div>
           <ModalFooter>
             <Button
               variant="contained"
-              style={classes.button}
-              onClick={postlistapi}
+              className={classes.button}
+              onClick={putlistapi}
             >
               Save
             </Button>
@@ -242,4 +249,4 @@ let AddPersonFlag = props => {
   );
 };
 
-export default AddPersonFlag;
+export default EditButtonForJobFlag;

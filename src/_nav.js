@@ -372,6 +372,11 @@ export default {
           icon: "fa fa-users"
         },
         {
+          name: "Job Flags",
+          url: "/admin/contact/jobflag",
+          icon: "fa fa-users"
+        },
+        {
           name: "Note types",
           url: "/admin/contact/type",
           icon: "fa fa-users"
