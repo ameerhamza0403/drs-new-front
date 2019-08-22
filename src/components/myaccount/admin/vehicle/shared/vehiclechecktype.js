@@ -50,7 +50,7 @@ export function DeleteVehicleChecktypeDataById(id) {
 }
 
 //----------Save-Post-API
-export function PostListingForVehicleChecktype(body) {
+export function PostListingForVehicleCheckType(body) {
     return axios.post(apiurlVehicleChecktype,body)
 
 }
