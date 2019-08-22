@@ -325,6 +325,11 @@ export default {
           icon: "fa fa-clock-o"
         },
         {
+          name: "Job Flags",
+          url: "/admin/schedule/jobflag",
+          icon: "fa fa-users"
+        },
+        {
           name: "Job Categories",
           url: "/admin/schedule/category",
           icon: "fa fa-clock-o"
@@ -369,11 +374,6 @@ export default {
         {
           name: "Person Flags",
           url: "/admin/contact/flag",
-          icon: "fa fa-users"
-        },
-        {
-          name: "Job Flags",
-          url: "/admin/contact/jobflag",
           icon: "fa fa-users"
         },
         {
