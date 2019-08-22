@@ -1,5 +1,6 @@
 import React, { Component, useState, useEffect } from "react";
 import { PostListingForVehicleCheck } from "..//shared/vehiclecheck";
+import { GetListingForVehicleChecktype } from "../shared/vehiclechecktype";
 import {
   Button,
   Card,
@@ -38,7 +39,7 @@ const classes = {
   }
 };
 
-let AddCurrency = props => {
+let AddVehicleCheck = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
   //Tost
@@ -72,12 +73,12 @@ let AddCurrency = props => {
 
   const validationSchema = function(values) {
     return Yup.object().shape({
-      name: Yup.string()
-        .min(4, `Currency name has to be at least 4 characters`)
-        .required("Name is required"),
-      code: Yup.string()
-        .max(3, `Currency Code has to be at least 3 characters`)
-        .required("Code is required")
+      defectName: Yup.string()
+        .min(4, `Defect name has to be at least 4 characters`)
+        .required("Defect Name is required"),
+        vehicleCheckTypeId: Yup.string()
+        // .max(3, `Currency Code has to be at least 3 characters`)
+        .required("Type Name is required")
     });
   };
 
@@ -104,10 +105,23 @@ let AddCurrency = props => {
   };
 
   const initialValues = {
-    name: "",
-    code: "",
-    active: false
+    defectName: "",
+    vehicleCheckTypeId: "",
+    active: false,
+    atRisk: false,
+    requiresPhoto: false,
   };
+
+  let [checktype, setChecktype] = useState([]);
+
+  useEffect(() => {
+    getlistapi();
+  }, []);
+
+  async function getlistapi() {
+    const { data: checktype } = await GetListingForVehicleChecktype();
+    setChecktype(checktype);
+  }
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -149,7 +163,7 @@ let AddCurrency = props => {
         toggle={handleOpen}
         className={"modal-primary " + props.className}
       >
-        <ModalHeader toggle={handleOpen}>Add Currency</ModalHeader>
+        <ModalHeader toggle={handleOpen}>Vehicle Check</ModalHeader>
         <ModalBody>
           <div className="container">
             <Formik
@@ -176,50 +190,58 @@ let AddCurrency = props => {
                       <FormGroup>
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Currency Name</Label>
+                            <Label for="name">Defect Name</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
                               type="text"
-                              name="name"
-                              id="name"
-                              placeholder="i.e. United States Dollar"
+                              name="defectName"
+                              id="defectName"
+                              placeholder="i.e. Is service Light Still off"
                               autoComplete="given-name"
-                              valid={!errors.name}
-                              invalid={touched.name && !!errors.name}
+                              valid={!errors.defectName}
+                              invalid={
+                                touched.defectName && !!errors.defectName
+                              }
                               autoFocus={true}
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.name}
+                              value={values.defectName}
                             />
-                            <FormFeedback>{errors.name}</FormFeedback>
+                            <FormFeedback>{errors.defectName}</FormFeedback>
                             <br />
                           </div>
                         </div>
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Currency Code</Label>
+                            <Label for="name">Vehicle Type</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
-                              type="text"
-                              name="code"
-                              id="code"
-                              placeholder="i.e. USD"
+                              type="select"
+                              name="vehicleCheckTypeId"
+                              id="vehicleCheckTypeId"
                               autoComplete="given-name"
-                              valid={!errors.code}
-                              invalid={touched.code && !!errors.code}
+                              valid={!errors.vehicleCheckTypeId}
+                              invalid={touched.vehicleCheckTypeId && !!errors.vehicleCheckTypeId}
                               autoFocus={true}
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.code}
-                              maxlength={3}
-                            />
-                            <FormFeedback>{errors.code}</FormFeedback>
+                              value={values.vehicleCheckTypeId}
+                            >
+                              <option value="none">None</option>
+                              {checktype.map(e => (
+                                <option value={e.vehicleCheckTypeId}>
+                                  {e.name}
+                                </option>
+                              ))}
+                            </Input>
+                            <FormFeedback>{errors.vehicleCheckTypeId}</FormFeedback>
                             <br />
-                            <input
+                            <Input
+                              type="checkbox"
                               name="active"
                               id="active"
                               valid={!errors.active}
@@ -227,7 +249,6 @@ let AddCurrency = props => {
                               onClick={handleChange}
                               onBlur={handleBlur}
                               value={values.active}
-                              type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
                             <label
@@ -235,6 +256,41 @@ let AddCurrency = props => {
                               for="defaultCheck1"
                             >
                               Active
+                            </label>
+                            <br />
+                            <Input
+                              type="checkbox"
+                              name="atRisk"
+                              id="atRisk"
+                              valid={!errors.atRisk}
+                              invalid={touched.atRisk && !!errors.atRisk}
+                              onClick={handleChange}
+                              onBlur={handleBlur}
+                              value={values.atRisk}
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <label
+                              className="form-check-label"
+                              for="defaultCheck1"
+                            >
+                              At Risk
+                            </label>
+                            <br />
+                            <Input
+                              type="checkbox"
+                              name="requiresPhoto"
+                              id="requiresPhoto"
+                              valid={!errors.requiresPhoto}
+                              invalid={touched.requiresPhoto && !!errors.requiresPhoto}
+                              onClick={handleChange}
+                              onBlur={handleBlur}
+                              value={values.requiresPhoto}
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <label
+                              className="form-check-label"
+                              for="defaultCheck1"
+                            >Requires a photo if defect <br/>(compatible devices only)
                             </label>
                           </div>
                         </div>
@@ -272,4 +328,4 @@ let AddCurrency = props => {
   );
 };
 
-export default AddCurrency;
+export default AddVehicleCheck;

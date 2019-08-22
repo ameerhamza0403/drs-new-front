@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import { GetVehicleCheckDataById, PutVehicleCheckDataById } from "..//shared/vehiclecheck";
+import {GetListingForVehicleChecktype} from '../shared/vehiclechecktype';
 import {
   Button,
   Card,
@@ -69,16 +70,17 @@ let EditCurrency = props => {
     handleOpen();
     props.refresh();
     setSubmitting(false);
+    console.log(values)
   }
 
   const validationSchema = function(values) {
     return Yup.object().shape({
-      name: Yup.string()
-        .min(4, `Currency Name has to be at least 4 characters`)
-        .required("Currency Name is required"),
-      code: Yup.string()
-        .max(3, `Currency Code should be 3 characters`)
-        .required("Currency Code is required")
+      defectName: Yup.string()
+      .min(4, `Defect name has to be at least 4 characters`)
+      .required("Defect Name is required"),
+      vehicleCheckTypeId: Yup.string()
+      // .max(3, `Currency Code has to be at least 3 characters`)
+      .required("Type Name is required")
     });
   };
 
@@ -105,9 +107,11 @@ let EditCurrency = props => {
   };
 
   const [initialValues, setInitialValues] = useState({
-    name: "",
-    code: "",
-    active: false
+    // defectName: "",
+    // vehicleCheckTypeId: "",
+    // active: false,
+    // atRisk: false,
+    // requiresPhoto: false,
   });
 
   function findFirstError(formName, hasError) {
@@ -138,14 +142,23 @@ let EditCurrency = props => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
   };
 
+  let [checktype, setChecktype] = useState([]);
+
   useEffect(() => {
     getlistapi();
+    getselectapi();
   }, []);
+
+  async function getselectapi() {
+    const { data: checktype } = await GetListingForVehicleChecktype();
+    setChecktype(checktype);
+  }
 
   async function getlistapi() {
     const { data: initialValues } = await GetVehicleCheckDataById(props.IDforAPI);
     setInitialValues(initialValues);
   }
+
 
   return (
     <div>
@@ -156,7 +169,7 @@ let EditCurrency = props => {
       >
         <ModalHeader toggle={handleOpen}>Add Currency</ModalHeader>
         <ModalBody>
-          <div className="container">
+        <div className="container">
             <Formik
               initialValues={initialValues}
               validate={validate(validationSchema)}
@@ -181,50 +194,59 @@ let EditCurrency = props => {
                       <FormGroup>
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Currency Name</Label>
+                            <Label for="name">Defect Name</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
                               type="text"
-                              name="name"
-                              id="name"
-                              placeholder={initialValues.name}
+                              name="defectName"
+                              id="defectName"
+                              placeholder={initialValues.defectName}
+                              // defaultValue={initialValues.defectName}
                               autoComplete="given-name"
-                              valid={!errors.name}
-                              invalid={touched.name && !!errors.name}
+                              valid={!errors.defectName}
+                              invalid={
+                                touched.defectName && !!errors.defectName
+                              }
                               autoFocus={true}
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.name}
+                              value={values.defectName}
                             />
-                            <FormFeedback>{errors.name}</FormFeedback>
+                            <FormFeedback>{errors.defectName}</FormFeedback>
                             <br />
                           </div>
                         </div>
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Currency Code</Label>
+                            <Label for="name">Vehicle Type</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
-                              type="text"
-                              name="code"
-                              id="code"
-                              placeholder={initialValues.code}
+                              type="select"
+                              name="vehicleCheckTypeId"
+                              id="vehicleCheckTypeId"
                               autoComplete="given-name"
-                              valid={!errors.code}
-                              invalid={touched.code && !!errors.code}
+                              valid={!errors.vehicleCheckTypeId}
+                              invalid={touched.vehicleCheckTypeId && !!errors.vehicleCheckTypeId}
                               autoFocus={true}
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.code}
-                              maxlength={3}
-                            />
-                            <FormFeedback>{errors.code}</FormFeedback>
+                              value={values.vehicleCheckTypeId}
+                            >
+                              <option value="none">None</option>
+                              {checktype.map(e => (
+                                <option value={e.vehicleCheckTypeId}>
+                                  {e.name}
+                                </option>
+                              ))}
+                            </Input>
+                            <FormFeedback>{errors.vehicleCheckTypeId}</FormFeedback>
                             <br />
-                            <input
+                            <Input
+                              type="checkbox"
                               name="active"
                               id="active"
                               valid={!errors.active}
@@ -232,7 +254,6 @@ let EditCurrency = props => {
                               onClick={handleChange}
                               onBlur={handleBlur}
                               value={values.active}
-                              type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
                             <label
@@ -240,6 +261,41 @@ let EditCurrency = props => {
                               for="defaultCheck1"
                             >
                               Active
+                            </label>
+                            <br />
+                            <Input
+                              type="checkbox"
+                              name="atRisk"
+                              id="atRisk"
+                              valid={!errors.atRisk}
+                              invalid={touched.atRisk && !!errors.atRisk}
+                              onClick={handleChange}
+                              onBlur={handleBlur}
+                              value={values.atRisk}
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <label
+                              className="form-check-label"
+                              for="defaultCheck1"
+                            >
+                              At Risk
+                            </label>
+                            <br />
+                            <Input
+                              type="checkbox"
+                              name="requiresPhoto"
+                              id="requiresPhoto"
+                              valid={!errors.requiresPhoto}
+                              invalid={touched.requiresPhoto && !!errors.requiresPhoto}
+                              onClick={handleChange}
+                              onBlur={handleBlur}
+                              value={values.requiresPhoto}
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <label
+                              className="form-check-label"
+                              for="defaultCheck1"
+                            >Requires a photo if defect <br/>(compatible devices only)
                             </label>
                           </div>
                         </div>

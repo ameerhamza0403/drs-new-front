@@ -4,13 +4,15 @@ import "../../../../../scss/override/listing.scss";
 import EditCurrency from "./edit";
 import {
   GetListingForVehicleCheck,
-  DeleteVehicleCheckDataById
+  DeleteVehicleCheckDataById,
+  GetVehicleCheckDataByTypeId
 } from "..//shared/vehiclecheck";
 import { GetListingForVehicleChecktype } from "..//shared/vehiclechecktype";
-import AddCurrency from "./add";
+import AddVehicleCheck from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { GetVehicleCheckDataById } from "../shared/vehiclecheck";
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -49,6 +51,7 @@ let VehicleCheck = () => {
   let [checktype, setChecktype] = useState([]);
   let [selectdistatus, setSelectdistatus] = useState(false);
   let [reselect, setReselect] = useState("none");
+  let [Tabledistatus, settabledistatus] = useState(false);
 
   const columns = [
     {
@@ -66,11 +69,11 @@ let VehicleCheck = () => {
       options: {
         filter: false,
         sort: false,
-        display: true
+        display: false
       }
     },
     {
-      name: "name",
+      name: "checkName",
       label: "Vehicle Check",
       options: {
         filter: false,
@@ -89,7 +92,7 @@ let VehicleCheck = () => {
     },
     {
       name: "atRisk",
-      label: "At Risk",
+      label: "Risk Status",
       options: {
         filter: false,
         sort: false,
@@ -128,24 +131,17 @@ let VehicleCheck = () => {
   };
 
   let Tabledisplay = "";
-  let [Tabledistatus, settabledistatus] = useState(false);
-  if (Tabledistatus) {
-    Tabledisplay = (
-      <MUIDataTable
-        title={"Actions & Filters"}
-        data={Atlist}
-        columns={columns}
-        options={options}
-      />
-    );
-  } else {
-    if (reselect === "none") {
-      Tabledisplay = "";
-    } else {
-      Tabledisplay = (
-        <LinearProgress style={classes.linearprogress} color="secondary" />
-      );
-    }
+  let handleChange = event => {
+    setReselect((reselect = event.target.value));
+    getlistByResID(reselect);
+  };
+
+  async function getlistByResID(id) {
+    settabledistatus((Tabledistatus = false));
+    const { data: Atlist } = await GetVehicleCheckDataByTypeId(id);
+    setAtlist(Atlist);
+    Atlist.map((e, i) => (e.atRisk = atriskicon(e.atRisk)));
+    settabledistatus((Tabledistatus = true));
   }
 
   let selectdisplay = (
@@ -172,21 +168,9 @@ let VehicleCheck = () => {
     );
   }
 
-  async function getlistByResID(id) {
-    const { data: Atlist } = await GetListingForVehicleCheck();
-    setAtlist(Atlist);
-    Atlist.map((e, i) => (e.atRisk = atriskicon(e.atRisk)));
-    settabledistatus((Tabledistatus = true));
-  }
-  let handleChange = event => {
-    setReselect((reselect = event.target.value));
-    settabledistatus(true);
-    getlistByResID(reselect);
-  };
-//hello
   let refreshfn = () => {
     settabledistatus((Tabledistatus = false));
-    getlistapi();
+    getlistByResID(reselect);
   };
 
   useEffect(() => {
@@ -195,9 +179,9 @@ let VehicleCheck = () => {
 
   function atriskicon(status) {
     if (status) {
-      return <i className="fa fa-thumbs-o-up" />;
+      return <i className="fa fa-exclamation-triangle" />;
     } else {
-      return <i className="fa fa-thumbs-o-down" />;
+      return <i className="" />;
     }
   }
   async function getlistapi() {
@@ -245,6 +229,25 @@ let VehicleCheck = () => {
     return setEditstate((Editstate = false));
   };
 
+  if (Tabledistatus) {
+    Tabledisplay = (
+      <MUIDataTable
+        title={"Actions & Filters"}
+        data={Atlist}
+        columns={columns}
+        options={options}
+      />
+    );
+  } else {
+    if (reselect === "none") {
+      Tabledisplay = "";
+    } else {
+      Tabledisplay = (
+        <LinearProgress style={classes.linearprogress} color="secondary" />
+      );
+    }
+  }
+
   if (Editstate) {
     EditshowModel = (
       <EditCurrency
@@ -270,7 +273,7 @@ let VehicleCheck = () => {
     menuDiv = (
       <ul className="tool">
         <li>
-          <AddCurrency refresh={refreshfn} />
+          <AddVehicleCheck refresh={refreshfn} />
         </li>
         <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -290,7 +293,7 @@ let VehicleCheck = () => {
     menuDiv = (
       <ul className="tool">
         <li />
-        <AddCurrency refresh={refreshfn} />
+        <AddVehicleCheck refresh={refreshfn} />
       </ul>
     );
   }
@@ -302,11 +305,16 @@ let VehicleCheck = () => {
           {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">CURRENCY</h3>
+          <h3 className="heading">VEHICAL CHECK</h3>
         </div>
       </div>
       <br />
-      {selectdisplay}
+      <div className="row">
+        <div className="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+          {selectdisplay}
+        </div>
+      </div>
+      <br />
       {EditshowModel}
       {Tabledisplay}
     </div>
