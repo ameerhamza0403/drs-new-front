@@ -69,6 +69,7 @@ const ContactsGroupListingTable = React.lazy(() => import('./components/myaccoun
 const NotesFlagListingTable = React.lazy(() => import('./components/myaccount/admin/contactnote/notesflag/listing'));
 const NotesTypeListing = React.lazy(() => import('./components/myaccount/admin/contactnote/notetype/listing'));
 const PersonFlagListing = React.lazy(() => import('./components/myaccount/admin/contactnote/personflag/listing'));
+const JobFlagListing = React.lazy(() => import('./components/myaccount/admin/contactnote/jobflag/listing'));
 const VehicleGroupListing = React.lazy(() => import('./components/myaccount/admin/vehicle/group/listing'));
 const VehicleTypeListing = React.lazy(() => import('./components/myaccount/admin/vehicle/type/listing'));
 const DriverBehaviour = React.lazy(() => import('./components/myaccount/admin/resources/driverbehaviour/main'));
@@ -152,6 +153,7 @@ const routes = [
   { path: '/admin/resources/absencetype', exact: true, name: 'Absence Types', component: AbsenceListing },
   { path: '/admin/contact/group', exact: true, name: 'Contact Groups', component: ContactsGroupListingTable },
   { path: '/admin/contact/flag', exact: true, name: 'Person Flags', component: PersonFlagListing },
+  { path: '/admin/contact/jobflag', exact: true, name: 'Job Flags', component: JobFlagListing },
   { path: '/admin/contact/type', exact: true, name: 'Note types', component: NotesTypeListing },
   { path: '/admin/currency', exact: true, name: 'Currency', component: CurrencyListing },
   { path: '/admin/note/flag', exact: true, name: 'Note Flags', component: NotesFlagListingTable },

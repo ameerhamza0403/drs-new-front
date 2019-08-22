@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { PostListingForPersonflag } from "..//shared/personflag";
+import { PostListingForJobflag } from "..//shared/jobflag";
 import {
   Button,
   Card,
@@ -40,7 +40,7 @@ const classes = {
 
 };
 
-let AddPersonFlag = props => {
+let AddJobFlag = props => {
   const [values, setValues] = React.useState({
     name: "",
     colorCode: "",
@@ -125,7 +125,9 @@ let AddPersonFlag = props => {
       }
 
   async function postlistapi() {
-    await PostListingForPersonflag(values).then(res => success(res.data.message)).catch(error=>errort());
+    await PostListingForJobflag(values)
+    .then(res => success(res.data.message))
+    .catch(error=>errort());
     handleOpen();
     props.refresh();
   }
@@ -172,7 +174,7 @@ let AddPersonFlag = props => {
         toggle={handleOpen}
         className={"modal-primary " + props.className}
       >
-        <ModalHeader toggle={handleOpen}>Add Person Flag</ModalHeader>
+        <ModalHeader toggle={handleOpen}>Add Job Flag</ModalHeader>
         <ModalBody>
           <div className="container">
             <div className="container">
@@ -242,4 +244,4 @@ let AddPersonFlag = props => {
   );
 };
 
-export default AddPersonFlag;
+export default AddJobFlag;
