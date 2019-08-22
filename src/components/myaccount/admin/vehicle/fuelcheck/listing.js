@@ -1,16 +1,23 @@
-import React, {useState, useEffect} from 'react';
-import MUIDataTable from "mui-datatables";
+import React, { useState, useEffect } from "react";
+// import MUIDataTable from "mui-datatables";
 import EditFuelCost from "./edit";
 import VehicleFuelCostAdd from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../../../scss/override/listing.scss";
-import {GetListingForVehiclefuelcost, DeleteVehiclefuelcostDataById} from '../shared/fuelcost';
+import {
+  GetListingForVehiclefuelcost,
+  DeleteVehiclefuelcostDataById
+} from "../shared/fuelcost";
+import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
+let Page = 0;
+let PageSize = 0;
 
 const classes = {
   linearprogress: {
@@ -40,71 +47,99 @@ const classes = {
   }
 };
 
-let VehicleFuelCost =()=>{
+let VehicleFuelCost = () => {
   let [Atlist, setAtlist] = useState([]);
 
-  const columns = [
-    {
-      name: "FuelcostId",
-      label: "ID",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    },
-    {
-      name: "StartDate",
-      label: "From",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "EndDate",
-      label: "To",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "CostPerLitre",
-      label: "Fuel Cost",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "CurrencyCode",
-      label: "Currency",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "active",
-      label: "Status",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    }
-  ];
-
+  //-- React Data Table
   const options = {
-    filterType: "multiselect",
-    onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-    rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-    selectableRows: "none",
-    viewColumns: true
-
-    // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+    sortIndicator: true,
+    page: Page,
+    // hideSizePerPage: true,
+    paginationSize: 3,
+    pageStartIndex: 1,
+    hidePageListOnlyOnePage: false,
+    clearSearch: true,
+    alwaysShowAllBtns: true,
+    withFirstAndLast: true,
+    onPageChange: onPageChange,
+    onSizePerPageList: sizePerPageListChange,
   };
+
+  function sizePerPageListChange(sizePerPage) {
+    PageSize=sizePerPage;
+    getlistapi();
+  };
+
+  function onPageChange(page, sizePerPage) {
+    Page=page;
+    PageSize=sizePerPage;
+    getlistapi()
+  };
+
+  //---- Material Table
+
+  // const columns = [
+  //   {
+  //     name: "FuelcostId",
+  //     label: "ID",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   },
+  //   {
+  //     name: "StartDate",
+  //     label: "From",
+  //     options: {
+  //       filter: true,
+  //       sort: true
+  //     }
+  //   },
+  //   {
+  //     name: "EndDate",
+  //     label: "To",
+  //     options: {
+  //       filter: true,
+  //       sort: true
+  //     }
+  //   },
+  //   {
+  //     name: "CostPerLitre",
+  //     label: "Fuel Cost",
+  //     options: {
+  //       filter: true,
+  //       sort: true
+  //     }
+  //   },
+  //   {
+  //     name: "CurrencyCode",
+  //     label: "Currency",
+  //     options: {
+  //       filter: true,
+  //       sort: true
+  //     }
+  //   },
+  //   {
+  //     name: "active",
+  //     label: "Status",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   }
+  // ];
+
+  // const options = {
+  //   filterType: "multiselect",
+  //   onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+  //   rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+  //   selectableRows: "none",
+  //   viewColumns: true
+
+  //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+  // };
 
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
@@ -112,12 +147,34 @@ let VehicleFuelCost =()=>{
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
-      <MUIDataTable
-        title={"Actions & Filters"}
+      // <MUIDataTable
+      //   title={"Actions & Filters"}
+      //   data={Atlist}
+      //   columns={columns}
+      //   options={options}
+      // />
+      <BootstrapTable
         data={Atlist}
-        columns={columns}
+        version="4"
+        striped
+        hover
+        pagination
+        search
         options={options}
-      />
+      >
+        <TableHeaderColumn dataField="startDate" dataSort>
+          From
+        </TableHeaderColumn>
+        <TableHeaderColumn isKey dataField="endDate" dataSort>
+          To
+        </TableHeaderColumn>
+        <TableHeaderColumn dataField="costPerLitre" dataSort>
+          Fuel Cost
+        </TableHeaderColumn>
+        <TableHeaderColumn dataField="currencyCode" dataSort>
+          Currency
+        </TableHeaderColumn>
+      </BootstrapTable>
     );
   } else {
     Tabledisplay = (
@@ -134,7 +191,7 @@ let VehicleFuelCost =()=>{
   }, []);
 
   async function getlistapi() {
-    const { data: Atlist } = await GetListingForVehiclefuelcost();
+    const { data: Atlist } = await GetListingForVehiclefuelcost(Page, PageSize);
     setAtlist(Atlist);
     // Atlist.map((e,i)=>
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
@@ -143,24 +200,25 @@ let VehicleFuelCost =()=>{
     settabledistatus((Tabledistatus = true));
   }
 
- // Toast
+  // Toast
 
- function errort() {
-  // add type: 'error' to options
-  return toast.error('Failed with Error...', {
-    position: toast.POSITION.BOTTOM_RIGHT
-  });
-
-}
-function success() {
-  return toast.success("Deleted Successfully... ", {
-    position: toast.POSITION.BOTTOM_RIGHT
-  });
-}
+  function errort() {
+    // add type: 'error' to options
+    return toast.error("Failed with Error...", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+  function success() {
+    return toast.success("Deleted Successfully... ", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
   async function Dellistapi() {
-    await DeleteVehiclefuelcostDataById(idofEdit).then(() => {
-      success();
-    }).catch(error => {
+    await DeleteVehiclefuelcostDataById(idofEdit)
+      .then(() => {
+        success();
+      })
+      .catch(error => {
         errort();
       });
     Handlerowclose();
