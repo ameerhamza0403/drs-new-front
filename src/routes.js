@@ -69,7 +69,6 @@ const ContactsGroupListingTable = React.lazy(() => import('./components/myaccoun
 const NotesFlagListingTable = React.lazy(() => import('./components/myaccount/admin/contactnote/notesflag/listing'));
 const NotesTypeListing = React.lazy(() => import('./components/myaccount/admin/contactnote/notetype/listing'));
 const PersonFlagListing = React.lazy(() => import('./components/myaccount/admin/contactnote/personflag/listing'));
-const JobFlagListing = React.lazy(() => import('./components/myaccount/admin/contactnote/jobflag/listing'));
 const VehicleGroupListing = React.lazy(() => import('./components/myaccount/admin/vehicle/group/listing'));
 const VehicleTypeListing = React.lazy(() => import('./components/myaccount/admin/vehicle/type/listing'));
 const DriverBehaviour = React.lazy(() => import('./components/myaccount/admin/resources/driverbehaviour/main'));
@@ -77,6 +76,7 @@ const VehicleAttribute = React.lazy(() => import('./components/myaccount/admin/v
 const VehicleCheckTypeListing = React.lazy(() => import('./components/myaccount/admin/vehicle/checktype/listing'));
 const VehicleCheck = React.lazy(() => import('./components/myaccount/admin/vehicle/vehiclecheck/listing'));
 const VehicleFuelCost = React.lazy(() => import('./components/myaccount/admin/vehicle/fuelcheck/listing'));
+const JobFlagListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobflag/listing'));
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -153,7 +153,6 @@ const routes = [
   { path: '/admin/resources/absencetype', exact: true, name: 'Absence Types', component: AbsenceListing },
   { path: '/admin/contact/group', exact: true, name: 'Contact Groups', component: ContactsGroupListingTable },
   { path: '/admin/contact/flag', exact: true, name: 'Person Flags', component: PersonFlagListing },
-  { path: '/admin/contact/jobflag', exact: true, name: 'Job Flags', component: JobFlagListing },
   { path: '/admin/contact/type', exact: true, name: 'Note types', component: NotesTypeListing },
   { path: '/admin/currency', exact: true, name: 'Currency', component: CurrencyListing },
   { path: '/admin/note/flag', exact: true, name: 'Note Flags', component: NotesFlagListingTable },
@@ -164,6 +163,7 @@ const routes = [
   { path: '/admin/vehicle/check', exact: true, name: 'Vehicle Check', component: VehicleCheck },
   { path: '/admin/vehicle/check/type', exact: true, name: 'Vehicle Check Type', component: VehicleCheckTypeListing },
   { path: '/admin/vehicle/fuel', exact: true, name: 'Fuel Cost', component: VehicleFuelCost },
+  { path: '/admin/schedule/jobflag', exact: true, name: 'Job Flags', component: JobFlagListing },
 
 ];
 export default routes;

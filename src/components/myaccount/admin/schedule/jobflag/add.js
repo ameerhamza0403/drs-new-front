@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { PostListingForJobflag } from "..//shared/jobflag";
+import { PostListingForJobflag } from "../../contactnote/shared/jobflag";
 import {
   Button,
   Card,
