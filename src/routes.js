@@ -77,6 +77,8 @@ const VehicleCheckTypeListing = React.lazy(() => import('./components/myaccount/
 const VehicleCheck = React.lazy(() => import('./components/myaccount/admin/vehicle/vehiclecheck/listing'));
 const VehicleFuelCost = React.lazy(() => import('./components/myaccount/admin/vehicle/fuelcheck/listing'));
 const JobFlagListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobflag/listing'));
+const JobCategoryListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobcategory/listing'));
+const PhoneBookListing = React.lazy(() => import('./components/myaccount/admin/resources/phonebook/listing'));
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -164,6 +166,8 @@ const routes = [
   { path: '/admin/vehicle/check/type', exact: true, name: 'Vehicle Check Type', component: VehicleCheckTypeListing },
   { path: '/admin/vehicle/fuel', exact: true, name: 'Fuel Cost', component: VehicleFuelCost },
   { path: '/admin/schedule/jobflag', exact: true, name: 'Job Flags', component: JobFlagListing },
+  { path: '/admin/schedule/jobcategory', exact: true, name: 'Job Category', component: JobCategoryListing },
+  { path: '/admin/resources/phone', exact: true, name: 'Phone Book', component: PhoneBookListing },
 
 ];
 export default routes;
