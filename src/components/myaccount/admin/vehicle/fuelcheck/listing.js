@@ -60,7 +60,7 @@ let VehicleFuelCost = () => {
     // page: Page,
     hideSizePerPage: true,
     // paginationSize: 5,
-    // hidePageListOnlyOnePage: false,
+    hidePageListOnlyOnePage: true,
     // clearSearch: true,
     alwaysShowAllBtns: false,
     onRowClick: HandlerowSelect,
