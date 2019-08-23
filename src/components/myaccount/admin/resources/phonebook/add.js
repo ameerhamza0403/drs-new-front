@@ -28,7 +28,7 @@ const classes = {
     border: "none"
   },
   plusbutton: {
-    color: "#ee7647",
+    color: "white",
     borderRadius: "50px",
     width: '10px',
     cursor: 'pointer',
@@ -71,7 +71,12 @@ let AddPhoneBook = props => {
         .min(4, `Name has to be at least 4 characters`)
         .required("Name is required"),
       phoneNumber: Yup.string()
-        .required("phoneNumber is required")
+        .required("phoneNumber is required"),
+        extensions: Yup.string()
+        .min(4, `Extensions has to be at least 4 characters`)
+        .required("Extensions is required"),
+      email: Yup.string()
+        .required("Email is required")
     });
   };
 
@@ -194,26 +199,76 @@ let AddPhoneBook = props => {
                           </div>
                         </div>
                         <br />
+                        
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Phone</Label>
+                            <Label for="phoneNumber">Phone</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
-                              type="number"
+                              type="text"
                               name="phoneNumber"
                               id="phoneNumber"
                               placeholder="i.e. +XXXXXXXXX"
                               autoComplete="given-name"
-                              valid={!errors.name}
-                              invalid={touched.name && !!errors.name}
+                              valid={!errors.phoneNumber}
+                              invalid={touched.phoneNumber && !!errors.phoneNumber}
                               autoFocus={true}
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.phoneNumber}
                             />
-                            <FormFeedback>{errors.name}</FormFeedback>
+                            <FormFeedback>{errors.phoneNumber}</FormFeedback>
+                            
+                          </div>
+                        </div>
+                        <br />
+                        <div className="row">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="extensions">Extensions</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                            <Input
+                              type="text"
+                              name="extensions"
+                              id="extensions"
+                              placeholder=""
+                              autoComplete="given-name"
+                              valid={!errors.extensions}
+                              invalid={touched.extensions && !!errors.extensions}
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.extensions}
+                            />
+                            <FormFeedback>{errors.extensions}</FormFeedback>
+                           
+                          </div>
+                        </div>
+
+                        <br />
+                        <div className="row">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="email">Email</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                            <Input
+                              type="text"
+                              name="email"
+                              id="email"
+                              placeholder=""
+                              autoComplete="given-name"
+                              valid={!errors.email}
+                              invalid={touched.email && !!errors.email}
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.email}
+                            />
+                            <FormFeedback>{errors.email}</FormFeedback>
                             <br />
                             <input
                               name="active"
