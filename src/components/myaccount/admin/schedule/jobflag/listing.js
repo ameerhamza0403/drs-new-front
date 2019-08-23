@@ -20,6 +20,8 @@ let count = 0;
 let Page = 1;
 let PageSize = 10;
 let paging = "";
+let TotalPages = 3;
+
 const classes = {
   linearprogress: {
     // backgroundColor: '#EE7647',
@@ -55,7 +57,6 @@ let JobFlagListing = () => {
       background: code
     });
   };
-
   let [paginate, setPaginate] = useState();
 
   let [Atlist, setAtlist] = useState([
@@ -105,100 +106,215 @@ let JobFlagListing = () => {
   const options = {
     filterType: "multiselect",
     onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-    onChangePage: currentPage => (Page = currentPage),
-    onChangeRowsPerPage: numberOfRows => (PageSize = numberOfRows),
-    // rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+    // onChangePage: (currentPage)=> handlechangepage(currentPage),
+    // onChangeRowsPerPage: (numberOfRows)=> handlechangepagesize(numberOfRows),
+    rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
     selectableRows: "none",
-    customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) =>
-      "",
     viewColumns: true
     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
   };
+
+  let PageSizeComp = (
+    <select onChange={handlePageSize} value={PageSize}>
+      <option selected />
+      <option value={10}>10</option>
+      <option value={20}>20</option>
+    </select>
+  );
+
+  
+  //--- Pagination ------------------
 
   let [pgin, setPgin] = useState(true);
 
   function handlepagin() {
     setPgin(false);
-    setTimeout(() => setPgin(true), 100);
-    // refreshfn();
+    // setTimeout(() => setPgin(true), 10);
+    refreshfn();
+    setPgin(true);
   }
 
   if (pgin) {
     if (Page > 2 || Page === 2) {
-      paging = (
-        <Pagination>
-          <PaginationItem>
-            <PaginationLink
-              previous
-              tag="button"
-              onClick={() => {
-                Page = Page - 1;
-                handlepagin();
-                console.log(Page);
-              }}
-            />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              tag="button"
-              onClick={() => {
-                Page = Page - 1;
-                handlepagin();
-                console.log(Page);
-              }}
-            >
-              {Page - 1}
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              tag="button"
-              onClick={() => {
-                Page = Page;
-                handlepagin();
-                console.log(Page);
-              }}
-            >
-              {Page}
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              tag="button"
-              onClick={() => {
-                Page = Page + 1;
-                handlepagin();
-                console.log(Page);
-              }}
-            >
-              {Page + 1}
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              tag="button"
-              onClick={() => {
-                Page = Page + 2;
-                handlepagin();
-                console.log(Page);
-              }}
-            >
-              {Page + 2}
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              next
-              tag="button"
-              onClick={() => {
-                Page = Page + 1;
-                handlepagin();
-                console.log(Page);
-              }}
-            />
-          </PaginationItem>
-        </Pagination>
-      );
+      if (Page === TotalPages) {
+        paging = (
+          <Pagination>
+            <PaginationItem>
+              <PaginationLink
+                previous
+                tag="button"
+                onClick={() => {
+                  Page = Page - 1;
+                  handlepagin();
+                }}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                tag="button"
+                onClick={() => {
+                  Page = Page - 2;
+                  handlepagin();
+                }}
+              >
+                {Page - 2}
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                tag="button"
+                onClick={() => {
+                  Page = Page - 1;
+                  handlepagin();
+                }}
+              >
+                {Page - 1}
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                tag="button"
+                // onClick={() => {
+                //   Page = Page+1;
+                //   handlepagin();
+
+                // }}
+              >
+                {Page}
+              </PaginationLink>
+            </PaginationItem>
+          </Pagination>
+        );
+      } else if (Page === TotalPages - 1) {
+        paging = (
+          <Pagination>
+            <PaginationItem>
+              <PaginationLink
+                previous
+                tag="button"
+                onClick={() => {
+                  Page = Page - 1;
+                  handlepagin();
+                }}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                tag="button"
+                onClick={() => {
+                  Page = Page - 2;
+                  handlepagin();
+                }}
+              >
+                {Page - 2}
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                tag="button"
+                onClick={() => {
+                  Page = Page - 1;
+                  handlepagin();
+                }}
+              >
+                {Page - 1}
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                tag="button"
+                // onClick={() => {
+                //   Page = Page+1;
+                //   handlepagin();
+
+                // }}
+              >
+                {Page}
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                tag="button"
+                onClick={() => {
+                  Page = Page + 1;
+                  handlepagin();
+                }}
+              >
+                {Page + 1}
+              </PaginationLink>
+            </PaginationItem>
+          </Pagination>
+        );
+      } else {
+        paging = (
+          <Pagination>
+            <PaginationItem>
+              <PaginationLink
+                previous
+                tag="button"
+                onClick={() => {
+                  Page = Page - 1;
+                  handlepagin();
+                }}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                tag="button"
+                onClick={() => {
+                  Page = Page - 1;
+                  handlepagin();
+                }}
+              >
+                {Page - 1}
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                tag="button"
+                onClick={() => {
+                  Page = Page;
+                  handlepagin();
+                }}
+              >
+                {Page}
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                tag="button"
+                onClick={() => {
+                  Page = Page + 1;
+                  handlepagin();
+                }}
+              >
+                {Page + 1}
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                tag="button"
+                onClick={() => {
+                  Page = Page + 2;
+                  handlepagin();
+                }}
+              >
+                {Page + 2}
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                next
+                tag="button"
+                onClick={() => {
+                  Page = Page + 1;
+                  handlepagin();
+                }}
+              />
+            </PaginationItem>
+          </Pagination>
+        );
+      }
     } else if (Page < 2) {
       paging = (
         <Pagination>
@@ -208,7 +324,6 @@ let JobFlagListing = () => {
               onClick={() => {
                 Page = Page;
                 handlepagin();
-                console.log(Page);
               }}
             >
               {Page}
@@ -220,7 +335,6 @@ let JobFlagListing = () => {
               onClick={() => {
                 Page = Page + 1;
                 handlepagin();
-                console.log(Page);
               }}
             >
               {Page + 1}
@@ -232,7 +346,6 @@ let JobFlagListing = () => {
               onClick={() => {
                 Page = Page + 2;
                 handlepagin();
-                console.log(Page);
               }}
             >
               {Page + 2}
@@ -245,7 +358,6 @@ let JobFlagListing = () => {
               onClick={() => {
                 Page = Page + 1;
                 handlepagin();
-                console.log(Page);
               }}
             />
           </PaginationItem>
@@ -257,20 +369,24 @@ let JobFlagListing = () => {
   }
   function handlePageSize(event) {
     PageSize = event.target.value;
-    console.log(PageSize);
     refreshfn();
-    PageSize=10;
   }
 
-  let PageSizeComp = (
-    <select onChange={handlePageSize}>
-      <option selected value={PageSize}>{PageSize}</option>
-      <option  value={10}>10</option>
-      <option  value={20}>20</option>
-      <option  value={25}>25</option>
-      <option  value={50}>50</option>
-    </select>
-  );
+
+
+  //----- Finished Pagination---------
+
+  // function handlechangepage(curntpg){
+  //   Page=curntpg;
+  //   //getlistapi();
+  //   refreshfn();
+  // }
+
+  // function handlechangepagesize(nofrows){
+  //   PageSize=nofrows;
+  //   //getlistapi();
+  //   refreshfn();
+  // }
 
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
@@ -279,16 +395,18 @@ let JobFlagListing = () => {
   if (Tabledistatus) {
     Tabledisplay = (
       <div>
-        {" "}
-        <MUIDataTable
-          title={"Actions & Filters"}
-          data={Atlist}
-          columns={columns}
-          options={options}
-        />
-        <br />
+      <MUIDataTable
+        title={"Actions & Filters"}
+        data={Atlist}
+        columns={columns}
+        options={options}
+      />
+      <br />
         <div className="row">
-          <div className="col">{PageSizeComp}</div>
+          <div className="col">
+            {PageSizeComp}
+            {"  Showing " + PageSize + " Rows Per Page"}
+          </div>
           <div className="col">{paging}</div>
         </div>
       </div>
@@ -308,19 +426,31 @@ let JobFlagListing = () => {
     getlistapi();
   }, [count]);
 
+  // async function getlistapi() {
+  //   let { data: Atlist } = await GetListingForJobflag(Page,PageSize);
+  //   setAtlist(Atlist);
+  //   Atlist.map(
+  //     (e, i) =>
+  //       (Atlist[i].colorCode = (
+  //         <div className="ColorCodesl" style={ColorStyleFn(e.colorCode)} />
+  //       ))
+  //   );
+  //   settabledistatus((Tabledistatus = true));
+  // }
+
   async function getlistapi() {
-    // let { data: Atlist } =
     await GetListingForJobflag(Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
-      setPaginate((paginate = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
-    console.log(paginate);
+    TotalPages = paginate.totalPages;
     Atlist.map(
       (e, i) =>
         (Atlist[i].colorCode = (
           <div className="ColorCodesl" style={ColorStyleFn(e.colorCode)} />
         ))
-    );
+    );              
+    settabledistatus((Tabledistatus = false));
     settabledistatus((Tabledistatus = true));
   }
 
