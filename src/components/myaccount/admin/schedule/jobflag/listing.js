@@ -108,9 +108,11 @@ let JobFlagListing = () => {
     onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
     // onChangePage: (currentPage)=> handlechangepage(currentPage),
     // onChangeRowsPerPage: (numberOfRows)=> handlechangepagesize(numberOfRows),
-    rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+    // rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+    customFooter: ()=>(''),
     selectableRows: "none",
-    viewColumns: true
+    viewColumns: true,
+    rowsPerPage: PageSize,
     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
   };
 
@@ -122,7 +124,7 @@ let JobFlagListing = () => {
     </select>
   );
 
-  
+
   //--- Pagination ------------------
 
   let [pgin, setPgin] = useState(true);
@@ -418,7 +420,7 @@ let JobFlagListing = () => {
   }
 
   let refreshfn = () => {
-    settabledistatus((Tabledistatus = false));
+    // settabledistatus((Tabledistatus = false));
     getlistapi();
   };
 
@@ -449,7 +451,7 @@ let JobFlagListing = () => {
         (Atlist[i].colorCode = (
           <div className="ColorCodesl" style={ColorStyleFn(e.colorCode)} />
         ))
-    );              
+    );
     settabledistatus((Tabledistatus = false));
     settabledistatus((Tabledistatus = true));
   }

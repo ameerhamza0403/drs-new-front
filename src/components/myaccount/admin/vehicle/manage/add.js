@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { PostListingForVehiclemanage } from "..//shared/fuelcost";
+import { PostListingForVehiclemanage } from "..//shared/manage";
 import {
   Button,
   Card,
@@ -202,6 +202,7 @@ let VehicleFuelCostAdd = props => {
         isOpen={modal}
         toggle={handleOpen}
         className={"modal-primary " + props.className}
+        size="xl"
       >
         <ModalHeader toggle={handleOpen}>Fuel Cost</ModalHeader>
         <ModalBody>
@@ -229,12 +230,12 @@ let VehicleFuelCostAdd = props => {
                     <Form onSubmit={handleSubmit} noValidate name="simpleForm">
                       <FormGroup>
                         <div className="row">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Fuel Cost</Label>
-                          </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
-                              <div className="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="name">Fuel Cost</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
                                 <Input
                                   type="text"
                                   name="costPerLitre"
@@ -252,95 +253,46 @@ let VehicleFuelCostAdd = props => {
                                   onBlur={handleBlur}
                                   value={values.costPerLitre}
                                   maxLength={8}
-                                  style={classes.input}
+                                  // style={classes.input}
                                 />
                                 <FormFeedback>
                                   {errors.costPerLitre}
                                 </FormFeedback>
                               </div>
-                              <div className="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                            </div>
+                          </div>
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="name">Fuel Cost</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
                                 <Input
-                                  type="select"
-                                  name="currencyId"
-                                  id="currencyId"
+                                  type="text"
+                                  name="costPerLitre"
+                                  id="name"
+                                  // placeholder="i.e. Company Car"
                                   autoComplete="given-name"
-                                  valid={!errors.currencyId}
+                                  valid={!errors.costPerLitre}
                                   invalid={
-                                    touched.currencyId && !!errors.currencyId
+                                    touched.costPerLitre &&
+                                    !!errors.costPerLitre
                                   }
                                   autoFocus={true}
                                   required
                                   onChange={handleChange}
                                   onBlur={handleBlur}
-                                  value={values.currencyId}
-                                >
-                                  <option value="" />
-                                  {currency.map(e => (
-                                    <option value={e.currencyId}>
-                                      {e.code}
-                                    </option>
-                                  ))}
-                                </Input>
-                                <FormFeedback>{errors.currencyId}</FormFeedback>
-                                <br />
+                                  value={values.costPerLitre}
+                                  maxLength={8}
+                                  // style={classes.input}
+                                />
+                                <FormFeedback>
+                                  {errors.costPerLitre}
+                                </FormFeedback>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <br />
-                        <div className="row">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">From</Label>
-                          </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                            <TextField
-                              id="date"
-                              label="startDate"
-                              type="date"
-                              defaultValue="2019-05-24"
-                              InputLabelProps={{
-                                shrink: true
-                              }}
-                              onChange={handleDataChange("startDate")}
-                            />
-                          </div>
-                        </div>
-                        <br />
-                        <div className="row">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">To</Label>
-                          </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                            <TextField
-                              id="date"
-                              label="endDate"
-                              type="date"
-                              defaultValue="2019-05-24"
-                              InputLabelProps={{
-                                shrink: true
-                              }}
-                              onChange={handleDataChange("endDate")}
-                            />
-                          </div>
-                        </div>
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input
-                          name="active"
-                          id="active"
-                          valid={!errors.active}
-                          invalid={touched.active && !!errors.active}
-                          onClick={handleChange}
-                          onBlur={handleBlur}
-                          value={values.active}
-                          type="checkbox"
-                        />
-                        &nbsp;&nbsp;&nbsp;
-                        <label className="form-check-label" for="defaultCheck1">
-                          Active
-                        </label>
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>
