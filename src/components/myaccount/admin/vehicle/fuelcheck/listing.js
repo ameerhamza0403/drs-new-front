@@ -12,15 +12,12 @@ import {
 } from "../shared/fuelcost";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
-import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
-let Page = 1;
+let Page = 0;
 let PageSize = 10;
-let paging = "";
-let TotalPages = 3;
 
 const classes = {
   linearprogress: {
@@ -52,7 +49,6 @@ const classes = {
 
 let VehicleFuelCost = () => {
   let [Atlist, setAtlist] = useState([]);
-  let [paginate, setPaginate] = useState();
 
   //-- React Data Table
   const options = {
@@ -61,13 +57,23 @@ let VehicleFuelCost = () => {
     hideSizePerPage: true,
     // paginationSize: 5,
     hidePageListOnlyOnePage: true,
-    // clearSearch: true,
-    alwaysShowAllBtns: false,
-    onRowClick: HandlerowSelect,
-    withFirstAndLast: false,
 
-    // onPageChange: onPageChange,
-    // onSizePerPageList: sizePerPageListChange
+    // clearSearch: true,
+    alwaysShowAllBtns: true,
+    withFirstAndLast: true,
+    onPageChange: onPageChange,
+    onSizePerPageList: sizePerPageListChange,
+  };
+
+  function sizePerPageListChange(sizePerPage) {
+    PageSize=sizePerPage;
+    getlistapi();
+  };
+
+  function onPageChange(page, sizePerPage) {
+    Page=page;
+    PageSize=sizePerPage;
+    getlistapi()
   };
 
   //---- Material Table
@@ -138,16 +144,7 @@ let VehicleFuelCost = () => {
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
   );
-  let PageSizeComp = (
-    <select onChange={handlePageSize} value={PageSize}>
-      <option selected />
-      <option value={10}>10</option>
-      <option value={20}>20</option>
-    </select>
-  );
   let [Tabledistatus, settabledistatus] = useState(false);
-
-
   if (Tabledistatus) {
     Tabledisplay = (
       // <MUIDataTable
@@ -156,39 +153,28 @@ let VehicleFuelCost = () => {
       //   columns={columns}
       //   options={options}
       // />
-      <div>
-        <BootstrapTable
-          data={Atlist}
-          version="4"
-          striped
-          hover
-          pagination
-          search
-          options={options}
-        >
-          <TableHeaderColumn dataField="startDate" dataSort>
-            From
-          </TableHeaderColumn>
-          <TableHeaderColumn isKey dataField="endDate" dataSort>
-            To
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="costPerLitre" dataSort>
-            Fuel Cost
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="currencyCode" dataSort>
-            Currency
-          </TableHeaderColumn>
-        </BootstrapTable>
-
-        <br />
-        <div className="row">
-          <div className="col">
-            {PageSizeComp}
-            {"  Showing " + PageSize + " Rows Per Page"}
-          </div>
-          <div className="col">{paging}</div>
-        </div>
-      </div>
+      <BootstrapTable
+        data={Atlist}
+        version="4"
+        striped
+        hover
+        pagination
+        search
+        options={options}
+      >
+        <TableHeaderColumn dataField="startDate" dataSort>
+          From
+        </TableHeaderColumn>
+        <TableHeaderColumn isKey dataField="endDate" dataSort>
+          To
+        </TableHeaderColumn>
+        <TableHeaderColumn dataField="costPerLitre" dataSort>
+          Fuel Cost
+        </TableHeaderColumn>
+        <TableHeaderColumn dataField="currencyCode" dataSort>
+          Currency
+        </TableHeaderColumn>
+      </BootstrapTable>
     );
   } else {
     Tabledisplay = (
@@ -196,7 +182,7 @@ let VehicleFuelCost = () => {
     );
   }
   let refreshfn = () => {
-    // settabledistatus((Tabledistatus = false));
+    settabledistatus((Tabledistatus = false));
     getlistapi();
   };
 
@@ -205,16 +191,12 @@ let VehicleFuelCost = () => {
   }, []);
 
   async function getlistapi() {
-    await GetListingForVehiclefuelcost(Page, PageSize).then(res => {
-      setAtlist((Atlist = res.data));
-      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-    });
-    TotalPages = paginate.totalPages;
+    const { data: Atlist } = await GetListingForVehiclefuelcost(Page, PageSize);
+    setAtlist(Atlist);
     // Atlist.map((e,i)=>
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
     //                 )
-    settabledistatus((Tabledistatus = false));
     settabledistatus((Tabledistatus = true));
   }
 
@@ -231,260 +213,6 @@ let VehicleFuelCost = () => {
       position: toast.POSITION.BOTTOM_RIGHT
     });
   }
-
-  //--- Pagination ------------------
-
-  let [pgin, setPgin] = useState(true);
-
-  function handlepagin() {
-    setPgin(false);
-    // setTimeout(() => setPgin(true), 10);
-    refreshfn();
-    setPgin(true);
-  }
-
-  if (pgin) {
-    if (Page > 2 || Page === 2) {
-      if (Page === TotalPages) {
-        paging = (
-          <Pagination>
-            <PaginationItem>
-              <PaginationLink
-                previous
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 2;
-                  handlepagin();
-                }}
-              >
-                {Page - 2}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              >
-                {Page - 1}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                // onClick={() => {
-                //   Page = Page+1;
-                //   handlepagin();
-
-                // }}
-              >
-                {Page}
-              </PaginationLink>
-            </PaginationItem>
-          </Pagination>
-        );
-      } else if (Page === TotalPages - 1) {
-        paging = (
-          <Pagination>
-            <PaginationItem>
-              <PaginationLink
-                previous
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 2;
-                  handlepagin();
-                }}
-              >
-                {Page - 2}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              >
-                {Page - 1}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                // onClick={() => {
-                //   Page = Page+1;
-                //   handlepagin();
-
-                // }}
-              >
-                {Page}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page + 1;
-                  handlepagin();
-                }}
-              >
-                {Page + 1}
-              </PaginationLink>
-            </PaginationItem>
-          </Pagination>
-        );
-      } else {
-        paging = (
-          <Pagination>
-            <PaginationItem>
-              <PaginationLink
-                previous
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              >
-                {Page - 1}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page;
-                  handlepagin();
-                }}
-              >
-                {Page}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page + 1;
-                  handlepagin();
-                }}
-              >
-                {Page + 1}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page + 2;
-                  handlepagin();
-                }}
-              >
-                {Page + 2}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                next
-                tag="button"
-                onClick={() => {
-                  Page = Page + 1;
-                  handlepagin();
-                }}
-              />
-            </PaginationItem>
-          </Pagination>
-        );
-      }
-    } else if (Page < 2) {
-      paging = (
-        <Pagination>
-          <PaginationItem>
-            <PaginationLink
-              tag="button"
-              onClick={() => {
-                Page = Page;
-                handlepagin();
-              }}
-            >
-              {Page}
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              tag="button"
-              onClick={() => {
-                Page = Page + 1;
-                handlepagin();
-              }}
-            >
-              {Page + 1}
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              tag="button"
-              onClick={() => {
-                Page = Page + 2;
-                handlepagin();
-              }}
-            >
-              {Page + 2}
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              next
-              tag="button"
-              onClick={() => {
-                Page = Page + 1;
-                handlepagin();
-              }}
-            />
-          </PaginationItem>
-        </Pagination>
-      );
-    }
-  } else {
-    paging = "";
-  }
-  function handlePageSize(event) {
-    PageSize = event.target.value;
-    refreshfn();
-  }
-
-
-
-  //----- Finished Pagination---------
-
   async function Dellistapi() {
     await DeleteVehiclefuelcostDataById(idofEdit)
       .then(() => {
@@ -523,12 +251,12 @@ let VehicleFuelCost = () => {
   }
 
   let [menushow, setMenushow] = useState(false);
-  function HandlerowSelect  (row) {
+  let HandlerowSelect = (data, meta) => {
     menuDiv = "";
-    idofEdit = row.fuelcostId;
+    idofEdit = data[0];
     return setMenushow((menushow = true));
   };
-  let Handlerowclose = (row) => {
+  let Handlerowclose = (data, meta) => {
     return setMenushow((menushow = false));
   };
   if (menushow) {
