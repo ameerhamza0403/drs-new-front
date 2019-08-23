@@ -61,16 +61,28 @@ let VehicleManage =()=>{
     sortIndicator: true,
     // page: Page,
     hideSizePerPage: true,
-    // paginationSize: 5,
+    // paginationSize: PageSize,
     hidePageListOnlyOnePage: true,
+    sizePerPage: PageSize,
     // clearSearch: true,
     alwaysShowAllBtns: false,
     onRowClick: HandlerowSelect,
     withFirstAndLast: false,
-
     // onPageChange: onPageChange,
-    // onSizePerPageList: sizePerPageListChange
+    // onSizePerPageList: sizePerPageListChange,
   };
+
+  // function sizePerPageListChange(sizePerPage) {
+  //   PageSize=sizePerPage;
+  //   getlistapi();
+  // };
+
+  // function onPageChange(page, sizePerPage) {
+  //   Page=page;
+  //   PageSize=sizePerPage;
+  //   getlistapi()
+  // };
+
 
   //---- Material Table
 
@@ -202,6 +214,7 @@ let VehicleManage =()=>{
           </div>
           <div className="col">{paging}</div>
         </div>
+        {/* {Atlist.map(e=>e.usedForJobs)} */}
       </div>
     );
   } else {
@@ -247,13 +260,13 @@ let iconint=(status)=>{
       setAtlist((Atlist = res.data));
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
-    Atlist.map(
-      (e, i) =>
-        (
-        Atlist[i].trackingDeviceId =iconint(Atlist[i].trackingDeviceId),
-        Atlist[i].usedForJobs =icon(Atlist[i].usedForJobs)
-        )
-    );
+    // Atlist.map(
+    //   (e, i) =>
+    //     (
+    //     Atlist[i].trackingDeviceId =iconint(Atlist[i].trackingDeviceId),
+    //     Atlist[i].usedForJobs =icon(Atlist[i].usedForJobs)
+    //     )
+    // );
     TotalPages = paginate.totalPages;
     // Atlist.map((e,i)=>
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
@@ -570,7 +583,7 @@ let iconint=(status)=>{
   let [menushow, setMenushow] = useState(false);
   function HandlerowSelect  (row) {
     menuDiv = "";
-    idofEdit = row.fuelcostId;
+    idofEdit = row.vehicleId;
     return setMenushow((menushow = true));
   };
   let Handlerowclose = (row) => {
