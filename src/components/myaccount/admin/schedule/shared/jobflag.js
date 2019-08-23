@@ -23,6 +23,7 @@ export function GetListingForJobflag(pg,pgsize) {
                  //"accept": "application/json",
                  //"Access-Control-Allow-Origin": "*",
                  'Content-Type': 'application/json',
+                 'Access-Control-Expose-Headers': '*',
                 }}
             )
 
