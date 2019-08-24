@@ -51,3 +51,17 @@ export function DeleteVehiclemanageDataById(id) {
 export function PostListingForVehiclemanage(body) {
   return axios.post(apiurlVehiclemanage, body);
 }
+
+//-----------Tracking Device-------
+
+let urlfortrackingdevice = apiUrl + "/masterdata/TrackingDevices/0/0";
+export function GetTrackingDeviceData() {
+  return axios.get(urlfortrackingdevice, {
+    headers: {
+      //"Authorization": authIt,
+      //"accept": "application/json",
+      //"Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json"
+    }
+  });
+}
