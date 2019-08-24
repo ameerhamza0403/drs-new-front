@@ -160,7 +160,27 @@ let VehicleManage =()=>{
     </select>
   );
   let [Tabledistatus, settabledistatus] = useState(false);
+  let icon=(cell,row)=>{
+    let iconvalue =  <i className='fa fa-plus-circle fa-2x' ></i>
+    if(cell===true){
+        iconvalue =  <i className='fa fa-check-circle fa-2x' ></i>
+    }
+    else if(cell===false){
+        iconvalue =  <i className='fa fa-remove fa-2x' ></i>
+    }
+    return iconvalue;
+}
 
+let iconint=(cell,row)=>{
+  let iconvalue =  <i className='fa fa-remove fa-2x' ></i>
+  if(cell!==''){
+      iconvalue =  <i className='fa fa-remove fa-2x' ></i>
+  }
+  else{
+      iconvalue =  <i className='fa fa-check-circle fa-2x' ></i>
+  }
+  return iconvalue;
+}
 
   if (Tabledistatus) {
     Tabledisplay = (
@@ -183,25 +203,25 @@ let VehicleManage =()=>{
           <TableHeaderColumn dataField="registration" dataSort>
             Registration
           </TableHeaderColumn>
-          <TableHeaderColumn isKey dataField="vehicleGroupId" dataSort>
+          <TableHeaderColumn isKey dataField="vehicleGroupName" dataSort>
             Group
           </TableHeaderColumn>
           <TableHeaderColumn dataField="refernce" dataSort>
             Reference
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="vehicleTypeId" dataSort>
+          <TableHeaderColumn dataField="vehicleTypeName" dataSort>
             Vehicle Type
           </TableHeaderColumn>
           <TableHeaderColumn dataField="costPerMile" dataSort>
             Cost Per Mile
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="resourceId" dataSort>
+          <TableHeaderColumn dataField="resourceName" dataSort>
             Fixed Resource
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="trackingDeviceId" dataSort>
+          <TableHeaderColumn dataField="trackingDeviceId"  dataFormat={iconint} dataSort>
             Tracking Device
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="usedForJobs" dataSort>
+          <TableHeaderColumn dataField="usedForJobs" dataFormat={icon} dataSort>
             Used For Jobs
           </TableHeaderColumn>
         </BootstrapTable>
@@ -223,27 +243,7 @@ let VehicleManage =()=>{
     );
   }
 
-  let icon=(status)=>{
-    let iconvalue = <Icon2 />
-    if(status===true){
-        iconvalue = <DoneOutlineIcon />
-    }
-    else if(status===false){
-        iconvalue = <Icon2 />
-    }
-    return iconvalue;
-}
 
-let iconint=(status)=>{
-  let iconvalue = <Icon2 />
-  if(status!==''){
-      iconvalue = <DoneOutlineIcon />
-  }
-  else{
-      iconvalue = <Icon2 />
-  }
-  return iconvalue;
-}
 
 
   let refreshfn = () => {

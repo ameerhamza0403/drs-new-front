@@ -1,5 +1,8 @@
 import React, { Component, useState, useEffect } from "react";
-import { PostListingForVehiclemanage } from "..//shared/manage";
+import {
+  PostListingForVehiclemanage,
+  GetTrackingDeviceData
+} from "..//shared/manage";
 import {
   Button,
   Card,
@@ -22,6 +25,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TextField from "@material-ui/core/TextField";
 import { GetListingForcurrency } from "../../resources/shared/currency";
+import { GetListingForVehicleType } from "../shared/vehicletype";
+import { GetListingForVehicleGroups } from "../shared/vehiclegroup";
 
 const classes = {
   button: {
@@ -43,6 +48,12 @@ const classes = {
     // height: "25px",
     border: "1px solid black",
     textAlign: "center"
+  },
+  divider:{
+    height: '1px',
+    backgroundColor: '#CED4DA',
+    width: '99%',
+    marginLeft: '1px',
   }
 };
 
@@ -74,15 +85,56 @@ let VehicleFuelCostAdd = props => {
       active: true
     }
   ]);
+
+  let [vehicledata, setVehicledata] = useState([
+    {
+      vehicleTypeId: 0,
+      name: "",
+      active: true
+    }
+  ]);
+  let [trackingdata, setTrackingdata] = useState([
+    {
+      trackingDeviceId: 0,
+      code: "",
+      remarks: "",
+      active: true
+    }
+  ]);
+  let [vehiclegroupdata, setVehicleGroupdata] = useState([
+    {
+      vehicleGroupId: "",
+      name: "",
+      active: true
+    }
+  ]);
+
   useEffect(() => {
     getcurrlist();
+    getVehicletype();
+    gettracking();
+    getvehiclegroup();
   }, []);
+
+  async function gettracking() {
+    const { data: trackingdata } = await GetTrackingDeviceData();
+    setTrackingdata(trackingdata);
+  }
+  async function getVehicletype() {
+    const { data: vehicledata } = await GetListingForVehicleType();
+    setVehicledata(vehicledata);
+  }
 
   async function getcurrlist() {
     const { data: currency } = await GetListingForcurrency();
     setCurrency(currency);
   }
 
+  async function getvehiclegroup() {
+    const { data: vehiclegroupdata } = await GetListingForVehicleGroups();
+    setVehicleGroupdata(vehiclegroupdata);
+    // handleOpen();
+  }
   //Tost
 
   function errort() {
@@ -99,12 +151,11 @@ let VehicleFuelCostAdd = props => {
 
   const validationSchema = function(values) {
     return Yup.object().shape({
-      costPerLitre: Yup.string()
-        .min(1, `Fuel Cost has to be at least 1 characters`)
+      registration: Yup.string()
+        .min(3, `Registration has to be at least 3 characters`)
         .required("Fuel Cost is required"),
-      currencyId: Yup.string()
-        // .min(1, `Fuel Cost has to be at least 1 characters`)
-        .required("Currency is required")
+      vehicleTypeId: Yup.string().required("Vehicle type is required"),
+      vehicleGroupId: Yup.string().required("Vehicle Group is required")
     });
   };
 
@@ -131,9 +182,12 @@ let VehicleFuelCostAdd = props => {
   };
 
   const initialValues = {
+    vehicleId: 0,
     registration: "",
     vehicleTypeId: 0,
+    vehicleTypeName: "",
     vehicleGroupId: 0,
+    vehicleGroupName: "",
     make: "",
     model: "",
     year: "",
@@ -143,6 +197,7 @@ let VehicleFuelCostAdd = props => {
     usedForJobs: true,
     fixedResource: true,
     resourceId: 0,
+    resourceName: "",
     costPerMile: 0,
     costPerDay: 0,
     cO2: 0,
@@ -229,34 +284,34 @@ let VehicleFuelCostAdd = props => {
                   <Col lg="12">
                     <Form onSubmit={handleSubmit} noValidate name="simpleForm">
                       <FormGroup>
-                        <div className="row">
+                        <div className="row mbr-3">
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
                               <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                                <Label for="name">Fuel Cost</Label>
+                                <Label for="registration">Registration</Label>
                               </div>
                               <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
                                 <Input
                                   type="text"
-                                  name="costPerLitre"
-                                  id="name"
-                                  // placeholder="i.e. Company Car"
+                                  name="registration"
+                                  id="registration"
+                                  placeholder="i.e. D1 BKT"
                                   autoComplete="given-name"
-                                  valid={!errors.costPerLitre}
+                                  valid={!errors.registration}
                                   invalid={
-                                    touched.costPerLitre &&
-                                    !!errors.costPerLitre
+                                    touched.registration &&
+                                    !!errors.registration
                                   }
                                   autoFocus={true}
                                   required
                                   onChange={handleChange}
                                   onBlur={handleBlur}
-                                  value={values.costPerLitre}
-                                  maxLength={8}
+                                  value={values.registration}
+                                  // maxLength={8}
                                   // style={classes.input}
                                 />
                                 <FormFeedback>
-                                  {errors.costPerLitre}
+                                  {errors.registration}
                                 </FormFeedback>
                               </div>
                             </div>
@@ -264,35 +319,391 @@ let VehicleFuelCostAdd = props => {
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
                               <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                                <Label for="name">Fuel Cost</Label>
+                                <Label for="refernce">Reference</Label>
                               </div>
                               <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
                                 <Input
                                   type="text"
-                                  name="costPerLitre"
-                                  id="name"
+                                  name="refernce"
+                                  id="refernce"
                                   // placeholder="i.e. Company Car"
                                   autoComplete="given-name"
-                                  valid={!errors.costPerLitre}
-                                  invalid={
-                                    touched.costPerLitre &&
-                                    !!errors.costPerLitre
-                                  }
-                                  autoFocus={true}
-                                  required
+                                  // valid={!errors.refernce}
+                                  // invalid={
+                                  //   touched.refernce &&
+                                  //   !!errors.refernce
+                                  // }
+                                  // autoFocus={true}
+                                  // required
                                   onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.costPerLitre}
-                                  maxLength={8}
+                                  // onBlur={handleBlur}
+                                  value={values.refernce}
+                                  // maxLength={8}
                                   // style={classes.input}
                                 />
-                                <FormFeedback>
-                                  {errors.costPerLitre}
-                                </FormFeedback>
+                                {/* <FormFeedback>
+                                  {errors.refernce}
+                                </FormFeedback> */}
                               </div>
                             </div>
                           </div>
                         </div>
+                        <div className="row">
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="vehicleTypeId">Vehicle type</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <Input
+                                  type="select"
+                                  name="vehicleTypeId"
+                                  id="vehicleTypeId"
+                                  // placeholder="i.e. Company Car"
+                                  autoComplete="given-name"
+                                  valid={!errors.vehicleTypeId}
+                                  invalid={
+                                    touched.vehicleTypeId &&
+                                    !!errors.vehicleTypeId
+                                  }
+                                  autoFocus={true}
+                                  required
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.vehicleTypeId}
+                                  // maxLength={8}
+                                  // style={classes.input}
+                                >
+                                  <option selected />
+                                  {vehicledata.map(e => (
+                                    <option value={e.vehicleGroupId}>
+                                      {e.name}
+                                    </option>
+                                  ))}
+                                </Input>
+                                <FormFeedback>
+                                  {errors.vehicleTypeId}
+                                </FormFeedback>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="trackingDeviceId">
+                                  Tracking device
+                                </Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <Input
+                                  type="select"
+                                  name="trackingDeviceId"
+                                  id="trackingDeviceId"
+                                  // placeholder="i.e. Company Car"
+                                  // autoComplete="given-name"
+                                  // valid={!errors.trackingDeviceId}
+                                  // invalid={
+                                  //   touched.trackingDeviceId &&
+                                  //   !!errors.trackingDeviceId
+                                  // }
+                                  // autoFocus={true}
+                                  // required
+                                  onChange={handleChange}
+                                  // onBlur={handleBlur}
+                                  value={values.code}
+                                  // maxLength={8}
+                                  // style={classes.input}
+                                >
+                                  <option selected />
+                                  {trackingdata.map(e => (
+                                    <option value={e.code}>
+                                      {e.trackingDeviceId}
+                                    </option>
+                                  ))}
+                                </Input>
+                                {/* <FormFeedback>
+                                  {errors.trackingDeviceId}
+                                </FormFeedback> */}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="vehicleGroupId">Group</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <Input
+                                  type="select"
+                                  name="vehicleGroupId"
+                                  id="vehicleGroupId"
+                                  // placeholder="i.e. Company Car"
+                                  autoComplete="given-name"
+                                  valid={!errors.vehicleGroupId}
+                                  invalid={
+                                    touched.vehicleGroupId &&
+                                    !!errors.vehicleGroupId
+                                  }
+                                  autoFocus={true}
+                                  required
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.vehicleGroupId}
+                                  // maxLength={8}
+                                  // style={classes.input}
+                                >
+                                  <option selected />
+                                  {vehiclegroupdata.map(e => (
+                                    <option value={e.vehicleGroupId}>
+                                      {e.name}
+                                    </option>
+                                  ))}
+                                </Input>
+                                <FormFeedback>
+                                  {errors.vehicleGroupId}
+                                </FormFeedback>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="usedForJobs">Used for jobs</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <FormGroup check inline className="radio">
+                                  <Input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="radio1"
+                                    name="usedForJobs"
+                                    value={true}
+                                  />
+                                  <Label
+                                    check
+                                    className="form-check-label"
+                                    htmlFor="usedForJobs"
+                                  >
+                                    Yes
+                                  </Label>
+                                </FormGroup>
+                                <FormGroup check inline className="radio">
+                                  <Input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="radio2"
+                                    name="usedForJobs"
+                                    value={false}
+                                  />
+                                  <Label
+                                    check
+                                    className="form-check-label"
+                                    htmlFor="usedForJobs"
+                                  >
+                                    No
+                                  </Label>
+                                </FormGroup>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="make">Make</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <Input
+                                  type="text"
+                                  name="make"
+                                  id="make"
+                                  // placeholder="i.e. Company Car"
+                                  // autoComplete="given-name"
+                                  // valid={!errors.make}
+                                  // invalid={
+                                  //   touched.make &&
+                                  //   !!errors.make
+                                  // }
+                                  // autoFocus={true}
+                                  // required
+                                  onChange={handleChange}
+                                  // onBlur={handleBlur}
+                                  value={values.make}
+                                  // maxLength={8}
+                                  // style={classes.input}
+                                />
+
+                                {/* <FormFeedback>
+                                  {errors.vehicleGroupId}
+                                </FormFeedback> */}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="usedForJobs">Fixed resource</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <FormGroup check inline className="radio">
+                                  <Input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="radio3"
+                                    name="fixedResource"
+                                    value={true}
+                                  />
+                                  <Label
+                                    check
+                                    className="form-check-label"
+                                    htmlFor="fixedResource"
+                                  >
+                                    Yes
+                                  </Label>
+                                </FormGroup>
+                                <FormGroup check inline className="radio">
+                                  <Input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="radio4"
+                                    name="fixedResource"
+                                    value={false}
+                                  />
+                                  <Label
+                                    check
+                                    className="form-check-label"
+                                    htmlFor="fixedResource"
+                                  >
+                                    No
+                                  </Label>
+                                </FormGroup>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="model">Model</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <Input
+                                  type="text"
+                                  name="model"
+                                  id="model"
+                                  // placeholder="i.e. Company Car"
+                                  // autoComplete="given-name"
+                                  // valid={!errors.model}
+                                  // invalid={
+                                  //   touched.model &&
+                                  //   !!errors.model
+                                  // }
+                                  // autoFocus={true}
+                                  // required
+                                  onChange={handleChange}
+                                  // onBlur={handleBlur}
+                                  value={values.model}
+                                  // maxLength={8}
+                                  // style={classes.input}
+                                />
+                                {/* <FormFeedback>
+                                  {errors.model}
+                                </FormFeedback> */}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6" />
+                        </div>
+
+                        <div className="row">
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="year">Year</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <Input
+                                  type="text"
+                                  name="year"
+                                  id="year"
+                                  // placeholder="i.e. Company Car"
+                                  // autoComplete="given-name"
+                                  // valid={!errors.year}
+                                  // invalid={
+                                  //   touched.year &&
+                                  //   !!errors.year
+                                  // }
+                                  // autoFocus={true}
+                                  // required
+                                  onChange={handleChange}
+                                  // onBlur={handleBlur}
+                                  value={values.year}
+                                  // maxLength={8}
+                                  // style={classes.input}
+                                />
+                                {/* <FormFeedback>
+                                  {errors.year}
+                                </FormFeedback> */}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6" />
+                        </div>
+
+
+                        <div className="row">
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="year">Odometer unit</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <FormGroup check inline className="radio">
+                                  <Input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="radio5"
+                                    name="odometerUnit"
+                                    value={"kilometers"}
+                                  />
+                                  <Label
+                                    check
+                                    className="form-check-label"
+                                    htmlFor="odometerUnit"
+                                  >
+                                    Kilometers
+                                  </Label>
+                                </FormGroup>
+                                <FormGroup check inline className="radio">
+                                  <Input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="radio6"
+                                    name="odometerUnit"
+                                    value={"miles"}
+                                  />
+                                  <Label
+                                    check
+                                    className="form-check-label"
+                                    htmlFor="odometerUnit"
+                                  >
+                                    Miles
+                                  </Label>
+                                </FormGroup>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6" />
+                        </div>
+
+
+                        <div className='row' style={classes.divider}></div>
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>
