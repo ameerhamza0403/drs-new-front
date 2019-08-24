@@ -19,6 +19,9 @@ import {
   Label,
   Input
 } from "reactstrap";
+import Select from "react-select";
+// import "react-select/dist/react-select.min.css";
+import 'react-select/dist/react-select.css';
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -27,6 +30,8 @@ import TextField from "@material-ui/core/TextField";
 import { GetListingForcurrency } from "../../resources/shared/currency";
 import { GetListingForVehicleType } from "../shared/vehicletype";
 import { GetListingForVehicleGroups } from "../shared/vehiclegroup";
+import { GetListingForVehicleChecktype } from "../shared/vehiclechecktype";
+let iconpack = "https://cdn.bigchangeapps.com/img/Map/cn/40/air-n.png";
 
 const classes = {
   button: {
@@ -49,11 +54,14 @@ const classes = {
     border: "1px solid black",
     textAlign: "center"
   },
-  divider:{
-    height: '1px',
-    backgroundColor: '#CED4DA',
-    width: '99%',
-    marginLeft: '1px',
+  divider: {
+    height: "1px",
+    backgroundColor: "#CED4DA",
+    width: "99%",
+    marginLeft: "1px"
+  },
+  icon: {
+    cursor: "pointer"
   }
 };
 
@@ -109,17 +117,37 @@ let VehicleFuelCostAdd = props => {
     }
   ]);
 
+  let [vehchecktype, setVehiclechecktype] = useState({
+    vehicleCheckTypeId: 0,
+    name: "",
+    active: true
+  });
   useEffect(() => {
+    getvehchecktype();
     getcurrlist();
     getVehicletype();
     gettracking();
     getvehiclegroup();
+    // modal=true;
   }, []);
+
+  // let vehtypeselect=[
+  //   {value:'1', label:'1'},
+  // ];
+  async function getvehchecktype() {
+    const { data: vehchecktype } = await GetListingForVehicleChecktype();
+    setVehiclechecktype(vehchecktype);
+    vehchecktype.map((e, i) => {
+      e.value = e.name;
+      e.label = e.name;
+    });
+  }
 
   async function gettracking() {
     const { data: trackingdata } = await GetTrackingDeviceData();
     setTrackingdata(trackingdata);
   }
+
   async function getVehicletype() {
     const { data: vehicledata } = await GetListingForVehicleType();
     setVehicledata(vehicledata);
@@ -135,7 +163,14 @@ let VehicleFuelCostAdd = props => {
     setVehicleGroupdata(vehiclegroupdata);
     // handleOpen();
   }
-  //Tost
+  let multivehtype = [];
+  function savevehchecktype(value) {
+    // multivehtype.push(value[0].name);
+    // setInitialvalues(initialValues.vehicleCheckTypes=JSON.stringify(multivehtype));
+    console.log(value);
+    console.log(vehchecktype);
+  }
+  //Toast
 
   function errort() {
     // add type: 'error' to options
@@ -181,7 +216,29 @@ let VehicleFuelCostAdd = props => {
     }, {});
   };
 
-  const initialValues = {
+  let iconData = [
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack,
+    iconpack
+  ];
+
+  const [initialValues, setInitialvalues] = useState({
     vehicleId: 0,
     registration: "",
     vehicleTypeId: 0,
@@ -207,9 +264,9 @@ let VehicleFuelCostAdd = props => {
     maxRPM: 0,
     attributes: "",
     vehicleCheckTypes: "",
-    icon: "",
+    icon: iconpack,
     active: true
-  };
+  });
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -234,10 +291,23 @@ let VehicleFuelCostAdd = props => {
     validateForm(errors);
   }
 
+  const handleiconChange = event => {
+    let name = "icon";
+    let valofCod;
+    valofCod = event.target.getAttribute("value");
+    setInitialvalues({ ...initialValues, [name]: valofCod });
+    handleOpenMT();
+  };
+
   let [modal, setModal] = useState(false);
+  let [modalMT, setModalMT] = useState(false);
 
   let handleOpen = () => {
     return setModal((modal = !modal));
+  };
+
+  let handleOpenMT = () => {
+    return setModalMT((modalMT = !modalMT));
   };
 
   const handleDataChange = name => event => {
@@ -249,7 +319,9 @@ let VehicleFuelCostAdd = props => {
   };
   return (
     <div>
-      <div onClick={handleOpen} style={classes.plusbutton}>
+      <div
+      onClick={handleOpen}
+      style={classes.plusbutton}>
         <i className="fa fa-plus-circle fa-2x" />
       </div>
 
@@ -656,7 +728,6 @@ let VehicleFuelCostAdd = props => {
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6" />
                         </div>
 
-
                         <div className="row mb-3">
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
@@ -702,10 +773,356 @@ let VehicleFuelCostAdd = props => {
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6" />
                         </div>
 
+                        <div className="row" style={classes.divider} />
+                        <br />
+                        <div className="row mb-3">
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row mb-2">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="year">Cost Per Mile</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <div className="row">
+                                  <div className="col">
+                                    <Input
+                                      type="text"
+                                      name="costPerMile"
+                                      id="costPerMile"
+                                      // placeholder="i.e. Company Car"
+                                      // autoComplete="given-name"
+                                      // valid={!errors.costPerMile}
+                                      // invalid={
+                                      //   touched.costPerMile &&
+                                      //   !!errors.costPerMile
+                                      // }
+                                      // autoFocus={true}
+                                      // required
+                                      onChange={handleChange}
+                                      // onBlur={handleBlur}
+                                      value={values.costPerMile}
+                                      // maxLength={8}
+                                      // style={classes.input}
+                                    />
+                                    {/* <FormFeedback>
+                                  {errors.costPerMile}
+                                </FormFeedback> */}
+                                  </div>
+                                  <div className="col">
+                                    <Input
+                                      type="select"
+                                      name="costPerMile"
+                                      id="costPerMile"
+                                      // placeholder="i.e. Company Car"
+                                      // autoComplete="given-name"
+                                      // valid={!errors.costPerMile}
+                                      // invalid={
+                                      //   touched.costPerMile &&
+                                      //   !!errors.costPerMile
+                                      // }
+                                      // autoFocus={true}
+                                      // required
+                                      onChange={handleChange}
+                                      // onBlur={handleBlur}
+                                      value={values.costPerMile}
+                                      // maxLength={8}
+                                      // style={classes.input}
+                                    >
+                                      <option selected />
+                                      {currency.map(e => (
+                                        <option value={e.currencyId}>
+                                          {e.code}
+                                        </option>
+                                      ))}
+                                    </Input>
+                                    {/* <FormFeedback>
+                                  {errors.costPerMile}
+                                </FormFeedback> */}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="year">Cost Per Day</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <div className="row">
+                                  <div className="col">
+                                    <Input
+                                      type="text"
+                                      name="costPerDay"
+                                      id="costPerDay"
+                                      // placeholder="i.e. Company Car"
+                                      // autoComplete="given-name"
+                                      // valid={!errors.costPerDay}
+                                      // invalid={
+                                      //   touched.costPerDay &&
+                                      //   !!errors.costPerDay
+                                      // }
+                                      // autoFocus={true}
+                                      // required
+                                      onChange={handleChange}
+                                      // onBlur={handleBlur}
+                                      value={values.costPerDay}
+                                      // maxLength={8}
+                                      // style={classes.input}
+                                    />
+                                    {/* <FormFeedback>
+                                  {errors.costPerDay}
+                                </FormFeedback> */}
+                                  </div>
+                                  <div className="col">
+                                    <Input
+                                      type="select"
+                                      name="costPerMile"
+                                      id="costPerMile"
+                                      // placeholder="i.e. Company Car"
+                                      // autoComplete="given-name"
+                                      // valid={!errors.costPerMile}
+                                      // invalid={
+                                      //   touched.costPerMile &&
+                                      //   !!errors.costPerMile
+                                      // }
+                                      // autoFocus={true}
+                                      // required
+                                      onChange={handleChange}
+                                      // onBlur={handleBlur}
+                                      value={values.costPerMile}
+                                      // maxLength={8}
+                                      // style={classes.input}
+                                    >
+                                      <option selected />
+                                      {currency.map(e => (
+                                        <option value={e.currencyId}>
+                                          {e.code}
+                                        </option>
+                                      ))}
+                                    </Input>
+                                    {/* <FormFeedback>
+                                  {errors.costPerMile}
+                                </FormFeedback> */}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="year">Select Icon</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <img
+                                  src={initialValues.icon}
+                                  onClick={handleOpenMT}
+                                />
+                                <Modal
+                                  isOpen={modalMT}
+                                  toggle={handleOpenMT}
+                                  className={"modal-primary " + props.className}
+                                >
+                                  <ModalHeader toggle={handleOpenMT}>
+                                    Note Type
+                                  </ModalHeader>
+                                  <ModalBody>
+                                    <div className="container">
+                                      <div className="row">
+                                        {iconData.map(element => (
+                                          <div className="col">
+                                            <img
+                                              src={element}
+                                              style={classes.icon}
+                                              value={element}
+                                              onClick={handleiconChange}
+                                            />
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  </ModalBody>
+                                </Modal>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
-                        <div className='row' style={classes.divider}></div>
-                      </FormGroup>
+                        <div className="row mb-3">
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="year">CO2</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <div className="row">
+                                  <div className="col">
+                                    <Input
+                                      type="text"
+                                      name="cO2"
+                                      id="cO2"
+                                      // placeholder="i.e. Company Car"
+                                      // autoComplete="given-name"
+                                      // valid={!errors.cO2}
+                                      // invalid={
+                                      //   touched.cO2 &&
+                                      //   !!errors.cO2
+                                      // }
+                                      // autoFocus={true}
+                                      // required
+                                      onChange={handleChange}
+                                      // onBlur={handleBlur}
+                                      value={values.cO2}
+                                      // maxLength={8}
+                                      // style={classes.input}
+                                    />
+                                  </div>
+                                  <div className="col">
+                                    <FormGroup check inline className="radio">
+                                      <Input
+                                        className="form-check-input"
+                                        type="radio"
+                                        id="radio5"
+                                        name="cO2Unit"
+                                        value={0}
+                                      />
+                                      <Label
+                                        check
+                                        className="form-check-label"
+                                        htmlFor="odometerUnit"
+                                      >
+                                        gram/km
+                                      </Label>
+                                    </FormGroup>
+                                    <FormGroup check inline className="radio">
+                                      <Input
+                                        className="form-check-input"
+                                        type="radio"
+                                        id="radio6"
+                                        name="cO2Unit"
+                                        value={1}
+                                      />
+                                      <Label
+                                        check
+                                        className="form-check-label"
+                                        htmlFor="cO2Unit"
+                                      >
+                                        kg/litre
+                                      </Label>
+                                    </FormGroup>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6" />
+                        </div>
+
+                        <div className="row mb-3">
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="year">
+                                  Idling fuel consumption
+                                </Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <div className="row">
+                                  <div className="col">
+                                    <Input
+                                      type="text"
+                                      name="idleFuelConsump"
+                                      id="idleFuelConsump"
+                                      // placeholder="i.e. Company Car"
+                                      // autoComplete="given-name"
+                                      // valid={!errors.idleFuelConsump}
+                                      // invalid={
+                                      //   touched.idleFuelConsump &&
+                                      //   !!errors.idleFuelConsump
+                                      // }
+                                      // autoFocus={true}
+                                      // required
+                                      onChange={handleChange}
+                                      // onBlur={handleBlur}
+                                      value={values.idleFuelConsump}
+                                      // maxLength={8}
+                                      // style={classes.input}
+                                    />
+                                  </div>
+                                  <div className="col">
+                                    <Label for="idleFuelConsump">
+                                      litre per minute
+                                    </Label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div className="row">
+                              <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                <Label for="year">Max RPM</Label>
+                              </div>
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <Input
+                                  type="text"
+                                  name="maxRPM"
+                                  id="maxRPM"
+                                  // placeholder="i.e. Company Car"
+                                  // autoComplete="given-name"
+                                  // valid={!errors.maxRPM}
+                                  // invalid={
+                                  //   touched.maxRPM &&
+                                  //   !!errors.maxRPM
+                                  // }
+                                  // autoFocus={true}
+                                  // required
+                                  onChange={handleChange}
+                                  // onBlur={handleBlur}
+                                  value={values.maxRPM}
+                                  // maxLength={8}
+                                  // style={classes.input}
+                                />
+                                {/* <FormFeedback>
+                                  {errors.maxRPM}
+                                </FormFeedback> */}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        </FormGroup>
                       <FormGroup>
+                        <div className="row" style={classes.divider} />
+                        <br />
+                        <div className="row mb-3">
+                          <div className="col-2 col-sm-6 col-md-2 col-lg-2 col-xl-2">
+                            <Label for="year">Attributes</Label>
+                          </div>
+                          <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8" />
+                        </div>
+
+                        <div className="row mb-3">
+                          <div className="col-2 col-sm-6 col-md-2 col-lg-2 col-xl-2">
+                            <Label for="year">Vehicle type for defects</Label>
+                          </div>
+                          <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                            {/* <Select
+                              name="form-field-name2"
+                              // value={vehchecktype}
+                              options={vehchecktype}
+                              onChange={savevehchecktype}
+                              multi
+                            /> */}
+                            <Select
+                              isMulti
+                              // name="colors"
+                              // className="basic-multi-select"
+                              // classNamePrefix="select"
+                              key={vehchecktype.vehicleCheckTypeId}
+                              options={vehchecktype}
+                              onChange={savevehchecktype}
+                            />
+                          </div>
+                        </div>
+
                         <ModalFooter>
                           <Button
                             type="submit"
