@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { PostListingForWorkSheet, PutWorkSheetDataById } from "..//shared/worksheet";
+import {  PostListingForWorkSheet } from "..//shared/worksheet";
 import {
   Button,
   Card,
@@ -20,7 +20,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { PutPhoneBookDataById } from "../../resources/shared/phonebook";
+
 
 const classes = {
   button: {
@@ -60,7 +60,7 @@ let AddWorkSheet = props => {
 
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PutWorkSheetDataById(values).then(()=>success()).catch(error=>errort());
+    await PostListingForWorkSheet(values).then(()=>success()).catch(error=>errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);
@@ -162,7 +162,7 @@ let AddWorkSheet = props => {
         className={"modal-primary " + props.className}
         size="lg"
       >
-        <ModalHeader toggle={handleOpen}>WorkSheet</ModalHeader>
+        <ModalHeader toggle={handleOpen} ><h3 className="font-weight:bold;">WorkSheet</h3></ModalHeader>
         <ModalBody>
           <div className="container">
             <Formik
@@ -191,7 +191,7 @@ let AddWorkSheet = props => {
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="name">Name</Label>
                           </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
                             <Input
                               type="text"
                               name="name"
@@ -215,7 +215,7 @@ let AddWorkSheet = props => {
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="ctBackOffice">Completion time for back office</Label>
                           </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
                             <Input
                               type="select"
                               name="ctBackOffice"
