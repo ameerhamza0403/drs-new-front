@@ -80,11 +80,8 @@ const VehicleFuelCost = React.lazy(() => import('./components/myaccount/admin/ve
 const JobFlagListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobflag/listing'));
 const JobCategoryListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobcategory/listing'));
 const PhoneBookListing = React.lazy(() => import('./components/myaccount/admin/resources/phonebook/listing'));
-<<<<<<< Updated upstream
 const VehicleManage = React.lazy(() => import('./components/myaccount/admin/vehicle/manage/listing'));
-=======
 const TrackingDeviceListing = React.lazy(() => import('./components/myaccount/admin/vehicle/trackingdevice/listing'));
->>>>>>> Stashed changes
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
