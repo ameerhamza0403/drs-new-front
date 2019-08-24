@@ -3,6 +3,7 @@ import {
   PostListingForVehiclemanage,
   GetTrackingDeviceData
 } from "..//shared/manage";
+import ManageVehAttribute from './attribute';
 import {
   Button,
   Card,
@@ -65,17 +66,13 @@ const classes = {
   }
 };
 
-let VehicleFuelCostAdd = props => {
+let VehicleAddManage = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
-  let [timevalue, setTimevalue] = useState({
-    startDate: "",
-    endDate: ""
-  });
+
+
   async function onSubmit(values, { setSubmitting, setErrors }) {
     let newvalue = values;
-    newvalue.startDate = timevalue.startDate;
-    newvalue.endDate = timevalue.endDate;
     console.log(newvalue);
     await PostListingForVehiclemanage(newvalue)
       .then(() => success())
@@ -131,9 +128,7 @@ let VehicleFuelCostAdd = props => {
     // modal=true;
   }, []);
 
-  // let vehtypeselect=[
-  //   {value:'1', label:'1'},
-  // ];
+
   async function getvehchecktype() {
     const { data: vehchecktype } = await GetListingForVehicleChecktype();
     setVehiclechecktype(vehchecktype);
@@ -165,11 +160,17 @@ let VehicleFuelCostAdd = props => {
   }
   let multivehtype = [];
   function savevehchecktype(value) {
-    // multivehtype.push(value[0].name);
+    multivehtype.push(value.name);
     // setInitialvalues(initialValues.vehicleCheckTypes=JSON.stringify(multivehtype));
-    console.log(value);
-    console.log(vehchecktype);
+    console.log(multivehtype);
   }
+
+
+  function HandleSHR(str){
+    let name='attributes';
+    setInitialvalues({...initialValues, [name]:str});
+  }
+
   //Toast
 
   function errort() {
@@ -310,13 +311,7 @@ let VehicleFuelCostAdd = props => {
     return setModalMT((modalMT = !modalMT));
   };
 
-  const handleDataChange = name => event => {
-    if (name === "startDate") {
-      setTimevalue({ ...timevalue, [name]: event.target.value });
-    } else {
-      setTimevalue({ ...timevalue, [name]: event.target.value });
-    }
-  };
+
   return (
     <div>
       <div
@@ -448,7 +443,7 @@ let VehicleFuelCostAdd = props => {
                                 >
                                   <option selected />
                                   {vehicledata.map(e => (
-                                    <option value={e.vehicleGroupId}>
+                                    <option value={e.vehicleTypeId}>
                                       {e.name}
                                     </option>
                                   ))}
@@ -1096,7 +1091,9 @@ let VehicleFuelCostAdd = props => {
                           <div className="col-2 col-sm-6 col-md-2 col-lg-2 col-xl-2">
                             <Label for="year">Attributes</Label>
                           </div>
-                          <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8" />
+                          <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8" >
+                            <ManageVehAttribute shrvalue={HandleSHR} />
+                          </div>
                         </div>
 
                         <div className="row mb-3">
@@ -1116,7 +1113,8 @@ let VehicleFuelCostAdd = props => {
                               // name="colors"
                               // className="basic-multi-select"
                               // classNamePrefix="select"
-                              key={vehchecktype.vehicleCheckTypeId}
+                              value={initialValues.vehicleCheckTypeId}
+                              key={initialValues.vehicleCheckTypeId}
                               options={vehchecktype}
                               onChange={savevehchecktype}
                             />
@@ -1155,4 +1153,4 @@ let VehicleFuelCostAdd = props => {
   );
 };
 
-export default VehicleFuelCostAdd;
+export default VehicleAddManage;
