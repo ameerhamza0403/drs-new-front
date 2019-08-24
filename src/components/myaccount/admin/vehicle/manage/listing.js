@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // import MUIDataTable from "mui-datatables";
-import EditFuelCost from "./edit";
-import VehicleFuelCostAdd from "./add";
+import EditVehicleManage from "./edit";
+import VehicleAddManage from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -570,7 +570,7 @@ let iconint=(cell,row)=>{
 
   if (Editstate) {
     EditshowModel = (
-      <EditFuelCost
+      <EditVehicleManage
         IDforAPI={idofEdit}
         refresh={refreshfn}
         cross={HandleCrossEditforlisting}
@@ -593,7 +593,7 @@ let iconint=(cell,row)=>{
     menuDiv = (
       <ul className="tool">
         <li>
-          <VehicleFuelCostAdd refresh={refreshfn} />
+          <VehicleAddManage refresh={refreshfn} />
         </li>
         <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -613,7 +613,7 @@ let iconint=(cell,row)=>{
     menuDiv = (
       <ul className="tool">
         <li />
-        <VehicleFuelCostAdd refresh={refreshfn} />
+        <VehicleAddManage refresh={refreshfn} />
       </ul>
     );
   }

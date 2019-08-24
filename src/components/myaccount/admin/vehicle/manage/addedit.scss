@@ -1,0 +1,94 @@
+$color_1: white;
+$background_color_1: #EF6735;
+
+.container.form {
+	font-size: 12px;
+}
+.checkForm {
+	height: 63%;
+	width: 51.9%;
+	z-index: 200;
+	position: fixed;
+	overflow: scroll;
+	overflow-x: hidden;
+	padding: 1%;
+}
+.col.form {
+	margin-left: -1%;
+}
+.popOfhourr {
+	width: 500px;
+	height: 130px;
+	overflow: scroll;
+	overflow-x: hidden;
+}
+.popOfhourradd {
+	width: 500px;
+	height: 130px;
+}
+.popOfhourrskill {
+	width: 500px;
+	height: 80px;
+}
+.popOfhourrSHRm {
+	height: 50px;
+}
+.popOfhourrSHR {
+	height: 280px;
+}
+.btn.popHand {
+	background-color: $background_color_1;
+	border: 0px;
+	color: $color_1;
+}
+.row.accesshr {
+	margin: 1%;
+	width: 100%;
+	padding-top: 5%;
+}
+.row.form {
+	padding-bottom: 1.5%;
+	padding-top: 1.5%;
+}
+.ah_div {
+	background-color: $background_color_1;
+	height: 20px;
+	width: 150px;
+	border: 1px solid;
+	color: $color_1;
+	border-radius: 3px;
+	text-align: center;
+	margin: 2%;
+}
+.ah_divskil {
+	background-color: $background_color_1;
+	height: 20px;
+	width: 250px;
+	border: 1px solid;
+	color: $color_1;
+	border-radius: 3px;
+	text-align: center;
+	margin: 2%;
+}
+.ah_divSHR {
+	background-color: $background_color_1;
+	height: 20px;
+	width: 250px;
+	border: 1px solid;
+	color: $color_1;
+	border-radius: 3px;
+	text-align: center;
+	margin: 2%;
+}
+.col-2.cross {
+	cursor: pointer;
+}
+.row.ForaH {
+	margin: 2%;
+}
+.col-10.ForaH {
+	border: 0.5px solid #30303080;
+}
+.row.ForAHCB {
+	margin-left: 30%;
+}
