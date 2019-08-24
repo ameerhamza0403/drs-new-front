@@ -308,6 +308,11 @@ export default {
           icon: "fa fa-truck"
         },
         {
+          name: "Tracking Device",
+          url: "/admin/vehicle/trackingdevice",
+          icon: "fa fa-truck"
+        },
+        {
           name: "Fuel Cost",
           url: "/admin/vehicle/fuel",
           icon: "fa fa-truck"

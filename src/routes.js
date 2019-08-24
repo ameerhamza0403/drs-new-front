@@ -1,4 +1,5 @@
 import React from 'react';
+//import TrackingDeviceListing from './components/myaccount/admin/vehicle/trackingdevice/listing';
 
 const CodeEditors = React.lazy(() => import('./views/Editors/CodeEditors'));
 const TextEditors = React.lazy(() => import('./views/Editors/TextEditors'));
@@ -79,7 +80,11 @@ const VehicleFuelCost = React.lazy(() => import('./components/myaccount/admin/ve
 const JobFlagListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobflag/listing'));
 const JobCategoryListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobcategory/listing'));
 const PhoneBookListing = React.lazy(() => import('./components/myaccount/admin/resources/phonebook/listing'));
+<<<<<<< Updated upstream
 const VehicleManage = React.lazy(() => import('./components/myaccount/admin/vehicle/manage/listing'));
+=======
+const TrackingDeviceListing = React.lazy(() => import('./components/myaccount/admin/vehicle/trackingdevice/listing'));
+>>>>>>> Stashed changes
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -166,6 +171,7 @@ const routes = [
   { path: '/admin/vehicle/check', exact: true, name: 'Vehicle Check', component: VehicleCheck },
   { path: '/admin/vehicle/check/type', exact: true, name: 'Vehicle Check Type', component: VehicleCheckTypeListing },
   { path: '/admin/vehicle/fuel', exact: true, name: 'Fuel Cost', component: VehicleFuelCost },
+  { path: '/admin/vehicle/trackingdevice', exact: true, name: 'Tracking Device', component: TrackingDeviceListing },
   { path: '/admin/schedule/jobflag', exact: true, name: 'Job Flags', component: JobFlagListing },
   { path: '/admin/schedule/jobcategory', exact: true, name: 'Job Category', component: JobCategoryListing },
   { path: '/admin/resources/phone', exact: true, name: 'Phone Book', component: PhoneBookListing },
