@@ -41,6 +41,7 @@ class AdvancedForms extends React.Component {
 
   saveChanges(value) {
     this.setState({ value });
+    console.log(this.state.value)
   }
 
   updateDimensions() {
@@ -181,7 +182,7 @@ class AdvancedForms extends React.Component {
                 value={this.state.value}
                 options={options}
                 onChange={this.saveChanges}
-                // multi
+                multi
               />
             </CardBody>
           </Card>
