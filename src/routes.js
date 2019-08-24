@@ -173,12 +173,8 @@ const routes = [
   { path: '/admin/schedule/jobflag', exact: true, name: 'Job Flags', component: JobFlagListing },
   { path: '/admin/schedule/jobcategory', exact: true, name: 'Job Category', component: JobCategoryListing },
   { path: '/admin/resources/phone', exact: true, name: 'Phone Book', component: PhoneBookListing },
-<<<<<<< Updated upstream
   { path: '/admin/vehicle/manage', exact: true, name: 'Manage', component: VehicleManage },
-=======
-  { path: '/admin/vehicle/manage', exact: true, name: 'Phone Book', component: VehicleManage },
   { path: '/admin/schedule/worksheet', exact: true, name: 'Work Sheet', component: WorkSheetListing },
 
->>>>>>> Stashed changes
 ];
 export default routes;
