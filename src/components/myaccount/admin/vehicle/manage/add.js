@@ -284,7 +284,7 @@ let VehicleFuelCostAdd = props => {
                   <Col lg="12">
                     <Form onSubmit={handleSubmit} noValidate name="simpleForm">
                       <FormGroup>
-                        <div className="row mbr-3">
+                        <div className="row mb-3">
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
                               <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
@@ -348,7 +348,7 @@ let VehicleFuelCostAdd = props => {
                             </div>
                           </div>
                         </div>
-                        <div className="row">
+                        <div className="row mb-3">
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
                               <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
@@ -428,7 +428,7 @@ let VehicleFuelCostAdd = props => {
                             </div>
                           </div>
                         </div>
-                        <div className="row">
+                        <div className="row mb-3">
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
                               <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
@@ -510,7 +510,7 @@ let VehicleFuelCostAdd = props => {
                           </div>
                         </div>
 
-                        <div className="row">
+                        <div className="row mb-3">
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
                               <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
@@ -586,7 +586,7 @@ let VehicleFuelCostAdd = props => {
                           </div>
                         </div>
 
-                        <div className="row">
+                        <div className="row mb-3">
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
                               <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
@@ -621,7 +621,7 @@ let VehicleFuelCostAdd = props => {
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6" />
                         </div>
 
-                        <div className="row">
+                        <div className="row mb-3">
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
                               <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
@@ -657,7 +657,7 @@ let VehicleFuelCostAdd = props => {
                         </div>
 
 
-                        <div className="row">
+                        <div className="row mb-3">
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
                               <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
