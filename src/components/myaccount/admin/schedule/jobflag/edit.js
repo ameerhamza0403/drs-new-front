@@ -178,7 +178,7 @@ let EditButtonForJobFlag = props => {
         toggle={handleOpen}
         className={"modal-primary " + props.className}
       >
-        <ModalHeader toggle={handleOpen}>Add Currency</ModalHeader>
+        <ModalHeader toggle={handleOpen} ><h3 className="font-weight:bold;">Update Flag</h3></ModalHeader>
         <ModalBody>
           <div className="container">
             <form>
