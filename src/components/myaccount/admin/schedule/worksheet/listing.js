@@ -151,17 +151,16 @@ const options = {
   
 
   async function getlistapi() {
-  const {data:Atlist} =  await GetListingForWorkSheet();
-  setAtlist(Atlist);
-      //setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-    //TotalPages = paginate.totalPages;
+    await GetListingForWorkSheet(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
     // Atlist.map((e,i)=>
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
     //                 )
+    TotalPages = paginate.totalPages;
     settabledistatus((Tabledistatus = true));
-
-    
   }
 
   let Tabledisplay = (

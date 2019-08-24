@@ -1,4 +1,5 @@
 import { GetWorkSheetDataById, PutWorkSheetDataById } from "..//shared/worksheet";
+import WorkSheetQListing from "./worksheetquestion/listing";
 import React, { Component, useState, useEffect } from "react";
 import {
   Button,
@@ -164,6 +165,7 @@ let EditWorkSheet = props => {
 
   async function getlistapi() {
     const { data: initialValues } = await GetWorkSheetDataById(props.IDforAPI);
+    console.log(initialValues);
     setInitialValues(initialValues)
   }
 
@@ -440,6 +442,11 @@ let EditWorkSheet = props => {
                   </Col>
                 </Row>
               )}
+            />
+          </div>
+          <div className="container">
+            <WorkSheetQListing 
+            IDforAPI={props.IDforAPI}
             />
           </div>
         </ModalBody>
