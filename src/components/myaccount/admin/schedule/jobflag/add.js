@@ -174,7 +174,7 @@ let AddJobFlag = props => {
         toggle={handleOpen}
         className={"modal-primary " + props.className}
       >
-        <ModalHeader toggle={handleOpen}>Add Job Flag</ModalHeader>
+        <ModalHeader toggle={handleOpen} ><h3 className="font-weight:bold;">Add Flag</h3></ModalHeader>
         <ModalBody>
           <div className="container">
             <div className="container">
