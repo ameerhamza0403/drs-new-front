@@ -167,7 +167,7 @@ let EditPhoneBook = props => {
         toggle={handleOpen}
         className={"modal-primary " + props.className}
       >
-        <ModalHeader toggle={handleOpen}>Add Absence Type</ModalHeader>
+        <ModalHeader toggle={handleOpen}>Add Phone Book</ModalHeader>
         <ModalBody>
           <div className="container">
             <Formik
