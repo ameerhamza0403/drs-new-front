@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 //import MUIDataTable from "mui-datatables";
-import "../../../../../scss/override/listing.scss";
-import EditWorkSheet from "./edit";
+import "../../../../../../scss/override/listing.scss";
+import EditWorkSheetQ from "./edit";
 import {
-  GetListingForWorkSheet,
-  DeleteWorkSheetDataById
-} from "..//shared/worksheet";
-import AddWorkSheet from "./add";
+    GetListingForWorkSheetQ,
+  DeleteWorkSheetQDataById
+} from "../../shared/worksheetquestion";
+import AddWorkSheetQ from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -51,7 +51,7 @@ const classes = {
   }
 };
 
-  let WorkSheetListing = () => {
+  let WorkSheetQListing = props => {
   let [Atlist, setAtlist] = useState();
   let [paginate, setPaginate] = useState();
 
@@ -151,7 +151,7 @@ const options = {
   
 
   async function getlistapi() {
-    await GetListingForWorkSheet(Page, PageSize).then(res => {
+    await GetListingForWorkSheetQ(props.IDforAPI,Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
@@ -187,27 +187,19 @@ const options = {
           search
           options={options}
         >
-          <TableHeaderColumn dataField="name" dataSort>
-            Name
+          <TableHeaderColumn dataField="question" dataSort>
+            Question
           </TableHeaderColumn>
-          <TableHeaderColumn isKey dataField="ctBackOffice" dataSort>
-            Completion time for back office
+          <TableHeaderColumn isKey dataField="questionType" dataSort>
+            Type
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="ctResource" dataSort>
-            Completion time for resource
+          <TableHeaderColumn dataField="answer" dataSort>
+            Mandatory Answer
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="ctBookingSite" dataSort>
-            Completion time on booking site
+          <TableHeaderColumn dataField="defaultAnswer" dataSort>
+            Default Answer
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="headerAnswer" dataSort>
-            Job card header for "Answer"
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="headerNotes" dataSort>
-            Job card header for "Answer"
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="sharing" dataSort>
-            Sharing
-          </TableHeaderColumn>
+          
         </BootstrapTable>
         <br />
         <div className="row">
@@ -499,7 +491,7 @@ function handlePageSize(event) {
 //----- Finished Pagination---------
 
   async function Dellistapi() {
-    await DeleteWorkSheetDataById(idofEdit).then(() => {
+    await DeleteWorkSheetQDataById(idofEdit).then(() => {
       success();
     }).catch(error => {
         errort();
@@ -523,7 +515,7 @@ function handlePageSize(event) {
 
   if (Editstate) {
     EditshowModel = (
-      <EditWorkSheet
+      <EditWorkSheetQ
         IDforAPI={idofEdit}
         refresh={refreshfn}
         cross={HandleCrossEditforlisting}
@@ -546,7 +538,7 @@ function handlePageSize(event) {
     menuDiv = (
       <ul className="tool">
         <li>
-          <AddWorkSheet refresh={refreshfn} />
+          <AddWorkSheetQ refresh={refreshfn} />
         </li>
         <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -566,7 +558,7 @@ function handlePageSize(event) {
     menuDiv = (
       <ul className="tool">
         <li />
-        <AddWorkSheet refresh={refreshfn} />
+        <AddWorkSheetQ refresh={refreshfn} />
       </ul>
     );
   }
@@ -578,7 +570,7 @@ function handlePageSize(event) {
         {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">WORK SHEET</h3>
+          <h3 className="heading">Task/Inspections/Parts</h3>
         </div>
       </div>
       <br />
@@ -588,4 +580,4 @@ function handlePageSize(event) {
   );
 };
 
-export default WorkSheetListing;
+export default WorkSheetQListing;

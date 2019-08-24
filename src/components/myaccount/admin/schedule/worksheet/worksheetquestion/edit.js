@@ -1,5 +1,4 @@
-import { GetWorkSheetDataById, PutWorkSheetDataById } from "..//shared/worksheet";
-import WorkSheetQListing from "./worksheetquestion/listing";
+import { GetWorkSheetQDataById, PutWorkSheetQDataById } from "../../shared/worksheetquestion";
 import React, { Component, useState, useEffect } from "react";
 import {
   Button,
@@ -44,7 +43,7 @@ const classes = {
 
 };
 
-let EditWorkSheet = props => {
+let EditWorkSheetQ = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
     //Toast
@@ -65,7 +64,7 @@ let EditWorkSheet = props => {
 
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PutWorkSheetDataById(props.IDforAPI, values).then(()=>success()).catch(error=>errort());
+    await PutWorkSheetQDataById(props.IDforAPI, values).then(()=>success()).catch(error=>errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);
@@ -164,8 +163,7 @@ let EditWorkSheet = props => {
   }, []);
 
   async function getlistapi() {
-    const { data: initialValues } = await GetWorkSheetDataById(props.IDforAPI);
-    console.log(initialValues);
+    const { data: initialValues } = await GetWorkSheetQDataById(props.IDforAPI);
     setInitialValues(initialValues)
   }
 
@@ -444,15 +442,11 @@ let EditWorkSheet = props => {
               )}
             />
           </div>
-          <div className="container">
-            <WorkSheetQListing 
-            IDforAPI={props.IDforAPI}
-            />
-          </div>
+          
         </ModalBody>
       </Modal>
     </div>
   );
 };
 
-export default EditWorkSheet;
+export default EditWorkSheetQ;

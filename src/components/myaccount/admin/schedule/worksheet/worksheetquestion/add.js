@@ -1,6 +1,5 @@
-import { GetWorkSheetDataById, PutWorkSheetDataById } from "..//shared/worksheet";
-import WorkSheetQListing from "./worksheetquestion/listing";
 import React, { Component, useState, useEffect } from "react";
+import {  PostListingForWorkSheetQ } from "../../shared/worksheetquestion";
 import {
   Button,
   Card,
@@ -23,8 +22,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
-
-
 const classes = {
   button: {
     color: "white",
@@ -40,32 +37,30 @@ const classes = {
     // marginTop: '10px',
     // marginLeft: '5px',
   },
-  
 
 };
 
-let EditWorkSheet = props => {
+let AddWorkSheetQ = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
-    //Toast
+      //Tost
 
-    function errort() {
-      // add type: 'error' to options
-      return toast.error('Failed with Error...', {
-        position: toast.POSITION.BOTTOM_RIGHT
-      });
+      function errort() {
+        // add type: 'error' to options
+        return toast.error('Failed with Error...', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
 
-    }
-    function success() {
-      return toast.success("Saved Successfully... ", {
-        position: toast.POSITION.BOTTOM_RIGHT
-      });
-    }
-
+      }
+      function success() {
+        return toast.success("Saved Successfully... ", {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      }
 
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PutWorkSheetDataById(props.IDforAPI, values).then(()=>success()).catch(error=>errort());
+    await PostListingForWorkSheetQ(values).then(()=>success()).catch(error=>errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);
@@ -114,17 +109,17 @@ let EditWorkSheet = props => {
     }, {});
   };
 
-  const [initialValues, setInitialValues] = useState({
-    // name: "",
-    // ctBackOffice:"",
-    // ctResource:"",
-    // ctBookingSite:"",
-    // headerAnswer:"",
-    // headerNotes:"",
-    // sharing:"",
-    // order:0,
+  const initialValues = {
+    name: "",
+    ctBackOffice:"",
+    ctResource:"",
+    ctBookingSite:"",
+    headerAnswer:"",
+    headerNotes:"",
+    sharing:"",
+    order:0,
     active: false
-  });
+  };
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -148,29 +143,12 @@ let EditWorkSheet = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(true);
+
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
-    return (
-      setModal((modal = false)),
-      setTimeout(()=> props.cross(), 200)
-
-    );
+    return setModal((modal = !modal));
   };
-
-
-  useEffect(() => {
-    getlistapi();
-  }, []);
-
-  async function getlistapi() {
-    const { data: initialValues } = await GetWorkSheetDataById(props.IDforAPI);
-    console.log(initialValues);
-    setInitialValues(initialValues)
-  }
-
-
-
 
   return (
     <div>
@@ -218,7 +196,7 @@ let EditWorkSheet = props => {
                               type="text"
                               name="name"
                               id="name"
-                              placeholder={initialValues.name}
+                              placeholder=""
                               autoComplete="given-name"
                               valid={!errors.name}
                               invalid={touched.name && !!errors.name}
@@ -233,7 +211,6 @@ let EditWorkSheet = props => {
                           </div>
                         </div>
                         
-                        
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="ctBackOffice">Completion time for back office</Label>
@@ -243,7 +220,7 @@ let EditWorkSheet = props => {
                               type="select"
                               name="ctBackOffice"
                               id="ctBackOffice"
-                              selected={initialValues.ctBackOffice}
+                              
                               autoComplete="given-name"
                               valid={!errors.ctBackOffice}
                               invalid={touched.ctBackOffice && !!errors.ctBackOffice}
@@ -265,7 +242,7 @@ let EditWorkSheet = props => {
                             
                           </div>
                         </div>
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="extensions">Completion time for resource</Label>
@@ -275,7 +252,7 @@ let EditWorkSheet = props => {
                               type="select"
                               name="ctResource"
                               id="ctResource"
-                              selected={values.ctResource}
+                              
                               autoComplete="given-name"
                               valid={!errors.ctResource}
                               invalid={touched.ctResource && !!errors.ctResource}
@@ -297,7 +274,6 @@ let EditWorkSheet = props => {
                           </div>
                         </div>
 
-                        
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="email">Completion time on booking site</Label>
@@ -307,7 +283,7 @@ let EditWorkSheet = props => {
                               type="select"
                               name="ctBookingSite"
                               id="ctBookingSite"
-                              selected={initialValues.ctBookingSite}
+                             
                               autoComplete="given-name"
                               valid={!errors.ctBookingSite}
                               invalid={touched.ctBookingSite && !!errors.ctBookingSite}
@@ -326,7 +302,7 @@ let EditWorkSheet = props => {
                             
                           </div>
                         </div>
-                        
+ 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="headerAnswer">Job card header for "Answer"</Label>
@@ -336,7 +312,7 @@ let EditWorkSheet = props => {
                               type="text"
                               name="headerAnswer"
                               id="headerAnswer"
-                              placeholder={initialValues.headerAnswer}
+                              placeholder=""
                               autoComplete="given-name"
                               valid={!errors.headerAnswer}
                               invalid={touched.headerAnswer && !!errors.headerAnswer}
@@ -350,7 +326,7 @@ let EditWorkSheet = props => {
                            
                           </div>
                         </div>
-                        
+              
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="headerNotes">Job card header for "Notes"</Label>
@@ -360,7 +336,7 @@ let EditWorkSheet = props => {
                               type="text"
                               name="headerNotes"
                               id="headerNotes"
-                              placeholder={initialValues.headerNotes}
+                              placeholder=""
                               autoComplete="given-name"
                               valid={!errors.headerNotes}
                               invalid={touched.headerNotes && !!errors.headerNotes}
@@ -384,7 +360,7 @@ let EditWorkSheet = props => {
                               type="checkbox"
                               name="sharing"
                               id="sharing"
-                              selected={initialValues.sharing}
+                              selected=""
                               autoComplete="given-name"
                               valid={!errors.sharing}
                               invalid={touched.sharing && !!errors.sharing}
@@ -444,15 +420,10 @@ let EditWorkSheet = props => {
               )}
             />
           </div>
-          <div className="container">
-            <WorkSheetQListing 
-            IDforAPI={props.IDforAPI}
-            />
-          </div>
         </ModalBody>
       </Modal>
     </div>
   );
 };
 
-export default EditWorkSheet;
+export default AddWorkSheetQ;
