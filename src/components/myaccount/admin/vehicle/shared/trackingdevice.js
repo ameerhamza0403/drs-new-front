@@ -4,20 +4,20 @@ import axios from 'axios';
 
 
 /* *************************Contacts Group*********************** */
-let apiurlJobflag= apiUrl + '/masterdata/JobFlags';
+let apiurlTrackingDevice= apiUrl + '/masterdata/TrackingDevices';
 // let apiurlAbsenceType= 'https://reqres.in/api/users/2';
 
-function ApiwithidJobflag(Id) {
-    return `${apiurlJobflag}/${Id}`;
+function ApiwithidTrackingDevice(Id) {
+    return `${apiurlTrackingDevice}/${Id}`;
   }
 
-  function ApiwithbyPgJobflag(Pg,PgSize) {
-    return `${apiurlJobflag}/${Pg}/${PgSize}`;
+  function ApiwithbyPgTrackingDevice(Pg,PgSize) {
+    return `${apiurlTrackingDevice}/${Pg}/${PgSize}`;
   }
 
-//-------- GetAPi 
-export function GetListingForJobflag(pg,pgsize) {
-    return axios.get(ApiwithbyPgJobflag(pg,pgsize),
+//-------- GetAPi
+export function GetListingForTrackingDevice(pg,pgsize) {
+    return axios.get(ApiwithbyPgTrackingDevice(pg,pgsize),
              {headers: {
                  //"Authorization": authIt,
                  //"accept": "application/json",
@@ -30,9 +30,9 @@ export function GetListingForJobflag(pg,pgsize) {
 }
 
 //---------Edit APi
-export function GetJobflagDataById(id) {
+export function GetTrackingDeviceDataById(id) {
     // console.log(id)
-    return axios.get(ApiwithidJobflag(id),
+    return axios.get(ApiwithidTrackingDevice(id),
              {headers: {
                  'Content-Type': 'application/json',
                 }}
@@ -40,22 +40,22 @@ export function GetJobflagDataById(id) {
 
 }
 
-export function PutJobflagDataById(id,body) {
+export function PutTrackingDeviceDataById(id,body) {
     // console.log(id)
-    return axios.put(ApiwithidJobflag(id),body)
+    return axios.put(ApiwithidTrackingDevice(id),body)
 
 }
 
 //------- Delete-API
 
-export function DeleteJobflagDataById(id) {
+export function DeleteTrackingDeviceDataById(id) {
     // console.log(id)
-    return axios.delete(ApiwithidJobflag(id))
+    return axios.delete(ApiwithidTrackingDevice(id))
 
 }
 
 //----------Save-Post-API
-export function PostListingForJobflag(body) {
-    return axios.post(apiurlJobflag,body)
+export function PostListingForTrackingDevice(body) {
+    return axios.post(apiurlTrackingDevice,body)
 
 }
