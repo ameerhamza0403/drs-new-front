@@ -152,7 +152,7 @@ let EditJobCategory = (props) => {
         toggle={handleOpen}
         className={"modal-primary " + props.className}
       >
-        <ModalHeader toggle={handleOpen}>Job Category</ModalHeader>
+        <ModalHeader toggle={handleOpen} ><h3 className="font-weight:bold;">Job Category</h3></ModalHeader>
         <ModalBody>
           <div className="container">
             <Formik

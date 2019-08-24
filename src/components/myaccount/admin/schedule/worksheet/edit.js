@@ -182,7 +182,7 @@ let EditWorkSheet = props => {
         className={"modal-primary " + props.className}
         size="lg"
       >
-        <ModalHeader toggle={handleOpen}>WorkSheet</ModalHeader>
+        <ModalHeader toggle={handleOpen} ><h3 className="font-weight:bold;">WorkSheet</h3></ModalHeader>
         <ModalBody>
           <div className="container">
             <Formik
