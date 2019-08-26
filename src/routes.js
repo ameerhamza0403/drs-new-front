@@ -82,7 +82,7 @@ const JobCategoryListing = React.lazy(() => import('./components/myaccount/admin
 const PhoneBookListing = React.lazy(() => import('./components/myaccount/admin/resources/phonebook/listing'));
 const VehicleManage = React.lazy(() => import('./components/myaccount/admin/vehicle/manage/listing'));
 const TrackingDeviceListing = React.lazy(() => import('./components/myaccount/admin/vehicle/trackingdevice/listing'));
-// const WorkSheetListing = React.lazy(() => import('./components/myaccount/admin/schedule/worksheet/listing'));
+const WorkSheetListing = React.lazy(() => import('./components/myaccount/admin/schedule/worksheet/listing'));
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -174,7 +174,7 @@ const routes = [
   { path: '/admin/schedule/jobcategory', exact: true, name: 'Job Category', component: JobCategoryListing },
   { path: '/admin/resources/phone', exact: true, name: 'Phone Book', component: PhoneBookListing },
   { path: '/admin/vehicle/manage', exact: true, name: 'Manage', component: VehicleManage },
-  // { path: '/admin/schedule/worksheet', exact: true, name: 'Work Sheet', component: WorkSheetListing },
+  { path: '/admin/schedule/worksheet', exact: true, name: 'Work Sheet', component: WorkSheetListing },
 
 ];
 export default routes;
