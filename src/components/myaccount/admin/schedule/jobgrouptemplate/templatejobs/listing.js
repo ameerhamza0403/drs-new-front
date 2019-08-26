@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 // import MUIDataTable from "mui-datatables";
 // import EditFuelCost from "./edit";
-import JobGroupTemplateAdd from "./add";
+import TemplateAdd from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../../../../../scss/override/listing.scss";
+import "../../../../../../scss/override/listing.scss";
 import {
   GetListingForjobgrouptemplate,
   DeletejobgrouptemplateDataById
-} from "../shared/jobgrouptemplate";
+} from "../../shared/jobgrouptemplate";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { propsEqual } from "react-shallow-equal";
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -50,9 +51,18 @@ const classes = {
   }
 };
 
-let JobGroupTemplateListing = () => {
+
+let templatearr=[];
+let GroupTemplate = (props) => {
   let [Atlist, setAtlist] = useState([
-    { name: "", sameContact: true, sameResource: true, active: true }
+    // {
+    //   jobGroupTemplateName: "",
+    //   contact: "",
+    //   jobTypeName: "",
+    //   resourceName: "",
+    //   active: true,
+    //   count: 0,
+    // }
   ]);
   let [paginate, setPaginate] = useState();
 
@@ -174,29 +184,38 @@ let JobGroupTemplateListing = () => {
       //   options={options}
       // />
       <div>
+        <br />
         <BootstrapTable
           data={Atlist}
           version="4"
           striped
           hover
-          pagination
-          search
+          // pagination
+          // search
           options={options}
         >
-             <TableHeaderColumn  dataField='active' isKey={true} hidden={true}>Active</TableHeaderColumn>
+          <TableHeaderColumn dataField="active" isKey={true} hidden={true}>
+            Active
+          </TableHeaderColumn>
 
-          <TableHeaderColumn dataField="name"  dataSort>
-            Name
+          <TableHeaderColumn dataField="jobTypeName" dataSort>
+            Job Type
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="contact" dataSort>
+            Contact
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="resourceName" dataSort>
+            Resource
           </TableHeaderColumn>
         </BootstrapTable>
         <br />
-        <div className="row">
+        {/* <div className="row">
           <div className="col">
             {PageSizeComp}
             {"  Showing " + PageSize + " Rows Per Page"}
           </div>
           <div className="col">{paging}</div>
-        </div>
+        </div> */}
         {/* {Atlist.map(e=>e.usedForJobs)} */}
       </div>
     );
@@ -215,16 +234,26 @@ let JobGroupTemplateListing = () => {
   }, []);
 
   async function getlistapi() {
-    await GetListingForjobgrouptemplate(Page, PageSize).then(res => {
-      setAtlist((Atlist = res.data));
-      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-    });
+    // await GetListingForjobgrouptemplate(Page, PageSize).then(res => {
+    //   setAtlist((Atlist = res.data));
+    //   setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    // });
     // Atlist.map((e,i)=>
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
     //                 )
-    TotalPages = paginate.totalPages;
+    // TotalPages = paginate.totalPages;
     settabledistatus((Tabledistatus = true));
+  }
+
+  function handletemplate(value){
+      templatearr.push(value);
+      props.templatedata(templatearr);
+      setAtlist((templatearr));
+      settabledistatus(false);
+      setTimeout(() => {
+        refreshfn()
+      }, 10);
   }
   //--- Pagination ------------------
 
@@ -527,9 +556,15 @@ let JobGroupTemplateListing = () => {
   let [menushow, setMenushow] = useState(false);
   function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = row.jobGroupTemplateId;
-    console.log(idofEdit);
-    return setMenushow((menushow = true));
+    idofEdit = row.count;
+    Atlist.map((e,i)=>{ if(e.count===idofEdit){
+      Atlist.splice(idofEdit, 1);
+    }});
+    settabledistatus(false);
+    setTimeout(() => {
+      refreshfn()
+    }, 10);
+    // return setMenushow((menushow = true));
   }
   let Handlerowclose = row => {
     return setMenushow((menushow = false));
@@ -537,7 +572,10 @@ let JobGroupTemplateListing = () => {
   if (menushow) {
     menuDiv = (
       <ul className="tool">
-        <li> <JobGroupTemplateAdd refresh={refreshfn} /> </li>
+        <li>
+          {" "}
+          <TemplateAdd refresh={refreshfn} submit={handletemplate} />{" "}
+        </li>
         <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <i className="fa fa-pencil-square fa-2x" />
@@ -556,26 +594,27 @@ let JobGroupTemplateListing = () => {
     menuDiv = (
       <ul className="tool">
         <li />
-        <JobGroupTemplateAdd refresh={refreshfn} />
+        <TemplateAdd refresh={refreshfn} submit={handletemplate}/>
       </ul>
     );
   }
 
   return (
     <div>
-      <div className="row header">
+      {/* <div className="row header">
         <div className="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5">
           {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">JOB GROUP TEMPLATE</h3>
+          <h3 className="heading">FUEL COST</h3>
         </div>
-      </div>
+      </div> */}
       <br />
       {EditshowModel}
       {Tabledisplay}
+      <TemplateAdd refresh={refreshfn} submit={handletemplate} />
     </div>
   );
 };
 
-export default JobGroupTemplateListing;
+export default GroupTemplate;
