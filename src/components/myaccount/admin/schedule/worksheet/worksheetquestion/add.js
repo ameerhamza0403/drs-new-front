@@ -61,7 +61,7 @@ let AddWorkSheetQ = props => {
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
     console.log(values , props.idworksheet);
-    await PostListingForWorkSheetQ(values).then(()=>success()).catch(error=>errort());
+    await PostListingForWorkSheetQ(props.idworksheet,values).then(()=>success()).catch(error=>errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);
@@ -157,7 +157,7 @@ let AddWorkSheetQ = props => {
         size="lg"
       >
         <ModalHeader toggle={handleOpen} ><h3 className="font-weight:bold;">WorkSheet</h3></ModalHeader>
-        <ModalBody style={{'max-height': 'calc(100vh - 110px)', 'overflow-y': 'auto'}}>
+        <ModalBody style={{'max-height': 'calc(100vh - 150px)', 'overflow-y': 'auto'}}>
           <div className="container">
             <Formik
               initialValues={initialValues}

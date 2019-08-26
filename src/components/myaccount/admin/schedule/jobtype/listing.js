@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 //import MUIDataTable from "mui-datatables";
-import "../../../../../../scss/override/listing.scss";
-import EditWorkSheetQ from "./edit";
+import "../../../../../scss/override/listing.scss";
+import EditJobType from "./edit";
 import {
-    GetListingForWorkSheetQ,
-    DeleteWorkSheetQDataById
-} from "../../shared/worksheetquestion";
-import AddWorkSheetQ from "./add";
+  GetListingForJobType,
+  DeleteJobTypeDataById
+} from "..//shared/jobtype";
+import AddJobType from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -51,7 +51,7 @@ const classes = {
   }
 };
 
-  let WorkSheetQListing = props => {
+  let JobTypeListing = () => {
   let [Atlist, setAtlist] = useState();
   let [paginate, setPaginate] = useState();
 
@@ -151,9 +151,10 @@ const options = {
   
 
   async function getlistapi() {
-    await GetListingForWorkSheetQ(props.IDforMainEdit,Page, PageSize).then(res => {
+    await GetListingForJobType(Page, PageSize).then(res => {
+      console.log("res.data");
       setAtlist((Atlist = res.data));
-      console.log(Atlist);
+      console.log(res.data);
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
     // Atlist.map((e,i)=>
@@ -188,19 +189,19 @@ const options = {
           search
           options={options}
         >
-          <TableHeaderColumn dataField="question" dataSort>
-            Question
+          <TableHeaderColumn dataField="name" dataSort>
+            Name
           </TableHeaderColumn>
-          <TableHeaderColumn isKey dataField="questionType" dataSort>
-            Type
+          <TableHeaderColumn isKey dataField="jobCardTitle" dataSort>
+            Job Card Title
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="answer" dataSort>
-            Mandatory Answer
+          <TableHeaderColumn dataField="positiveResults" dataSort>
+            Positive Results
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="defaultAnswer" dataSort>
-            Default Answer
+          <TableHeaderColumn dataField="positiveResults" dataSort>
+            Nagetive Results
           </TableHeaderColumn>
-          
+         
         </BootstrapTable>
         <br />
         <div className="row">
@@ -492,7 +493,7 @@ function handlePageSize(event) {
 //----- Finished Pagination---------
 
   async function Dellistapi() {
-    await DeleteWorkSheetQDataById(idofEdit).then(() => {
+    await DeleteJobTypeDataById(idofEdit).then(() => {
       success();
     }).catch(error => {
         errort();
@@ -516,9 +517,8 @@ function handlePageSize(event) {
 
   if (Editstate) {
     EditshowModel = (
-      <EditWorkSheetQ
-        IDforAPI={props.IDforMainEdit}
-        idofEdit={idofEdit}
+      <EditJobType
+        IDforAPI={idofEdit}
         refresh={refreshfn}
         cross={HandleCrossEditforlisting}
       />
@@ -530,8 +530,7 @@ function handlePageSize(event) {
   let [menushow, setMenushow] = useState(false);
   function HandlerowSelect  (row) {
     menuDiv = "";
-    console.log(row);
-    idofEdit = row.worksheetQuestionId;
+    idofEdit = row.jobTypeId;
     return setMenushow((menushow = true));
   };
   let Handlerowclose = (data, meta) => {
@@ -541,7 +540,7 @@ function handlePageSize(event) {
     menuDiv = (
       <ul className="tool">
         <li>
-          <AddWorkSheetQ refresh={refreshfn}/>
+          <AddJobType refresh={refreshfn} />
         </li>
         <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -561,7 +560,7 @@ function handlePageSize(event) {
     menuDiv = (
       <ul className="tool">
         <li />
-        <AddWorkSheetQ refresh={refreshfn} idworksheet={props.IDforMainEdit}/>
+        <AddJobType refresh={refreshfn} />
       </ul>
     );
   }
@@ -573,7 +572,7 @@ function handlePageSize(event) {
         {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">Task/Inspections/Parts</h3>
+          <h3 className="heading">JOB TYPE</h3>
         </div>
       </div>
       <br />
@@ -583,4 +582,4 @@ function handlePageSize(event) {
   );
 };
 
-export default WorkSheetQListing;
+export default JobTypeListing;

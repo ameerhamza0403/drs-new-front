@@ -4,20 +4,20 @@ import axios from 'axios';
 
 
 /* *************************Contacts Group*********************** */
-let apiurlJobflag= apiUrl + '/masterdata/JobFlags';
+let apiurlJobType= apiUrl + '/masterdata/JobTypes';
 // let apiurlAbsenceType= 'https://reqres.in/api/users/2';
 
-function ApiwithidJobflag(Id) {
-    return `${apiurlJobflag}/${Id}`;
+function ApiwithidJobType(Id) {
+    return `${apiurlJobType}/${Id}`;
   }
 
-  function ApiwithbyPgJobflag(Pg,PgSize) {
-    return `${apiurlJobflag}/${Pg}/${PgSize}`;
+  function ApiwithbyPgJobType(Pg,PgSize) {
+    return `${apiurlJobType}/${Pg}/${PgSize}`;
   }
 
-//-------- GetAPi  
-export function GetListingForJobflag(pg,pgsize) {
-    return axios.get(ApiwithbyPgJobflag(pg,pgsize),
+//-------- GetAPi 
+export function GetListingForJobType(pg,pgsize) {
+    return axios.get(ApiwithbyPgJobType(pg,pgsize),
              {headers: {
                  //"Authorization": authIt,
                  //"accept": "application/json",
@@ -30,9 +30,9 @@ export function GetListingForJobflag(pg,pgsize) {
 }
 
 //---------Edit APi
-export function GetJobflagDataById(id) {
+export function GetJobTypeDataById(id) {
     // console.log(id)
-    return axios.get(ApiwithidJobflag(id),
+    return axios.get(ApiwithidJobType(id),
              {headers: {
                  'Content-Type': 'application/json',
                 }}
@@ -40,22 +40,22 @@ export function GetJobflagDataById(id) {
 
 }
 
-export function PutJobflagDataById(id,body) {
+export function PutJobTypeDataById(id,body) {
     // console.log(id)
-    return axios.put(ApiwithidJobflag(id),body)
+    return axios.put(ApiwithidJobType(id),body)
 
 }
 
 //------- Delete-API
 
-export function DeleteJobflagDataById(id) {
+export function DeleteJobTypeDataById(id) {
     // console.log(id)
-    return axios.delete(ApiwithidJobflag(id))
+    return axios.delete(ApiwithidJobType(id))
 
 }
 
 //----------Save-Post-API
-export function PostListingForJobflag(body) {
-    return axios.post(apiurlJobflag,body)
+export function PostListingForJobType(body) {
+    return axios.post(apiurlJobType,body)
 
 }

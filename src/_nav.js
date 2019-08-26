@@ -326,7 +326,7 @@ export default {
       children: [
         {
           name: "Job Type",
-          url: "/admin/schedule/type",
+          url: "/admin/schedule/jobtype",
           icon: "fa fa-clock-o"
         },
         {

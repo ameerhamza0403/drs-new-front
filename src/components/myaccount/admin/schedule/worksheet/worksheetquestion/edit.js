@@ -177,7 +177,7 @@ let EditWorkSheetQ = props => {
         size="lg"
       >
         <ModalHeader toggle={handleOpen} ><h3 className="font-weight:bold;">WorkSheet</h3></ModalHeader>
-        <ModalBody style={{'max-height': 'calc(100vh - 110px)', 'overflow-y': 'auto'}}>
+        <ModalBody style={{'max-height': 'calc(100vh - 150px)', 'overflow-y': 'auto'}}>
           <div className="container">
             <Formik
               initialValues={initialValues}
