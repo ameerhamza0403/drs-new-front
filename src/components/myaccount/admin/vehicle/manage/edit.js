@@ -104,11 +104,11 @@ let EditVehicleManage = props => {
     }
   ]);
 
-  let [vehchecktype, setVehiclechecktype] = useState({
+  let [vehchecktype, setVehiclechecktype] = useState([{
     vehicleCheckTypeId: 0,
     name: "",
     active: true
-  });
+  }]);
   useEffect(() => {
     getvehchecktype();
     getcurrlist();
@@ -145,7 +145,7 @@ let EditVehicleManage = props => {
   async function getvehiclegroup() {
     const { data: vehiclegroupdata } = await GetListingForVehicleGroups();
     setVehicleGroupdata(vehiclegroupdata);
-    handleOpen();
+    // handleOpen();
   }
   let multivehtype = [];
   function savevehchecktype(value) {
@@ -289,11 +289,11 @@ let EditVehicleManage = props => {
     handleOpenMT();
   };
 
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
   let [modalMT, setModalMT] = useState(false);
 
   let handleOpen = () => {
-    return setModal(modal = !modal);
+    return setModal((modal=!modal));
   };
 
   let handleOpenMT = () => {
@@ -304,11 +304,6 @@ let EditVehicleManage = props => {
 
   return (
     <div>
-      <div
-      onClick={handleOpen}
-      style={classes.plusbutton}>
-        <i className="fa fa-plus-circle fa-2x" />
-      </div>
 
       <Modal
         isOpen={modal}

@@ -87,7 +87,8 @@ let CurrencyListing = () => {
     customToolbar: () => console.log("rowData"),
     rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
     selectableRows: "none",
-    viewColumns: true
+    viewColumns: true,
+    responsive: 'scroll',
 
     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
   };

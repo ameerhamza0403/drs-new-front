@@ -113,6 +113,7 @@ let JobFlagListing = () => {
     selectableRows: "none",
     viewColumns: true,
     rowsPerPage: PageSize,
+    responsive: 'scroll',
     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
   };
 

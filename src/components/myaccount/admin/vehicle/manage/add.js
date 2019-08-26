@@ -114,11 +114,11 @@ let VehicleAddManage = props => {
     }
   ]);
 
-  let [vehchecktype, setVehiclechecktype] = useState({
+  let [vehchecktype, setVehiclechecktype] = useState([{
     vehicleCheckTypeId: 0,
     name: "",
     active: true
-  });
+  }]);
   useEffect(() => {
     getvehchecktype();
     getcurrlist();
