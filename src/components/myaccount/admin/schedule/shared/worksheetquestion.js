@@ -6,13 +6,22 @@ import axios from 'axios';
 /* *************************Contacts Group*********************** */
 let ApiurlWorkSheetQ= apiUrl + '/masterdata/Worksheets';
 // let apiurlAbsenceType= 'https://reqres.in/api/users/2';
-
 function ApiwithidWorkSheetQ(Id) {
     return `${ApiurlWorkSheetQ}/${Id}`;
   }
 
   function ApiwithbyPgWorkSheetQ(id,Pg,PgSize) {
+    
+   
     return `${ApiurlWorkSheetQ}/${id}/WorksheetQuestions/${Pg}/${PgSize}`;
+
+  }
+
+  function ApiwithidforpostWorkSheetQ(Id){
+      return `${ApiurlWorkSheetQ}/${Id}/WorksheetQuestions`;
+  }
+  function ApiwithidforputWorkSheetQ(Id,id){
+    return `${ApiurlWorkSheetQ}/${Id}/WorksheetQuestions/${id}`;
   }
 
 //-------- GetAPi 
@@ -40,9 +49,9 @@ export function GetWorkSheetQDataById(id) {
 
 }
 
-export function PutWorkSheetQDataById(id,body) {
+export function PutWorkSheetQDataById(idmain,id,body) {
     // console.log(id)
-    return axios.put(ApiwithidWorkSheetQ(id),body)
+    return axios.put(ApiwithidforputWorkSheetQ(idmain,id),body)
 
 }
 
@@ -55,7 +64,7 @@ export function DeleteWorkSheetQDataById(id) {
 }
 
 //----------Save-Post-API
-export function PostListingForWorkSheetQ(body) {
-    return axios.post(ApiurlWorkSheetQ,body)
+export function PostListingForWorkSheetQ(id,body) {
+    return axios.post(ApiwithidforpostWorkSheetQ(id),body)
 
 }

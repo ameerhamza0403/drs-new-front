@@ -4,7 +4,7 @@ import "../../../../../../scss/override/listing.scss";
 import EditWorkSheetQ from "./edit";
 import {
     GetListingForWorkSheetQ,
-  DeleteWorkSheetQDataById
+    DeleteWorkSheetQDataById
 } from "../../shared/worksheetquestion";
 import AddWorkSheetQ from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -151,8 +151,9 @@ const options = {
   
 
   async function getlistapi() {
-    await GetListingForWorkSheetQ(props.IDforAPI,Page, PageSize).then(res => {
+    await GetListingForWorkSheetQ(props.IDforMainEdit,Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
+      console.log(Atlist);
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
     // Atlist.map((e,i)=>
@@ -516,7 +517,8 @@ function handlePageSize(event) {
   if (Editstate) {
     EditshowModel = (
       <EditWorkSheetQ
-        IDforAPI={idofEdit}
+        IDforAPI={props.IDforMainEdit}
+        idofEdit={idofEdit}
         refresh={refreshfn}
         cross={HandleCrossEditforlisting}
       />
@@ -528,7 +530,8 @@ function handlePageSize(event) {
   let [menushow, setMenushow] = useState(false);
   function HandlerowSelect  (row) {
     menuDiv = "";
-    idofEdit = row.worksheetId;
+    console.log(row);
+    idofEdit = row.worksheetQuestionId;
     return setMenushow((menushow = true));
   };
   let Handlerowclose = (data, meta) => {
@@ -538,7 +541,7 @@ function handlePageSize(event) {
     menuDiv = (
       <ul className="tool">
         <li>
-          <AddWorkSheetQ refresh={refreshfn} />
+          <AddWorkSheetQ refresh={refreshfn}/>
         </li>
         <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -558,7 +561,7 @@ function handlePageSize(event) {
     menuDiv = (
       <ul className="tool">
         <li />
-        <AddWorkSheetQ refresh={refreshfn} />
+        <AddWorkSheetQ refresh={refreshfn} idworksheet={props.IDforAPI}/>
       </ul>
     );
   }
