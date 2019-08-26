@@ -12,15 +12,17 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 
+
+
 let menuDiv = "";
 let EditshowModel = "";
 let ColorStyle = {};
 let idofEdit = 0;
 let count = 0;
-let Page = 1;
 let PageSize = 10;
 let paging = "";
 let TotalPages = 3;
+let Page=1;
 
 const classes = {
   linearprogress: {
@@ -51,6 +53,7 @@ const classes = {
 };
 
 let JobFlagListing = () => {
+
   let ColorStyleFn = mycolor => {
     let code = "#" + mycolor;
     return (ColorStyle = {
@@ -109,11 +112,11 @@ let JobFlagListing = () => {
     // onChangePage: (currentPage)=> handlechangepage(currentPage),
     // onChangeRowsPerPage: (numberOfRows)=> handlechangepagesize(numberOfRows),
     // rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-    customFooter: ()=>(''),
+    customFooter: () => "",
     selectableRows: "none",
     viewColumns: true,
     rowsPerPage: PageSize,
-    responsive: 'scroll',
+    responsive: "scroll"
     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
   };
 
@@ -125,8 +128,7 @@ let JobFlagListing = () => {
     </select>
   );
 
-
-  //--- Pagination ------------------
+//  --- Pagination ------------------
 
   let [pgin, setPgin] = useState(true);
 
@@ -375,8 +377,6 @@ let JobFlagListing = () => {
     refreshfn();
   }
 
-
-
   //----- Finished Pagination---------
 
   // function handlechangepage(curntpg){
@@ -391,6 +391,7 @@ let JobFlagListing = () => {
   //   refreshfn();
   // }
 
+
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
   );
@@ -398,19 +399,21 @@ let JobFlagListing = () => {
   if (Tabledistatus) {
     Tabledisplay = (
       <div>
-      <MUIDataTable
-        title={"Actions & Filters"}
-        data={Atlist}
-        columns={columns}
-        options={options}
-      />
-      <br />
+        <MUIDataTable
+          title={"Actions & Filters"}
+          data={Atlist}
+          columns={columns}
+          options={options}
+        />
+        <br />
         <div className="row">
           <div className="col">
             {PageSizeComp}
             {"  Showing " + PageSize + " Rows Per Page"}
           </div>
-          <div className="col">{paging}</div>
+          <div className="col">
+            {paging}
+          </div>
         </div>
       </div>
     );
