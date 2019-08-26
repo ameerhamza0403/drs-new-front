@@ -185,7 +185,7 @@ let EditWorkSheet = props => {
         size="lg"
       >
         <ModalHeader toggle={handleOpen} ><h3 className="font-weight:bold;">WorkSheet</h3></ModalHeader>
-        <ModalBody>
+        <ModalBody style={{'max-height': 'calc(100vh - 10px)', 'overflow-y': 'auto'}}>
           <div className="container">
             <Formik
               initialValues={initialValues}
@@ -393,9 +393,24 @@ let EditWorkSheet = props => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.sharing}
-                            />share with job contractors
-                            <FormFeedback>{errors.sharing}</FormFeedback>
-                            <br />
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <label
+                              className="form-check-label"
+                              for="defaultCheck1"
+                            >
+                              Shared with job contractors
+                            </label>
+                            
+                            
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
+                            <Label for="sharing"></Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
+                            
                             <input
                               name="active"
                               id="active"
@@ -446,7 +461,8 @@ let EditWorkSheet = props => {
           </div>
           <div className="container">
             <WorkSheetQListing 
-            IDforAPI={props.IDforAPI}
+            IDforMainEdit={props.IDforAPI}
+
             />
           </div>
         </ModalBody>

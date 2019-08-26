@@ -64,7 +64,8 @@ let EditWorkSheetQ = props => {
 
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PutWorkSheetQDataById(props.IDforAPI, values).then(()=>success()).catch(error=>errort());
+    console.log(values , props.IDforAPI,props.idofEdit );
+    await PutWorkSheetQDataById(props.IDforAPI,props.idofEdit, values).then(()=>success()).catch(error=>errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);
@@ -72,22 +73,10 @@ let EditWorkSheetQ = props => {
 
   const validationSchema = function(values) {
     return Yup.object().shape({
-        name: Yup.string()
-        .min(4, `Name has to be at least 4 characters`)
-        .required("Name is required"),
-        ctBackOffice: Yup.string()
-        .required("Please select "),
-        ctResource: Yup.string()
-        .required("Please select"),
-        ctBookingSite: Yup.string()
-        .required("Please select"),
-        headerAnswer: Yup.string()
-        .min(4, `Header Answer has to be at least 4 characters`)
-        .required("Header Answer is required"),
-        headerNotes: Yup.string()
-        .min(4, `Header Notes has to be at least 4 characters`)
-        .required("Header Notes is required")
-
+        question: Yup.string()
+        .min(4, `Question has to be at least 10 characters`)
+        .required("Question is required"),
+       
     });
   };
 
@@ -114,14 +103,19 @@ let EditWorkSheetQ = props => {
   };
 
   const [initialValues, setInitialValues] = useState({
-    // name: "",
-    // ctBackOffice:"",
-    // ctResource:"",
-    // ctBookingSite:"",
-    // headerAnswer:"",
-    // headerNotes:"",
-    // sharing:"",
-    // order:0,
+    worksheetId:props.IDforAPI,
+    worksheetQuestionId:props.idofEdit,
+    question: "",
+    questionType:"",
+    answer:"",
+    defaultAnswer:"",
+    maxLength:0,
+    notes:"",
+    photoBW:false,
+    mandatory:false,
+    appears:false,
+    atRisk:false,
+    isConditional:false,
     active: false
   });
 
@@ -183,7 +177,7 @@ let EditWorkSheetQ = props => {
         size="lg"
       >
         <ModalHeader toggle={handleOpen} ><h3 className="font-weight:bold;">WorkSheet</h3></ModalHeader>
-        <ModalBody>
+        <ModalBody style={{'max-height': 'calc(100vh - 110px)', 'overflow-y': 'auto'}}>
           <div className="container">
             <Formik
               initialValues={initialValues}
@@ -209,191 +203,350 @@ let EditWorkSheetQ = props => {
                       <FormGroup>
                       <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
-                            <Label for="name">Name</Label>
+                            <Label for="question">Question</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
                             <Input
                               type="text"
-                              name="name"
-                              id="name"
-                              placeholder={initialValues.name}
+                              name="question"
+                              id="question"
+                              placeholder=""
                               autoComplete="given-name"
-                              valid={!errors.name}
-                              invalid={touched.name && !!errors.name}
+                              valid={!errors.question}
+                              invalid={touched.question && !!errors.question}
                               autoFocus={true}
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.name}
+                              value={values.question}
                             />
-                            <FormFeedback>{errors.name}</FormFeedback>
+                            <FormFeedback>{errors.question}</FormFeedback>
                            
                           </div>
                         </div>
                         
-                        
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
-                            <Label for="ctBackOffice">Completion time for back office</Label>
+                            <Label for="natypeme">Type</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
-                            <Input
-                              type="select"
-                              name="ctBackOffice"
-                              id="ctBackOffice"
-                              selected={initialValues.ctBackOffice}
-                              autoComplete="given-name"
-                              valid={!errors.ctBackOffice}
-                              invalid={touched.ctBackOffice && !!errors.ctBackOffice}
-                              autoFocus={true}
-                              required
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.ctBackOffice}
-                              
-                            >
-                               <option value="">N/A</option>
-                               <option value="At any time">At any time</option>
-                               <option value="Before creating">Before creating</option>
-                               <option value="Before scheduling">Before scheduling</option>
-                               <option value="Before sending">Before sending</option>
-                               <option value="After job completion">After job completion</option>
-                            </Input>
-                            <FormFeedback>{errors.ctBackOffice}</FormFeedback>
-                            
-                          </div>
+                              <input type="radio" 
+                                name="questionType" 
+                                valid={!errors.type} 
+                                onBlur={handleBlur} 
+                                required 
+                                invalid={touched.type && !!errors.type}  
+                                value="Yes" 
+                                onChange={handleChange}/>&nbsp;Yes/No &nbsp;&nbsp;
+                              <input type="radio" 
+                                name="questionType" 
+                                valid={!errors.type} 
+                                onBlur={handleBlur} 
+                                required 
+                                invalid={touched.type && !!errors.type}  
+                                value="cost" 
+                                onChange={handleChange}/>&nbsp;Cost &nbsp;&nbsp;
+                              <input type="radio" 
+                                name="questionType" 
+                                valid={!errors.type} 
+                                onBlur={handleBlur} 
+                                required 
+                                invalid={touched.type && !!errors.type}  
+                                value="decimal" 
+                                onChange={handleChange}/>&nbsp;Decimal &nbsp;&nbsp;
+                              <input type="radio" 
+                                name="questionType" 
+                                valid={!errors.type} 
+                                onBlur={handleBlur} 
+                                required 
+                                invalid={touched.type && !!errors.type}  
+                                value="wholeNumber" 
+                                onChange={handleChange}/>&nbsp;Whole Number &nbsp;&nbsp;
+                              <input type="radio" 
+                                name="questionType" 
+                                valid={!errors.type} 
+                                onBlur={handleBlur} 
+                                required 
+                                invalid={touched.type && !!errors.type}  
+                                value="text" 
+                                onChange={handleChange}/>&nbsp;Text 
+                              <input type="radio" 
+                                name="questionType" 
+                                valid={!errors.type} 
+                                onBlur={handleBlur} 
+                                required 
+                                invalid={touched.type && !!errors.type}  
+                                value="list" 
+                                onChange={handleChange}/>&nbsp;List &nbsp;&nbsp;
+                              <input type="radio" 
+                                name="questionType" 
+                                valid={!errors.type} 
+                                onBlur={handleBlur} 
+                                required 
+                                invalid={touched.type && !!errors.type}  
+                                value="photo" 
+                                onChange={handleChange}/>&nbsp;Photo &nbsp;&nbsp;
+
+                                
+                            </div>
                         </div>
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
-                            <Label for="extensions">Completion time for resource</Label>
+                            <Label for="mandatory">Mandatory</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
-                            <Input
-                              type="select"
-                              name="ctResource"
-                              id="ctResource"
-                              selected={values.ctResource}
-                              autoComplete="given-name"
-                              valid={!errors.ctResource}
-                              invalid={touched.ctResource && !!errors.ctResource}
-                              autoFocus={true}
-                              required
-                              onChange={handleChange}
+                          <input
+                              name="mandatory"
+                              id="mandatory"
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
+                              onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.ctResource}
-                              >
-                                <option value="">N/A</option>
-                                <option value="At any time">At any time</option>
-                                <option value="Before driving to the job">Before driving to the job</option>
-                                <option value="Before starting the job">Before starting the job</option>
-                                <option value="Before completing the job">Before completing the job</option>
-                                <option value="After completing the job">After completing the job</option>
-                           </Input>
-                            <FormFeedback>{errors.ctResource}</FormFeedback>
+                              value={values.active}
+                              type="checkbox"
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <label
+                              className="form-check-label"
+                              for="defaultCheck1"
+                            >
+                              Answer Mandatory
+                            </label>
+                            <FormFeedback>{errors.active}</FormFeedback>
                            
                           </div>
                         </div>
 
-                        
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
-                            <Label for="email">Completion time on booking site</Label>
+                            <Label for="appears">Visiblity</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
-                            <Input
-                              type="select"
-                              name="ctBookingSite"
-                              id="ctBookingSite"
-                              selected={initialValues.ctBookingSite}
-                              autoComplete="given-name"
-                              valid={!errors.ctBookingSite}
-                              invalid={touched.ctBookingSite && !!errors.ctBookingSite}
-                              autoFocus={true}
-                              required
-                              onChange={handleChange}
+                          <input
+                              name="appears"
+                              id="appers"
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
+                              onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.ctBookingSite}
-                              >
-                                <option value="">N/A</option>
-                                <option value="Before scheduling">Before scheduling</option>
-                                <option value="Before starting">Before starting</option>
-                                <option value="After job completion">After job completion</option>
-                            </Input>
-                            <FormFeedback>{errors.ctBookingSite}</FormFeedback>
+                              value={values.active}
+                              type="checkbox"
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <label
+                              className="form-check-label"
+                              for="defaultCheck1"
+                            >
+                              Appears on standard Job Card
+                            </label>
+                            <FormFeedback>{errors.active}</FormFeedback>
                             
                           </div>
                         </div>
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
-                            <Label for="headerAnswer">Job card header for "Answer"</Label>
+                            <Label for="defaultAnswer">Default Answer</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
+                              <input type="radio" 
+                                name="defaultAnswer" 
+                                valid={!errors.type} 
+                                onBlur={handleBlur} 
+                                required 
+                                invalid={touched.type && !!errors.type}  
+                                value="no" 
+                                onChange={handleChange}/>&nbsp;No &nbsp;&nbsp;
+                              <input type="radio" 
+                                name="defaultAnswer" 
+                                valid={!errors.type} 
+                                onBlur={handleBlur} 
+                                required 
+                                invalid={touched.type && !!errors.type}  
+                                value="yes" 
+                                onChange={handleChange}/>&nbsp;Yes &nbsp;&nbsp;
+                              <input type="radio" 
+                                name="defaultAnswer" 
+                                valid={!errors.type} 
+                                onBlur={handleBlur} 
+                                required 
+                                invalid={touched.type && !!errors.type}  
+                                value="nodefaultanswer" 
+                                onChange={handleChange}/>&nbsp;No Default Answer &nbsp;&nbsp;
+                              
+
+                                
+                            </div>
+                        </div>
+
+                        <div className="row">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
+                            <Label for="natypeme">Answer At Risk</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
+                          <input type="radio" 
+                                name="atRisk" 
+                                valid={!errors.type} 
+                                onBlur={handleBlur} 
+                                required 
+                                invalid={touched.type && !!errors.type}  
+                                value="no" 
+                                onChange={handleChange}/>&nbsp;No &nbsp;&nbsp;
+                              <input type="radio" 
+                                name="atRisk" 
+                                valid={!errors.type} 
+                                onBlur={handleBlur} 
+                                required 
+                                invalid={touched.type && !!errors.type}  
+                                value="yes" 
+                                onChange={handleChange}/>&nbsp;Yes &nbsp;&nbsp;
+                              <input type="radio" 
+                                name="atRisk" 
+                                valid={!errors.type} 
+                                onBlur={handleBlur} 
+                                required 
+                                invalid={touched.type && !!errors.type}  
+                                value="nodansweratrisk" 
+                                onChange={handleChange}/>&nbsp;No Answer At Risk &nbsp;&nbsp;
+
+                                
+                            </div>
+                        </div>
+
+                        <div className="row">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
+                            <Label for="defaultAnswer">Default Answer</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
                             <Input
                               type="text"
-                              name="headerAnswer"
-                              id="headerAnswer"
-                              placeholder={initialValues.headerAnswer}
+                              name="defaultAnswer"
+                              id="defaultAnswer"
+                              placeholder=""
                               autoComplete="given-name"
-                              valid={!errors.headerAnswer}
-                              invalid={touched.headerAnswer && !!errors.headerAnswer}
+                              valid={!errors.answer}
+                              invalid={touched.answer && !!errors.answer}
                               autoFocus={true}
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.headerAnswer}
+                              value={values.defaultAnswer}
                             />
-                            <FormFeedback>{errors.headerAnswer}</FormFeedback>
+                            <FormFeedback>{errors.answer}</FormFeedback>
                            
                           </div>
                         </div>
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
-                            <Label for="headerNotes">Job card header for "Notes"</Label>
+                            <Label for="question">Answer At Risk</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
                             <Input
                               type="text"
-                              name="headerNotes"
-                              id="headerNotes"
-                              placeholder={initialValues.headerNotes}
+                              name="atRisk"
+                              id="atRisk"
+                              placeholder=""
                               autoComplete="given-name"
-                              valid={!errors.headerNotes}
-                              invalid={touched.headerNotes && !!errors.headerNotes}
+                              valid={!errors.answeratrisk}
+                              invalid={touched.answeratrisk && !!errors.answeratrisk}
                               autoFocus={true}
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.headerNotes}
+                              value={values.atRisk}
                             />
-                            <FormFeedback>{errors.headerNotes}</FormFeedback>
+                            <FormFeedback>{errors.answeratrisk}</FormFeedback>
                            
                           </div>
                         </div>
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
-                            <Label for="sharing">Sharing</Label>
+                            <Label for="maxLength">Max Numbers of Characters</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
                             <Input
+                              type="number"
+                              name="maxLength"
+                              id="maxLength"
+                              placeholder=""
+                              autoComplete="given-name"
+                              valid={!errors.answeratrisk}
+                              invalid={touched.answeratrisk && !!errors.answeratrisk}
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.maxLength}
+                            />
+                            <FormFeedback>{errors.answeratrisk}</FormFeedback>
+                           
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
+                            <Label for="appears">Multiple answers</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
+                          <input
+                              name="appears"
+                              id="appers"
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
+                              onClick={handleChange}
+                              onBlur={handleBlur}
+                              value={values.active}
                               type="checkbox"
-                              name="sharing"
-                              id="sharing"
-                              selected={initialValues.sharing}
-                              autoComplete="given-name"
-                              valid={!errors.sharing}
-                              invalid={touched.sharing && !!errors.sharing}
-                              autoFocus={true}
-                              required
-                              onChange={handleChange}
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <label
+                              className="form-check-label"
+                              for="defaultCheck1"
+                            >
+                              Mutilple answers can be selected
+                            </label>
+                            <FormFeedback>{errors.active}</FormFeedback>
+                            
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
+                            <Label for="photoBW">Document</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
+                          <input
+                              name="photoBW"
+                              id="photoBW"
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
+                              onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.sharing}
-                            />share with job contractors
-                            <FormFeedback>{errors.sharing}</FormFeedback>
-                            <br />
+                              value={values.active}
+                              type="checkbox"
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <label
+                              className="form-check-label"
+                              for="defaultCheck1"
+                            >
+                              Photo saved for black & white
+                            </label>
+                            <FormFeedback>{errors.active}</FormFeedback>
+                            
+                          </div>
+                        </div>
+ 
+                        
+                        
+                        <div className="row">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
+                            <Label for="sharing"></Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
                             <input
                               name="active"
                               id="active"
@@ -442,7 +595,6 @@ let EditWorkSheetQ = props => {
               )}
             />
           </div>
-          
         </ModalBody>
       </Modal>
     </div>
