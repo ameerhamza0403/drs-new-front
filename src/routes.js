@@ -82,13 +82,14 @@ const JobCategoryListing = React.lazy(() => import('./components/myaccount/admin
 const PhoneBookListing = React.lazy(() => import('./components/myaccount/admin/resources/phonebook/listing'));
 const VehicleManage = React.lazy(() => import('./components/myaccount/admin/vehicle/manage/listing'));
 const TrackingDeviceListing = React.lazy(() => import('./components/myaccount/admin/vehicle/trackingdevice/listing'));
-<<<<<<< HEAD
 const WorkSheetListing = React.lazy(() => import('./components/myaccount/admin/schedule/worksheet/listing'));
 const JobTypeListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobtype/listing'));
-=======
 // const WorkSheetListing = React.lazy(() => import('./components/myaccount/admin/schedule/worksheet/listing'));
 const JobGroupTemplateListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobgrouptemplate/listing'));
->>>>>>> c92d95ce933fa02dfba8ead8011ae758fcec4cba
+
+// const WorkSheetListing = React.lazy(() => import('./components/myaccount/admin/schedule/worksheet/listing'));
+const JobGroupTemplateListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobgrouptemplate/listing'));
+const WorkSheetListing = React.lazy(() => import('./components/myaccount/admin/schedule/worksheet/listing'));
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -180,10 +181,16 @@ const routes = [
   { path: '/admin/schedule/jobcategory', exact: true, name: 'Job Category', component: JobCategoryListing },
   { path: '/admin/resources/phone', exact: true, name: 'Phone Book', component: PhoneBookListing },
   { path: '/admin/vehicle/manage', exact: true, name: 'Manage', component: VehicleManage },
+
   { path: '/admin/schedule/worksheet', exact: true, name: 'Work Sheet', component: WorkSheetListing },
   { path: '/admin/schedule/jobtype', exact: true, name: 'Job Type', component: JobTypeListing },
   // { path: '/admin/schedule/worksheet', exact: true, name: 'Work Sheet', component: WorkSheetListing },
   { path: '/admin/schedule/jobgroup', exact: true, name: 'Job Group Template', component: JobGroupTemplateListing },
+
+  // { path: '/admin/schedule/worksheet', exact: true, name: 'Work Sheet', component: WorkSheetListing },
+  { path: '/admin/schedule/jobgroup', exact: true, name: 'Job Group Template', component: JobGroupTemplateListing },
+  { path: '/admin/schedule/worksheet', exact: true, name: 'Work Sheet', component: WorkSheetListing },
+
 
 ];
 export default routes;

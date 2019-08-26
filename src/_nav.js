@@ -351,7 +351,7 @@ export default {
         },
 
         {
-          name: "Work Sheet",
+          name: "Worksheet",
           url: "/admin/schedule/worksheet",
           icon: "fa fa-clock-o"
         },
