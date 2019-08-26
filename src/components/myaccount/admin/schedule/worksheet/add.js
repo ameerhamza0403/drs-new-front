@@ -391,6 +391,33 @@ let AddWorkSheet = props => {
                             </label>
                           </div>
                         </div>
+
+                        <div className="row">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
+                            <Label for="sharing"></Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
+                            
+                            <input
+                              name="active"
+                              id="active"
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
+                              onClick={handleChange}
+                              onBlur={handleBlur}
+                              value={values.active}
+                              type="checkbox"
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <label
+                              className="form-check-label"
+                              for="defaultCheck1"
+                            >
+                              Active
+                            </label>
+                          </div>
+                        </div>
+                        
                         
                       </FormGroup>
                       <FormGroup>
