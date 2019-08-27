@@ -10,7 +10,9 @@ import {} from '../shared/docnsale';
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 // import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-import {GetAllListingForFinancialDocumentnSale} from '../shared/docnsale';
+import {GetAllListingForFinancialDocumentnSale, DeleteFinancialDocumentnSaleDataById} from '../shared/docnsale';
+import DocnSaleAuto from './autoref';
+import NotestoClient from './notes';
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -48,7 +50,6 @@ const classes = {
   }
 };
 
-let menuselected='';
 let FinanceDocListing = () => {
   let [Atlist, setAtlist] = useState([
     {
@@ -219,13 +220,13 @@ let FinanceDocListing = () => {
   async function getlistapi() {
     await GetAllListingForFinancialDocumentnSale(Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
-      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+      // setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
     // Atlist.map((e,i)=>
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
     //                 )
-    TotalPages = paginate.totalPages;
+    // TotalPages = paginate.totalPages;
     settabledistatus((Tabledistatus = true));
   }
 
@@ -245,7 +246,7 @@ let FinanceDocListing = () => {
     });
   }
   async function Dellistapi() {
-    await DeletejobgrouptemplateDataById(idofEdit)
+    await DeleteFinancialDocumentnSaleDataById(idofEdit)
       .then(() => {
         success();
       })
@@ -276,7 +277,7 @@ let FinanceDocListing = () => {
       <DocnSaleAuto
         IDforAPI={idofEdit}
         refresh={refreshfn}
-        cross={HandleCrossEditforlisting}
+        cross={HandlecloseAutoref}
       />
     );
   } else {
@@ -302,7 +303,7 @@ let FinanceDocListing = () => {
       <DocnSaleAuto
         IDforAPI={idofEdit}
         refresh={refreshfn}
-        cross={HandleCrossEditforlisting}
+        cross={handleclosenotes}
       />
     );
   } else {
@@ -312,10 +313,9 @@ let FinanceDocListing = () => {
 
   let [menushow, setMenushow] = useState(false);
   function HandlerowSelect(row) {
+    setMenushow((menushow = false));
     menuDiv = "";
-    idofEdit = row.jobGroupTemplateId;
-    console.log(idofEdit);
-    menuselected=row.name;
+    idofEdit = row.documentTypeId;
     return setMenushow((menushow = true));
   }
   let Handlerowclose = row => {
@@ -324,7 +324,7 @@ let FinanceDocListing = () => {
 
 
   if (menushow) {
-    if(menuselected==='Application for payment'|| menuselected==='Delivery note'|| menuselected==='Credit note' || menuselected==='Proforma invoice'||menuselected==='Invoice'){
+    if(idofEdit===2|| idofEdit===3|| idofEdit===4 || idofEdit===5||idofEdit===6){
       menuDiv = (
         <ul className="tool">
           {/* <li>
@@ -345,7 +345,7 @@ let FinanceDocListing = () => {
         </ul>
       );
     }
-    else if(menuselected==='Sales Opportunity'){
+    else if(idofEdit===7){
       menuDiv = (
         <ul className="tool">
           {/* <li>
@@ -366,7 +366,7 @@ let FinanceDocListing = () => {
         </ul>
       );
     }
-    else if(menuselected==='Quotation'){
+    else if(idofEdit===8){
       menuDiv = (
         <ul className="tool">
           {/* <li>
@@ -391,7 +391,7 @@ let FinanceDocListing = () => {
         </ul>
       );
     }
-    else if(menuselected==='Purchase order'){
+    else if(idofEdit===1){
       menuDiv = (
         <ul className="tool">
           {/* <li>
@@ -416,6 +416,31 @@ let FinanceDocListing = () => {
         </ul>
       );
     }
+    // else{
+    //   menuDiv = (
+    //     <ul className="tool">
+    //       {/* <li>
+    //         <JobGroupTemplateAdd refresh={refreshfn} />{" "}
+    //       </li> */}
+    //       <li title='Automatic Reference' onClick={HandleAutoref}>
+    //         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    //         <i className="fa fa-registered fa-2x" />
+    //       </li>
+    //       {/* <li title='Series' onClick={HandleAutoref}>
+    //         &nbsp;&nbsp;
+    //         <i className="fa fa-calculator fa-2x" />
+    //       </li> */}
+    //       <li title='Notes to Clients' onClick={HandleNotes}>
+    //         &nbsp;&nbsp;
+    //         <i className="fa fa-sticky-note fa-2x" />
+    //       </li>
+    //       <li onClick={Handlerowclose}>
+    //         &nbsp;&nbsp;
+    //         <i className="fa fa-times-rectangle fa-2x" />
+    //       </li>
+    //     </ul>
+    //   );
+    // }
 
   } else if (!menushow) {
     menuDiv = (
