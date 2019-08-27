@@ -52,7 +52,7 @@ const classes = {
 
 let JobGroupTemplateListing = () => {
   let [Atlist, setAtlist] = useState([
-    { name: "", sameContact: true, sameResource: true, active: true }
+    { name: "", sameContact: true, sameResource: true, isActive: true }
   ]);
   let [paginate, setPaginate] = useState();
 
@@ -128,7 +128,7 @@ let JobGroupTemplateListing = () => {
   //     }
   //   },
   //   {
-  //     name: "active",
+  //     name: "isActive",
   //     label: "Status",
   //     options: {
   //       filter: false,
@@ -183,7 +183,7 @@ let JobGroupTemplateListing = () => {
           search
           options={options}
         >
-             <TableHeaderColumn  dataField='active' isKey={true} hidden={true}>Active</TableHeaderColumn>
+             <TableHeaderColumn  dataField='isActive' isKey={true} hidden={true}>isActive</TableHeaderColumn>
 
           <TableHeaderColumn dataField="name"  dataSort>
             Name

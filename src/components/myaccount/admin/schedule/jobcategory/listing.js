@@ -82,7 +82,7 @@ let JobCategoryListing = () => {
       }
     },
     {
-      name: "active",
+      name: "isActive",
       label: "Status",
       options: {
         filter: false,

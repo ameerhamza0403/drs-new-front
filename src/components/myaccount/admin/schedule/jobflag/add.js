@@ -44,11 +44,11 @@ let AddJobFlag = props => {
   const [values, setValues] = React.useState({
     name: "",
     colorCode: "",
-    active: false
+    isActive: false
   });
 
   const handleChange = name => event => {
-    if (name != "active") {
+    if (name != "isActive") {
       setValues({ ...values, [name]: event.target.value });
     } else {
       setValues({ ...values, [name]: event.target.checked });
@@ -196,10 +196,10 @@ let AddJobFlag = props => {
                   type="checkbox"
                   value="true"
                   id="defaultCheck2"
-                  onChange={handleChange("active")}
+                  onChange={handleChange("isActive")}
                 />
                 <label className="form-check-label" for="defaultCheck2">
-                  Active
+                  isActive
                 </label>
               </form>
               <br />

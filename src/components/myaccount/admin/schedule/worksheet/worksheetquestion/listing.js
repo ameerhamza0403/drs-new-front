@@ -98,7 +98,7 @@ const classes = {
 //         }
 //     },
 //     {
-//       name: "active",
+//       name: "isActive",
 //       label: "Status",
 //       options: {
 //         filter: false,
@@ -148,7 +148,7 @@ const options = {
     getlistapi();
   }, []);
 
-  
+
 
   async function getlistapi() {
     await GetListingForWorkSheetQ(props.IDforMainEdit,Page, PageSize).then(res => {
@@ -200,7 +200,7 @@ const options = {
           <TableHeaderColumn dataField="defaultAnswer" dataSort>
             Default Answer
           </TableHeaderColumn>
-          
+
         </BootstrapTable>
         <br />
         <div className="row">
@@ -222,7 +222,7 @@ const options = {
     getlistapi();
   };
 
- 
+
  // Toast
 
  function errort() {

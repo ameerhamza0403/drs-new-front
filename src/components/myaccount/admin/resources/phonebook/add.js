@@ -107,7 +107,7 @@ let AddPhoneBook = props => {
     phoneNumber:"",
     extensions:"",
     email:"",
-    active: false
+    isActive: false
   };
 
   function findFirstError(formName, hasError) {
@@ -195,11 +195,11 @@ let AddPhoneBook = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
-                           
+
                           </div>
                         </div>
                         <br />
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="phoneNumber">Phone</Label>
@@ -220,7 +220,7 @@ let AddPhoneBook = props => {
                               value={values.phoneNumber}
                             />
                             <FormFeedback>{errors.phoneNumber}</FormFeedback>
-                            
+
                           </div>
                         </div>
                         <br />
@@ -244,7 +244,7 @@ let AddPhoneBook = props => {
                               value={values.extensions}
                             />
                             <FormFeedback>{errors.extensions}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -271,13 +271,13 @@ let AddPhoneBook = props => {
                             <FormFeedback>{errors.email}</FormFeedback>
                             <br />
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -285,7 +285,7 @@ let AddPhoneBook = props => {
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              Active
+                              isActive
                             </label>
                           </div>
                         </div>

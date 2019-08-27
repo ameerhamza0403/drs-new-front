@@ -98,7 +98,7 @@ const classes = {
 //         }
 //     },
 //     {
-//       name: "active",
+//       name: "isActive",
 //       label: "Status",
 //       options: {
 //         filter: false,
@@ -148,7 +148,7 @@ const options = {
     getlistapi();
   }, []);
 
-  
+
 
   async function getlistapi() {
   const {data:Atlist} =  await GetListingForPhoneBook();
@@ -161,7 +161,7 @@ const options = {
     //                 )
     settabledistatus((Tabledistatus = true));
 
-    
+
   }
 
   let Tabledisplay = (
@@ -183,6 +183,9 @@ const options = {
               <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
               <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
               
+              
+              
+
               <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                 <div>
                     <BootstrapTable
@@ -190,7 +193,7 @@ const options = {
                     version="4"
                     striped
                     hover
-                    
+
                     search
                     options={options}
                     >
@@ -198,11 +201,11 @@ const options = {
                     Other Numbers
                     </TableHeaderColumn>
                     <TableHeaderColumn isKey dataField="phoneNumber" dataSort>
-                    
+
                     </TableHeaderColumn>
-                    
+
                 </BootstrapTable>
-                
+
                     {/* <br />
                     <div className="row">
                         <div className="col">
@@ -227,7 +230,7 @@ const options = {
     getlistapi();
   };
 
- 
+
  // Toast
 
  function errort() {

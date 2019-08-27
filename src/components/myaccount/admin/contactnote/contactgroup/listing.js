@@ -70,7 +70,7 @@ let ContactsGroupListingTable = () => {
       }
     },
     {
-      name: "active",
+      name: "isActive",
       label: "Status",
       options: {
         filter: false,

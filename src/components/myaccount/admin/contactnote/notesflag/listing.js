@@ -57,7 +57,7 @@ let NotesFlagListingTable = () => {
     {
       colorCode: "",
       name: "",
-      active: '',
+      isActive: '',
     }
   ]);
 
@@ -80,7 +80,7 @@ let NotesFlagListingTable = () => {
       }
     },
     {
-      name: "active",
+      name: "isActive",
       label: "Status",
       options: {
         filter: false,

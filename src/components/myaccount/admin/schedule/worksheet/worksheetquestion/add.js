@@ -72,7 +72,7 @@ let AddWorkSheetQ = props => {
         question: Yup.string()
         .min(4, `Question has to be at least 10 characters`)
         .required("Question is required"),
-       
+
     });
   };
 
@@ -112,7 +112,7 @@ let AddWorkSheetQ = props => {
     appears:false,
     atRisk:false,
     isConditional:false,
-    active: false
+    isActive: false
   };
 
   function findFirstError(formName, hasError) {
@@ -201,73 +201,73 @@ let AddWorkSheetQ = props => {
                               value={values.question}
                             />
                             <FormFeedback>{errors.question}</FormFeedback>
-                           
+
                           </div>
                         </div>
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="natypeme">Type</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
-                              <input type="radio" 
-                                name="questionType" 
-                                valid={!errors.type} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.type && !!errors.type}  
-                                value="Yes" 
+                              <input type="radio"
+                                name="questionType"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="Yes"
                                 onChange={handleChange}/>&nbsp;Yes/No &nbsp;&nbsp;
-                              <input type="radio" 
-                                name="questionType" 
-                                valid={!errors.type} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.type && !!errors.type}  
-                                value="cost" 
+                              <input type="radio"
+                                name="questionType"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="cost"
                                 onChange={handleChange}/>&nbsp;Cost &nbsp;&nbsp;
-                              <input type="radio" 
-                                name="questionType" 
-                                valid={!errors.type} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.type && !!errors.type}  
-                                value="decimal" 
+                              <input type="radio"
+                                name="questionType"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="decimal"
                                 onChange={handleChange}/>&nbsp;Decimal &nbsp;&nbsp;
-                              <input type="radio" 
-                                name="questionType" 
-                                valid={!errors.type} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.type && !!errors.type}  
-                                value="wholeNumber" 
+                              <input type="radio"
+                                name="questionType"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="wholeNumber"
                                 onChange={handleChange}/>&nbsp;Whole Number &nbsp;&nbsp;
-                              <input type="radio" 
-                                name="questionType" 
-                                valid={!errors.type} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.type && !!errors.type}  
-                                value="text" 
-                                onChange={handleChange}/>&nbsp;Text 
-                              <input type="radio" 
-                                name="questionType" 
-                                valid={!errors.type} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.type && !!errors.type}  
-                                value="list" 
+                              <input type="radio"
+                                name="questionType"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="text"
+                                onChange={handleChange}/>&nbsp;Text
+                              <input type="radio"
+                                name="questionType"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="list"
                                 onChange={handleChange}/>&nbsp;List &nbsp;&nbsp;
-                              <input type="radio" 
-                                name="questionType" 
-                                valid={!errors.type} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.type && !!errors.type}  
-                                value="photo" 
+                              <input type="radio"
+                                name="questionType"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="photo"
                                 onChange={handleChange}/>&nbsp;Photo &nbsp;&nbsp;
 
-                                
+
                             </div>
                         </div>
 
@@ -279,11 +279,11 @@ let AddWorkSheetQ = props => {
                           <input
                               name="mandatory"
                               id="mandatory"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -293,8 +293,8 @@ let AddWorkSheetQ = props => {
                             >
                               Answer Mandatory
                             </label>
-                            <FormFeedback>{errors.active}</FormFeedback>
-                           
+                            <FormFeedback>{errors.isActive}</FormFeedback>
+
                           </div>
                         </div>
 
@@ -306,11 +306,11 @@ let AddWorkSheetQ = props => {
                           <input
                               name="appears"
                               id="appers"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -320,8 +320,8 @@ let AddWorkSheetQ = props => {
                             >
                               Appears on standard Job Card
                             </label>
-                            <FormFeedback>{errors.active}</FormFeedback>
-                            
+                            <FormFeedback>{errors.isActive}</FormFeedback>
+
                           </div>
                         </div>
 
@@ -330,33 +330,33 @@ let AddWorkSheetQ = props => {
                             <Label for="defaultAnswer">Default Answer</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
-                              <input type="radio" 
-                                name="defaultAnswer" 
-                                valid={!errors.type} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.type && !!errors.type}  
-                                value="no" 
+                              <input type="radio"
+                                name="defaultAnswer"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="no"
                                 onChange={handleChange}/>&nbsp;No &nbsp;&nbsp;
-                              <input type="radio" 
-                                name="defaultAnswer" 
-                                valid={!errors.type} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.type && !!errors.type}  
-                                value="yes" 
+                              <input type="radio"
+                                name="defaultAnswer"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="yes"
                                 onChange={handleChange}/>&nbsp;Yes &nbsp;&nbsp;
-                              <input type="radio" 
-                                name="defaultAnswer" 
-                                valid={!errors.type} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.type && !!errors.type}  
-                                value="nodefaultanswer" 
+                              <input type="radio"
+                                name="defaultAnswer"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="nodefaultanswer"
                                 onChange={handleChange}/>&nbsp;No Default Answer &nbsp;&nbsp;
-                              
 
-                                
+
+
                             </div>
                         </div>
 
@@ -365,32 +365,32 @@ let AddWorkSheetQ = props => {
                             <Label for="natypeme">Answer At Risk</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
-                          <input type="radio" 
-                                name="atRisk" 
-                                valid={!errors.type} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.type && !!errors.type}  
-                                value="no" 
+                          <input type="radio"
+                                name="atRisk"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="no"
                                 onChange={handleChange}/>&nbsp;No &nbsp;&nbsp;
-                              <input type="radio" 
-                                name="atRisk" 
-                                valid={!errors.type} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.type && !!errors.type}  
-                                value="yes" 
+                              <input type="radio"
+                                name="atRisk"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="yes"
                                 onChange={handleChange}/>&nbsp;Yes &nbsp;&nbsp;
-                              <input type="radio" 
-                                name="atRisk" 
-                                valid={!errors.type} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.type && !!errors.type}  
-                                value="nodansweratrisk" 
+                              <input type="radio"
+                                name="atRisk"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="nodansweratrisk"
                                 onChange={handleChange}/>&nbsp;No Answer At Risk &nbsp;&nbsp;
 
-                                
+
                             </div>
                         </div>
 
@@ -414,7 +414,7 @@ let AddWorkSheetQ = props => {
                               value={values.defaultAnswer}
                             />
                             <FormFeedback>{errors.answer}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -438,7 +438,7 @@ let AddWorkSheetQ = props => {
                               value={values.atRisk}
                             />
                             <FormFeedback>{errors.answeratrisk}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -462,7 +462,7 @@ let AddWorkSheetQ = props => {
                               value={values.maxLength}
                             />
                             <FormFeedback>{errors.answeratrisk}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -474,11 +474,11 @@ let AddWorkSheetQ = props => {
                           <input
                               name="appears"
                               id="appers"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -488,8 +488,8 @@ let AddWorkSheetQ = props => {
                             >
                               Mutilple answers can be selected
                             </label>
-                            <FormFeedback>{errors.active}</FormFeedback>
-                            
+                            <FormFeedback>{errors.isActive}</FormFeedback>
+
                           </div>
                         </div>
 
@@ -501,11 +501,11 @@ let AddWorkSheetQ = props => {
                           <input
                               name="photoBW"
                               id="photoBW"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -515,26 +515,26 @@ let AddWorkSheetQ = props => {
                             >
                               Photo saved for black & white
                             </label>
-                            <FormFeedback>{errors.active}</FormFeedback>
-                            
+                            <FormFeedback>{errors.isActive}</FormFeedback>
+
                           </div>
                         </div>
- 
-                        
-                        
+
+
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -542,11 +542,11 @@ let AddWorkSheetQ = props => {
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              Active
+                              isActive
                             </label>
                           </div>
                         </div>
-                        
+
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>
