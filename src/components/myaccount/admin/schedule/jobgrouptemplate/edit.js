@@ -1,9 +1,7 @@
-import React, { Component, useEffect, useState } from "react";
-import {PutVehiclefuelcostDataById,GetVehiclefuelcostDataById} from '../shared/fuelcost';
+import React, { Component, useState, useEffect } from "react";
+import { PutjobgrouptemplateDataById, PostListingFortemplategroup } from "..//shared/jobgrouptemplate";
 import {
   Button,
-  Card,
-  CardBody,
   Col,
   Modal,
   ModalBody,
@@ -21,7 +19,8 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TextField from "@material-ui/core/TextField";
-import { GetListingForcurrency } from "../../resources/shared/currency";
+// import {GetListingForAddEdit} from '../../resources/shared/addedit';
+import GroupTemplate from "./templatejobs/listing";
 
 const classes = {
   button: {
@@ -38,57 +37,69 @@ const classes = {
     // marginTop: '10px',
     // marginLeft: '5px',
   },
-  input: {
-    width: "100px",
-    // height: "25px",
-    border: "1px solid black",
-    textAlign: "center"
+  divider: {
+    height: "1px",
+    backgroundColor: "#CED4DA",
+    width: "99%",
+    marginLeft: "1px"
+  },
+  h2: {
+    color: "#EE7647"
   }
 };
 
-let EditFuelCost = props => {
+let JobGroupTemplateEdit = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
-  let [timevalue,setTimevalue] = useState({
-    startDate: '',
-    endDate: '',
-  });
+  let data =[];
+  function handletemplatedata(value) {
+    data=value;
+  }
+
+
+
+  let [newvalue, setNewvalue] = useState([{
+    jobGroupTemplateId: 0,
+    contact: '',
+    jobTypeId: 0,
+    resourceId: 0
+  }]);
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    let newvalue=values;
-    newvalue.startDate=timevalue.startDate;
-    newvalue.endDate=timevalue.endDate;
-    await PutVehiclefuelcostDataById(props.IDforAPI, newvalue).then(()=>success()).catch(error=>errort());
-    handleOpen();
-    props.refresh();
-    setSubmitting(false);
-  }
 
-  let [currency, setCurrency] = useState([
-    {
-      currencyId: "",
-      name: "",
-      code: "",
-      active: true
+    if (data.length === 0) {
+      errorc();
+      setSubmitting(true);
+      setSubmitting(false);
+    } else {
+      let idtemp;
+            await PutjobgrouptemplateDataById(props.IDforAPI,values)
+        .then(res => {
+          success();
+          idtemp = res.data.jobGroupTemplateId;
+          data.map(async (e)=>{
+            delete e.count;
+            e.jobGroupTemplateId=idtemp;
+            await PostListingFortemplategroup(idtemp,e)
+            .then(() => success())
+            .catch(error => errort());
+          })})
+        .catch(error => errort());
+
+
+      handleOpen();
+      props.refresh();
+      setSubmitting(false);
     }
-  ]);
-  useEffect(() => {
-    getcurrlist();
-    getlistapi();
-  }, []);
-
-  async function getcurrlist() {
-    const { data: currency } = await GetListingForcurrency();
-    setCurrency(currency);
-  }
-
-  async function getlistapi() {
-    const { data: initialValues } = await GetVehiclefuelcostDataById(
-      props.IDforAPI
-    );
-    setInitialValues(initialValues);
   }
 
   //Tost
+
+  function errorc() {
+    // add type: 'error' to options
+    return toast.error("Please Add Group Template..", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
 
   function errort() {
     // add type: 'error' to options
@@ -104,12 +115,9 @@ let EditFuelCost = props => {
 
   const validationSchema = function(values) {
     return Yup.object().shape({
-      costPerLitre: Yup.string()
-        .min(1, `Fuel Cost has to be at least 1 characters`)
-        .required("Fuel Cost is required"),
-      currencyId: Yup.string()
-        // .min(1, `Fuel Cost has to be at least 1 characters`)
-        .required("Currency is required")
+      name: Yup.string()
+        .min(4, `Name has to be at least 4 characters`)
+        .required("Name is required")
     });
   };
 
@@ -135,9 +143,12 @@ let EditFuelCost = props => {
     }, {});
   };
 
-  const [initialValues, setInitialValues] = useState({
-
-  });
+  const initialValues = {
+    name: "",
+    sameContact: true,
+    sameResource: true,
+    active: true
+  };
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -168,26 +179,15 @@ let EditFuelCost = props => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
   };
 
-
-  const handleDataChange = name => event => {
-    if (name === "startDate") {
-      setTimevalue( {...timevalue, [name] : event.target.value});
-    } else {
-      setTimevalue( {...timevalue, [name] : event.target.value});
-    }
-  };
   return (
     <div>
-      <div onClick={handleOpen} style={classes.plusbutton}>
-        <i className="fa fa-plus-circle fa-2x" />
-      </div>
-
       <Modal
         isOpen={modal}
         toggle={handleOpen}
         className={"modal-primary " + props.className}
+        size="lg"
       >
-        <ModalHeader toggle={handleOpen}>Fuel Cost</ModalHeader>
+        <ModalHeader toggle={handleOpen}>Job Group Template</ModalHeader>
         <ModalBody>
           <div className="container">
             <Formik
@@ -212,124 +212,111 @@ let EditFuelCost = props => {
                   <Col lg="12">
                     <Form onSubmit={handleSubmit} noValidate name="simpleForm">
                       <FormGroup>
-                        <div className="row">
+                        <div className="row mb-3">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Fuel Cost</Label>
+                            <Label for="name">Job Group Template</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                            <div className="row">
-                              <div className="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                <Input
-                                  type="text"
-                                  name="costPerLitre"
-                                  id="name"
-                                  placeholder={values.costPerLitre}
-                                  autoComplete="given-name"
-                                  valid={!errors.costPerLitre}
-                                  invalid={
-                                    touched.costPerLitre &&
-                                    !!errors.costPerLitre
-                                  }
-                                  autoFocus={true}
-                                  required
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  // value={values.costPerLitre}
-                                  maxLength={8}
-                                  style={classes.input}
-                                />
-                                <FormFeedback>
-                                  {errors.costPerLitre}
-                                </FormFeedback>
-                              </div>
-                              <div className="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                <Input
-                                  type="select"
-                                  name="currencyId"
-                                  id="currencyId"
-                                  autoComplete="given-name"
-                                  valid={!errors.currencyId}
-                                  invalid={
-                                    touched.currencyId && !!errors.currencyId
-                                  }
-                                  autoFocus={true}
-                                  required
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.currencyId}
-                                >
-                                  <option value="" />
-                                  {currency.map(e => (
-                                    <option value={e.currencyId}>
-                                      {e.code}
-                                    </option>
-                                  ))}
-                                </Input>
-                                <FormFeedback>{errors.currencyId}</FormFeedback>
-                                <br />
-                              </div>
-                            </div>
+                            <Input
+                              type="text"
+                              name="name"
+                              id="name"
+                              placeholder={initialValues.name}
+                              autoComplete="given-name"
+                              valid={!errors.name}
+                              invalid={touched.name && !!errors.name}
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.name}
+                            />
+                            <FormFeedback>{errors.name}</FormFeedback>
                           </div>
+                        </div>
+                        <div className="row mb-2">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                            <input
+                              name="sameContact"
+                              id="sameContact"
+                              valid={!errors.sameContact}
+                              invalid={
+                                touched.sameContact && !!errors.sameContact
+                              }
+                              onClick={handleChange}
+                              onBlur={handleBlur}
+                              value={values.sameContact}
+                              type="checkbox"
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <label
+                              className="form-check-label"
+                              for="defaultCheck1"
+                            >
+                              All jobs within the group are at the same contact
+                              as the group's contact
+                            </label>
                           </div>
-                          <br />
-                          <div className="row">
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                              <Label for="name">From</Label>
-                            </div>
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                              <TextField
-                                id="date"
-                                label="startDate"
-                                type="date"
-                                defaultValue={timevalue.startDate}
-                                InputLabelProps={{
-                                  shrink: true
-                                }}
-                                onChange={handleDataChange("startDate")}
-                              />
-                            </div>
+                        </div>
+                        <div className="row mb-2">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                            <input
+                              name="sameResource"
+                              id="sameResource"
+                              valid={!errors.sameResource}
+                              invalid={
+                                touched.sameResource && !!errors.sameResource
+                              }
+                              onClick={handleChange}
+                              onBlur={handleBlur}
+                              value={values.sameResource}
+                              type="checkbox"
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <label
+                              className="form-check-label"
+                              for="defaultCheck2"
+                            >
+                              All jobs within the group are scheduled to the
+                              same resource
+                            </label>
                           </div>
-                          <br />
-                          <div className="row">
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                              <Label for="name">To</Label>
-                            </div>
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                              <TextField
-                                id="date"
-                                label="endDate"
-                                type="date"
-                                defaultValue={timevalue.endDate}
-                                InputLabelProps={{
-                                  shrink: true
-                                }}
-                                onChange={handleDataChange("endDate")}
-                              />
-                            </div>
+                        </div>
+                        <div className="row mb-2">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                            <input
+                              name="active"
+                              id="active"
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
+                              onClick={handleChange}
+                              onBlur={handleBlur}
+                              value={values.active}
+                              type="checkbox"
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <label
+                              className="form-check-label"
+                              for="defaultCheck3"
+                            >
+                              Active
+                            </label>
                           </div>
-                          <br />
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          &nbsp;&nbsp;&nbsp;&nbsp;
-                          <input
-                            name="active"
-                            id="active"
-                            valid={!errors.active}
-                            invalid={touched.active && !!errors.active}
-                            onClick={handleChange}
-                            onBlur={handleBlur}
-                            value={values.active}
-                            type="checkbox"
-                          />
-                          &nbsp;&nbsp;&nbsp;
-                          <label
-                            className="form-check-label"
-                            for="defaultCheck1"
-                          >
-                            Active
-                          </label>
+                        </div>
                       </FormGroup>
                       <FormGroup>
+                        <div className="row" style={classes.divider}></div>
+                        <br />
+                        <div className="row mb-2">
+                          <div className="container">
+                            <h2 style={classes.h2}>Template jobs</h2>
+                            <GroupTemplate templatedata={handletemplatedata} />
+                          </div>
+                        </div>
+
                         <ModalFooter>
                           <Button
                             type="submit"
@@ -362,5 +349,4 @@ let EditFuelCost = props => {
   );
 };
 
-
-export default EditFuelCost;
+export default JobGroupTemplateEdit;

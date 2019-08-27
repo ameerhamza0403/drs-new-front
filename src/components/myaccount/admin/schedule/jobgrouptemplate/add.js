@@ -51,25 +51,38 @@ const classes = {
 let JobGroupTemplateAdd = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
-  let data = [];
+  let data =[];
   function handletemplatedata(value) {
-    data = value;
+    data=value;
   }
+
+  let [newvalue, setNewvalue] = useState([{
+    jobGroupTemplateId: 0,
+    contact: '',
+    jobTypeId: 0,
+    resourceId: 0
+  }]);
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    let newvalue = values;
-    if (data === []) {
+
+    if (data.length === 0) {
       errorc();
+      setSubmitting(true);
+      setSubmitting(false);
     } else {
       let idtemp;
-      await PostListingForjobgrouptemplate(newvalue)
-        .then(res => {success(); idtemp = res.data.jobGroupTemplateId})
+            await PostListingForjobgrouptemplate(values)
+        .then(res => {
+          success();
+          idtemp = res.data.jobGroupTemplateId;
+          data.map(async (e)=>{
+            delete e.count;
+            e.jobGroupTemplateId=idtemp;
+            await PostListingFortemplategroup(idtemp,e)
+            .then(() => success())
+            .catch(error => errort());
+          })})
         .catch(error => errort());
-        console.log(data);
-        {data.map(async (e)=>{
-          await PostListingFortemplategroup(idtemp,e)
-          .then(() => success())
-          .catch(error => errort());
-        })}
+
 
       handleOpen();
       props.refresh();
