@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // import MUIDataTable from "mui-datatables";
-// import EditFuelCost from "./edit";
+import JobGroupTemplateEdit from "./edit";
 import JobGroupTemplateAdd from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
@@ -513,12 +513,11 @@ let JobGroupTemplateListing = () => {
 
   if (Editstate) {
     EditshowModel = (
-      <div></div>
-      // <EditFuelCost
-      //   IDforAPI={idofEdit}
-      //   refresh={refreshfn}
-      //   cross={HandleCrossEditforlisting}
-      // />
+      <JobGroupTemplateEdit
+        IDforAPI={idofEdit}
+        refresh={refreshfn}
+        cross={HandleCrossEditforlisting}
+      />
     );
   } else {
     EditshowModel = "";

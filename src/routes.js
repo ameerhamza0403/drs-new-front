@@ -85,7 +85,7 @@ const TrackingDeviceListing = React.lazy(() => import('./components/myaccount/ad
 const WorkSheetListing = React.lazy(() => import('./components/myaccount/admin/schedule/worksheet/listing'));
 const JobTypeListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobtype/listing'));
 // const WorkSheetListing = React.lazy(() => import('./components/myaccount/admin/schedule/worksheet/listing'));
-const JobGroupTemplateListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobgrouptemplate/listing'));
+//const JobGroupTemplateListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobgrouptemplate/listing'));
 
 // const WorkSheetListing = React.lazy(() => import('./components/myaccount/admin/schedule/worksheet/listing'));
 const JobGroupTemplateListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobgrouptemplate/listing'));
@@ -182,7 +182,7 @@ const routes = [
   { path: '/admin/resources/phone', exact: true, name: 'Phone Book', component: PhoneBookListing },
   { path: '/admin/vehicle/manage', exact: true, name: 'Manage', component: VehicleManage },
 
-  { path: '/admin/schedule/worksheet', exact: true, name: 'Work Sheet', component: WorkSheetListing },
+  //{ path: '/admin/schedule/worksheet', exact: true, name: 'Work Sheet', component: WorkSheetListing },
   { path: '/admin/schedule/jobtype', exact: true, name: 'Job Type', component: JobTypeListing },
   // { path: '/admin/schedule/worksheet', exact: true, name: 'Work Sheet', component: WorkSheetListing },
   { path: '/admin/schedule/jobgroup', exact: true, name: 'Job Group Template', component: JobGroupTemplateListing },
