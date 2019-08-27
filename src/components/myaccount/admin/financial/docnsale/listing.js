@@ -6,16 +6,21 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../../../scss/override/listing.scss";
-import {} from '../shared/docnsale';
+import {} from "../shared/docnsale";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 // import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-import {GetAllListingForFinancialDocumentnSale, DeleteFinancialDocumentnSaleDataById} from '../shared/docnsale';
-import DocnSaleAuto from './autoref';
-import NotestoClient from './notes';
+import {
+  GetAllListingForFinancialDocumentnSale,
+  DeleteFinancialDocumentnSaleDataById
+} from "../shared/docnsale";
+import DocnSaleAuto from "./autoref";
+import NotestoClient from "./notes/notes";
+import Adddoc from "./add";
 
 let menuDiv = "";
 let EditshowModel = "";
+let NoteshowModel = "";
 let idofEdit = 0;
 let Page = 1;
 let PageSize = 10;
@@ -230,8 +235,6 @@ let FinanceDocListing = () => {
     settabledistatus((Tabledistatus = true));
   }
 
-
-
   // Toast
 
   function errort() {
@@ -257,86 +260,116 @@ let FinanceDocListing = () => {
     refreshfn();
   }
 
-
-
-  let [autoref, setAutoref] = React.useState(false);
-  let HandleAutoref = () => {
+  let [autorefe, setautorefe] = React.useState(false);
+  let Handleautorefe = () => {
     return (
-      setAutoref((autoref = !autoref)),
-      HandlecloseAutoref()
-      // handleMenuClose()
+      setautorefe(true),
+      // Handlecloseautorefe()
+      handleMenuClose()
     );
   };
 
-  let HandlecloseAutoref = () => {
-    setAutoref((autoref = false));
+  let handleMenuClose = () => {
+    setMenushow(false);
   };
 
-  if (autoref) {
+  if (autorefe) {
+    console.log(autorefe);
     EditshowModel = (
       <DocnSaleAuto
         IDforAPI={idofEdit}
         refresh={refreshfn}
-        cross={HandlecloseAutoref}
+        cross={Handlecloseautorefe}
       />
     );
+    console.log("heloo");
   } else {
+    console.log(autorefe);
     EditshowModel = "";
   }
 
+  function Handlecloseautorefe() {
+    return setautorefe((autorefe = false));
+  }
 
   let [notes, setNotes] = React.useState(false);
   let HandleNotes = () => {
     return (
       setNotes((notes = !notes)),
-      handleclosenotes()
-      // handleMenuClose()
+      // handleclosenotes()
+      handleMenuClose()
     );
   };
 
   let handleclosenotes = () => {
-    setNotes((notes = false));
+    return setNotes((notes = false));
   };
 
   if (notes) {
-    EditshowModel = (
-      <DocnSaleAuto
+    NoteshowModel = (
+      <NotestoClient
         IDforAPI={idofEdit}
         refresh={refreshfn}
         cross={handleclosenotes}
       />
     );
   } else {
-    EditshowModel = "";
+    NoteshowModel = "";
   }
-
 
   let [menushow, setMenushow] = useState(false);
   function HandlerowSelect(row) {
-    setMenushow((menushow = false));
     menuDiv = "";
     idofEdit = row.documentTypeId;
+    // Handlerowclose();
+    setTimeout(() => {
+      setMenushow((menushow = false));
+    }, 10);
+    setTimeout(() => {
+      setMenushow((menushow = true));
+    }, 10);
     return setMenushow((menushow = true));
   }
   let Handlerowclose = row => {
     return setMenushow((menushow = false));
   };
 
+  async function Dellistapi() {
+    await DeleteFinancialDocumentnSaleDataById(idofEdit)
+      .then(() => {
+        success();
+      })
+      .catch(error => {
+        errort();
+      });
+    Handlerowclose();
+    refreshfn();
+  }
 
   if (menushow) {
-    if(idofEdit===2|| idofEdit===3|| idofEdit===4 || idofEdit===5||idofEdit===6){
+    if (
+      idofEdit === 2 ||
+      idofEdit === 3 ||
+      idofEdit === 4 ||
+      idofEdit === 5 ||
+      idofEdit === 6
+    ) {
       menuDiv = (
         <ul className="tool">
           {/* <li>
             <JobGroupTemplateAdd refresh={refreshfn} />{" "}
           </li> */}
-          <li title='Automatic Reference' onClick={HandleAutoref}>
+          <li title="Automatic Reference" onClick={Handleautorefe}>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <i className="fa fa-registered fa-2x" />
           </li>
-          <li title='Notes to Clients' onClick={HandleNotes}>
+          <li title="Notes to Clients" onClick={HandleNotes}>
             &nbsp;&nbsp;
             <i className="fa fa-sticky-note fa-2x" />
+          </li>
+          <li onClick={Dellistapi}>
+            &nbsp;&nbsp;
+            <i className="fa fa-archive fa-2x" />
           </li>
           <li onClick={Handlerowclose}>
             &nbsp;&nbsp;
@@ -344,70 +377,107 @@ let FinanceDocListing = () => {
           </li>
         </ul>
       );
-    }
-    else if(idofEdit===7){
+    } else if (idofEdit === 7) {
       menuDiv = (
         <ul className="tool">
           {/* <li>
             <JobGroupTemplateAdd refresh={refreshfn} />{" "}
           </li> */}
-          <li title='Automatic Reference' onClick={HandleAutoref}>
+          <li title="Automatic Reference" onClick={Handleautorefe}>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <i className="fa fa-registered fa-2x" />
           </li>
-          {/* <li title='Notes to Clients' onClick={HandleAutoref}>
+          {/* <li title='Notes to Clients' onClick={Handleautorefe}>
             &nbsp;&nbsp;
             <i className="fa fa-sticky-note fa-2x" />
           </li> */}
+          <li onClick={Dellistapi}>
+            &nbsp;&nbsp;
+            <i className="fa fa-archive fa-2x" />
+          </li>
           <li onClick={Handlerowclose}>
             &nbsp;&nbsp;
             <i className="fa fa-times-rectangle fa-2x" />
           </li>
         </ul>
       );
-    }
-    else if(idofEdit===8){
+    } else if (idofEdit === 8) {
       menuDiv = (
         <ul className="tool">
           {/* <li>
             <JobGroupTemplateAdd refresh={refreshfn} />{" "}
           </li> */}
-          <li title='Automatic Reference' onClick={HandleAutoref}>
+          <li title="Automatic Reference" onClick={Handleautorefe}>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <i className="fa fa-registered fa-2x" />
           </li>
-          <li title='Notes to Clients' onClick={HandleNotes}>
+          <li title="Notes to Clients" onClick={HandleNotes}>
             &nbsp;&nbsp;
             <i className="fa fa-sticky-note fa-2x" />
           </li>
-          {/* <li title='Quote Acceptance' onClick={HandleAutoref}>
+          {/* <li title='Quote Acceptance' onClick={Handleautorefe}>
             &nbsp;&nbsp;
             <i className="fa fa-pencil fa-2x" />
           </li> */}
+          <li onClick={Dellistapi}>
+            &nbsp;&nbsp;
+            <i className="fa fa-archive fa-2x" />
+          </li>
           <li onClick={Handlerowclose}>
             &nbsp;&nbsp;
             <i className="fa fa-times-rectangle fa-2x" />
           </li>
         </ul>
       );
-    }
-    else if(idofEdit===1){
+    } else if (idofEdit === 1) {
       menuDiv = (
         <ul className="tool">
           {/* <li>
             <JobGroupTemplateAdd refresh={refreshfn} />{" "}
           </li> */}
-          <li title='Automatic Reference' onClick={HandleAutoref}>
+          <li title="Automatic Reference" onClick={Handleautorefe}>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <i className="fa fa-registered fa-2x" />
           </li>
-          {/* <li title='Series' onClick={HandleAutoref}>
+          {/* <li title='Series' onClick={Handleautorefe}>
             &nbsp;&nbsp;
             <i className="fa fa-calculator fa-2x" />
           </li> */}
-          <li title='Notes to Clients' onClick={HandleNotes}>
+          <li title="Notes to Clients" onClick={HandleNotes}>
             &nbsp;&nbsp;
             <i className="fa fa-sticky-note fa-2x" />
+          </li>
+          <li onClick={Dellistapi}>
+            &nbsp;&nbsp;
+            <i className="fa fa-archive fa-2x" />
+          </li>
+          <li onClick={Handlerowclose}>
+            &nbsp;&nbsp;
+            <i className="fa fa-times-rectangle fa-2x" />
+          </li>
+        </ul>
+      );
+    } else {
+      menuDiv = (
+        <ul className="tool">
+          {/* <li>
+            <JobGroupTemplateAdd refresh={refreshfn} />{" "}
+          </li> */}
+          <li title="Automatic Reference" onClick={Handleautorefe}>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <i className="fa fa-registered fa-2x" />
+          </li>
+          {/* <li title='Series' onClick={Handleautorefe}>
+            &nbsp;&nbsp;
+            <i className="fa fa-calculator fa-2x" />
+          </li> */}
+          <li title="Notes to Clients" onClick={HandleNotes}>
+            &nbsp;&nbsp;
+            <i className="fa fa-sticky-note fa-2x" />
+          </li>
+          <li onClick={Dellistapi}>
+            &nbsp;&nbsp;
+            <i className="fa fa-archive fa-2x" />
           </li>
           <li onClick={Handlerowclose}>
             &nbsp;&nbsp;
@@ -416,36 +486,12 @@ let FinanceDocListing = () => {
         </ul>
       );
     }
-    // else{
-    //   menuDiv = (
-    //     <ul className="tool">
-    //       {/* <li>
-    //         <JobGroupTemplateAdd refresh={refreshfn} />{" "}
-    //       </li> */}
-    //       <li title='Automatic Reference' onClick={HandleAutoref}>
-    //         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    //         <i className="fa fa-registered fa-2x" />
-    //       </li>
-    //       {/* <li title='Series' onClick={HandleAutoref}>
-    //         &nbsp;&nbsp;
-    //         <i className="fa fa-calculator fa-2x" />
-    //       </li> */}
-    //       <li title='Notes to Clients' onClick={HandleNotes}>
-    //         &nbsp;&nbsp;
-    //         <i className="fa fa-sticky-note fa-2x" />
-    //       </li>
-    //       <li onClick={Handlerowclose}>
-    //         &nbsp;&nbsp;
-    //         <i className="fa fa-times-rectangle fa-2x" />
-    //       </li>
-    //     </ul>
-    //   );
-    // }
-
   } else if (!menushow) {
     menuDiv = (
       <ul className="tool">
-        <li />
+        <li>
+          <Adddoc refresh={refreshfn} />
+        </li>
         {/* <JobGroupTemplateAdd refresh={refreshfn} /> */}
       </ul>
     );
@@ -463,6 +509,7 @@ let FinanceDocListing = () => {
       </div>
       <br />
       {EditshowModel}
+      {NoteshowModel}
       {Tabledisplay}
     </div>
   );

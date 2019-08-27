@@ -1,7 +1,7 @@
 import {
   GetFinancialDocumentnSaleDataById,
   PutFinancialDocumentnSaleDataById
-} from "..//shared/docnsale";
+} from "../..//shared/docnsale";
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -39,7 +39,7 @@ const classes = {
   }
 };
 
-let DocnSaleAuto = (props) => {
+let AddNote = (props) => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
   //Toast
@@ -58,13 +58,13 @@ let DocnSaleAuto = (props) => {
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
 
-    values.nextNumber=parseInt(values.nextNumber);
-    values.documentTypeId=parseInt(props.IDforAPI);
+    values.nextNumber=parseInt(initialValues.nextNumber);
+    values.documentTypeId=parseInt(props.id);
     values.name=initialValues.name;
-    values.label=initialValues.label;
-    values.notes=initialValues.notes;
+    values.referencePrefix=initialValues.referencePrefix;
+    values.referenceFormat=initialValues.referenceFormat;
     values.active=true;
-    await PutFinancialDocumentnSaleDataById(props.IDforAPI, values)
+    await PutFinancialDocumentnSaleDataById(props.id, values)
       .then(() => success())
       .catch(error => errort());
     handleOpen();
@@ -74,9 +74,9 @@ let DocnSaleAuto = (props) => {
 
   const validationSchema = function(values) {
     return Yup.object().shape({
-      nextNumber: Yup.string()
-        .min(3, `Next Number has to be at least 3 characters`)
-        .required("Next Number is required")
+      notes: Yup.string()
+        .min(3, `Note has to be at least 3 characters`)
+        .required("Note is required")
     });
   };
 
@@ -128,10 +128,10 @@ let DocnSaleAuto = (props) => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(true);
+  let [modalA, setModalA] = useState(false);
 
   let handleOpen = () => {
-    return setModal((modal = !modal)), setTimeout(() => props.cross(), 200);
+    return setModalA((modalA = !modalA)), setTimeout(() => props.cross(), 200);
   };
   useEffect(() => {
     getlistapi();
@@ -139,19 +139,22 @@ let DocnSaleAuto = (props) => {
 
   async function getlistapi() {
     const { data: initialValues } = await GetFinancialDocumentnSaleDataById(
-      props.IDforAPI
+      props.id
     );
     setInitialValues(initialValues);
   }
 
   return (
     <div>
+      <div onClick={handleOpen} style={classes.plusbutton}>
+        <i className="fa fa-plus-circle fa-2x" />
+      </div>
       <Modal
-        isOpen={modal}
+        isOpen={modalA}
         toggle={handleOpen}
         className={"modal-primary " + props.className}
       >
-        <ModalHeader toggle={handleOpen}>Automatic Reference</ModalHeader>
+        <ModalHeader toggle={handleOpen}>Notes to Client</ModalHeader>
         <ModalBody>
           <div className="container">
             <Formik
@@ -176,72 +179,49 @@ let DocnSaleAuto = (props) => {
                   <Col lg="12">
                     <Form onSubmit={handleSubmit} noValidate name="simpleForm">
                       <FormGroup>
+
                         <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Reference prefix</Label>
+                            <Label for="name">Label</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
                               type="text"
-                              name="referencePrefix"
-                              id="referencePrefix"
-                              placeholder={initialValues.referencePrefix}
+                              name="label"
+                              id="label"
+                              placeholder={initialValues.label}
                               autoComplete="given-name"
-                              // valid={!errors.referencePrefix}
-                              // invalid={touched.referencePrefix && !!errors.referencePrefix}
+                              // valid={!errors.label}
+                              // invalid={touched.label && !!errors.label}
                               // autoFocus={true}
                               // required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.referencePrefix}
+                              value={values.label}
                             />
-                            {/* <FormFeedback>{errors.referencePrefix}</FormFeedback> */}
+                            {/* <FormFeedback>{errors.label}</FormFeedback> */}
                           </div>
                         </div>
                         <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Format</Label>
+                            <Label for="name">Notes</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
-                              type="text"
-                              name="referenceFormat"
-                              id="referenceFormat"
-                              placeholder={initialValues.referenceFormat}
+                              type="textarea"
+                              name="notes"
+                              id="notes"
+                              placeholder={initialValues.notes}
                               autoComplete="given-name"
-                              // valid={!errors.referenceFormat}
-                              // invalid={touched.referenceFormat && !!errors.referenceFormat}
+                              // valid={!errors.notes}
+                              // invalid={touched.notes && !!errors.notes}
                               // autoFocus={true}
                               // required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.referenceFormat}
+                              value={values.notes}
                             />
-                            {/* <FormFeedback>{errors.referenceFormat}</FormFeedback> */}
-                          </div>
-                        </div>
-                        <div className="row mb-2">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Next number *</Label>
-                          </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                            <Input
-                              type="text"
-                              name="nextNumber"
-                              id="nextNumber"
-                              placeholder={initialValues.nextNumber}
-                              autoComplete="given-name"
-                              valid={!errors.nextNumber}
-                              invalid={
-                                touched.nextNumber && !!errors.nextNumber
-                              }
-                              autoFocus={true}
-                              required
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.nextNumber}
-                            />
-                            <FormFeedback>{errors.nextNumber}</FormFeedback>
+                            {/* <FormFeedback>{errors.notes}</FormFeedback> */}
                           </div>
                         </div>
                       </FormGroup>
@@ -278,4 +258,4 @@ let DocnSaleAuto = (props) => {
   );
 };
 
-export default DocnSaleAuto;
+export default AddNote;
