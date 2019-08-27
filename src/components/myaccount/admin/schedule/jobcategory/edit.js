@@ -98,7 +98,7 @@ let EditJobCategory = (props) => {
   const [initialValues, setInitialValues] = useState({
     name: "",
     visiblity:"",
-    active: false
+    isActive: false
   });
 
   function findFirstError(formName, hasError) {
@@ -196,7 +196,7 @@ let EditJobCategory = (props) => {
                               onBlur={handleBlur}
                               value={values.name}
                             />
-                            
+
                             <FormFeedback>{errors.name}</FormFeedback>
 
                           </div>
@@ -207,43 +207,43 @@ let EditJobCategory = (props) => {
                             <Label for="name">Visiblity</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                              <input type="radio" 
-                                name="visiblity" 
-                                valid={!errors.name} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.name && !!errors.name}  
-                                value="Job" 
-              
+                              <input type="radio"
+                                name="visiblity"
+                                valid={!errors.name}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.name && !!errors.name}
+                                value="Job"
+
                                 onChange={handleChange}/>Job &nbsp;&nbsp;&nbsp;
-                              <input type="radio" 
-                                name="visiblity" 
-                                valid={!errors.name} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.name && !!errors.name}  
+                              <input type="radio"
+                                name="visiblity"
+                                valid={!errors.name}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.name && !!errors.name}
                                 value="Group"
                                 onChange={handleChange}/>Group &nbsp;&nbsp;&nbsp;
-                              <input type="radio" 
-                                name="visiblity" 
-                                valid={!errors.name} 
-                                onBlur={handleBlur} 
-                                required 
-                                invalid={touched.name && !!errors.name}  
-                                value="Either" 
-                                
+                              <input type="radio"
+                                name="visiblity"
+                                valid={!errors.name}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.name && !!errors.name}
+                                value="Either"
+
                                 onChange={handleChange}/>Both &nbsp;&nbsp;&nbsp;
-                                
+
                                 <br />
                                 <br />
                                 <input
-                                  name="active"
-                                  id="active"
-                                  valid={!errors.active}
-                                  invalid={touched.active && !!errors.active}
+                                  name="isActive"
+                                  id="isActive"
+                                  valid={!errors.isActive}
+                                  invalid={touched.isActive && !!errors.isActive}
                                   onClick={handleChange}
                                   onBlur={handleBlur}
-                                  value={values.active}
+                                  value={values.isActive}
                                   type="checkbox"
                                 />
                                 &nbsp;&nbsp;&nbsp;
@@ -251,11 +251,11 @@ let EditJobCategory = (props) => {
                                   className="form-check-label"
                                   for="defaultCheck1"
                                 >
-                                  Active
+                                  isActive
                                 </label>
                             </div>
 
-                            
+
                         </div>
                       </FormGroup>
                       <FormGroup>

@@ -43,7 +43,7 @@ let DriverBehListingdefault = (props) => {
     defaultMaxVal: 0,
     defaultMinVal: 0,
     importance: 0,
-    active: null
+    isActive: null
   });
 
   let Tabledisplay = (
@@ -192,7 +192,7 @@ function success(response) {
         e.resourceGroupId=props.resource
         e.minVal=e.defaultMinVal
         e.maxVal=e.defaultMaxVal
-        e.active=true
+        e.isActive=true
       })
       savelistapi();
     }

@@ -98,7 +98,7 @@ const classes = {
 //         }
 //     },
 //     {
-//       name: "active",
+//       name: "isActive",
 //       label: "Status",
 //       options: {
 //         filter: false,
@@ -148,7 +148,7 @@ const options = {
     getlistapi();
   }, []);
 
-  
+
 
   async function getlistapi() {
     await GetListingForWorkSheet(Page, PageSize).then(res => {
@@ -229,7 +229,7 @@ const options = {
     getlistapi();
   };
 
- 
+
  // Toast
 
  function errort() {

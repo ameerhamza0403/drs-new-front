@@ -102,7 +102,7 @@ let AddAtrribute = props => {
 
   const initialValues = {
     name: "",
-    active: false
+    isActive: false
   };
 
   function findFirstError(formName, hasError) {
@@ -195,13 +195,13 @@ let AddAtrribute = props => {
                         </div>
 
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -209,7 +209,7 @@ let AddAtrribute = props => {
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              Active
+                              isActive
                             </label>
 
                       </FormGroup>

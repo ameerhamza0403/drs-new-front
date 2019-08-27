@@ -67,7 +67,7 @@ let AbsenceListing = () => {
       }
     },
     {
-      name: "active",
+      name: "isActive",
       label: "Status",
       options: {
         filter: false,

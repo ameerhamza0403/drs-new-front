@@ -71,7 +71,7 @@ let VehicleFuelCostAdd = props => {
       currencyId: "",
       name: "",
       code: "",
-      active: true
+      isActive: true
     }
   ]);
   useEffect(() => {
@@ -136,7 +136,7 @@ let VehicleFuelCostAdd = props => {
     endDate: "",
     currencyId: 0,
     currencyCode: "",
-    active: true
+    isActive: true
   };
 
   function findFirstError(formName, hasError) {
@@ -311,13 +311,13 @@ let VehicleFuelCostAdd = props => {
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                           &nbsp;&nbsp;&nbsp;&nbsp;
                           <input
-                            name="active"
-                            id="active"
-                            valid={!errors.active}
-                            invalid={touched.active && !!errors.active}
+                            name="isActive"
+                            id="isActive"
+                            valid={!errors.isActive}
+                            invalid={touched.isActive && !!errors.isActive}
                             onClick={handleChange}
                             onBlur={handleBlur}
-                            value={values.active}
+                            value={values.isActive}
                             type="checkbox"
                           />
                           &nbsp;&nbsp;&nbsp;
@@ -325,7 +325,7 @@ let VehicleFuelCostAdd = props => {
                             className="form-check-label"
                             for="defaultCheck1"
                           >
-                            Active
+                            isActive
                           </label>
                       </FormGroup>
                       <FormGroup>

@@ -49,7 +49,7 @@ let ManageVehAttribute = props => {
     {
       vehicleAttributeId: 0,
       name: "",
-      active: true
+      isActive: true
     }
   ]);
 

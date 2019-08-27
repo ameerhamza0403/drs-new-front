@@ -418,6 +418,68 @@ export default {
       name: "FINANCIAL",
       url: "/admin/finnance",
       icon: "fa fa-bank",
+      children: [
+        {
+          name: "Financial documents & Sales Opps",
+          url: "/admin/finance/docs",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Financial documents' custom fields",
+          url: "/admin/finance/custom",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Predefined invoicing items",
+          url: "/admin/finance/invoice",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Predef. invoice items' custom fields",
+          url: "/admin/finance/invoice-custom",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Bank accounts",
+          url: "/admin/finance/account",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Nominal codes",
+          url: "/admin/finance/nominal",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Department codes",
+          url: "/admin/finance/dept",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "VAT codes",
+          url: "/admin/finance/vat",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Sales opportunity stages",
+          url: "/admin/finance/sale",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Sales opportunity probabilities",
+          url: "/admin/finance/saleprob",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Sales opportunity flags",
+          url: "/admin/finance/saleflag",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Schedule of rates",
+          url: "/admin/finance/rate",
+          icon: "fa fa-bank"
+        },
+      ]
     },
     {
       name: "STOCK & EQUIPMENT",

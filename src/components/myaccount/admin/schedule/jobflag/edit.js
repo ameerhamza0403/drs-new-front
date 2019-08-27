@@ -133,7 +133,7 @@ let EditButtonForJobFlag = props => {
   let [editvalues, seteditValues] = React.useState({});
 
   const handleEditChange = name => event => {
-    if (name != "active") {
+    if (name != "isActive") {
       seteditValues({ ...editvalues, [name]: event.target.value });
     } else {
       seteditValues({ ...editvalues, [name]: event.target.checked });
@@ -198,13 +198,13 @@ let EditButtonForJobFlag = props => {
               <input
                 className="form-check-input"
                 type="checkbox"
-                // value={values.active}
-                // placeholder={values.active}
+                // value={values.isActive}
+                // placeholder={values.isActive}
                 id="defaultCheck2"
-                onChange={handleEditChange("active")}
+                onChange={handleEditChange("isActive")}
               />
               <label className="form-check-label" for="defaultCheck2">
-                Active
+                isActive
               </label>
             </form>
             <br />

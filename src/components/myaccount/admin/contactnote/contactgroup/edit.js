@@ -106,11 +106,11 @@ let EditButton = props => {
   const [values, setValues] = React.useState({
     name: "",
     icon: "",
-    active: false
+    isActive: false
   });
 
   const handleChange = name => event => {
-    if (name != "active") {
+    if (name != "isActive") {
       setValues({ ...values, [name]: event.target.value });
     } else {
       setValues({ ...values, [name]: event.target.checked });
@@ -170,10 +170,10 @@ let EditButton = props => {
                   type="checkbox"
                   value="true"
                   id="defaultCheck1"
-                  onChange={handleChange("active")}
+                  onChange={handleChange("isActive")}
                 />
                 <label className="form-check-label" for="defaultCheck1">
-                  Active
+                  isActive
                 </label>
               </div>
               <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">

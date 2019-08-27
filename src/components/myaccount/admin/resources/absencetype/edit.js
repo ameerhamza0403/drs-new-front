@@ -100,7 +100,7 @@ let EditAbsence = props => {
 
   const [initialValues, setInitialValues] = useState({
     name: "",
-    active: false
+    isActive: false
   });
 
   function findFirstError(formName, hasError) {
@@ -202,13 +202,13 @@ let EditAbsence = props => {
                             <FormFeedback>{errors.name}</FormFeedback>
                             <br />
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -216,7 +216,7 @@ let EditAbsence = props => {
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              Active
+                              isActive
                             </label>
                           </div>
                         </div>
