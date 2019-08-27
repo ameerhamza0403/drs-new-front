@@ -77,7 +77,7 @@ let EditVehicleManage = props => {
       currencyId: "",
       name: "",
       code: "",
-      active: true
+      isActive: true
     }
   ]);
 
@@ -85,7 +85,7 @@ let EditVehicleManage = props => {
     {
       vehicleTypeId: 0,
       name: "",
-      active: true
+      isActive: true
     }
   ]);
   let [trackingdata, setTrackingdata] = useState([
@@ -93,21 +93,21 @@ let EditVehicleManage = props => {
       trackingDeviceId: 0,
       code: "",
       remarks: "",
-      active: true
+      isActive: true
     }
   ]);
   let [vehiclegroupdata, setVehicleGroupdata] = useState([
     {
       vehicleGroupId: "",
       name: "",
-      active: true
+      isActive: true
     }
   ]);
 
   let [vehchecktype, setVehiclechecktype] = useState([{
     vehicleCheckTypeId: 0,
     name: "",
-    active: true
+    isActive: true
   }]);
   useEffect(() => {
     getvehchecktype();
@@ -255,7 +255,7 @@ let EditVehicleManage = props => {
     attributes: "",
     vehicleCheckTypes: "",
     icon: iconpack,
-    active: true
+    isActive: true
   });
 
   function findFirstError(formName, hasError) {

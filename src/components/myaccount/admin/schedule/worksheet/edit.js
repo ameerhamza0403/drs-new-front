@@ -40,7 +40,7 @@ const classes = {
     // marginTop: '10px',
     // marginLeft: '5px',
   },
-  
+
 
 };
 
@@ -123,7 +123,7 @@ let EditWorkSheet = props => {
     // headerNotes:"",
     // sharing:"",
     // order:0,
-    active: false
+    isActive: false
   });
 
   function findFirstError(formName, hasError) {
@@ -229,11 +229,11 @@ let EditWorkSheet = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
-                           
+
                           </div>
                         </div>
-                        
-                        
+
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="ctBackOffice">Completion time for back office</Label>
@@ -252,7 +252,7 @@ let EditWorkSheet = props => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.ctBackOffice}
-                              
+
                             >
                                <option value="">N/A</option>
                                <option value="At any time">At any time</option>
@@ -262,10 +262,10 @@ let EditWorkSheet = props => {
                                <option value="After job completion">After job completion</option>
                             </Input>
                             <FormFeedback>{errors.ctBackOffice}</FormFeedback>
-                            
+
                           </div>
                         </div>
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="extensions">Completion time for resource</Label>
@@ -293,11 +293,11 @@ let EditWorkSheet = props => {
                                 <option value="After completing the job">After completing the job</option>
                            </Input>
                             <FormFeedback>{errors.ctResource}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="email">Completion time on booking site</Label>
@@ -323,10 +323,10 @@ let EditWorkSheet = props => {
                                 <option value="After job completion">After job completion</option>
                             </Input>
                             <FormFeedback>{errors.ctBookingSite}</FormFeedback>
-                            
+
                           </div>
                         </div>
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="headerAnswer">Job card header for "Answer"</Label>
@@ -347,10 +347,10 @@ let EditWorkSheet = props => {
                               value={values.headerAnswer}
                             />
                             <FormFeedback>{errors.headerAnswer}</FormFeedback>
-                           
+
                           </div>
                         </div>
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="headerNotes">Job card header for "Notes"</Label>
@@ -371,10 +371,10 @@ let EditWorkSheet = props => {
                               value={values.headerNotes}
                             />
                             <FormFeedback>{errors.headerNotes}</FormFeedback>
-                           
+
                           </div>
                         </div>
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="sharing">Sharing</Label>
@@ -401,8 +401,8 @@ let EditWorkSheet = props => {
                             >
                               Shared with job contractors
                             </label>
-                            
-                            
+
+
                           </div>
                         </div>
                         <div className="row">
@@ -410,15 +410,15 @@ let EditWorkSheet = props => {
                             <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
-                            
+
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -426,11 +426,11 @@ let EditWorkSheet = props => {
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              Active
+                              isActive
                             </label>
                           </div>
                         </div>
-                        
+
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>
@@ -460,7 +460,7 @@ let EditWorkSheet = props => {
             />
           </div>
           <div className="container">
-            <WorkSheetQListing 
+            <WorkSheetQListing
             IDforMainEdit={props.IDforAPI}
 
             />

@@ -60,7 +60,7 @@ let GroupTemplate = (props) => {
     //   contact: "",
     //   jobTypeName: "",
     //   resourceName: "",
-    //   active: true,
+    //   isActive: true,
     //   count: 0,
     // }
   ]);
@@ -138,7 +138,7 @@ let GroupTemplate = (props) => {
   //     }
   //   },
   //   {
-  //     name: "active",
+  //     name: "isActive",
   //     label: "Status",
   //     options: {
   //       filter: false,
@@ -194,8 +194,8 @@ let GroupTemplate = (props) => {
           // search
           options={options}
         >
-          <TableHeaderColumn dataField="active" isKey={true} hidden={true}>
-            Active
+          <TableHeaderColumn dataField="isActive" isKey={true} hidden={true}>
+            isActive
           </TableHeaderColumn>
 
           <TableHeaderColumn dataField="jobTypeName" dataSort>

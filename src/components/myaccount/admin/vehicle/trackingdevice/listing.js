@@ -51,11 +51,11 @@ const classes = {
 };
 
 let TrackingDeviceListing = () => {
-  
+
   let [paginate, setPaginate] = useState();
 
   let [Atlist, setAtlist] = useState([
-    { 
+    {
     trackingDeviceId: "",
     code:"",
     remarks:""
@@ -88,7 +88,7 @@ let TrackingDeviceListing = () => {
         }
     },
     {
-      name: "active",
+      name: "isActive",
       label: "Status",
       options: {
         filter: false,
@@ -96,7 +96,7 @@ let TrackingDeviceListing = () => {
         display: false
       }
     }
-   
+
   ];
 
   const options = {
@@ -118,7 +118,7 @@ let TrackingDeviceListing = () => {
     </select>
   );
 
-  
+
   //--- Pagination ------------------
 
   let [pgin, setPgin] = useState(true);
@@ -445,7 +445,7 @@ let TrackingDeviceListing = () => {
     //     (Atlist[i].colorCode = (
     //       <div className="ColorCodesl" style={ColorStyleFn(e.colorCode)} />
     //     ))
-    // );              
+    // );
     settabledistatus((Tabledistatus = false));
     settabledistatus((Tabledistatus = true));
   }

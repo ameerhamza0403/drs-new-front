@@ -118,7 +118,7 @@ let AddWorkSheet = props => {
     headerNotes:"",
     sharing:"",
     order:0,
-    active: false
+    isActive: false
   };
 
   function findFirstError(formName, hasError) {
@@ -207,10 +207,10 @@ let AddWorkSheet = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
-                           
+
                           </div>
                         </div>
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="ctBackOffice">Completion time for back office</Label>
@@ -220,7 +220,7 @@ let AddWorkSheet = props => {
                               type="select"
                               name="ctBackOffice"
                               id="ctBackOffice"
-                              
+
                               autoComplete="given-name"
                               valid={!errors.ctBackOffice}
                               invalid={touched.ctBackOffice && !!errors.ctBackOffice}
@@ -229,7 +229,7 @@ let AddWorkSheet = props => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.ctBackOffice}
-                              
+
                             >
                                <option value="">N/A</option>
                                <option value="At any time">At any time</option>
@@ -239,7 +239,7 @@ let AddWorkSheet = props => {
                                <option value="After job completion">After job completion</option>
                             </Input>
                             <FormFeedback>{errors.ctBackOffice}</FormFeedback>
-                            
+
                           </div>
                         </div>
 
@@ -252,7 +252,7 @@ let AddWorkSheet = props => {
                               type="select"
                               name="ctResource"
                               id="ctResource"
-                              
+
                               autoComplete="given-name"
                               valid={!errors.ctResource}
                               invalid={touched.ctResource && !!errors.ctResource}
@@ -270,7 +270,7 @@ let AddWorkSheet = props => {
                                 <option value="After completing the job">After completing the job</option>
                            </Input>
                             <FormFeedback>{errors.ctResource}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -283,7 +283,7 @@ let AddWorkSheet = props => {
                               type="select"
                               name="ctBookingSite"
                               id="ctBookingSite"
-                             
+
                               autoComplete="given-name"
                               valid={!errors.ctBookingSite}
                               invalid={touched.ctBookingSite && !!errors.ctBookingSite}
@@ -299,10 +299,10 @@ let AddWorkSheet = props => {
                                 <option value="After job completion">After job completion</option>
                             </Input>
                             <FormFeedback>{errors.ctBookingSite}</FormFeedback>
-                            
+
                           </div>
                         </div>
- 
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="headerAnswer">Job card header for "Answer"</Label>
@@ -323,10 +323,10 @@ let AddWorkSheet = props => {
                               value={values.headerAnswer}
                             />
                             <FormFeedback>{errors.headerAnswer}</FormFeedback>
-                           
+
                           </div>
                         </div>
-              
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="headerNotes">Job card header for "Notes"</Label>
@@ -347,10 +347,10 @@ let AddWorkSheet = props => {
                               value={values.headerNotes}
                             />
                             <FormFeedback>{errors.headerNotes}</FormFeedback>
-                           
+
                           </div>
                         </div>
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="sharing">Sharing</Label>
@@ -373,13 +373,13 @@ let AddWorkSheet = props => {
                             <FormFeedback>{errors.sharing}</FormFeedback>
                             <br />
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -387,7 +387,7 @@ let AddWorkSheet = props => {
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              Active
+                              isActive
                             </label>
                           </div>
                         </div>
@@ -397,15 +397,15 @@ let AddWorkSheet = props => {
                             <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
-                            
+
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -413,12 +413,12 @@ let AddWorkSheet = props => {
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              Active
+                              isActive
                             </label>
                           </div>
                         </div>
-                        
-                        
+
+
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>

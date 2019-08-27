@@ -103,7 +103,7 @@ let AddResourceSkill = (props) => {
 
   const initialValues = {
     name: "",
-    active: false
+    isActive: false
   };
 
   function findFirstError(formName, hasError) {
@@ -193,13 +193,13 @@ let AddResourceSkill = (props) => {
                             <FormFeedback>{errors.name}</FormFeedback>
                             <br />
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -207,7 +207,7 @@ let AddResourceSkill = (props) => {
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              Active
+                              isActive
                             </label>
                           </div>
                         </div>

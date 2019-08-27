@@ -62,7 +62,7 @@ let VehicleGroupListing =()=>{
       }
     },
     {
-      name: "active",
+      name: "isActive",
       label: "Status",
       options: {
         filter: false,

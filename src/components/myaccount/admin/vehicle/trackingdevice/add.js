@@ -71,7 +71,7 @@ let AddTrackingDevice = props => {
         .required("Tracking Id is required"),
       code: Yup.string()
         .required("code is required"),
-        
+
       remarks: Yup.string()
         .required("Remarks is required")
     });
@@ -104,7 +104,7 @@ let AddTrackingDevice = props => {
     phoneNumber:"",
     extensions:"",
     email:"",
-    active: false
+    isActive: false
   };
 
   function findFirstError(formName, hasError) {
@@ -192,11 +192,11 @@ let AddTrackingDevice = props => {
                               value={values.trackingDeviceId}
                             />
                             <FormFeedback>{errors.trackingDeviceId}</FormFeedback>
-                           
+
                           </div>
                         </div>
                         <br />
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="code">Code</Label>
@@ -217,7 +217,7 @@ let AddTrackingDevice = props => {
                               value={values.code}
                             />
                             <FormFeedback>{errors.code}</FormFeedback>
-                            
+
                           </div>
                         </div>
                         <br />
@@ -243,13 +243,13 @@ let AddTrackingDevice = props => {
                             <FormFeedback>{errors.remarks}</FormFeedback>
                             <br />
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -257,7 +257,7 @@ let AddTrackingDevice = props => {
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              Active
+                              isActive
                             </label>
                           </div>
                         </div>

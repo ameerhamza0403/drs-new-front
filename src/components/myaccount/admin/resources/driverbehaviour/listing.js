@@ -49,7 +49,7 @@ let DriverBehListing = (props) => {
     maxVal: 0,
     minVal: 0,
     importance: 0,
-    active: true
+    isActive: true
   });
   let [newdata, setnewData] =useState(props.data);
 
@@ -262,7 +262,7 @@ function success(response) {
     // const { data: Atlist } = await GetListingForDriverBeh();
     setAtlist((Atlist=props.data));
     settabledistatus((Tabledistatus = true));
-    newdata.map(e=>e.active=true);
+    newdata.map(e=>e.isActive=true);
   }
   return (
     <div>

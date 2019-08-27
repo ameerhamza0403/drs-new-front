@@ -145,7 +145,7 @@ let JobGroupTemplateAdd = props => {
     name: "",
     sameContact: false,
     sameResource: false,
-    active: true
+    isActive: true
   };
 
   function findFirstError(formName, hasError) {
@@ -290,13 +290,13 @@ let JobGroupTemplateAdd = props => {
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -304,7 +304,7 @@ let JobGroupTemplateAdd = props => {
                               className="form-check-label"
                               for="defaultCheck3"
                             >
-                              Active
+                              isActive
                             </label>
                           </div>
                         </div>

@@ -107,7 +107,7 @@ let AddVehicleCheck = props => {
   const initialValues = {
     defectName: "",
     vehicleCheckTypeId: "",
-    active: false,
+    isActive: false,
     atRisk: false,
     requiresPhoto: false,
   };
@@ -242,20 +242,20 @@ let AddVehicleCheck = props => {
                             <br />
                             <Input
                               type="checkbox"
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                             />
                             &nbsp;&nbsp;&nbsp;
                             <label
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              Active
+                              isActive
                             </label>
                             <br />
                             <Input

@@ -101,7 +101,7 @@ let AddeditEdit = (props) => {
     {
       resourceGroupId: 0,
       name: "",
-      active: true
+      isActive: true
     }
   ]);
   let [listvalue, setListvalue] = useState([
