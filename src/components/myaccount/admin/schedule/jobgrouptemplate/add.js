@@ -143,8 +143,8 @@ let JobGroupTemplateAdd = props => {
 
   const initialValues = {
     name: "",
-    sameContact: true,
-    sameResource: true,
+    sameContact: false,
+    sameResource: false,
     active: true
   };
 
