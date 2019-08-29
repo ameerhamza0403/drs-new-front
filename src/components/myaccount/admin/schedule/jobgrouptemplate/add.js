@@ -1,5 +1,8 @@
 import React, { Component, useState, useEffect } from "react";
-import { PostListingForjobgrouptemplate, PostListingFortemplategroup } from "..//shared/jobgrouptemplate";
+import {
+  PostListingForjobgrouptemplate,
+  PostListingFortemplategroup
+} from "..//shared/jobgrouptemplate";
 import {
   Button,
   Col,
@@ -51,38 +54,39 @@ const classes = {
 let JobGroupTemplateAdd = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
-  let data =[];
+  let data = [];
   function handletemplatedata(value) {
-    data=value;
+    data = value;
   }
 
-  let [newvalue, setNewvalue] = useState([{
-    jobGroupTemplateId: 0,
-    contact: '',
-    jobTypeId: 0,
-    resourceId: 0
-  }]);
+  let [newvalue, setNewvalue] = useState([
+    {
+      jobGroupTemplateId: 0,
+      contact: "",
+      jobTypeId: 0,
+      resourceId: 0
+    }
+  ]);
   async function onSubmit(values, { setSubmitting, setErrors }) {
-
     if (data.length === 0) {
       errorc();
       setSubmitting(true);
       setSubmitting(false);
     } else {
       let idtemp;
-            await PostListingForjobgrouptemplate(values)
+      await PostListingForjobgrouptemplate(values)
         .then(res => {
           success();
           idtemp = res.data.jobGroupTemplateId;
-          data.map(async (e)=>{
+          data.map(async e => {
             delete e.count;
-            e.jobGroupTemplateId=idtemp;
-            await PostListingFortemplategroup(idtemp,e)
-            .then(() => success())
-            .catch(error => errort());
-          })})
+            e.jobGroupTemplateId = idtemp;
+            await PostListingFortemplategroup(idtemp, e)
+              .then(() => success())
+              .catch(error => errort());
+          });
+        })
         .catch(error => errort());
-
 
       handleOpen();
       props.refresh();
@@ -225,6 +229,7 @@ let JobGroupTemplateAdd = props => {
                               id="name"
                               // placeholder="i.e. Company Car"
                               autoComplete="given-name"
+                              className="form-control"
                               valid={!errors.name}
                               invalid={touched.name && !!errors.name}
                               autoFocus={true}
@@ -233,7 +238,29 @@ let JobGroupTemplateAdd = props => {
                               onBlur={handleBlur}
                               value={values.name}
                             />
-                            <FormFeedback>{errors.name}</FormFeedback>
+                            <FormFeedback>
+                              {errors.name}
+                              {/* {"Name is Required"} */}
+                            </FormFeedback>
+
+                            {/* <input
+                              id="name"
+                              placeholder="Enter your email"
+                              type="text"
+                              value={values.name}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              className={
+                                errors.name && touched.name
+                                  ? "form-control error"
+                                  : "form-control"
+                              }
+                            />
+                            {errors.name && touched.name && (
+                              <FormFeedback>
+                              {errors.name}
+                            </FormFeedback>
+                            )} */}
                           </div>
                         </div>
                         <div className="row mb-2">

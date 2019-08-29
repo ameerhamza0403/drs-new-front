@@ -80,11 +80,39 @@ export function JobGroupType(){
 //-------------- Group Template -------- /masterdata/JobGroupTemplates
 
 /* *************************Job Group Template*********************** */
-function apiurltemplatejob(Id){
+function apiurltemplatejob(Id,IdT){
+  return `${apiurljobgrouptemplate}/${Id}/TemplateJobs/${IdT}`;
+}
+function apiurltemplatepostjob(Id,IdT){
   return `${apiurljobgrouptemplate}/${Id}/TemplateJobs`;
 }
 // let apiurlAbsenceType= 'https://reqres.in/api/users/2';
 
+function apiforlistunderedit(Id){
+  return `${apiurljobgrouptemplate}/${Id}/TemplateJobs/0/0`;
+}
+
+//--- Get list under edit -----
+export function GetListforlistunderedit(id) {
+    return axios.get(apiforlistunderedit(id),
+             {headers: {
+                 //"Authorization": authIt,
+                 //"accept": "application/json",
+                 //"Access-Control-Allow-Origin": "*",
+                 'Content-Type': 'application/json',
+                 'Access-Control-Expose-Headers': '*',
+                }}
+            )
+
+}
+
+//------- Delete-API
+
+export function DeletetemplateJobDataById(id,idt) {
+    // console.log(id)
+    return axios.delete(apiurltemplatejob(id,idt))
+
+}
 
 
 // //-------- GetAPi
@@ -118,16 +146,10 @@ function apiurltemplatejob(Id){
 
 // }
 
-// //------- Delete-API
 
-// export function DeletejobgrouptemplateDataById(id) {
-//     // console.log(id)
-//     return axios.delete(Apiwithidjobgrouptemplate(id))
-
-// }
 
 //----------Save-Post-API
 export function PostListingFortemplategroup(id,body) {
-    return axios.post(apiurltemplatejob(id),body)
+    return axios.post(apiurltemplatepostjob(id),body)
 
 }

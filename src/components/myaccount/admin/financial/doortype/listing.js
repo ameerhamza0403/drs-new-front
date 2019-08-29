@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 // import MUIDataTable from "mui-datatables";
-import JobGroupTemplateEdit from "./edit";
-import JobGroupTemplateAdd from "./add";
+import DoorTypeEdit from "./edit";
+import DoorTypeAdd from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../../../scss/override/listing.scss";
 import {
-  GetListingForjobgrouptemplate,
-  DeletejobgrouptemplateDataById
-} from "../shared/jobgrouptemplate";
+  GetListingForDoorType,
+  DeleteDoorTypeDataById
+} from "../shared/doortype";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
@@ -50,9 +50,9 @@ const classes = {
   }
 };
 
-let JobGroupTemplateListing = () => {
+let DoortypeListing = () => {
   let [Atlist, setAtlist] = useState([
-    { name: "", sameContact: true, sameResource: true, isActive: true }
+    { code: "", rate: 0, description: "", isActive: true }
   ]);
   let [paginate, setPaginate] = useState();
 
@@ -179,16 +179,15 @@ let JobGroupTemplateListing = () => {
           version="4"
           striped
           hover
-          pagination
-          search
+          // pagination
+          // search
           options={options}
         >
-          <TableHeaderColumn dataField="isActive" isKey={true} hidden={true}>
-            isActive
+          <TableHeaderColumn isKey={true} hidden={true} dataField="doorTypeId"  dataSort>
+            Door Type ID
           </TableHeaderColumn>
-
           <TableHeaderColumn dataField="name" dataSort>
-            Name
+          Name
           </TableHeaderColumn>
         </BootstrapTable>
         <br />
@@ -217,7 +216,7 @@ let JobGroupTemplateListing = () => {
   }, []);
 
   async function getlistapi() {
-    await GetListingForjobgrouptemplate(Page, PageSize).then(res => {
+    await GetListingForDoorType(Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
@@ -489,7 +488,7 @@ let JobGroupTemplateListing = () => {
     });
   }
   async function Dellistapi() {
-    await DeletejobgrouptemplateDataById(idofEdit)
+    await DeleteDoorTypeDataById(idofEdit)
       .then(() => {
         success();
       })
@@ -515,7 +514,7 @@ let JobGroupTemplateListing = () => {
 
   if (Editstate) {
     EditshowModel = (
-      <JobGroupTemplateEdit
+      <DoorTypeEdit
         IDforAPI={idofEdit}
         refresh={refreshfn}
         cross={HandleCrossEditforlisting}
@@ -528,7 +527,7 @@ let JobGroupTemplateListing = () => {
   let [menushow, setMenushow] = useState(false);
   function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = row.jobGroupTemplateId;
+    idofEdit = row.doorTypeId;
     console.log(idofEdit);
     return setMenushow((menushow = true));
   }
@@ -539,8 +538,7 @@ let JobGroupTemplateListing = () => {
     menuDiv = (
       <ul className="tool">
         <li>
-          {" "}
-          <JobGroupTemplateAdd refresh={refreshfn} />{" "}
+          <DoorTypeAdd refresh={refreshfn} />
         </li>
         <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -560,7 +558,7 @@ let JobGroupTemplateListing = () => {
     menuDiv = (
       <ul className="tool">
         <li />
-        <JobGroupTemplateAdd refresh={refreshfn} />
+        <DoorTypeAdd refresh={refreshfn} />
       </ul>
     );
   }
@@ -572,7 +570,7 @@ let JobGroupTemplateListing = () => {
           {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">JOB GROUP TEMPLATE</h3>
+          <h3 className="heading">DOOR TYPE</h3>
         </div>
       </div>
       <br />
@@ -582,4 +580,4 @@ let JobGroupTemplateListing = () => {
   );
 };
 
-export default JobGroupTemplateListing;
+export default DoortypeListing;

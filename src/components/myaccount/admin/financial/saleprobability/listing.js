@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from "react";
-// import MUIDataTable from "mui-datatables";
-import JobGroupTemplateEdit from "./edit";
-import JobGroupTemplateAdd from "./add";
+import React, { useEffect, useState } from "react";
+import { GetListingForSaleProb,DeleteSaleProbDataById } from "../shared/saleprobiltiy";
+import EditButtonforSaleOppProb from "./edit";
+import AddSaleOppProb from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../../../scss/override/listing.scss";
-import {
-  GetListingForjobgrouptemplate,
-  DeletejobgrouptemplateDataById
-} from "../shared/jobgrouptemplate";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import './add.scss';
+
+
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -50,9 +49,17 @@ const classes = {
   }
 };
 
-let JobGroupTemplateListing = () => {
+
+let ColorStyle = {};
+
+let SaleOppProbListing = () => {
   let [Atlist, setAtlist] = useState([
-    { name: "", sameContact: true, sameResource: true, isActive: true }
+    {
+      salesOpportunityProbabilityId: 0,
+      name: "",
+      colour: "",
+      isActive: true
+    }
   ]);
   let [paginate, setPaginate] = useState();
 
@@ -165,6 +172,20 @@ let JobGroupTemplateListing = () => {
     </select>
   );
 
+  let ColorStyleFn = mycolor => {
+    let code = "#" + mycolor;
+    return (ColorStyle = {
+      background: code
+    });
+  };
+
+
+  let colorfn=(cell,row)=>{
+    let iconvalue =  <div className='ColorCodesl' style={ColorStyleFn(cell)} ></div>
+    return iconvalue;
+  }
+
+
   if (Tabledistatus) {
     Tabledisplay = (
       // <MUIDataTable
@@ -179,16 +200,23 @@ let JobGroupTemplateListing = () => {
           version="4"
           striped
           hover
-          pagination
-          search
+          // pagination
+          // search
           options={options}
         >
-          <TableHeaderColumn dataField="isActive" isKey={true} hidden={true}>
-            isActive
-          </TableHeaderColumn>
-
           <TableHeaderColumn dataField="name" dataSort>
             Name
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            isKey={true}
+            hidden={true}
+            dataField="salesOpportunityProbabilityId"
+            dataSort
+          >
+            Active
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="colour" dataFormat={colorfn} dataSort>
+            Colour
           </TableHeaderColumn>
         </BootstrapTable>
         <br />
@@ -217,7 +245,7 @@ let JobGroupTemplateListing = () => {
   }, []);
 
   async function getlistapi() {
-    await GetListingForjobgrouptemplate(Page, PageSize).then(res => {
+    await GetListingForSaleProb(Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
@@ -489,7 +517,7 @@ let JobGroupTemplateListing = () => {
     });
   }
   async function Dellistapi() {
-    await DeletejobgrouptemplateDataById(idofEdit)
+    await DeleteSaleProbDataById(idofEdit)
       .then(() => {
         success();
       })
@@ -515,7 +543,7 @@ let JobGroupTemplateListing = () => {
 
   if (Editstate) {
     EditshowModel = (
-      <JobGroupTemplateEdit
+      <EditButtonforSaleOppProb
         IDforAPI={idofEdit}
         refresh={refreshfn}
         cross={HandleCrossEditforlisting}
@@ -528,7 +556,7 @@ let JobGroupTemplateListing = () => {
   let [menushow, setMenushow] = useState(false);
   function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = row.jobGroupTemplateId;
+    idofEdit = row.salesOpportunityProbabilityId;
     console.log(idofEdit);
     return setMenushow((menushow = true));
   }
@@ -539,8 +567,7 @@ let JobGroupTemplateListing = () => {
     menuDiv = (
       <ul className="tool">
         <li>
-          {" "}
-          <JobGroupTemplateAdd refresh={refreshfn} />{" "}
+          <AddSaleOppProb refresh={refreshfn} />
         </li>
         <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -560,7 +587,7 @@ let JobGroupTemplateListing = () => {
     menuDiv = (
       <ul className="tool">
         <li />
-        <JobGroupTemplateAdd refresh={refreshfn} />
+        <AddSaleOppProb refresh={refreshfn} />
       </ul>
     );
   }
@@ -572,7 +599,7 @@ let JobGroupTemplateListing = () => {
           {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">JOB GROUP TEMPLATE</h3>
+          <h3 className="heading">SALES OPPORTUNITY PROBABILITY</h3>
         </div>
       </div>
       <br />
@@ -582,4 +609,4 @@ let JobGroupTemplateListing = () => {
   );
 };
 
-export default JobGroupTemplateListing;
+export default SaleOppProbListing;
