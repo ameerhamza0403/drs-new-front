@@ -90,7 +90,8 @@ const VatCodeListing = React.lazy(() => import('./components/myaccount/admin/fin
 const SaleOppProbListing = React.lazy(() => import('./components/myaccount/admin/financial/saleprobability/listing'));
 const DoortypeListing = React.lazy(() => import('./components/myaccount/admin/financial/doortype/listing'));
 const PredefInvoiceListing = React.lazy(() => import('./components/myaccount/admin/financial/predefinvoice/listing'));
-
+const FileGroupListing = React.lazy(() => import('./components/myaccount/admin/forms/filegroup/listing'));
+const FileLibraryListing = React.lazy(() => import('./components/myaccount/admin/forms/filelibrary/listing'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -189,6 +190,8 @@ const routes = [
   { path: '/admin/finance/saleprob', exact: true, name: 'Sales Opportunity Probabilities', component: SaleOppProbListing },
   { path: '/admin/finance/doortype', exact: true, name: 'Door Type', component: DoortypeListing },
   { path: '/admin/finance/predefinvoice', exact: true, name: 'Predefined Invoicing Items', component: PredefInvoiceListing },
+  { path: '/admin/form/filegroup', exact: true, name: 'File Group', component: FileGroupListing },
+  { path: '/admin/form/filelibrary', exact: true, name: 'File Library', component: FileLibraryListing },
 
 ];
 export default routes;

@@ -420,22 +420,22 @@ export default {
       icon: "fa fa-bank",
       children: [
         {
-          name: "Financial documents & Sales Opps",
+          name: "Financial documents",
           url: "/admin/finance/docs",
           icon: "fa fa-bank"
         },
         {
-          name: "Financial documents' custom fields",
+          name: "Custom fields",
           url: "/admin/finance/custom",
           icon: "fa fa-bank"
         },
         {
-          name: "Predefined invoicing items",
+          name: "Predefined items",
           url: "/admin/finance/predefinvoice",
           icon: "fa fa-bank"
         },
         {
-          name: "Predef. invoice items' custom fields",
+          name: "Items Custom fields",
           url: "/admin/finance/invoice-custom",
           icon: "fa fa-bank"
         },
@@ -495,6 +495,18 @@ export default {
       name: "FORMS",
       url: "/admin/form",
       icon: "fa fa-bank",
+      children: [
+        {
+          name: "File Group",
+          url: "/admin/form/filegroup",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "File Library",
+          url: "/admin/form/filelibrary",
+          icon: "fa fa-bank"
+        },
+      ]
     },
     {
       name: "WEB USERS",

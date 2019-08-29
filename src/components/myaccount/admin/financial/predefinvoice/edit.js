@@ -49,12 +49,12 @@ const classes = {
 let PredefInvEdit = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    Object.keys(values).map(function(keyName, keyIndex) {
-      if(keyName===null){
-        values.keyName=editValue.keyName;
+    Object.keys(editValue).map(function(keyName, keyIndex) {
+      if(!values.hasOwnProperty(keyName)){
+        // values.keyName=editValue.keyName;
+        values[keyName]=editValue[keyName]
       }
     })
-   console.log(values)
     await PutPredefInvoiceItemDataById(props.IDforAPI, values)
       .then(() => success())
       .catch(error => errort());
