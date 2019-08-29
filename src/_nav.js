@@ -431,7 +431,7 @@ export default {
         },
         {
           name: "Predefined invoicing items",
-          url: "/admin/finance/invoice",
+          url: "/admin/finance/predefinvoice",
           icon: "fa fa-bank"
         },
         {

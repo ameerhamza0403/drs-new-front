@@ -6,7 +6,7 @@ import axios from 'axios';
 /* *************************Tax Code*********************** */
 let apiurlTaxCode= apiUrl + '/masterdata/TaxCodes';
 // let apiurlAbsence= 'https://reqres.in/api/users/2';
-let apiurlTaxCodeall= apiUrl + '/masterdata/DocumentTypes/0/0';
+let apiurlTaxCodeall= apiUrl + '/masterdata/TaxCodes/0/0';
 
 
 

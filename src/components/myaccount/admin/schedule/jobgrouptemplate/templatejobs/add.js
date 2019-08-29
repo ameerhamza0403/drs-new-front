@@ -43,6 +43,12 @@ const classes = {
   },
   h2: {
     color: "#EE7647"
+  },
+  td:{
+    width: '30%',
+  },
+  tdlast:{
+    width: '10%',
   }
 };
 
@@ -134,6 +140,12 @@ let TemplateAdd = props => {
     }
   };
 
+  function handleKey(event){
+    if(event.key==='Tab'){
+      props.addnew();
+    }
+  }
+
   let handlebutton = () => {
     if (initialaddvalues.jobTypeId === 0 || initialaddvalues.resourceId === 0) {
       return errort();
@@ -147,57 +159,53 @@ let TemplateAdd = props => {
     }
   };
   return (
-    <div>
-
-      <div className="row">
-
-        <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-          <Input
-            type="select"
-            name="select"
-            id="exampleSelect"
-            onChange={handleChange("jobTypeId")}
-          >
-            <option selected disabled hidden>
-              {initialaddvalues.jobTypeName}
+    <tr>
+      <td style={classes.td}>
+        <Input
+          type="select"
+          name="select"
+          id="exampleSelect"
+          onChange={handleChange("jobTypeId")}
+        >
+          <option selected >
+            {initialaddvalues.jobTypeName}
+          </option>
+          {job.map(e => (
+            <option value={e.jobTypeId} label={e.name}>
+              {e.name}
             </option>
-            {job.map(e => (
-              <option value={e.jobTypeId} label={e.name}>
-                {e.name}
-              </option>
-            ))}
-          </Input>
-        </div>
-        <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-          <Input
-            type="text"
-            defaultValue={""}
-            placeholder={"Enter Contact."}
-            onChange={handleChange("contact")}
-          />
-        </div>
-        <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-          <Input
-            type="select"
-            name="select"
-            id="exampleSelect"
-            onChange={handleChange("resourceId")}
-          >
-            <option selected>Select Resource</option>
-            {resource.map(e => (
-              <option value={e.resourceId} label={e.name}>
-                {e.name}
-              </option>
-            ))}
-          </Input>
-        </div>
-        <div className="col-12 col-sm-12 col-md-6 col-lg-1 col-xl-1">
-          <i className='fa fa-plus-circle fa-2x' onClick={handlebutton}>
-
-          </i>
-        </div>
-      </div>
-    </div>
+          ))}
+        </Input>
+      </td>
+      <td style={classes.td}>
+        <Input
+          type="text"
+          defaultValue={""}
+          placeholder={"Enter Contact."}
+          onChange={handleChange("contact")}
+        />
+      </td>
+      <td style={classes.td}>
+        <Input
+          type="select"
+          name="select"
+          id="exampleSelect"
+          onChange={handleChange("resourceId")}
+          onKeyDown={handleKey}
+        >
+          <option selected>Select Resource</option>
+          {resource.map(e => (
+            <option value={e.resourceId} label={e.name}>
+              {e.name}
+            </option>
+          ))}
+        </Input>
+      </td>
+      <td style={classes.tdlast}>
+        <i className="fa fa-check-square fa-1x" onClick={handlebutton}></i>&nbsp;&nbsp;&nbsp;&nbsp;
+        <i className="fa fa-window-close fa-1x" onClick={handlebutton}></i>
+      </td>
+    </tr>
   );
 };
 
