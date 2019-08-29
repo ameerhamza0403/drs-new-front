@@ -475,6 +475,11 @@ export default {
           icon: "fa fa-bank"
         },
         {
+          name: "Door Type",
+          url: "/admin/finance/doortype",
+          icon: "fa fa-bank"
+        },
+        {
           name: "Schedule of rates",
           url: "/admin/finance/rate",
           icon: "fa fa-bank"

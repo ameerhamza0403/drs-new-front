@@ -20,7 +20,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TextField from "@material-ui/core/TextField";
 // import {GetListingForAddEdit} from '../../resources/shared/addedit';
-import GroupTemplate from "./templatejobs/listing";
+import GroupTemplateedit from "./templatejobs/editlisting";
+import { GetListingForAddEdit } from "../../resources/shared/addedit";
+import { async } from "q";
 
 const classes = {
   button: {
@@ -92,6 +94,7 @@ let JobGroupTemplateEdit = props => {
     }
   }
 
+
   //Tost
 
   function errorc() {
@@ -143,7 +146,7 @@ let JobGroupTemplateEdit = props => {
     }, {});
   };
 
-  const initialValues = {
+  const initialaddvalues = {
     name: "",
     sameContact: true,
     sameResource: true,
@@ -191,7 +194,7 @@ let JobGroupTemplateEdit = props => {
         <ModalBody>
           <div className="container">
             <Formik
-              initialValues={initialValues}
+              initialaddvalues={initialaddvalues}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
               render={({
@@ -221,7 +224,7 @@ let JobGroupTemplateEdit = props => {
                               type="text"
                               name="name"
                               id="name"
-                              placeholder={initialValues.name}
+                              placeholder={initialaddvalues.name}
                               autoComplete="given-name"
                               valid={!errors.name}
                               invalid={touched.name && !!errors.name}
@@ -313,7 +316,7 @@ let JobGroupTemplateEdit = props => {
                         <div className="row mb-2">
                           <div className="container">
                             <h2 style={classes.h2}>Template jobs</h2>
-                            <GroupTemplate templatedata={handletemplatedata} />
+                            <GroupTemplateedit templatedata={handletemplatedata} id={props.IDforAPI}/>
                           </div>
                         </div>
 

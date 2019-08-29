@@ -18,7 +18,7 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GetListingForAddEdit } from "../../../resources/shared/addedit";
-import { JobGroupType } from "../../shared/jobgrouptemplate";
+import {JobGroupType} from '../../shared/jobgrouptemplate';
 
 const classes = {
   button: {
@@ -46,7 +46,8 @@ const classes = {
   }
 };
 
-let TemplateAdd = props => {
+
+let TemplateAddEdit = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
   //Tost
@@ -67,13 +68,13 @@ let TemplateAdd = props => {
     {
       jobTypeId: 0,
       name: "test"
-    }
+    },
   ]);
   let [resource, setResource] = useState([
     {
       resourceId: 0,
       name: "string"
-    }
+    },
   ]);
 
   useEffect(() => {
@@ -81,124 +82,102 @@ let TemplateAdd = props => {
   }, []);
 
   async function getinitiallist() {
-    const { data: Job } = await JobGroupType();
+    const {data:Job} = await JobGroupType();
     setJob(Job);
     const { data: resource } = await GetListingForAddEdit();
     setResource(resource);
   }
 
-  //Tost
+    //Tost
 
-  function errort() {
-    // add type: 'error' to options
-    return toast.error("Please Select all fields..", {
-      position: toast.POSITION.BOTTOM_RIGHT
-    });
-  }
-  function success() {
-    return toast.success("Saved Successfully... ", {
-      position: toast.POSITION.BOTTOM_RIGHT
-    });
-  }
+    function errort() {
+      // add type: 'error' to options
+      return toast.error("Please Select all fields..", {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+    }
+    function success() {
+      return toast.success("Saved Successfully... ", {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+    }
 
-  let [initialaddvalues, setinitialaddvalues] = useState({
+
+  let [initialaddvalues, setinitialaddvalues]= useState({
     jobTypeId: 0,
-    contact: "",
+    contact: '',
     resourceId: 0,
-    resourceName: "",
-    jobTypeName: "h",
-    count: 1
+    resourceName: '',
+    jobTypeName: '',
   });
 
-  let handleChange = name => event => {
-    if (name === "contact") {
-      setinitialaddvalues({ ...initialaddvalues, [name]: event.target.value });
-    } else if (name === "jobTypeId") {
-      let namer = "jobTypeName";
+  let handleChange = name => event =>{
+    if(name==='contact'){
+      setinitialaddvalues({...initialaddvalues, [name]: event.target.value});
+    }
+    else if(name==='jobTypeId'){
+      let namer='jobTypeName';
+      let index = event.target.selectedIndex;
+      let optionElement = event.target.childNodes[index];
+      setinitialaddvalues({...initialaddvalues, [name]: parseInt(event.target.value, 10),
+        [namer]: optionElement.getAttribute("label")});
+    }
+    else if(name==='resourceId'){
+      let namer='resourceName';
       let index = event.target.selectedIndex;
       let optionElement = event.target.childNodes[index];
       setinitialaddvalues({
-        ...initialaddvalues,
-        [name]: parseInt(event.target.value, 10),
-        [namer]: optionElement.getAttribute("label")
-      });
-    } else if (name === "resourceId") {
-      let namer = "resourceName";
-      let index = event.target.selectedIndex;
-      let optionElement = event.target.childNodes[index];
-      setinitialaddvalues({
-        ...initialaddvalues,
-        [name]: parseInt(event.target.value, 10),
+        ...initialaddvalues, [name]: parseInt(event.target.value, 10),
         [namer]: optionElement.getAttribute("label")
       });
     }
-  };
+  }
 
-  let handlebutton = () => {
-    if (initialaddvalues.jobTypeId === 0 || initialaddvalues.resourceId === 0) {
-      return errort();
-    } else {
-      let namer = "count";
-      setinitialaddvalues({
-        ...initialaddvalues,
-        [namer]: initialaddvalues.count + 1
-      });
-      props.submit(initialaddvalues);
-    }
-  };
+  let handlebutton =()=>{
+    props.submit(initialaddvalues);
+  }
   return (
     <div>
-
+      {/* <div onClick={handleOpen} style={classes.plusbutton}>
+        <i className="fa fa-plus-circle fa-2x" />
+      </div> */}
       <div className="row">
-
+        <div className="col-12 col-sm-12 col-md-6 col-lg-1 col-xl-1">
+          <Button style={classes.button}
+            onClick={handlebutton}
+          >Add</Button>
+        </div>
         <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-          <Input
-            type="select"
-            name="select"
-            id="exampleSelect"
-            onChange={handleChange("jobTypeId")}
-          >
-            <option selected disabled hidden>
-              {initialaddvalues.jobTypeName}
-            </option>
+        <Input type="select" name="select" id="exampleSelect"
+          onChange={handleChange('jobTypeId')}
+        >
+        <option selected>Select Job Type</option>
             {job.map(e => (
-              <option value={e.jobTypeId} label={e.name}>
-                {e.name}
-              </option>
+              <option value={e.jobTypeId} label={e.name}>{e.name}</option>
             ))}
           </Input>
         </div>
-        <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
           <Input
             type="text"
             defaultValue={""}
             placeholder={"Enter Contact."}
-            onChange={handleChange("contact")}
+            onChange={handleChange('contact')}
           />
         </div>
         <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-          <Input
-            type="select"
-            name="select"
-            id="exampleSelect"
-            onChange={handleChange("resourceId")}
-          >
-            <option selected>Select Resource</option>
+        <Input type="select" name="select" id="exampleSelect"
+          onChange={handleChange('resourceId')}
+        >
+        <option selected>Select Resource</option>
             {resource.map(e => (
-              <option value={e.resourceId} label={e.name}>
-                {e.name}
-              </option>
+              <option value={e.resourceId} label={e.name}>{e.name}</option>
             ))}
           </Input>
-        </div>
-        <div className="col-12 col-sm-12 col-md-6 col-lg-1 col-xl-1">
-          <i className='fa fa-plus-circle fa-2x' onClick={handlebutton}>
-
-          </i>
         </div>
       </div>
     </div>
   );
 };
 
-export default TemplateAdd;
+export default TemplateAddEdit;
