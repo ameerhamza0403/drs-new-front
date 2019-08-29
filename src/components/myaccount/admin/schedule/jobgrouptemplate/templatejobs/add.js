@@ -107,7 +107,7 @@ let TemplateAdd = props => {
     resourceId: 0,
     resourceName: "",
     jobTypeName: "h",
-    count: 1
+    count: 0
   });
 
   let handleChange = name => event => {
