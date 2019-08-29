@@ -39,42 +39,65 @@ const classes = {
   th: {
     textAlign: "center"
   },
-  iconth:{
-    width: '10%',
+  iconth: {
+    width: "10%"
+  },
+  td:{
+    width: '30%',
   }
 };
 
-
+let addarray = [];
+let showarrayofadd = "";
 let GroupTemplate = props => {
+  let comp = <TemplateAdd addnew={HandleAddnewRow} />;
 
-  function HandleAddnewRow(){
 
+  useEffect(()=>{
+    addarray=[];
+  },[]);
+  function refreshfn() {
+    return setAddshow(addshow = true);
+  }
+
+  function HandleAddnewRow() {
+    if (addarray === []) {
+      addarray[0] = comp;
+    } else {
+      addarray.push(comp);
+      setAddshow(addshow = false);
+      setInterval(() => {
+        refreshfn();
+      }, 0);
+    }
+  }
+
+  let [addshow, setAddshow] = useState(false);
+
+  if (addshow) {
+    showarrayofadd = addarray.map(e => e);
+  } else {
+    showarrayofadd = "";
   }
 
   return (
     <div>
-      <table class="table table-sm table-dark">
-        <thead>
+      <table className="table">
+        <thead className="thead-dark">
           <tr>
-            <th scope="col">
-              Job Type
-            </th>
-            <th  scope="col">
-              Contact
-            </th>
-            <th scope="col">
-              Resource
-            </th>
+            <th scope="col" style={classes.td}>Job Type</th>
+            <th scope="col" style={classes.td}>Contact</th>
+            <th scope="col" style={classes.td}>Resource</th>
             <th style={classes.iconth} scope="col">
-              <i className="fa fa-plus-circle fa-2x" onClick={HandleAddnewRow} />
+              <i
+                className="fa fa-plus-circle fa-2x"
+                onClick={HandleAddnewRow}
+              />
             </th>
           </tr>
         </thead>
-        <tbody>
-          <tr></tr>
-        </tbody>
+        <tbody>{showarrayofadd}</tbody>
       </table>
-      {/* <TemplateAdd /> */}
     </div>
   );
 };
