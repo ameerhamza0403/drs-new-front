@@ -76,7 +76,7 @@ let FileGroupEdit = props => {
 
   const validationSchema = function(values) {
     return Yup.object().shape({
-      reference: Yup.string()
+      name: Yup.string()
         .min(2, `Group has to be at least 2 characters`)
         .required("Group is required"),
     });
@@ -105,14 +105,13 @@ let FileGroupEdit = props => {
   };
 
   const [editValue, seteditValue] = useState({
-    reference: "",
+    name: "",
     isActive: true
   });
 
 
 
   useEffect(() => {
-
     getlistapi();
   }, []);
 
@@ -156,7 +155,7 @@ let FileGroupEdit = props => {
         isOpen={modal}
         toggle={handleOpen}
         className={"modal-primary " + props.className}
-        size={'lg'}
+        // size={'lg'}
       >
         <ModalHeader toggle={handleOpen}>
           <h3 className="font-weight:bold;">File Group</h3>
@@ -187,22 +186,22 @@ let FileGroupEdit = props => {
                       <FormGroup>
                         <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="reference">Reference</Label>
+                            <Label for="name">File Group</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
                               type="text"
-                              name="reference"
-                              id="reference"
-                              placeholder={editValue.reference}
+                              name="name"
+                              id="name"
+                              placeholder={editValue.name}
                               autoComplete="given-name"
-                              // valid={!errors.reference}
-                              // invalid={touched.reference && !!errors.reference}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.name}
+                              invalid={touched.name && !!errors.name}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
-                              // onBlur={handleBlur}
-                              value={values.reference}
+                              onBlur={handleBlur}
+                              value={values.name}
                             />
 
                             <FormFeedback>{errors.reference}</FormFeedback>

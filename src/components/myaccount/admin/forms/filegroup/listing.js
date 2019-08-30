@@ -53,9 +53,9 @@ const classes = {
 let FileGroupListing = () => {
   let [Atlist, setAtlist] = useState([
     {
-      reference: "",
+      fileGroupId: 0,
+      name: '',
       isActive: true,
-      PredefinedItemId: 0,
     }
   ]);
   let [paginate, setPaginate] = useState();
@@ -198,21 +198,15 @@ let FileGroupListing = () => {
           <TableHeaderColumn
             isKey={true}
             hidden={true}
-            dataField="predefinedItemId"
+            dataField="fileGroupId"
             dataSort
           >
-            PredefinedItemId
+            FileGroupId
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="reference" dataSort>
-            Reference
+          <TableHeaderColumn dataField="name" dataSort>
+          Name
           </TableHeaderColumn>
-          <TableHeaderColumn
-            dataField="atBookingSite"
-            dataFormat={activefn}
-            dataSort
-          >
-            Available on Booking Site
-          </TableHeaderColumn>
+
         </BootstrapTable>
         <br />
         <div className="row">

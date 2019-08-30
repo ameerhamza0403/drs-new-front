@@ -2,6 +2,8 @@ import {
   GetFileLibraryDataById,
   PutFileLibraryDataById
 } from "..//shared/filelibrary";
+import { GetAllListingForFileGroup } from "../shared/filegroup";
+import { GetAllListingForResourceGroup } from "../shared/resourcegroup";
 import React, { Component, useState, useEffect } from "react";
 import {
   Button,
@@ -42,6 +44,12 @@ const classes = {
   }
 };
 
+
+let selectedFile = new FormData();
+let nameoffile = "";
+let resourcearr=[];
+let resarr=[];
+
 let FileLibraryEdit = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
   async function onSubmit(values, { setSubmitting, setErrors }) {
@@ -52,9 +60,12 @@ let FileLibraryEdit = props => {
       }
     })
    console.log(values)
-    await PutFileLibraryDataById(props.IDforAPI, values)
-      .then(() => success())
-      .catch(error => errort());
+  //  await PostListingForFileUpload(selectedFile);
+  //   await PutFileLibraryDataById(props.IDforAPI, values)
+  //     .then(() =>  resarr.map(async (e)=>{
+  //       await PostListingForFileLibrary(e);
+  //     }))
+  //     .catch(error => errort());
       handleOpen();
       props.refresh();
     setSubmitting(false);
@@ -105,7 +116,11 @@ let FileLibraryEdit = props => {
   };
 
   const [editValue, seteditValue] = useState({
-    reference: "",
+    fileLibraryId: 0,
+    fileGroupId: 0,
+    fileGroupName: "",
+    createdOn: "",
+    name: "",
     isActive: true
   });
 
@@ -114,11 +129,81 @@ let FileLibraryEdit = props => {
   useEffect(() => {
 
     getlistapi();
+    getGroupList();
+    getReslist();
   }, []);
+
+  let [filegroup, setFileGroup] = useState([]);
+  async function getGroupList() {
+    const { data: filegroup } = await GetAllListingForFileGroup();
+    setFileGroup(filegroup);
+  }
+
+  let [resource, setResource] = useState([{
+    resourceGroupName:'',
+    resourceGroupId:0,
+  }]);
 
   async function getlistapi() {
     const { data: editValue } = await GetFileLibraryDataById(props.IDforAPI);
     seteditValue(editValue);
+  }
+
+  let [res,setRes]=useState(false);
+  async function getReslist() {
+    const { data: resource } = await GetAllListingForResourceGroup();
+    setResource(resource);
+    setRes(true);
+  }
+
+  let handleresource=event=>{
+    if(resarr.length===0){
+      resarr[0]=event.target.checked;
+    }
+    else{
+      resarr.push(event.target.checked)
+    }
+  }
+
+  if(res){
+    resourcearr=(resource.map(e =>
+      <div className="col">
+        <input
+          name={e.resourceGroupId}
+          id={e.resourceGroupId}
+          // valid={!errors.resourceGroupId}
+          // invalid={
+          //   touched.resourceGroupId &&
+          //   !!errors.resourceGroupId
+          // }
+          onClick={handleresource}
+          // onBlur={handleBlur}
+          value={e.resourceGroupId}
+          type="checkbox"
+        />
+        &nbsp;&nbsp;&nbsp;
+        <label
+          className="form-check-label"
+          for="defaultCheck1"
+        >
+          {e.resourceGroupName}
+        </label>
+      </div>
+    ));
+  }
+  else{
+    resourcearr=[];
+  }
+
+  let [filen, setFilen] = useState(false);
+  let handleFileSelect = event => {
+    return (selectedFile = event.target.files[0]), setFilen(true);
+  };
+
+  if (filen) {
+    nameoffile = selectedFile.name;
+  } else {
+    nameoffile = "";
   }
 
   function findFirstError(formName, hasError) {
@@ -185,52 +270,97 @@ let FileLibraryEdit = props => {
                   <Col lg="12">
                     <Form onSubmit={handleSubmit} noValidate name="simpleForm">
                       <FormGroup>
-                        <div className="row mb-2">
+                      <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="reference">Reference</Label>
+                            <Label for="fileGroupId">File Group</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
-                              type="text"
-                              name="reference"
-                              id="reference"
-                              placeholder={editValue.reference}
+                              type="Select"
+                              name="fileGroupId"
+                              id="fileGroupId"
+                              placeholder="i.e. "
+                              autoComplete="given-name"
+                              valid={!errors.fileGroupId}
+                              invalid={
+                                touched.fileGroupId && !!errors.fileGroupId
+                              }
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.fileGroupId}
+                            >
+                              <option selected></option>
+                              {filegroup.map(e => (
+                                <option value={e.fileGroupId}>
+                                  {e.fileGroupName}
+                                </option>
+                              ))}
+                            </Input>
+
+                            <FormFeedback>{errors.fileGroupId}</FormFeedback>
+                          </div>
+                        </div>
+
+                        <div className="row mb-2">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            {/* <Label for="reference">File Name</Label> */}
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                            <Input
+                              type="file"
+                              name="name"
+                              id="name"
+                              // placeholder="i.e. "
                               autoComplete="given-name"
                               // valid={!errors.reference}
                               // invalid={touched.reference && !!errors.reference}
                               // autoFocus={true}
                               // required
-                              onChange={handleChange}
+                              onChange={handleFileSelect}
                               // onBlur={handleBlur}
-                              value={values.reference}
+                              // value={values.reference}
                             />
-
+                            <Label for="name">
+                              Choose A File to Attach
+                            </Label>
                             <FormFeedback>{errors.reference}</FormFeedback>
                           </div>
                         </div>
 
                         <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="reference">Active</Label>
+                            <Label for="name">File Name</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                            <input
-                              name="isActive"
-                              id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
-                              onClick={handleChange}
-                              onBlur={handleBlur}
-                              value={values.isActive}
-                              type="checkbox"
+                            <Input
+                              type="text"
+                              name="name"
+                              id="name"
+                              placeholder={nameoffile}
+                              autoComplete="given-name"
+                              // defaultValue={nameoffile}
+                              // valid={!errors.name}
+                              // invalid={touched.name && !!errors.name}
+                              // autoFocus={true}
+                              // required
+                              onChange={handleChange}
+                              // onBlur={handleBlur}
+                              value={values.name}
                             />
-                            &nbsp;&nbsp;&nbsp;
-                            <label
-                              className="form-check-label"
-                              for="defaultCheck1"
-                            >
-                              isActive
-                            </label>
+
+                            <FormFeedback>{errors.name}</FormFeedback>
+                          </div>
+                        </div>
+                        <div className="row mb-2">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="resourceGroupId">Resource group</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                            <div className="row">
+                              {resourcearr}
+                            </div>
                           </div>
                         </div>
                       </FormGroup>

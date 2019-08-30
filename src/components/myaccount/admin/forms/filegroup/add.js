@@ -1,9 +1,7 @@
-import {PostListingForFileGroup} from '../shared/filegroup';
+import { PostListingForFileGroup } from "../shared/filegroup";
 import React, { Component, useState, useEffect } from "react";
 import {
   Button,
-  Card,
-  CardBody,
   Col,
   Modal,
   ModalBody,
@@ -20,7 +18,6 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 
 const classes = {
   button: {
@@ -42,7 +39,7 @@ const classes = {
 let FileGroupAdd = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
   async function onSubmit(values, { setSubmitting, setErrors }) {
-
+    values.isActive = true;
     await PostListingForFileGroup(values)
       .then(() => success())
       .catch(error => errort());
@@ -67,9 +64,9 @@ let FileGroupAdd = props => {
 
   const validationSchema = function(values) {
     return Yup.object().shape({
-      reference: Yup.string()
-        .min(2, `Reference has to be at least 2 characters`)
-        .required("Reference is required"),
+      name: Yup.string()
+        .min(2, `File Group has to be at least 2 characters`)
+        .required("File Group is required")
     });
   };
 
@@ -96,11 +93,9 @@ let FileGroupAdd = props => {
   };
 
   const initialValues = {
-    reference: "",
+    name: "",
     isActive: true
   };
-
-
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -141,7 +136,7 @@ let FileGroupAdd = props => {
         isOpen={modal}
         toggle={handleOpen}
         className={"modal-primary " + props.className}
-        size={'lg'}
+        // size={"lg"}
       >
         <ModalHeader toggle={handleOpen}>
           <h3 className="font-weight:bold;">File Group</h3>
@@ -172,25 +167,25 @@ let FileGroupAdd = props => {
                       <FormGroup>
                         <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="reference">File Group</Label>
+                            <Label for="name">File Group</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
                               type="text"
-                              name="reference"
-                              id="reference"
+                              name="name"
+                              id="name"
                               placeholder="i.e. "
                               autoComplete="given-name"
-                              // valid={!errors.reference}
-                              // invalid={touched.reference && !!errors.reference}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.name}
+                              invalid={touched.name && !!errors.name}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
-                              // onBlur={handleBlur}
-                              value={values.reference}
+                              onBlur={handleBlur}
+                              value={values.name}
                             />
 
-                            <FormFeedback>{errors.reference}</FormFeedback>
+                            <FormFeedback>{errors.name}</FormFeedback>
                           </div>
                         </div>
 

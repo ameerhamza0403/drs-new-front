@@ -4,23 +4,23 @@ import axios from 'axios';
 
 
 /* *************************File Group*********************** */
-let apiurlFileLibrary= apiUrl + '/masterdata/PredefinedItems';
+let apiurlResourceGroup= apiUrl + '/masterdata/PredefinedItems';
 // let apiurlAbsence= 'https://reqres.in/api/users/2';
-let apiurlFileLibraryall= apiUrl + '/masterdata/PredefinedItems/0/0';
+let apiurlResourceGroupall= apiUrl + '/masterdata/PredefinedItems/0/0';
 
 
 
-function ApiwithidFileLibrary(Id) {
-    return `${apiurlFileLibrary}/${Id}`;
+function ApiwithidResourceGroup(Id) {
+    return `${apiurlResourceGroup}/${Id}`;
   }
 
-  function ApiwithbyPgFileLibrary(Pg,PgSize) {
-    return `${apiurlFileLibrary}/${Pg}/${PgSize}`;
+  function ApiwithbyPgResourceGroup(Pg,PgSize) {
+    return `${apiurlResourceGroup}/${Pg}/${PgSize}`;
   }
 
 //-------- GetAPi
-export function GetListingForFileLibrary(pg,pgsize) {
-    return axios.get(ApiwithbyPgFileLibrary(pg,pgsize),
+export function GetListingForResourceGroup(pg,pgsize) {
+    return axios.get(ApiwithbyPgResourceGroup(pg,pgsize),
              {headers: {
                  //"Authorization": authIt,
                  //"accept": "application/json",
@@ -33,8 +33,8 @@ export function GetListingForFileLibrary(pg,pgsize) {
 }
 
 //-------- GetAPiAll
-export function GetAllListingForFileLibrary() {
-  return axios.get(apiurlFileLibraryall,
+export function GetAllListingForResourceGroup() {
+  return axios.get(apiurlResourceGroupall,
            {headers: {
                //"Authorization": authIt,
                //"accept": "application/json",
@@ -47,9 +47,9 @@ export function GetAllListingForFileLibrary() {
 }
 
 //---------Edit APi
-export function GetFileLibraryDataById(id) {
+export function GetResourceGroupDataById(id) {
     // console.log(id)
-    return axios.get(ApiwithidFileLibrary(id),
+    return axios.get(ApiwithidResourceGroup(id),
              {headers: {
                  'Content-Type': 'application/json',
                 }}
@@ -57,34 +57,22 @@ export function GetFileLibraryDataById(id) {
 
 }
 
-export function PutFileLibraryDataById(id,body) {
+export function PutResourceGroupDataById(id,body) {
     // console.log(id)
-    return axios.put(ApiwithidFileLibrary(id),body)
+    return axios.put(ApiwithidResourceGroup(id),body)
 
 }
 
 //------- Delete-API
 
-export function DeleteFileLibraryDataById(id) {
+export function DeleteResourceGroupDataById(id) {
     // console.log(id)
-    return axios.delete(ApiwithidFileLibrary(id))
+    return axios.delete(ApiwithidResourceGroup(id))
 
 }
 
 //----------Save-Post-API
-export function PostListingForFileLibrary(body) {
-    return axios.post(apiurlFileLibrary,body)
-
-}
-
-
-
-//----------Upload File
-
-let apiforupload=apiUrl + '/masterdata/PredefinedItems';
-
-
-export function PostListingForFileUpload(body) {
-  return axios.post(apiforupload,body)
+export function PostListingForResourceGroup(body) {
+    return axios.post(apiurlResourceGroup,body)
 
 }

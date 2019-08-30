@@ -13,6 +13,7 @@ import {
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import MyCustomPagination from './pagination';
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -20,7 +21,7 @@ let idofEdit = 0;
 let Page = 1;
 let PageSize = 10;
 let paging = "";
-let TotalPages = 2;
+let TotalPages = 1;
 
 const classes = {
   linearprogress: {
@@ -53,9 +54,12 @@ const classes = {
 let FileLibraryListing = () => {
   let [Atlist, setAtlist] = useState([
     {
-      reference: "",
+      fileLibraryId: 0,
+      fileGroupId: 0,
+      fileGroupName: '',
+      createdOn: '',
+      name: '',
       isActive: true,
-      PredefinedItemId: 0,
     }
   ]);
   let [paginate, setPaginate] = useState();
@@ -198,34 +202,27 @@ let FileLibraryListing = () => {
           <TableHeaderColumn
             isKey={true}
             hidden={true}
-            dataField="predefinedItemId"
+            dataField="fileLibraryId"
             dataSort
           >
-            PredefinedItemId
+            FileLibraryId
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="reference" dataSort>
-            Reference
+          <TableHeaderColumn dataField="name" dataSort>
+            Name
           </TableHeaderColumn>
           <TableHeaderColumn
-            dataField="atBookingSite"
+            dataField="fileGroupName"
             // dataFormat={activefn}
             dataSort
           >
-            Available on Booking Site
+            File Group
           </TableHeaderColumn>
           <TableHeaderColumn
-            dataField="atBookingSite"
+            dataField="createdOn"
             // dataFormat={activefn}
             dataSort
           >
-            Available on Booking Site
-          </TableHeaderColumn>
-          <TableHeaderColumn
-            dataField="atBookingSite"
-            // dataFormat={activefn}
-            dataSort
-          >
-            Available on Booking Site
+            Date
           </TableHeaderColumn>
         </BootstrapTable>
         <br />
@@ -262,8 +259,10 @@ let FileLibraryListing = () => {
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
     //                 )
+    setPgin(false);
     TotalPages = paginate.totalPages;
     settabledistatus((Tabledistatus = true));
+    setPgin(true);
   }
   //--- Pagination ------------------
 
@@ -286,8 +285,10 @@ let FileLibraryListing = () => {
             previous
             tag="button"
             onClick={() => {
+              if(Page!=1){
               Page = Page - 1;
               handlepagin();
+              }
             }}
           />
         </PaginationItem>
@@ -295,22 +296,28 @@ let FileLibraryListing = () => {
               <PaginationLink
                 tag="button"
                 onClick={() => {
+                  if(Page-2!=0){
                   Page = Page - 2;
                   handlepagin();
+                  }
                 }}
               >
-                {Page - 2}
+                {/* {Page - 2} */}
+                {(Page-2!=0)? Page-2 : '...'}
               </PaginationLink>
-            </PaginationItem> */}
+            </PaginationItem>
          <PaginationItem>
               <PaginationLink
                 tag="button"
                 onClick={() => {
+                  if(Page-1!=0){
                   Page = Page - 1;
                   handlepagin();
+                  }
                 }}
               >
-                {Page - 1}
+                {/* {Page - 1} */}
+                {(Page-1!=0)? Page-1 : '...'}
               </PaginationLink>
             </PaginationItem>
         <PaginationItem>
@@ -336,8 +343,10 @@ let FileLibraryListing = () => {
                 previous
                 tag="button"
                 onClick={() => {
+                  if(Page-1!=0){
                   Page = Page - 1;
                   handlepagin();
+                }
                 }}
               />
             </PaginationItem>
@@ -345,22 +354,28 @@ let FileLibraryListing = () => {
               <PaginationLink
                 tag="button"
                 onClick={() => {
+                  if(Page-2!=0){
                   Page = Page - 2;
                   handlepagin();
+                  }
                 }}
               >
-                {Page - 2}
+                {/* {Page - 2} */}
+                {(Page-2!=0)? Page-2 : '...'}
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
               <PaginationLink
                 tag="button"
                 onClick={() => {
+                  if(Page-1!=0){
                   Page = Page - 1;
                   handlepagin();
+                  }
                 }}
               >
-                {Page - 1}
+                {/* {Page - 1} */}
+                {(Page-1!=0)? Page-1 : '...'}
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
@@ -379,11 +394,14 @@ let FileLibraryListing = () => {
               <PaginationLink
                 tag="button"
                 onClick={() => {
+                  if(Page+1<0){
                   Page = Page + 1;
                   handlepagin();
+                  }
                 }}
               >
-                {Page + 1}
+                {/* {Page + 1} */}
+                {(Page+1<TotalPages)? Page+1 : '...'}
               </PaginationLink>
             </PaginationItem>
           </Pagination>
@@ -396,8 +414,10 @@ let FileLibraryListing = () => {
                 previous
                 tag="button"
                 onClick={() => {
+                  if(Page-1!=0){
                   Page = Page - 1;
                   handlepagin();
+                  }
                 }}
               />
             </PaginationItem>
@@ -405,11 +425,14 @@ let FileLibraryListing = () => {
               <PaginationLink
                 tag="button"
                 onClick={() => {
+                  if(Page-1!=0){
                   Page = Page - 1;
                   handlepagin();
+                  }
                 }}
               >
-                {Page - 1}
+                {/* {Page - 1} */}
+                {(Page-1!=0)? Page-1 : '...'}
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
@@ -427,22 +450,28 @@ let FileLibraryListing = () => {
               <PaginationLink
                 tag="button"
                 onClick={() => {
+                  if(!(Page+1>TotalPages)){
                   Page = Page + 1;
                   handlepagin();
+                  }
                 }}
               >
-                {Page + 1}
+                {/* {Page + 1} */}
+                {(!(Page+1>TotalPages))? Page+1 : '...'}
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
               <PaginationLink
                 tag="button"
                 onClick={() => {
+                  if(!(Page+2>TotalPages)){
                   Page = Page + 2;
                   handlepagin();
+                  }
                 }}
               >
-                {Page + 2}
+                {/* {Page + 2} */}
+                {(!(Page+2>TotalPages))? Page+1 : '...'}
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
@@ -450,8 +479,10 @@ let FileLibraryListing = () => {
                 next
                 tag="button"
                 onClick={() => {
-                  Page = Page + 1;
-                  handlepagin();
+                  if(!(Page+1>TotalPages)){
+                    Page = Page + 1;
+                    handlepagin();
+                  }
                 }}
               />
             </PaginationItem>
@@ -476,22 +507,28 @@ let FileLibraryListing = () => {
             <PaginationLink
               tag="button"
               onClick={() => {
+                if(!(Page+1>TotalPages)){
                 Page = Page + 1;
                 handlepagin();
+                }
               }}
             >
-              {Page + 1}
+              {/* {Page + 1} */}
+              {(!(Page+1>TotalPages))? Page+1 : '...'}
             </PaginationLink>
           </PaginationItem>
           <PaginationItem>
             <PaginationLink
               tag="button"
               onClick={() => {
+                if(!(Page+2>TotalPages)){
                 Page = Page + 2;
                 handlepagin();
+                }
               }}
             >
-              {Page + 2}
+              {/* {Page + 2} */}
+              {(!(Page+2>TotalPages))? Page+2 : '...'}
             </PaginationLink>
           </PaginationItem>
           <PaginationItem>
@@ -499,8 +536,10 @@ let FileLibraryListing = () => {
               next
               tag="button"
               onClick={() => {
+                if(!(Page+2>TotalPages)){
                 Page = Page + 1;
                 handlepagin();
+                }
               }}
             />
           </PaginationItem>
@@ -508,6 +547,7 @@ let FileLibraryListing = () => {
       );
     }
   }
+
   else {
     paging = "";
   }
