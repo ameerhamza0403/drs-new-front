@@ -488,18 +488,54 @@ export default {
     },
     {
       name: "STOCK & EQUIPMENT",
-      url: "/admin/stocknequip",
+      url: "/admin/stocknequipment",
       icon: "fa fa-bank",
+      children: [
+        {
+          name: "Manage Makes & Models",
+          url: "/admin/stocknequipment/managemakesnmodel",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Product Categories",
+          url: "/admin/stocknequipment/productcategory",
+          icon: "fa fa-bank"
+        },
+      ]
     },
     {
       name: "FORMS",
-      url: "/admin/form",
+      url: "/admin/forms",
       icon: "fa fa-bank",
+      children: [
+        {
+          name: "Timesheet Activities",
+          url: "/admin/forms/timesheetactivity",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Expense Categories",
+          url: "/admin/forms/expensecategory",
+          icon: "fa fa-bank"
+        },
+      ]
     },
     {
       name: "WEB USERS",
       url: "/admin/user",
       icon: "fa fa-bank",
+      children: [
+        {
+          name: "Add User",
+          url: "/admin/webusers/adduser",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Roles",
+          url: "/admin/webusers/role",
+          icon: "fa fa-bank"
+        },
+      ]
     },
     {
       name: "ACCOUNT",

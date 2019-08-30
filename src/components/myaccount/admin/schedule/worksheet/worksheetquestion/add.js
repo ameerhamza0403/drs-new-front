@@ -1,5 +1,6 @@
 import React, { Component, useState, useEffect } from "react";
 import {  PostListingForWorkSheetQ } from "../../shared/worksheetquestion";
+import CoditionTemplateAdd from "./worksheetqcondition/listinga";
 import {
   Button,
   Card,
@@ -20,6 +21,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { PostListingForWorkSheetQCondition } from "../../shared/worksheetqcondition";
 
 
 const classes = {
@@ -45,6 +47,18 @@ let AddWorkSheetQ = props => {
 
       //Tost
 
+    let data =[];
+    function handletemplatedata(value) {
+      data=value;
+    }
+
+    let [newvalue, setNewvalue] = useState([{
+      worksheetQConditionId: 0,
+      expression: '',
+      statement: '',
+      worksheetQuestionId: '',
+    }]);
+
       function errort() {
         // add type: 'error' to options
         return toast.error('Failed with Error...', {
@@ -52,19 +66,57 @@ let AddWorkSheetQ = props => {
         });
 
       }
+      function errorc() {
+        // add type: 'error' to options
+        return toast.error("Please Add Work Sheet Question..", {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      }
       function success() {
         return toast.success("Saved Successfully... ", {
           position: toast.POSITION.BOTTOM_RIGHT
         });
       }
 
+      
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    console.log(values , props.idworksheet);
-    await PostListingForWorkSheetQ(props.idworksheet,values).then(()=>success()).catch(error=>errort());
-    handleOpen();
-    props.refresh();
-    setSubmitting(false);
+    
+    if (data.length === 0) {
+      errorc();
+      setSubmitting(true);
+      setSubmitting(false);
+    } else {
+      let idtemp;
+          await PostListingForWorkSheetQ(props.idworksheet,values)
+        .then(res => {
+          success();
+          idtemp = res.data.worksheetQuestionId;
+          
+          console.log(props.idworksheet)
+          data.map(async (e)=>{
+            delete e.count;
+            e.worksheetQuestionId=idtemp;
+            
+            e.worksheetId =props.idworksheet; 
+           await PostListingForWorkSheetQCondition(props.idworksheet, idtemp,e)
+            .then((res) => success())
+            .catch(error => errort());
+          })})
+        .catch(error => errort());
+
+
+
+
+      handleOpen();
+      props.refresh();
+      setSubmitting(false);
+    }
+    // console.log(values , props.idworksheet);
+    // await PostListingForWorkSheetQ(props.idworksheet,values).then(()=>success()).catch(error=>errort());
+    // handleOpen();
+    // props.refresh();
+    // setSubmitting(false);
   }
 
   const validationSchema = function(values) {
@@ -549,6 +601,14 @@ let AddWorkSheetQ = props => {
 
                       </FormGroup>
                       <FormGroup>
+                        <div className="row" style={classes.divider}></div>
+                        <br />
+                        <div className="row mb-2">
+                          <div className="container">
+                            <h2 style={classes.h2}>Add Condition</h2>
+                            <CoditionTemplateAdd templatedata={handletemplatedata} />
+                          </div>
+                        </div>
                         <ModalFooter>
                           <Button
                             type="submit"
@@ -575,6 +635,7 @@ let AddWorkSheetQ = props => {
               )}
             />
           </div>
+
         </ModalBody>
       </Modal>
     </div>
