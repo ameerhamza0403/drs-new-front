@@ -431,7 +431,7 @@ export default {
         },
         {
           name: "Predefined invoicing items",
-          url: "/admin/finance/invoice",
+          url: "/admin/finance/predefinvoice",
           icon: "fa fa-bank"
         },
         {
@@ -472,6 +472,11 @@ export default {
         {
           name: "Sales opportunity flags",
           url: "/admin/finance/saleflag",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Door Type",
+          url: "/admin/finance/doortype",
           icon: "fa fa-bank"
         },
         {

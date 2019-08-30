@@ -1,10 +1,9 @@
-import {
-  GetFinancialDocumentnSaleDataById,
-  PutFinancialDocumentnSaleDataById
-} from "..//shared/docnsale";
-import React, { useEffect, useState } from "react";
+import { PostListingForTaxCode } from "..//shared/vatcode";
+import React, { Component, useState, useEffect } from "react";
 import {
   Button,
+  Card,
+  CardBody,
   Col,
   Modal,
   ModalBody,
@@ -39,10 +38,18 @@ const classes = {
   }
 };
 
-let DocnSaleAuto = (props) => {
+let VatCodeAdd = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
+  async function onSubmit(values, { setSubmitting, setErrors }) {
+    await PostListingForTaxCode(values)
+      .then(() => success())
+      .catch(error => errort());
+    handleOpen();
+    props.refresh();
+    setSubmitting(false);
+  }
 
-  //Toast
+  //Tost
 
   function errort() {
     // add type: 'error' to options
@@ -56,27 +63,14 @@ let DocnSaleAuto = (props) => {
     });
   }
 
-  async function onSubmit(values, { setSubmitting, setErrors }) {
-
-    values.nextNumber=parseInt(values.nextNumber);
-    values.documentTypeId=parseInt(props.IDforAPI);
-    values.name=initialValues.name;
-    values.label=initialValues.label;
-    values.notes=initialValues.notes;
-    values.active=true;
-    await PutFinancialDocumentnSaleDataById(props.IDforAPI, values)
-      .then(() => success())
-      .catch(error => errort());
-    handleOpen();
-    props.refresh();
-    setSubmitting(false);
-  }
-
   const validationSchema = function(values) {
     return Yup.object().shape({
-      nextNumber: Yup.string()
-        .min(3, `Next Number has to be at least 3 characters`)
-        .required("Next Number is required")
+      code: Yup.string()
+        .min(2, `Code has to be at least 2 characters`)
+        .required("Code is required"),
+      rate: Yup.string()
+        .min(1, `Rate has to be at least 1 number`)
+        .required("Rate is required")
     });
   };
 
@@ -102,9 +96,11 @@ let DocnSaleAuto = (props) => {
     }, {});
   };
 
-  const [initialValues, setInitialValues] = useState({
-    // nextNumber: 0,
-  });
+  const initialValues = {
+    name: "",
+    visiblity: "",
+    isActive: false
+  };
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -128,30 +124,27 @@ let DocnSaleAuto = (props) => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(true);
+
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
-    return setModal((modal = !modal)), setTimeout(() => props.cross(), 200);
+    return setModal((modal = !modal));
   };
-  useEffect(() => {
-    getlistapi();
-  }, []);
-
-  async function getlistapi() {
-    const { data: initialValues } = await GetFinancialDocumentnSaleDataById(
-      props.IDforAPI
-    );
-    setInitialValues(initialValues);
-  }
 
   return (
     <div>
+      <div onClick={handleOpen} style={classes.plusbutton}>
+        <i className="fa fa-plus-circle fa-2x" />
+      </div>
+
       <Modal
         isOpen={modal}
         toggle={handleOpen}
         className={"modal-primary " + props.className}
       >
-        <ModalHeader toggle={handleOpen}>Automatic Reference</ModalHeader>
+        <ModalHeader toggle={handleOpen}>
+          <h3 className="font-weight:bold;">VAT Code</h3>
+        </ModalHeader>
         <ModalBody>
           <div className="container">
             <Formik
@@ -178,72 +171,87 @@ let DocnSaleAuto = (props) => {
                       <FormGroup>
                         <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Reference prefix</Label>
+                            <Label for="name">Code</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
                               type="text"
-                              name="referencePrefix"
-                              id="referencePrefix"
-                              placeholder={initialValues.referencePrefix}
+                              name="code"
+                              id="code"
+                              placeholder="i.e. T0"
                               autoComplete="given-name"
-                              // valid={!errors.referencePrefix}
-                              // invalid={touched.referencePrefix && !!errors.referencePrefix}
-                              // autoFocus={true}
-                              // required
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.referencePrefix}
-                            />
-                            {/* <FormFeedback>{errors.referencePrefix}</FormFeedback> */}
-                          </div>
-                        </div>
-                        <div className="row mb-2">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Format</Label>
-                          </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                            <Input
-                              type="text"
-                              name="referenceFormat"
-                              id="referenceFormat"
-                              placeholder={initialValues.referenceFormat}
-                              autoComplete="given-name"
-                              // valid={!errors.referenceFormat}
-                              // invalid={touched.referenceFormat && !!errors.referenceFormat}
-                              // autoFocus={true}
-                              // required
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.referenceFormat}
-                            />
-                            {/* <FormFeedback>{errors.referenceFormat}</FormFeedback> */}
-                          </div>
-                        </div>
-                        <div className="row mb-2">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Next number *</Label>
-                          </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                            <Input
-                              type="text"
-                              name="nextNumber"
-                              id="nextNumber"
-                              placeholder={initialValues.nextNumber}
-                              autoComplete="given-name"
-                              valid={!errors.nextNumber}
-                              invalid={
-                                touched.nextNumber && !!errors.nextNumber
-                              }
+                              valid={!errors.code}
+                              invalid={touched.code && !!errors.code}
                               autoFocus={true}
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.nextNumber}
+                              value={values.code}
                             />
-                            <FormFeedback>{errors.nextNumber}</FormFeedback>
+
+                            <FormFeedback>{errors.code}</FormFeedback>
                           </div>
                         </div>
+                        <div className="row mb-2">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="rate">VAT%</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                            <Input
+                              type="text"
+                              name="rate"
+                              id="rate"
+                              placeholder="i.e. 10"
+                              autoComplete="given-name"
+                              valid={!errors.rate}
+                              invalid={touched.rate && !!errors.rate}
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.rate}
+                            />
+
+                            <FormFeedback>{errors.rate}</FormFeedback>
+                          </div>
+                        </div>
+                        <div className="row mb-2">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="name">Description</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                            <Input
+                              type="text"
+                              name="description"
+                              id="description"
+                              placeholder="i.e. Exempt Transaction"
+                              // autoComplete="given-name"
+                              // valid={!errors.description}
+                              // invalid={touched.description && !!errors.description}
+                              // autoFocus={true}
+                              // required
+                              onChange={handleChange}
+                              // onBlur={handleBlur}
+                              value={values.description}
+                            />
+
+                            {/* <FormFeedback>{errors.description}</FormFeedback> */}
+                          </div>
+                        </div>
+                        <input
+                          name="isActive"
+                          id="isActive"
+                          valid={!errors.isActive}
+                          invalid={touched.isActive && !!errors.isActive}
+                          onClick={handleChange}
+                          onBlur={handleBlur}
+                          value={values.isActive}
+                          type="checkbox"
+                        />
+                        &nbsp;&nbsp;&nbsp;
+                        <label className="form-check-label" for="defaultCheck1">
+                          isActive
+                        </label>
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>
@@ -254,7 +262,7 @@ let DocnSaleAuto = (props) => {
                             style={classes.button}
                             disabled={isSubmitting || !isValid}
                           >
-                            {isSubmitting ? "Wait..." : "Update"}
+                            {isSubmitting ? "Wait..." : "Submit"}
                           </Button>
 
                           <Button
@@ -278,4 +286,4 @@ let DocnSaleAuto = (props) => {
   );
 };
 
-export default DocnSaleAuto;
+export default VatCodeAdd;

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 // import MUIDataTable from "mui-datatables";
-import JobGroupTemplateEdit from "./edit";
-import JobGroupTemplateAdd from "./add";
+import PredefInvEdit from "./edit";
+import PredefInvAdd from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../../../scss/override/listing.scss";
 import {
-  GetListingForjobgrouptemplate,
-  DeletejobgrouptemplateDataById
-} from "../shared/jobgrouptemplate";
+  GetListingForPredefInvoiceItem,
+  DeletePredefInvoiceItemDataById
+} from "../shared/predefinvoice";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
@@ -50,9 +50,24 @@ const classes = {
   }
 };
 
-let JobGroupTemplateListing = () => {
+let PredefInvoiceListing = () => {
   let [Atlist, setAtlist] = useState([
-    { name: "", sameContact: true, sameResource: true, isActive: true }
+    {
+      predefinedItemId: 0,
+      description: "",
+      reference: "",
+      nominalCodeId: 0,
+      departmentCodeId: 0,
+      sellingPrice: 0,
+      currencyCode: 0,
+      taxCodeId: 0,
+      taxCode: 0,
+      recurringPayment: 0,
+      atBookingSite: true,
+      onDevices: true,
+      showPrice: true,
+      isActive: true
+    }
   ]);
   let [paginate, setPaginate] = useState();
 
@@ -165,6 +180,14 @@ let JobGroupTemplateListing = () => {
     </select>
   );
 
+  function activefn(cell, row) {
+    let iconvalue = <i></i>;
+    if (cell === true) {
+      iconvalue = <i className="fa fa-check-square fa-2x"></i>;
+    }
+    return iconvalue;
+  }
+
   if (Tabledistatus) {
     Tabledisplay = (
       // <MUIDataTable
@@ -179,16 +202,39 @@ let JobGroupTemplateListing = () => {
           version="4"
           striped
           hover
-          pagination
-          search
+          // pagination
+          // search
           options={options}
         >
-          <TableHeaderColumn dataField="isActive" isKey={true} hidden={true}>
-            isActive
+          <TableHeaderColumn
+            isKey={true}
+            hidden={true}
+            dataField="predefinedItemId"
+            dataSort
+          >
+            PredefinedItemId
           </TableHeaderColumn>
-
-          <TableHeaderColumn dataField="name" dataSort>
-            Name
+          <TableHeaderColumn dataField="reference" dataSort>
+            Reference
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="productCategoryName" dataSort>
+            Group
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="description" dataSort>
+            Description
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="costPrice" dataSort>
+            Cost Price
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="sellingPrice" dataSort>
+            Selling Price
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="atBookingSite"
+            dataFormat={activefn}
+            dataSort
+          >
+            Available on Booking Site
           </TableHeaderColumn>
         </BootstrapTable>
         <br />
@@ -217,7 +263,7 @@ let JobGroupTemplateListing = () => {
   }, []);
 
   async function getlistapi() {
-    await GetListingForjobgrouptemplate(Page, PageSize).then(res => {
+    await GetListingForPredefInvoiceItem(Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
@@ -242,19 +288,19 @@ let JobGroupTemplateListing = () => {
   if (pgin) {
     if (Page > 2 || Page === 2) {
       if (Page === TotalPages) {
-        paging = (
-          <Pagination>
-            <PaginationItem>
-              <PaginationLink
-                previous
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              />
-            </PaginationItem>
-            <PaginationItem>
+    paging = (
+      <Pagination>
+        <PaginationItem>
+          <PaginationLink
+            previous
+            tag="button"
+            onClick={() => {
+              Page = Page - 1;
+              handlepagin();
+            }}
+          />
+        </PaginationItem>
+        <PaginationItem>
               <PaginationLink
                 tag="button"
                 onClick={() => {
@@ -264,8 +310,8 @@ let JobGroupTemplateListing = () => {
               >
                 {Page - 2}
               </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
+            </PaginationItem> */}
+         <PaginationItem>
               <PaginationLink
                 tag="button"
                 onClick={() => {
@@ -276,21 +322,22 @@ let JobGroupTemplateListing = () => {
                 {Page - 1}
               </PaginationLink>
             </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                // onClick={() => {
-                //   Page = Page+1;
-                //   handlepagin();
+        <PaginationItem>
+          <PaginationLink
+            tag="button"
+            // onClick={() => {
+            //   Page = Page+1;
+            //   handlepagin();
 
-                // }}
-              >
-                {Page}
-              </PaginationLink>
-            </PaginationItem>
-          </Pagination>
-        );
-      } else if (Page === TotalPages - 1) {
+            // }}
+          >
+            {Page}
+          </PaginationLink>
+        </PaginationItem>
+      </Pagination>
+    );
+  }
+  else if (Page === TotalPages - 1) {
         paging = (
           <Pagination>
             <PaginationItem>
@@ -469,7 +516,8 @@ let JobGroupTemplateListing = () => {
         </Pagination>
       );
     }
-  } else {
+  }
+  else {
     paging = "";
   }
 
@@ -489,7 +537,7 @@ let JobGroupTemplateListing = () => {
     });
   }
   async function Dellistapi() {
-    await DeletejobgrouptemplateDataById(idofEdit)
+    await DeletePredefInvoiceItemDataById(idofEdit)
       .then(() => {
         success();
       })
@@ -515,7 +563,7 @@ let JobGroupTemplateListing = () => {
 
   if (Editstate) {
     EditshowModel = (
-      <JobGroupTemplateEdit
+      <PredefInvEdit
         IDforAPI={idofEdit}
         refresh={refreshfn}
         cross={HandleCrossEditforlisting}
@@ -528,8 +576,8 @@ let JobGroupTemplateListing = () => {
   let [menushow, setMenushow] = useState(false);
   function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = row.jobGroupTemplateId;
-    console.log(idofEdit);
+    console.log(row)
+    idofEdit = row.predefinedItemId;
     return setMenushow((menushow = true));
   }
   let Handlerowclose = row => {
@@ -539,8 +587,7 @@ let JobGroupTemplateListing = () => {
     menuDiv = (
       <ul className="tool">
         <li>
-          {" "}
-          <JobGroupTemplateAdd refresh={refreshfn} />{" "}
+          <PredefInvAdd refresh={refreshfn} />
         </li>
         <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -560,7 +607,7 @@ let JobGroupTemplateListing = () => {
     menuDiv = (
       <ul className="tool">
         <li />
-        <JobGroupTemplateAdd refresh={refreshfn} />
+        <PredefInvAdd refresh={refreshfn} />
       </ul>
     );
   }
@@ -572,7 +619,7 @@ let JobGroupTemplateListing = () => {
           {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">JOB GROUP TEMPLATE</h3>
+          <h3 className="heading">PREDEFINED INVOICING ITEMS</h3>
         </div>
       </div>
       <br />
@@ -582,4 +629,4 @@ let JobGroupTemplateListing = () => {
   );
 };
 
-export default JobGroupTemplateListing;
+export default PredefInvoiceListing;

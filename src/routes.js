@@ -91,6 +91,10 @@ const JobTypeListing = React.lazy(() => import('./components/myaccount/admin/sch
 const JobGroupTemplateListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobgrouptemplate/listing'));
 const WorkSheetListing = React.lazy(() => import('./components/myaccount/admin/schedule/worksheet/listing'));
 const FinanceDocListing = React.lazy(() => import('./components/myaccount/admin/financial/docnsale/listing'));
+const VatCodeListing = React.lazy(() => import('./components/myaccount/admin/financial/vatcode/listing'));
+const SaleOppProbListing = React.lazy(() => import('./components/myaccount/admin/financial/saleprobability/listing'));
+const DoortypeListing = React.lazy(() => import('./components/myaccount/admin/financial/doortype/listing'));
+const PredefInvoiceListing = React.lazy(() => import('./components/myaccount/admin/financial/predefinvoice/listing'));
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -194,5 +198,10 @@ const routes = [
 
 
   { path: '/admin/finance/docs', exact: true, name: 'Work Sheet', component: FinanceDocListing },
+  { path: '/admin/finance/vat', exact: true, name: 'VAT Code', component: VatCodeListing },
+  { path: '/admin/finance/saleprob', exact: true, name: 'Sales Opportunity Probabilities', component: SaleOppProbListing },
+  { path: '/admin/finance/doortype', exact: true, name: 'Door Type', component: DoortypeListing },
+  { path: '/admin/finance/predefinvoice', exact: true, name: 'Predefined Invoicing Items', component: PredefInvoiceListing },
+
 ];
 export default routes;
