@@ -82,9 +82,10 @@ const JobCategoryListing = React.lazy(() => import('./components/myaccount/admin
 const PhoneBookListing = React.lazy(() => import('./components/myaccount/admin/resources/phonebook/listing'));
 const VehicleManage = React.lazy(() => import('./components/myaccount/admin/vehicle/manage/listing'));
 const TrackingDeviceListing = React.lazy(() => import('./components/myaccount/admin/vehicle/trackingdevice/listing'));
-// const WorkSheetListing = React.lazy(() => import('./components/myaccount/admin/schedule/worksheet/listing'));
-const JobGroupTemplateListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobgrouptemplate/listing'));
 const WorkSheetListing = React.lazy(() => import('./components/myaccount/admin/schedule/worksheet/listing'));
+const JobTypeListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobtype/listing'));
+
+const JobGroupTemplateListing = React.lazy(() => import('./components/myaccount/admin/schedule/jobgrouptemplate/listing'));
 const FinanceDocListing = React.lazy(() => import('./components/myaccount/admin/financial/docnsale/listing'));
 const VatCodeListing = React.lazy(() => import('./components/myaccount/admin/financial/vatcode/listing'));
 const SaleOppProbListing = React.lazy(() => import('./components/myaccount/admin/financial/saleprobability/listing'));
@@ -92,6 +93,24 @@ const DoortypeListing = React.lazy(() => import('./components/myaccount/admin/fi
 const PredefInvoiceListing = React.lazy(() => import('./components/myaccount/admin/financial/predefinvoice/listing'));
 const FileGroupListing = React.lazy(() => import('./components/myaccount/admin/forms/filegroup/listing'));
 const FileLibraryListing = React.lazy(() => import('./components/myaccount/admin/forms/filelibrary/listing'));
+const NominalCodeListing = React.lazy(() => import('./components/myaccount/admin/financial/nominalcode/listing'));
+const DepartmentCodeListing = React.lazy(() => import('./components/myaccount/admin/financial/departmentcode/listing'));
+const SalesOpportunityFlag = React.lazy(() => import('./components/myaccount/admin/financial/salesopportunityflag/listing'));
+const SalesOpportunityStage = React.lazy(() => import('./components/myaccount/admin/financial/salesopportunitystage/listing'));
+
+
+//Stock
+const ProductCategoryListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/productcategory/listing'));
+const ManageMakesnModelListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/managemakesnmodel/listing'));
+
+
+//Form
+const TimesheetActivityListing = React.lazy(() => import('./components/myaccount/admin/forms/timesheetactivity/listing'));
+const ExpenseCategoryListing = React.lazy(() => import('./components/myaccount/admin/forms/expensecategory/listing'));
+
+//Web Users
+const RoleListing = React.lazy(() => import('./components/myaccount/admin/webusers/role/listing'));
+const UserListing = React.lazy(() => import('./components/myaccount/admin/webusers/adduser/listing'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -182,7 +201,14 @@ const routes = [
   { path: '/admin/schedule/jobcategory', exact: true, name: 'Job Category', component: JobCategoryListing },
   { path: '/admin/resources/phone', exact: true, name: 'Phone Book', component: PhoneBookListing },
   { path: '/admin/vehicle/manage', exact: true, name: 'Manage', component: VehicleManage },
-  // { path: '/admin/schedule/worksheet', exact: true, name: 'Work Sheet', component: WorkSheetListing },
+
+  { path: '/admin/schedule/jobtype', exact: true, name: 'Job Type', component: JobTypeListing },
+  { path: '/admin/schedule/jobgroup', exact: true, name: 'Job Group Template', component: JobGroupTemplateListing },
+
+  { path: '/admin/schedule/jobgroup', exact: true, name: 'Job Group Template', component: JobGroupTemplateListing },
+  { path: '/admin/schedule/worksheet', exact: true, name: 'Work Sheet', component: WorkSheetListing },
+
+
   { path: '/admin/schedule/jobgroup', exact: true, name: 'Job Group Template', component: JobGroupTemplateListing },
   { path: '/admin/schedule/worksheet', exact: true, name: 'Work Sheet', component: WorkSheetListing },
   { path: '/admin/finance/docs', exact: true, name: 'Work Sheet', component: FinanceDocListing },
@@ -192,6 +218,23 @@ const routes = [
   { path: '/admin/finance/predefinvoice', exact: true, name: 'Predefined Invoicing Items', component: PredefInvoiceListing },
   { path: '/admin/form/filegroup', exact: true, name: 'File Group', component: FileGroupListing },
   { path: '/admin/form/filelibrary', exact: true, name: 'File Library', component: FileLibraryListing },
+  { path: '/admin/finance/departmentcode', exact: true, name: 'Department Code', component:  DepartmentCodeListing },
 
+  { path: '/admin/finance/nominalcode', exact: true, name: 'Nominal Code', component:  NominalCodeListing },
+  { path: '/admin/finance/salesopportunitystage', exact: true, name: 'Sales Opportunity Stages', component:  SalesOpportunityStage },
+  { path: '/admin/finance/salesopportunityflag', exact: true, name: 'Sales Opportunity Flags', component:  SalesOpportunityFlag },
+
+  //Stock
+  { path: '/admin/stocknequipment/productcategory', exact: true, name: 'Product Categories', component:  ProductCategoryListing },
+  { path: '/admin/stocknequipment/managemakesnmodel', exact: true, name: 'Manege Makes & Models', component:  ManageMakesnModelListing },
+
+
+  //Form
+  { path: '/admin/forms/timesheetactivity', exact: true, name: 'Timesheet Activities', component:  TimesheetActivityListing },
+  { path: '/admin/forms/expensecategory', exact: true, name: 'Expense Categories', component:  ExpenseCategoryListing },
+
+  //Web USers
+  { path: '/admin/webusers/role', exact: true, name: 'Roles', component:  RoleListing },
+  { path: '/admin/webusers/adduser', exact: true, name: 'Add User', component:  UserListing },
 ];
 export default routes;

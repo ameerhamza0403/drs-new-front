@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from "react";
 // import MUIDataTable from "mui-datatables";
-// import EditFuelCost from "./edit";
-import TemplateAddEdit from "./addedit";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../../../../../../scss/override/listing.scss";
-import {
-  GetListingForjobgrouptemplate,
-  DeletejobgrouptemplateDataById,
-  GetListforlistunderedit,
-  PostListingFortemplategroup,
-  DeletetemplateJobDataById
-} from "../../shared/jobgrouptemplate";
-import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
-import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
+// import "../../../../../scss/override/listing.scss";
+import MaterialTable from "material-table";
+// import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { JobGroupType } from "../../shared/jobgrouptemplate";
+import { GetListingForAddEdit } from "../../../resources/shared/addedit";
+import {GetListforlistunderedit} from '../../shared/jobgrouptemplate';
+
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -24,6 +19,8 @@ let Page = 1;
 let PageSize = 10;
 let paging = "";
 let TotalPages = 2;
+let jobtype = [];
+let resourcetype = [];
 
 const classes = {
   linearprogress: {
@@ -54,17 +51,11 @@ const classes = {
 };
 
 
-let templatearr=[];
-let GroupTemplateedit = (props) => {
+let tabledata=[{}];
+
+let EditGroupTemplate = (props) => {
   let [Atlist, setAtlist] = useState([
-    // {
-    //   jobGroupTemplateName: "",
-    //   contact: "",
-    //   jobTypeName: "",
-    //   resourceName: "",
-    //   isActive: true,
-    //   count: 0,
-    // }
+    { name: "", sameContact: true, sameResource: true, isActive: true }
   ]);
   let [paginate, setPaginate] = useState();
 
@@ -159,19 +150,7 @@ let GroupTemplateedit = (props) => {
 
   //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
   // };
-  useEffect(()=>{
-    GetListingForAddEdit();
-  },[]);
 
-  let [GetValues, setGetValues] =useState([{}]);
-  async function GetListingForAddEdit(){
-    await GetListforlistunderedit(props.id).then(res => {
-      setGetValues((GetValues = res.data));
-      // setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-    });
-    console.log(GetValues)
-    settabledistatus((Tabledistatus = true));
-  }
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
   );
@@ -189,6 +168,76 @@ let GroupTemplateedit = (props) => {
     </select>
   );
 
+  let [job, setJob] = useState([
+    {
+      jobTypeId: 0,
+      name: "test"
+    }
+  ]);
+  let [resource, setResource] = useState([
+    {
+      resourceId: 0,
+      name: "string"
+    }
+  ]);
+
+  useEffect(() => {
+    getinitiallist();
+  }, []);
+
+
+  async function getinitiallist() {
+    const {data : Atlist} = await GetListforlistunderedit(props.id);
+    setAtlist(Atlist);
+    const { data: Job } = await JobGroupType();
+    setJob(Job);
+    const { data: resource } = await GetListingForAddEdit();
+    setResource(resource);
+
+    Job.map(e => {
+      jobtype[e.jobTypeId] = e.name;
+    });
+    resource.map(e => {
+      resourcetype[e.resourceId] = e.name;
+    });
+
+    console.log(Atlist);
+    Atlist.map((e,i)=>{
+      tabledata[i].name=e.jobTypeId;
+      tabledata[i].namecon=e.contact;
+      tabledata[i].namres=e.resourceId;
+    })
+    settabledistatus(true);
+  }
+
+  const [state, setState] = React.useState({
+    columns: [
+      {
+        title: "Job Type",
+        field: "name",
+        lookup: jobtype
+      },
+      { title: "Contact", field: "namecon" },
+      {
+        title: "Resources",
+        field: "namres",
+        lookup: resourcetype
+      }
+    ],
+    data: tabledata
+      // [
+        // { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
+      // {
+      //   name: 'Zerya Betül',
+      //   surname: 'Baran',
+      //   birthYear: 2017,
+      //   birthCity: 34,
+      // },]
+
+  });
+
+
+
   if (Tabledistatus) {
     Tabledisplay = (
       // <MUIDataTable
@@ -198,38 +247,55 @@ let GroupTemplateedit = (props) => {
       //   options={options}
       // />
       <div>
-        <br />
-        <BootstrapTable
-          data={GetValues}
-          version="4"
-          striped
-          hover
-          // pagination
-          // search
-          options={options}
-        >
-          <TableHeaderColumn dataField="isActive" isKey={true} hidden={true}>
-            isActive
-          </TableHeaderColumn>
+        <MaterialTable
+          title="Editable Example"
+          columns={state.columns}
+          data={state.data}
+          editable={{
+            onRowAdd: newData =>
+              new Promise(resolve => {
+                setTimeout(() => {
+                  resolve();
+                  const data = [...state.data];
+                  data.push(newData);
+                  props.templatedata(data)
+                  setState({ ...state, data });
+                }, 600);
+              },
+              )
 
-          <TableHeaderColumn dataField="jobTypeName" dataSort>
-            Job Type
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="contact" dataSort>
-            Contact
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="resourceName" dataSort>
-            Resource
-          </TableHeaderColumn>
-        </BootstrapTable>
+              // props.templatedata(state.data)
+              ,
+            onRowUpdate: (newData, oldData) =>
+              new Promise(resolve => {
+                setTimeout(() => {
+                  resolve();
+                  const data = [...state.data];
+                  data[data.indexOf(oldData)] = newData;
+                  props.templatedata(data)
+                  setState({ ...state, data });
+                }, 600);
+              }),
+            onRowDelete: oldData =>
+              new Promise(resolve => {
+                setTimeout(() => {
+                  resolve();
+                  const data = [...state.data];
+                  data.splice(data.indexOf(oldData), 1);
+                  props.templatedata(data)
+                  setState({ ...state, data });
+                }, 600);
+              })
+          }}
+        />
         <br />
-        {/* <div className="row">
+        <div className="row">
           <div className="col">
             {PageSizeComp}
             {"  Showing " + PageSize + " Rows Per Page"}
           </div>
           <div className="col">{paging}</div>
-        </div> */}
+        </div>
         {/* {Atlist.map(e=>e.usedForJobs)} */}
       </div>
     );
@@ -240,274 +306,342 @@ let GroupTemplateedit = (props) => {
   }
   let refreshfn = () => {
     settabledistatus((Tabledistatus = false));
-    GetListingForAddEdit();
+    // getlistapi();
   };
 
+  // useEffect(() => {
+  //   getlistapi();
+  // }, []);
 
-  async function handletemplate(value){
-      // templatearr.push(value);
-      // props.templatedata(templatearr);
-      value.jobGroupTemplateId = props.id;
-      value.isActive= true;
-      console.log(value)
-      delete value.jobType;
-      delete value.resource;
-      delete value.jobGroupTemplate;
-      delete value.jobGroupTemplateName;
-      console.log(value)
-      await PostListingFortemplategroup(props.id,value)
-            .then(() => success())
-            .catch(error => errort());
-      setAtlist((value));
-      settabledistatus(false);
-      setTimeout(() => {
-        refreshfn()
-      }, 10);
+  // async function getlistapi() {
+  //   await GetListingForjobgrouptemplate(Page, PageSize).then(res => {
+  //     setAtlist((Atlist = res.data));
+  //     setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+  //   });
+  //   // Atlist.map((e,i)=>
+  //   //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
+
+  //   //                 )
+  //   TotalPages = paginate.totalPages;
+  //   settabledistatus((Tabledistatus = true));
+  // }
+  //--- Pagination ------------------
+  function handlePageSize(event) {
+    PageSize = event.target.value;
+    refreshfn();
   }
-  // //--- Pagination ------------------
 
-  // let [pgin, setPgin] = useState(true);
+  let [pgin, setPgin] = useState(true);
 
-  // function handlepagin() {
-  //   setPgin(false);
-  //   // setTimeout(() => setPgin(true), 10);
-  //   refreshfn();
-  //   setPgin(true);
-  // }
+  function handlepagin() {
+    setPgin(false);
+    // setTimeout(() => setPgin(true), 10);
+    refreshfn();
+    setPgin(true);
+  }
 
-  // if (pgin) {
-  //   if (Page > 2 || Page === 2) {
-  //     if (Page === TotalPages) {
-  //       paging = (
-  //         <Pagination>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               previous
-  //               tag="button"
-  //               onClick={() => {
-  //                 Page = Page - 1;
-  //                 handlepagin();
-  //               }}
-  //             />
-  //           </PaginationItem>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               tag="button"
-  //               onClick={() => {
-  //                 Page = Page - 2;
-  //                 handlepagin();
-  //               }}
-  //             >
-  //               {Page - 2}
-  //             </PaginationLink>
-  //           </PaginationItem>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               tag="button"
-  //               onClick={() => {
-  //                 Page = Page - 1;
-  //                 handlepagin();
-  //               }}
-  //             >
-  //               {Page - 1}
-  //             </PaginationLink>
-  //           </PaginationItem>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               tag="button"
-  //               // onClick={() => {
-  //               //   Page = Page+1;
-  //               //   handlepagin();
+  if (pgin) {
+    // if (Page > 2 || Page === 2) {
+    //   if (Page === TotalPages) {
+    paging = (
+      <Pagination>
+        <PaginationItem>
+          <PaginationLink
+            previous
+            tag="button"
+            onClick={() => {
+              if (Page - 1 > 0) {
+                Page = Page - 1;
+                handlepagin();
+              }
+            }}
+          />
+        </PaginationItem>
+        {/* <PaginationItem>
+            <PaginationLink
+              tag="button"
+              onClick={() => {
+                if(Page-2>0){
+                Page = Page - 2;
+                handlepagin();
+                }
+              }}
+            >
 
-  //               // }}
-  //             >
-  //               {Page}
-  //             </PaginationLink>
-  //           </PaginationItem>
-  //         </Pagination>
-  //       );
-  //     } else if (Page === TotalPages - 1) {
-  //       paging = (
-  //         <Pagination>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               previous
-  //               tag="button"
-  //               onClick={() => {
-  //                 Page = Page - 1;
-  //                 handlepagin();
-  //               }}
-  //             />
-  //           </PaginationItem>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               tag="button"
-  //               onClick={() => {
-  //                 Page = Page - 2;
-  //                 handlepagin();
-  //               }}
-  //             >
-  //               {Page - 2}
-  //             </PaginationLink>
-  //           </PaginationItem>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               tag="button"
-  //               onClick={() => {
-  //                 Page = Page - 1;
-  //                 handlepagin();
-  //               }}
-  //             >
-  //               {Page - 1}
-  //             </PaginationLink>
-  //           </PaginationItem>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               tag="button"
-  //               // onClick={() => {
-  //               //   Page = Page+1;
-  //               //   handlepagin();
+              {(Page-2>0)? Page-2 : '...'}
+            </PaginationLink>
+          </PaginationItem> */}
+        <PaginationItem>
+          <PaginationLink
+            tag="button"
+            onClick={() => {
+              if (Page - 1 > 0) {
+                Page = Page - 1;
+                handlepagin();
+              }
+            }}
+          >
+            {/* {Page - 1} */}
+            {Page - 1 > 0 ? Page - 1 : "..."}
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink
+            tag="button"
+            // onClick={() => {
+            //   Page = Page+1;
+            //   handlepagin();
 
-  //               // }}
-  //             >
-  //               {Page}
-  //             </PaginationLink>
-  //           </PaginationItem>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               tag="button"
-  //               onClick={() => {
-  //                 Page = Page + 1;
-  //                 handlepagin();
-  //               }}
-  //             >
-  //               {Page + 1}
-  //             </PaginationLink>
-  //           </PaginationItem>
-  //         </Pagination>
-  //       );
-  //     } else {
-  //       paging = (
-  //         <Pagination>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               previous
-  //               tag="button"
-  //               onClick={() => {
-  //                 Page = Page - 1;
-  //                 handlepagin();
-  //               }}
-  //             />
-  //           </PaginationItem>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               tag="button"
-  //               onClick={() => {
-  //                 Page = Page - 1;
-  //                 handlepagin();
-  //               }}
-  //             >
-  //               {Page - 1}
-  //             </PaginationLink>
-  //           </PaginationItem>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               tag="button"
-  //               onClick={() => {
-  //                 Page = Page;
-  //                 handlepagin();
-  //               }}
-  //             >
-  //               {Page}
-  //             </PaginationLink>
-  //           </PaginationItem>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               tag="button"
-  //               onClick={() => {
-  //                 Page = Page + 1;
-  //                 handlepagin();
-  //               }}
-  //             >
-  //               {Page + 1}
-  //             </PaginationLink>
-  //           </PaginationItem>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               tag="button"
-  //               onClick={() => {
-  //                 Page = Page + 2;
-  //                 handlepagin();
-  //               }}
-  //             >
-  //               {Page + 2}
-  //             </PaginationLink>
-  //           </PaginationItem>
-  //           <PaginationItem>
-  //             <PaginationLink
-  //               next
-  //               tag="button"
-  //               onClick={() => {
-  //                 Page = Page + 1;
-  //                 handlepagin();
-  //               }}
-  //             />
-  //           </PaginationItem>
-  //         </Pagination>
-  //       );
-  //     }
-  //   } else if (Page < 2) {
-  //     paging = (
-  //       <Pagination>
-  //         <PaginationItem>
-  //           <PaginationLink
-  //             tag="button"
-  //             onClick={() => {
-  //               Page = Page;
-  //               handlepagin();
-  //             }}
-  //           >
-  //             {Page}
-  //           </PaginationLink>
-  //         </PaginationItem>
-  //         <PaginationItem>
-  //           <PaginationLink
-  //             tag="button"
-  //             onClick={() => {
-  //               Page = Page + 1;
-  //               handlepagin();
-  //             }}
-  //           >
-  //             {Page + 1}
-  //           </PaginationLink>
-  //         </PaginationItem>
-  //         <PaginationItem>
-  //           <PaginationLink
-  //             tag="button"
-  //             onClick={() => {
-  //               Page = Page + 2;
-  //               handlepagin();
-  //             }}
-  //           >
-  //             {Page + 2}
-  //           </PaginationLink>
-  //         </PaginationItem>
-  //         <PaginationItem>
-  //           <PaginationLink
-  //             next
-  //             tag="button"
-  //             onClick={() => {
-  //               Page = Page + 1;
-  //               handlepagin();
-  //             }}
-  //           />
-  //         </PaginationItem>
-  //       </Pagination>
-  //     );
-  //   }
-  // } else {
-  //   paging = "";
-  // }
+            // }}
+          >
+            {Page}
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink
+            tag="button"
+            onClick={() => {
+              if (Page + 1 < TotalPages || Page + 1 === TotalPages) {
+                Page = Page + 1;
+                handlepagin();
+              }
+            }}
+          >
+            {/* {Page - 1} */}
+            {Page + 1 === TotalPages || Page + 1 < TotalPages
+              ? Page + 1
+              : "..."}
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink
+            next
+            tag="button"
+            onClick={() => {
+              if (Page + 1 < TotalPages || Page + 1 === TotalPages) {
+                Page = Page + 1;
+                handlepagin();
+              }
+            }}
+          />
+        </PaginationItem>
+      </Pagination>
+    );
+    // }
+    // else if (Page === TotalPages - 1) {
+    //       paging = (
+    //         <Pagination>
+    //           <PaginationItem>
+    //             <PaginationLink
+    //               previous
+    //               tag="button"
+    //               onClick={() => {
+    //                 if(Page-1!=0){
+    //                 Page = Page - 1;
+    //                 handlepagin();
+    //               }
+    //               }}
+    //             />
+    //           </PaginationItem>
+    //           <PaginationItem>
+    //             <PaginationLink
+    //               tag="button"
+    //               onClick={() => {
+    //                 if(Page-2!=0){
+    //                 Page = Page - 2;
+    //                 handlepagin();
+    //                 }
+    //               }}
+    //             >
+    //               {/* {Page - 2} */}
+    //               {(Page-2!=0)? Page-2 : '...'}
+    //             </PaginationLink>
+    //           </PaginationItem>
+    //           <PaginationItem>
+    //             <PaginationLink
+    //               tag="button"
+    //               onClick={() => {
+    //                 if(Page-1!=0){
+    //                 Page = Page - 1;
+    //                 handlepagin();
+    //                 }
+    //               }}
+    //             >
+    //               {/* {Page - 1} */}
+    //               {(Page-1!=0)? Page-1 : '...'}
+    //             </PaginationLink>
+    //           </PaginationItem>
+    //           <PaginationItem>
+    //             <PaginationLink
+    //               tag="button"
+    //               // onClick={() => {
+    //               //   Page = Page+1;
+    //               //   handlepagin();
+
+    //               // }}
+    //             >
+    //               {Page}
+    //             </PaginationLink>
+    //           </PaginationItem>
+    //           <PaginationItem>
+    //             <PaginationLink
+    //               tag="button"
+    //               onClick={() => {
+    //                 if(Page+1<0){
+    //                 Page = Page + 1;
+    //                 handlepagin();
+    //                 }
+    //               }}
+    //             >
+    //               {/* {Page + 1} */}
+    //               {(Page+1<TotalPages)? Page+1 : '...'}
+    //             </PaginationLink>
+    //           </PaginationItem>
+    //         </Pagination>
+    //       );
+    //     } else {
+    //       paging = (
+    //         <Pagination>
+    //           <PaginationItem>
+    //             <PaginationLink
+    //               previous
+    //               tag="button"
+    //               onClick={() => {
+    //                 if(Page-1!=0){
+    //                 Page = Page - 1;
+    //                 handlepagin();
+    //                 }
+    //               }}
+    //             />
+    //           </PaginationItem>
+    //           <PaginationItem>
+    //             <PaginationLink
+    //               tag="button"
+    //               onClick={() => {
+    //                 if(Page-1!=0){
+    //                 Page = Page - 1;
+    //                 handlepagin();
+    //                 }
+    //               }}
+    //             >
+    //               {/* {Page - 1} */}
+    //               {(Page-1!=0)? Page-1 : '...'}
+    //             </PaginationLink>
+    //           </PaginationItem>
+    //           <PaginationItem>
+    //             <PaginationLink
+    //               tag="button"
+    //               onClick={() => {
+    //                 Page = Page;
+    //                 handlepagin();
+    //               }}
+    //             >
+    //               {Page}
+    //             </PaginationLink>
+    //           </PaginationItem>
+    //           <PaginationItem>
+    //             <PaginationLink
+    //               tag="button"
+    //               onClick={() => {
+    //                 if(!(Page+1>TotalPages)){
+    //                 Page = Page + 1;
+    //                 handlepagin();
+    //                 }
+    //               }}
+    //             >
+    //               {/* {Page + 1} */}
+    //               {(!(Page+1>TotalPages))? Page+1 : '...'}
+    //             </PaginationLink>
+    //           </PaginationItem>
+    //            {/* <PaginationItem>
+    //             <PaginationLink
+    //               tag="button"
+    //               onClick={() => {
+    //                 if(!(Page+2>TotalPages)){
+    //                 Page = Page + 2;
+    //                 handlepagin();
+    //                 }
+    //               }}
+    //             > */}
+    //               {/* {Page + 2}
+    //               {/* {(!(Page+2>TotalPages))? Page+1 : '...'}
+    //             </PaginationLink>
+    //           </PaginationItem> */}
+    //           <PaginationItem>
+    //             <PaginationLink
+    //               next
+    //               tag="button"
+    //               onClick={() => {
+    //                 if(!(Page+1>TotalPages)){
+    //                   Page = Page + 1;
+    //                   handlepagin();
+    //                 }
+    //               }}
+    //             />
+    //           </PaginationItem>
+    //         </Pagination>
+    //       );
+    //     }
+    //   } else if (Page < 2) {
+    //     paging = (
+    //       <Pagination>
+    //         <PaginationItem>
+    //           <PaginationLink
+    //             tag="button"
+    //             onClick={() => {
+    //               Page = Page;
+    //               handlepagin();
+    //             }}
+    //           >
+    //             {Page}
+    //           </PaginationLink>
+    //         </PaginationItem>
+    //         <PaginationItem>
+    //           <PaginationLink
+    //             tag="button"
+    //             onClick={() => {
+    //               if(!(Page+1>TotalPages)){
+    //               Page = Page + 1;
+    //               handlepagin();
+    //               }
+    //             }}
+    //           >
+    //             {/* {Page + 1} */}
+    //             {(!(Page+1>TotalPages))? Page+1 : '...'}
+    //           </PaginationLink>
+    //         </PaginationItem>
+    //         {/* <PaginationItem>
+    //           <PaginationLink
+    //             tag="button"
+    //             onClick={() => {
+    //               if(!(Page+2>TotalPages)){
+    //               Page = Page + 2;
+    //               handlepagin();
+    //               }
+    //             }}
+    //           > */}
+    //             {/* {Page + 2} */}
+    //             {/* {(!(Page+2>TotalPages))? Page+2 : '...'}
+    //           </PaginationLink>
+    //         </PaginationItem> */}
+    //         <PaginationItem>
+    //           <PaginationLink
+    //             next
+    //             tag="button"
+    //             onClick={() => {
+    //               if(!(Page+1>TotalPages)){
+    //               Page = Page + 1;
+    //               handlepagin();
+    //               }
+    //             }}
+    //           />
+    //         </PaginationItem>
+    //       </Pagination>
+    //     );
+    //   }
+  } else {
+    paging = "";
+  }
 
   //----- Finished Pagination---------
 
@@ -520,18 +654,18 @@ let GroupTemplateedit = (props) => {
     });
   }
   function success() {
-    return toast.success("Success... ", {
+    return toast.success("Deleted Successfully... ", {
       position: toast.POSITION.BOTTOM_RIGHT
     });
   }
   async function Dellistapi() {
-    await DeletetemplateJobDataById(props.id,idofEdit)
-      .then(() => {
-        success();
-      })
-      .catch(error => {
-        errort();
-      });
+    // await DeletejobgrouptemplateDataById(idofEdit)
+    //   .then(() => {
+    //     success();
+    //   })
+    //   .catch(error => {
+    //     errort();
+    //   });
     Handlerowclose();
     refreshfn();
   }
@@ -552,7 +686,7 @@ let GroupTemplateedit = (props) => {
   if (Editstate) {
     EditshowModel = (
       <div></div>
-      // <EditFuelCost
+      // <JobGroupTemplateEdit
       //   IDforAPI={idofEdit}
       //   refresh={refreshfn}
       //   cross={HandleCrossEditforlisting}
@@ -565,11 +699,8 @@ let GroupTemplateedit = (props) => {
   let [menushow, setMenushow] = useState(false);
   function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = row.templateJobId;
-    // settabledistatus(false);
-    // setTimeout(() => {
-    //   refreshfn()
-    // }, 10);
+    idofEdit = row.jobGroupTemplateId;
+    console.log(idofEdit);
     return setMenushow((menushow = true));
   }
   let Handlerowclose = row => {
@@ -578,10 +709,11 @@ let GroupTemplateedit = (props) => {
   if (menushow) {
     menuDiv = (
       <ul className="tool">
-        {/* <li onClick={HandleEditforlisting}>
+        <li> {/* <JobGroupTemplateAdd refresh={refreshfn} />{" "} */}</li>
+        <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <i className="fa fa-pencil-square fa-2x" />
-        </li> */}
+        </li>
         <li onClick={Dellistapi}>
           &nbsp;&nbsp;
           <i className="fa fa-archive fa-2x" />
@@ -596,7 +728,7 @@ let GroupTemplateedit = (props) => {
     menuDiv = (
       <ul className="tool">
         <li />
-        {/* <TemplateAdd refresh={refreshfn} submit={handletemplate}/> */}
+        {/* <JobGroupTemplateAdd refresh={refreshfn} /> */}
       </ul>
     );
   }
@@ -608,15 +740,14 @@ let GroupTemplateedit = (props) => {
           {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">Template Jobs</h3>
+          <h3 className="heading">TEMPLATE JOBS</h3>
         </div>
       </div>
       <br />
       {EditshowModel}
       {Tabledisplay}
-      <TemplateAddEdit refresh={refreshfn} submit={handletemplate} />
     </div>
   );
 };
 
-export default GroupTemplateedit;
+export default EditGroupTemplate;
