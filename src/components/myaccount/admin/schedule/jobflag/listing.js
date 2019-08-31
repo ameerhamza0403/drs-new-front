@@ -19,10 +19,10 @@ let EditshowModel = "";
 let ColorStyle = {};
 let idofEdit = 0;
 let count = 0;
+let Page=1;
 let PageSize = 10;
 let paging = "";
 let TotalPages = 3;
-let Page=1;
 
 const classes = {
   linearprogress: {
@@ -128,6 +128,7 @@ let JobFlagListing = () => {
     </select>
   );
 
+  
 //  --- Pagination ------------------
 
   let [pgin, setPgin] = useState(true);

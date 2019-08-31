@@ -2,8 +2,10 @@ import {
   GetFileLibraryDataById,
   PutFileLibraryDataById
 } from "..//shared/filelibrary";
+import {PostListingForFileUpload} from '../shared/filelibrary';
 import { GetAllListingForFileGroup } from "../shared/filegroup";
-import { GetAllListingForResourceGroup } from "../shared/resourcegroup";
+import { GetbyidListingForResourceGroup,PostListingForResourceGroup, DeleteResourceGroupDataById } from "../shared/resourcegroup";
+import { GetListingForResourceGroup } from "../../resources/shared/resourcegroup";
 import React, { Component, useState, useEffect } from "react";
 import {
   Button,
@@ -49,6 +51,7 @@ let selectedFile = new FormData();
 let nameoffile = "";
 let resourcearr=[];
 let resarr=[];
+let resgrouparr=[];
 
 let FileLibraryEdit = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
@@ -59,13 +62,18 @@ let FileLibraryEdit = props => {
         values[keyName]=editValue[keyName]
       }
     })
+    let formdata = new FormData();
+    formdata.append(values.name,selectedFile);
    console.log(values)
-  //  await PostListingForFileUpload(selectedFile);
-  //   await PutFileLibraryDataById(props.IDforAPI, values)
-  //     .then(() =>  resarr.map(async (e)=>{
-  //       await PostListingForFileLibrary(e);
-  //     }))
-  //     .catch(error => errort());
+   await PostListingForFileUpload(formdata);
+    await PutFileLibraryDataById(props.IDforAPI, values)
+      .then((res) =>  resarr.map(async (e)=>{
+        resgrouparr.map(async (l)=>{
+          await DeleteResourceGroupDataById(res.data.fileLibraryId,l);
+        })
+        await PostListingForResourceGroup({'fileLibraryId':res.data.fileLibraryId,'resourceGroupId':parseInt(e,10), 'isActive':true});
+      }))
+      .catch(error => errort());
       handleOpen();
       props.refresh();
     setSubmitting(false);
@@ -87,8 +95,8 @@ let FileLibraryEdit = props => {
 
   const validationSchema = function(values) {
     return Yup.object().shape({
-      reference: Yup.string()
-        .min(2, `Group has to be at least 2 characters`)
+      fileGroupId: Yup.string()
+        // .min(2, `Group has to be at least 2 characters`)
         .required("Group is required"),
     });
   };
@@ -131,6 +139,7 @@ let FileLibraryEdit = props => {
     getlistapi();
     getGroupList();
     getReslist();
+    reslistedit();
   }, []);
 
   let [filegroup, setFileGroup] = useState([]);
@@ -151,23 +160,52 @@ let FileLibraryEdit = props => {
 
   let [res,setRes]=useState(false);
   async function getReslist() {
-    const { data: resource } = await GetAllListingForResourceGroup();
+    const { data: resource } = await GetListingForResourceGroup();
     setResource(resource);
+  }
+
+  let [resgroup, setResgroup]=useState([]);
+  async function reslistedit(){
+    const {data: resgroup} = await GetbyidListingForResourceGroup(props.IDforAPI,0,0);
+    setResgroup(resgroup);
+    resgroup.map(e=>{
+      if(resgrouparr===[]){
+        resgrouparr[0]=e.resourceGroupId;
+      }
+      else{
+        resgrouparr.push(e.resourceGroupId);
+      }
+
+    })
     setRes(true);
   }
 
   let handleresource=event=>{
     if(resarr.length===0){
-      resarr[0]=event.target.checked;
+      resarr[0]=event.target.value;
     }
     else{
-      resarr.push(event.target.checked)
+      resarr.push(event.target.value)
     }
   }
 
+  function checkifchecked(data){
+    let check;
+    (resgrouparr.map(e=>{
+      if(e===data){
+        check= true;
+      }
+      else{
+        check= false;
+      }
+    }))
+    console.log(check)
+    return check;
+  }
+
   if(res){
-    resourcearr=(resource.map(e =>
-      <div className="col">
+    resourcearr=(resource.map((e,i) =>
+      <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
         <input
           name={e.resourceGroupId}
           id={e.resourceGroupId}
@@ -176,17 +214,17 @@ let FileLibraryEdit = props => {
           //   touched.resourceGroupId &&
           //   !!errors.resourceGroupId
           // }
+          // checked={checkifchecked(e.resourceGroupId)}
           onClick={handleresource}
           // onBlur={handleBlur}
           value={e.resourceGroupId}
           type="checkbox"
         />
-        &nbsp;&nbsp;&nbsp;
         <label
           className="form-check-label"
           for="defaultCheck1"
         >
-          {e.resourceGroupName}
+          {e.name}
         </label>
       </div>
     ));
@@ -276,7 +314,7 @@ let FileLibraryEdit = props => {
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
-                              type="Select"
+                              type="select"
                               name="fileGroupId"
                               id="fileGroupId"
                               placeholder="i.e. "
@@ -294,7 +332,7 @@ let FileLibraryEdit = props => {
                               <option selected></option>
                               {filegroup.map(e => (
                                 <option value={e.fileGroupId}>
-                                  {e.fileGroupName}
+                                  {e.name}
                                 </option>
                               ))}
                             </Input>
@@ -338,7 +376,8 @@ let FileLibraryEdit = props => {
                               type="text"
                               name="name"
                               id="name"
-                              placeholder={nameoffile}
+                              placeholder={editValue.name}
+                              // defaultValue={editValue.name}
                               autoComplete="given-name"
                               // defaultValue={nameoffile}
                               // valid={!errors.name}

@@ -44,11 +44,11 @@ const classes = {
   h2: {
     color: "#EE7647"
   },
-  td:{
-    width: '30%',
+  td: {
+    width: "30%"
   },
-  tdlast:{
-    width: '10%',
+  tdlast: {
+    width: "10%"
   }
 };
 
@@ -92,7 +92,16 @@ let TemplateAdd = props => {
     const { data: resource } = await GetListingForAddEdit();
     setResource(resource);
   }
-
+  let [SameContact, setSameContact] = useState(false);
+  if (props.sameCon) {
+    if (!SameContact) {
+      setSameContact(true);
+    }
+  } else {
+    if (SameContact) {
+      setSameContact(false);
+    }
+  }
   //Tost
 
   function errort() {
@@ -140,8 +149,8 @@ let TemplateAdd = props => {
     }
   };
 
-  function handleKey(event){
-    if(event.key==='Tab'){
+  function handleKey(event) {
+    if (event.key === "Tab") {
       props.addnew();
     }
   }
@@ -155,9 +164,12 @@ let TemplateAdd = props => {
         ...initialaddvalues,
         [namer]: initialaddvalues.count + 1
       });
-      props.submit(initialaddvalues);
     }
   };
+
+  function handletick(){
+    props.submit(initialaddvalues);
+  }
   return (
     <tr>
       <td style={classes.td}>
@@ -167,9 +179,7 @@ let TemplateAdd = props => {
           id="exampleSelect"
           onChange={handleChange("jobTypeId")}
         >
-          <option selected >
-            {initialaddvalues.jobTypeName}
-          </option>
+          <option selected>{props.data.jobTypeId}</option>
           {job.map(e => (
             <option value={e.jobTypeId} label={e.name}>
               {e.name}
@@ -177,11 +187,12 @@ let TemplateAdd = props => {
           ))}
         </Input>
       </td>
-      <td style={classes.td}>
+      <td style={classes.td} >
         <Input
           type="text"
           defaultValue={""}
-          placeholder={"Enter Contact."}
+          placeholder={props.data.contact}
+          disabled={SameContact}
           onChange={handleChange("contact")}
         />
       </td>
@@ -202,7 +213,8 @@ let TemplateAdd = props => {
         </Input>
       </td>
       <td style={classes.tdlast}>
-        <i className="fa fa-check-square fa-1x" onClick={handlebutton}></i>&nbsp;&nbsp;&nbsp;&nbsp;
+        <i className="fa fa-check-square fa-1x" onClick={handletick}></i>
+        &nbsp;&nbsp;&nbsp;&nbsp;
         <i className="fa fa-window-close fa-1x" onClick={handlebutton}></i>
       </td>
     </tr>

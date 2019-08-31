@@ -15,7 +15,7 @@ function ApiwithidJobflag(Id) {
     return `${apiurlJobflag}/${Pg}/${PgSize}`;
   }
 
-//-------- GetAPi 
+//-------- GetAPi  
 export function GetListingForJobflag(pg,pgsize) {
     return axios.get(ApiwithbyPgJobflag(pg,pgsize),
              {headers: {

@@ -4,23 +4,27 @@ import axios from 'axios';
 
 
 /* *************************File Group*********************** */
-let apiurlResourceGroup= apiUrl + '/masterdata/PredefinedItems';
+let apiurlResourceGroup= apiUrl + '/masterdata/FileResourceGroups';
 // let apiurlAbsence= 'https://reqres.in/api/users/2';
-let apiurlResourceGroupall= apiUrl + '/masterdata/PredefinedItems/0/0';
+let apiurlResourceGroupall= apiUrl + '/masterdata/FileResourceGroups/0/0';
 
 
 
-function ApiwithidResourceGroup(Id) {
-    return `${apiurlResourceGroup}/${Id}`;
+function ApiwithidResourceGroup(id,Id) {
+    return `${apiurlResourceGroup}/${id}/${Id}`;
   }
 
   function ApiwithbyPgResourceGroup(Pg,PgSize) {
     return `${apiurlResourceGroup}/${Pg}/${PgSize}`;
   }
 
+  function ApiallwithbyPgResourceGroup(Id,Pg,PgSize) {
+    return `${apiurlResourceGroup}/${Id}/${Pg}/${PgSize}`;
+  }
+
 //-------- GetAPi
-export function GetListingForResourceGroup(pg,pgsize) {
-    return axios.get(ApiwithbyPgResourceGroup(pg,pgsize),
+export function GetbyidListingForResourceGroup(id,pg,pgsize) {
+    return axios.get(ApiallwithbyPgResourceGroup(id,pg,pgsize),
              {headers: {
                  //"Authorization": authIt,
                  //"accept": "application/json",
@@ -57,17 +61,20 @@ export function GetResourceGroupDataById(id) {
 
 }
 
-export function PutResourceGroupDataById(id,body) {
+export function PutResourceGroupDataById(idd,id,body) {
     // console.log(id)
-    return axios.put(ApiwithidResourceGroup(id),body)
+    return axios.put(ApiwithidResourceGroup(idd,id),body)
 
 }
 
 //------- Delete-API
+function DeleteAPi(id,idd) {
+  return `${apiurlResourceGroup}/${id}/${idd}`;
+}
 
-export function DeleteResourceGroupDataById(id) {
+export function DeleteResourceGroupDataById(id,resid) {
     // console.log(id)
-    return axios.delete(ApiwithidResourceGroup(id))
+    return axios.delete(DeleteAPi(id, resid))
 
 }
 

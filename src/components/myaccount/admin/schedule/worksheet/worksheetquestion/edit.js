@@ -1,5 +1,7 @@
 import { GetWorkSheetQDataById, PutWorkSheetQDataById } from "../../shared/worksheetquestion";
 import React, { Component, useState, useEffect } from "react";
+import { PutWorkSheetQConditionDataById } from "../../shared/worksheetqcondition"
+import CoditionTemplateEdit from "./worksheetqcondition/listinga";
 import {
   Button,
   Card,
@@ -46,29 +48,64 @@ const classes = {
 let EditWorkSheetQ = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
-    //Toast
-
-    function errort() {
-      // add type: 'error' to options
-      return toast.error('Failed with Error...', {
-        position: toast.POSITION.BOTTOM_RIGHT
-      });
-
+  let data =[];
+    function handletemplatedata(value) {
+      data=value;
     }
+
+    let [newvalue, setNewvalue] = useState([{
+      worksheetQConditionId: 0,
+      expression: '',
+      statement: '',
+      worksheetQuestionId: '',
+    }]);
+
+      function errort() {
+        // add type: 'error' to options
+        return toast.error('Failed with Error...', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+
+      }
+      function errorc() {
+        // add type: 'error' to options
+        return toast.error("Please Add Work Sheet Question..", {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      }
     function success() {
       return toast.success("Saved Successfully... ", {
         position: toast.POSITION.BOTTOM_RIGHT
       });
     }
 
-
-
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    console.log(values , props.IDforAPI,props.idofEdit );
-    await PutWorkSheetQDataById(props.IDforAPI,props.idofEdit, values).then(()=>success()).catch(error=>errort());
-    handleOpen();
-    props.refresh();
-    setSubmitting(false);
+    if (data.length === 0) {
+      errorc();
+      setSubmitting(true);
+      setSubmitting(false);
+    } else {
+      let idtemp;
+      console.log(props.IDforAPI, props.idofEdit)
+          await PutWorkSheetQDataById(props.IDforAPI,props.idofEdit,values)
+        .then(res => {
+          success();
+          idtemp = res.data.worksheetQuestionId;
+          console.log(idtemp)
+          data.map(async (e)=>{
+            delete e.count;
+            e.worksheetQuestionId=idtemp;
+            console.log(e)
+           await PutWorkSheetQConditionDataById(props.IDforAPI, props.idofEdit,e.worksheetQConditionId,e)
+            .then((res) => success())
+            .catch(error => errort());
+          })})
+        .catch(error => errort());
+
+      handleOpen();
+      props.refresh();
+      setSubmitting(false);
+    }
   }
 
   const validationSchema = function(values) {
@@ -177,7 +214,7 @@ let EditWorkSheetQ = props => {
         size="lg"
       >
         <ModalHeader toggle={handleOpen} ><h3 className="font-weight:bold;">WorkSheet</h3></ModalHeader>
-        <ModalBody style={{'max-height': 'calc(100vh - 110px)', 'overflow-y': 'auto'}}>
+        <ModalBody style={{'max-height': 'calc(100vh - 150px)', 'overflow-y': 'auto'}}>
           <div className="container">
             <Formik
               initialValues={initialValues}
@@ -569,6 +606,14 @@ let EditWorkSheetQ = props => {
 
                       </FormGroup>
                       <FormGroup>
+                        <div className="row" style={classes.divider}></div>
+                        <br />
+                        <div className="row mb-2">
+                          <div className="container">
+                            <h2 style={classes.h2}>Add Condition</h2>
+                            <CoditionTemplateEdit templatedata={handletemplatedata} qid={props.IDforAPI} wid={props.idofEdit} />
+                          </div>
+                        </div>
                         <ModalFooter>
                           <Button
                             type="submit"

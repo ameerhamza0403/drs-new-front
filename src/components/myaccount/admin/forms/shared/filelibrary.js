@@ -4,9 +4,9 @@ import axios from 'axios';
 
 
 /* *************************File Group*********************** */
-let apiurlFileLibrary= apiUrl + '/masterdata/PredefinedItems';
+let apiurlFileLibrary= apiUrl + '/masterdata/FileLibrary';
 // let apiurlAbsence= 'https://reqres.in/api/users/2';
-let apiurlFileLibraryall= apiUrl + '/masterdata/PredefinedItems/0/0';
+let apiurlFileLibraryall= apiUrl + '/masterdata/FileLibrary/0/0';
 
 
 
@@ -81,10 +81,17 @@ export function PostListingForFileLibrary(body) {
 
 //----------Upload File
 
-let apiforupload=apiUrl + '/masterdata/PredefinedItems';
+let apiforupload=apiUrl + '/common/Uploads';
 
 
 export function PostListingForFileUpload(body) {
-  return axios.post(apiforupload,body)
-
+  return axios.post(apiforupload,body,
+    {headers: {
+        //"Authorization": authIt,
+        //"accept": "application/json",
+        //"Access-Control-Allow-Origin": "*",
+        'Content-Type': 'multipart/form-data',
+        // 'Access-Control-Expose-Headers': '*',
+       }}
+   )
 }

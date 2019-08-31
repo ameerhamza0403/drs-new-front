@@ -561,7 +561,7 @@ function handlePageSize(event) {
     menuDiv = (
       <ul className="tool">
         <li />
-        <AddWorkSheetQ refresh={refreshfn} idworksheet={props.IDforAPI}/>
+        <AddWorkSheetQ refresh={refreshfn} idworksheet={props.IDforMainEdit}/>
       </ul>
     );
   }

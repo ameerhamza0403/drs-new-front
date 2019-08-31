@@ -1,6 +1,7 @@
 import { PostListingForFileLibrary, PostListingForFileUpload } from "../shared/filelibrary";
+import {PostListingForResourceGroup} from '../shared/resourcegroup';
 import { GetAllListingForFileGroup } from "../shared/filegroup";
-import { GetAllListingForResourceGroup } from "../shared/resourcegroup";
+import { GetListingForResourceGroup } from "../../resources/shared/resourcegroup";
 import React, { Component, useState, useEffect } from "react";
 import {
   Button,
@@ -39,21 +40,36 @@ const classes = {
     // marginLeft: '5px',
   }
 };
-let selectedFile = new FormData();
+let selectedFile = [];
 let nameoffile = "";
 let resourcearr=[];
 let resarr=[];
 let FileLibraryAdd = props => {
+
+  let [valueforResgroup, setValueForResGroup]=useState([]);
   // getModalStyle is not a pure function, we roll the style only on the first render
   async function onSubmit(values, { setSubmitting, setErrors }) {
     if (values.name === "") {
-      values.name = selectedFile.name;
+      values.name = nameoffile;
     }
+    let formdata = new FormData();
+    formdata.append(values.name,selectedFile);
 
-    await PostListingForFileUpload(selectedFile);
+    console.log(values)
+    await PostListingForFileUpload(formdata);
     await PostListingForFileLibrary(values)
-      .then(() => resarr.map(async (e)=>{
-        await PostListingForFileLibrary(e);
+      .then((res)=>
+
+        resarr.map(async (e)=>{
+          // let name='fileLibraryId';
+          // let namer='resourceGroupId';
+          // setValueForResGroup({
+          //   ...valueforResgroup,[name]:res.data.fileLibraryId,
+          //   [namer]:parseInt(e,10)
+          // })
+          // valueforResgroup.fileLibraryId=res.data.fileLibraryId;
+          // valueforResgroup.resourceGroupId=parseInt(e,10);
+        await PostListingForResourceGroup({'fileLibraryId':res.data.fileLibraryId,'resourceGroupId':parseInt(e,10), 'isActive':true});
       }))
       .catch(error => errort());
     handleOpen();
@@ -102,9 +118,8 @@ let FileLibraryAdd = props => {
   };
 
   const initialValues = {
-    fileLibraryId: 0,
+    // fileLibraryId: 0,
     fileGroupId: 0,
-    fileGroupName: "",
     createdOn: "",
     name: "",
     isActive: true
@@ -123,28 +138,28 @@ let FileLibraryAdd = props => {
 
   let [resource, setResource] = useState([{
     resourceGroupName:'',
-    resourceGroupId:0,
+    // resourceGroupId:0,
   }]);
 
   let [res,setRes]=useState(false);
   async function getReslist() {
-    const { data: resource } = await GetAllListingForResourceGroup();
+    const { data: resource } = await GetListingForResourceGroup();
     setResource(resource);
     setRes(true);
   }
 
   let handleresource=event=>{
     if(resarr.length===0){
-      resarr[0]=event.target.checked;
+      resarr[0]=event.target.value;
     }
     else{
-      resarr.push(event.target.checked)
+      resarr.push(event.target.value)
     }
   }
 
   if(res){
     resourcearr=(resource.map(e =>
-      <div className="col">
+      <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
         <input
           name={e.resourceGroupId}
           id={e.resourceGroupId}
@@ -158,12 +173,11 @@ let FileLibraryAdd = props => {
           value={e.resourceGroupId}
           type="checkbox"
         />
-        &nbsp;&nbsp;&nbsp;
         <label
           className="form-check-label"
           for="defaultCheck1"
         >
-          {e.resourceGroupName}
+          {e.name}
         </label>
       </div>
     ));
@@ -196,7 +210,8 @@ let FileLibraryAdd = props => {
 
   let [filen, setFilen] = useState(false);
   let handleFileSelect = event => {
-    return (selectedFile = event.target.files[0]), setFilen(true);
+    setFilen(false);
+    return (selectedFile=event.target.files[0]), setFilen(true);
   };
 
   if (filen) {
@@ -257,7 +272,7 @@ let FileLibraryAdd = props => {
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
-                              type="Select"
+                              type="select"
                               name="fileGroupId"
                               id="fileGroupId"
                               placeholder="i.e. "
@@ -275,7 +290,7 @@ let FileLibraryAdd = props => {
                               <option selected></option>
                               {filegroup.map(e => (
                                 <option value={e.fileGroupId}>
-                                  {e.fileGroupName}
+                                  {e.name}
                                 </option>
                               ))}
                             </Input>

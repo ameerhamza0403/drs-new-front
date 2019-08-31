@@ -4,9 +4,9 @@ import axios from 'axios';
 
 
 /* *************************File Group*********************** */
-let apiurlFileGroup= apiUrl + '/masterdata/PredefinedItems';
+let apiurlFileGroup= apiUrl + '/masterdata/FileGroups';
 // let apiurlAbsence= 'https://reqres.in/api/users/2';
-let apiurlFileGroupall= apiUrl + '/masterdata/PredefinedItems/0/0';
+let apiurlFileGroupall= apiUrl + '/masterdata/FileGroups/0/0';
 
 
 
@@ -73,6 +73,14 @@ export function DeleteFileGroupDataById(id) {
 
 //----------Save-Post-API
 export function PostListingForFileGroup(body) {
-    return axios.post(apiurlFileGroup,body)
+    return axios.post(apiurlFileGroup,body,
+      {headers: {
+          //"Authorization": authIt,
+          //"accept": "application/json",
+          //"Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          // 'Access-Control-Expose-Headers': '*',
+         }}
+     )
 
 }

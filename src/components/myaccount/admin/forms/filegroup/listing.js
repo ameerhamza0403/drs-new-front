@@ -548,7 +548,7 @@ let FileGroupListing = () => {
   function HandlerowSelect(row) {
     menuDiv = "";
     console.log(row)
-    idofEdit = row.predefinedItemId;
+    idofEdit = row.fileGroupId;
     return setMenushow((menushow = true));
   }
   let Handlerowclose = row => {

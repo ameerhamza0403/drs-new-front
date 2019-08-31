@@ -145,12 +145,18 @@ let JobGroupTemplateAdd = props => {
     }, {});
   };
 
-  const initialValues = {
+  let initialValues={
     name: "",
     sameContact: false,
     sameResource: false,
     isActive: true
   };
+
+  function HandleContact(event){
+    return(
+      initialValues.sameContact=event.target.value
+      )
+  }
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -273,7 +279,7 @@ let JobGroupTemplateAdd = props => {
                               invalid={
                                 touched.sameContact && !!errors.sameContact
                               }
-                              onClick={handleChange}
+                              onClick={HandleContact}
                               onBlur={handleBlur}
                               value={values.sameContact}
                               type="checkbox"
@@ -342,7 +348,7 @@ let JobGroupTemplateAdd = props => {
                         <div className="row mb-2">
                           <div className="container">
                             <h2 style={classes.h2}>Template jobs</h2>
-                            <GroupTemplate templatedata={handletemplatedata} />
+                            <GroupTemplate templatedata={handletemplatedata} samecon={(initialValues.sameContact)? true: false}/>
                           </div>
                         </div>
 

@@ -228,252 +228,325 @@ let JobGroupTemplateListing = () => {
     TotalPages = paginate.totalPages;
     settabledistatus((Tabledistatus = true));
   }
-  //--- Pagination ------------------
+ //--- Pagination ------------------
+ function handlePageSize(event) {
+  PageSize = event.target.value;
+  refreshfn();
+}
 
-  let [pgin, setPgin] = useState(true);
+let [pgin, setPgin] = useState(true);
 
-  function handlepagin() {
-    setPgin(false);
-    // setTimeout(() => setPgin(true), 10);
-    refreshfn();
-    setPgin(true);
-  }
+function handlepagin() {
+  setPgin(false);
+  // setTimeout(() => setPgin(true), 10);
+  refreshfn();
+  setPgin(true);
+}
 
-  if (pgin) {
-    if (Page > 2 || Page === 2) {
-      if (Page === TotalPages) {
-        paging = (
-          <Pagination>
-            <PaginationItem>
-              <PaginationLink
-                previous
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 2;
-                  handlepagin();
-                }}
-              >
-                {Page - 2}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              >
-                {Page - 1}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                // onClick={() => {
-                //   Page = Page+1;
-                //   handlepagin();
-
-                // }}
-              >
-                {Page}
-              </PaginationLink>
-            </PaginationItem>
-          </Pagination>
-        );
-      } else if (Page === TotalPages - 1) {
-        paging = (
-          <Pagination>
-            <PaginationItem>
-              <PaginationLink
-                previous
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 2;
-                  handlepagin();
-                }}
-              >
-                {Page - 2}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              >
-                {Page - 1}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                // onClick={() => {
-                //   Page = Page+1;
-                //   handlepagin();
-
-                // }}
-              >
-                {Page}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page + 1;
-                  handlepagin();
-                }}
-              >
-                {Page + 1}
-              </PaginationLink>
-            </PaginationItem>
-          </Pagination>
-        );
-      } else {
-        paging = (
-          <Pagination>
-            <PaginationItem>
-              <PaginationLink
-                previous
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              >
-                {Page - 1}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page;
-                  handlepagin();
-                }}
-              >
-                {Page}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page + 1;
-                  handlepagin();
-                }}
-              >
-                {Page + 1}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page + 2;
-                  handlepagin();
-                }}
-              >
-                {Page + 2}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                next
-                tag="button"
-                onClick={() => {
-                  Page = Page + 1;
-                  handlepagin();
-                }}
-              />
-            </PaginationItem>
-          </Pagination>
-        );
-      }
-    } else if (Page < 2) {
-      paging = (
-        <Pagination>
-          <PaginationItem>
+if (pgin) {
+  // if (Page > 2 || Page === 2) {
+  //   if (Page === TotalPages) {
+  paging = (
+    <Pagination>
+      <PaginationItem>
+        <PaginationLink
+          previous
+          tag="button"
+          onClick={() => {
+            if (Page - 1 > 0) {
+              Page = Page - 1;
+              handlepagin();
+            }
+          }}
+        />
+      </PaginationItem>
+      {/* <PaginationItem>
             <PaginationLink
               tag="button"
               onClick={() => {
-                Page = Page;
+                if(Page-2>0){
+                Page = Page - 2;
                 handlepagin();
+                }
               }}
             >
-              {Page}
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              tag="button"
-              onClick={() => {
-                Page = Page + 1;
-                handlepagin();
-              }}
-            >
-              {Page + 1}
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              tag="button"
-              onClick={() => {
-                Page = Page + 2;
-                handlepagin();
-              }}
-            >
-              {Page + 2}
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              next
-              tag="button"
-              onClick={() => {
-                Page = Page + 1;
-                handlepagin();
-              }}
-            />
-          </PaginationItem>
-        </Pagination>
-      );
-    }
-  } else {
-    paging = "";
-  }
 
-  //----- Finished Pagination---------
+              {(Page-2>0)? Page-2 : '...'}
+            </PaginationLink>
+          </PaginationItem> */}
+      <PaginationItem>
+        <PaginationLink
+          tag="button"
+          onClick={() => {
+            if (Page - 1 > 0) {
+              Page = Page - 1;
+              handlepagin();
+            }
+          }}
+        >
+          {/* {Page - 1} */}
+          {Page - 1 > 0 ? Page - 1 : "..."}
+        </PaginationLink>
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink
+          tag="button"
+          // onClick={() => {
+          //   Page = Page+1;
+          //   handlepagin();
+
+          // }}
+        >
+          {Page}
+        </PaginationLink>
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink
+          tag="button"
+          onClick={() => {
+            if (Page + 1 < TotalPages || Page + 1 === TotalPages) {
+              Page = Page + 1;
+              handlepagin();
+            }
+          }}
+        >
+          {/* {Page - 1} */}
+          {Page + 1 === TotalPages || Page + 1 < TotalPages
+            ? Page + 1
+            : "..."}
+        </PaginationLink>
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink
+          next
+          tag="button"
+          onClick={() => {
+            if (Page + 1 < TotalPages || Page + 1 === TotalPages) {
+              Page = Page + 1;
+              handlepagin();
+            }
+          }}
+        />
+      </PaginationItem>
+    </Pagination>
+  );
+  // }
+  // else if (Page === TotalPages - 1) {
+  //       paging = (
+  //         <Pagination>
+  //           <PaginationItem>
+  //             <PaginationLink
+  //               previous
+  //               tag="button"
+  //               onClick={() => {
+  //                 if(Page-1!=0){
+  //                 Page = Page - 1;
+  //                 handlepagin();
+  //               }
+  //               }}
+  //             />
+  //           </PaginationItem>
+  //           <PaginationItem>
+  //             <PaginationLink
+  //               tag="button"
+  //               onClick={() => {
+  //                 if(Page-2!=0){
+  //                 Page = Page - 2;
+  //                 handlepagin();
+  //                 }
+  //               }}
+  //             >
+  //               {/* {Page - 2} */}
+  //               {(Page-2!=0)? Page-2 : '...'}
+  //             </PaginationLink>
+  //           </PaginationItem>
+  //           <PaginationItem>
+  //             <PaginationLink
+  //               tag="button"
+  //               onClick={() => {
+  //                 if(Page-1!=0){
+  //                 Page = Page - 1;
+  //                 handlepagin();
+  //                 }
+  //               }}
+  //             >
+  //               {/* {Page - 1} */}
+  //               {(Page-1!=0)? Page-1 : '...'}
+  //             </PaginationLink>
+  //           </PaginationItem>
+  //           <PaginationItem>
+  //             <PaginationLink
+  //               tag="button"
+  //               // onClick={() => {
+  //               //   Page = Page+1;
+  //               //   handlepagin();
+
+  //               // }}
+  //             >
+  //               {Page}
+  //             </PaginationLink>
+  //           </PaginationItem>
+  //           <PaginationItem>
+  //             <PaginationLink
+  //               tag="button"
+  //               onClick={() => {
+  //                 if(Page+1<0){
+  //                 Page = Page + 1;
+  //                 handlepagin();
+  //                 }
+  //               }}
+  //             >
+  //               {/* {Page + 1} */}
+  //               {(Page+1<TotalPages)? Page+1 : '...'}
+  //             </PaginationLink>
+  //           </PaginationItem>
+  //         </Pagination>
+  //       );
+  //     } else {
+  //       paging = (
+  //         <Pagination>
+  //           <PaginationItem>
+  //             <PaginationLink
+  //               previous
+  //               tag="button"
+  //               onClick={() => {
+  //                 if(Page-1!=0){
+  //                 Page = Page - 1;
+  //                 handlepagin();
+  //                 }
+  //               }}
+  //             />
+  //           </PaginationItem>
+  //           <PaginationItem>
+  //             <PaginationLink
+  //               tag="button"
+  //               onClick={() => {
+  //                 if(Page-1!=0){
+  //                 Page = Page - 1;
+  //                 handlepagin();
+  //                 }
+  //               }}
+  //             >
+  //               {/* {Page - 1} */}
+  //               {(Page-1!=0)? Page-1 : '...'}
+  //             </PaginationLink>
+  //           </PaginationItem>
+  //           <PaginationItem>
+  //             <PaginationLink
+  //               tag="button"
+  //               onClick={() => {
+  //                 Page = Page;
+  //                 handlepagin();
+  //               }}
+  //             >
+  //               {Page}
+  //             </PaginationLink>
+  //           </PaginationItem>
+  //           <PaginationItem>
+  //             <PaginationLink
+  //               tag="button"
+  //               onClick={() => {
+  //                 if(!(Page+1>TotalPages)){
+  //                 Page = Page + 1;
+  //                 handlepagin();
+  //                 }
+  //               }}
+  //             >
+  //               {/* {Page + 1} */}
+  //               {(!(Page+1>TotalPages))? Page+1 : '...'}
+  //             </PaginationLink>
+  //           </PaginationItem>
+  //            {/* <PaginationItem>
+  //             <PaginationLink
+  //               tag="button"
+  //               onClick={() => {
+  //                 if(!(Page+2>TotalPages)){
+  //                 Page = Page + 2;
+  //                 handlepagin();
+  //                 }
+  //               }}
+  //             > */}
+  //               {/* {Page + 2}
+  //               {/* {(!(Page+2>TotalPages))? Page+1 : '...'}
+  //             </PaginationLink>
+  //           </PaginationItem> */}
+  //           <PaginationItem>
+  //             <PaginationLink
+  //               next
+  //               tag="button"
+  //               onClick={() => {
+  //                 if(!(Page+1>TotalPages)){
+  //                   Page = Page + 1;
+  //                   handlepagin();
+  //                 }
+  //               }}
+  //             />
+  //           </PaginationItem>
+  //         </Pagination>
+  //       );
+  //     }
+  //   } else if (Page < 2) {
+  //     paging = (
+  //       <Pagination>
+  //         <PaginationItem>
+  //           <PaginationLink
+  //             tag="button"
+  //             onClick={() => {
+  //               Page = Page;
+  //               handlepagin();
+  //             }}
+  //           >
+  //             {Page}
+  //           </PaginationLink>
+  //         </PaginationItem>
+  //         <PaginationItem>
+  //           <PaginationLink
+  //             tag="button"
+  //             onClick={() => {
+  //               if(!(Page+1>TotalPages)){
+  //               Page = Page + 1;
+  //               handlepagin();
+  //               }
+  //             }}
+  //           >
+  //             {/* {Page + 1} */}
+  //             {(!(Page+1>TotalPages))? Page+1 : '...'}
+  //           </PaginationLink>
+  //         </PaginationItem>
+  //         {/* <PaginationItem>
+  //           <PaginationLink
+  //             tag="button"
+  //             onClick={() => {
+  //               if(!(Page+2>TotalPages)){
+  //               Page = Page + 2;
+  //               handlepagin();
+  //               }
+  //             }}
+  //           > */}
+  //             {/* {Page + 2} */}
+  //             {/* {(!(Page+2>TotalPages))? Page+2 : '...'}
+  //           </PaginationLink>
+  //         </PaginationItem> */}
+  //         <PaginationItem>
+  //           <PaginationLink
+  //             next
+  //             tag="button"
+  //             onClick={() => {
+  //               if(!(Page+1>TotalPages)){
+  //               Page = Page + 1;
+  //               handlepagin();
+  //               }
+  //             }}
+  //           />
+  //         </PaginationItem>
+  //       </Pagination>
+  //     );
+  //   }
+} else {
+  paging = "";
+}
+
+//----- Finished Pagination---------
 
   // Toast
 

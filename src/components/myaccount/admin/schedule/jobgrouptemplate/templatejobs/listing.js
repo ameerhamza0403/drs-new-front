@@ -42,35 +42,48 @@ const classes = {
   iconth: {
     width: "10%"
   },
-  td:{
-    width: '30%',
+  td: {
+    width: "30%"
   }
 };
 
 let addarray = [];
 let showarrayofadd = "";
+let addnewItems=[];
 let GroupTemplate = props => {
-  let comp = <TemplateAdd addnew={HandleAddnewRow} />;
 
+  let comp = <TemplateAdd data={addarray} addnew={HandleAddnewRow} sameCon={props.samecon} submit={handleadd}/>;
 
-  useEffect(()=>{
-    addarray=[];
-  },[]);
+  useEffect(() => {
+    addarray = [];
+  }, []);
   function refreshfn() {
-    return setAddshow(addshow = true);
+    return setAddshow((addshow = true));
   }
 
   function HandleAddnewRow() {
+
     if (addarray === []) {
       addarray[0] = comp;
     } else {
       addarray.push(comp);
-      setAddshow(addshow = false);
+      setAddshow((addshow = false));
       setInterval(() => {
         refreshfn();
       }, 0);
     }
   }
+
+  function handleadd(value){
+    if(addnewItems===[]){
+      addnewItems=value;
+    }
+    else{
+      addnewItems.push(value);
+    }
+    console.log(addnewItems);
+  }
+
 
   let [addshow, setAddshow] = useState(false);
 
@@ -85,9 +98,15 @@ let GroupTemplate = props => {
       <table className="table">
         <thead className="thead-dark">
           <tr>
-            <th scope="col" style={classes.td}>Job Type</th>
-            <th scope="col" style={classes.td}>Contact</th>
-            <th scope="col" style={classes.td}>Resource</th>
+            <th scope="col" style={classes.td}>
+              Job Type
+            </th>
+            <th scope="col" style={classes.td} >
+              Contact
+            </th>
+            <th scope="col" style={classes.td}>
+              Resource
+            </th>
             <th style={classes.iconth} scope="col">
               <i
                 className="fa fa-plus-circle fa-2x"

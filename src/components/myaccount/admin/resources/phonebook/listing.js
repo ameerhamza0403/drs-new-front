@@ -180,10 +180,13 @@ const options = {
     Tabledisplay = (
       <div className="container">
           <div className="row">
-              <div className="col-3"></div>
-              <div className="col-3"></div>
+              <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
+              <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
+              
+              
+              
 
-              <div className="col-3">
+              <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                 <div>
                     <BootstrapTable
                     data={Atlist}
@@ -213,7 +216,7 @@ const options = {
                     </div> */}
                 </div>
               </div>
-              <div className="col-3"></div>
+              <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
           </div>
       </div>
     );
