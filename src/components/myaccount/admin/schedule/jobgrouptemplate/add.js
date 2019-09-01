@@ -59,6 +59,7 @@ let JobGroupTemplateAdd = props => {
 
   function handletemplatedata(value) {
     data = value;
+    console.log(data)
   }
 
   let [newvalue, setNewvalue] = useState([

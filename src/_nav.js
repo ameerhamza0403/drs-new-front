@@ -551,6 +551,27 @@ export default {
       name: "ACCOUNT",
       url: "/admin/account",
       icon: "fa fa-bank",
+      children: [
+        {
+          name: "Account Settings",
+          url: "/admin/account/accounts",
+          icon: "fa fa-bank"
+        },
+        
+      ]
+    },
+    {
+      name: "TEST",
+      url: "/admin/test",
+      icon: "fa fa-bank",
+      children: [
+        {
+          name: "Test",
+          url: "/admin/test/test",
+          icon: "fa fa-bank"
+        },
+        
+      ]
     },
   ],
 },

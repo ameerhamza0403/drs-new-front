@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from "react";
+import MaterialTable from 'material-table';
 // import MUIDataTable from "mui-datatables";
+// import EditFuelCost from "./edit";
+import TemplateAdd from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import "../../../../../scss/override/listing.scss";
-import MaterialTable from "material-table";
-// import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
+import "../../../../../../../scss/override/listing.scss";
+import {
+  GetListingForWorkSheetQCondition,
+  DeleteWorkSheetQConditionDataById
+} from "../../../shared/worksheetqcondition";
+import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-import { JobGroupType } from "../../shared/jobgrouptemplate";
-import { GetListingForAddEdit } from "../../../resources/shared/addedit";
+//import { propsEqual } from "react-shallow-equal";
+//import { GetListingForWorkSheetQCondition } from "../../../shared/worksheetqcondition";
+import { GetListingForWorkSheetQ } from "../../../shared/worksheetquestion";
+import { GetListingForWorkSheet } from "../../../shared/worksheet";
 
+
+let questionworksheet=[];
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
@@ -17,9 +28,9 @@ let Page = 1;
 let PageSize = 10;
 let paging = "";
 let TotalPages = 2;
-let jobtype = [];
-let resourcetype = [];
-
+let questions = [];
+let cond = [];
+let expression=[];
 const classes = {
   linearprogress: {
     // backgroundColor: '#EE7647',
@@ -48,9 +59,14 @@ const classes = {
   }
 };
 
-let GroupTemplate = (props) => {
+let CoditionTemplateAdd = (props) => {
   let [Atlist, setAtlist] = useState([
-    { name: "", sameContact: true, sameResource: true, isActive: true }
+    {
+      worksheetQConditionId: 0,
+      expression: '',
+      statement: '',
+      worksheetQuestionId: 0,
+    }
   ]);
   let [paginate, setPaginate] = useState();
 
@@ -163,51 +179,63 @@ let GroupTemplate = (props) => {
     </select>
   );
 
-  let [job, setJob] = useState([
+  let [menushow, setMenushow] = useState(false);
+
+  let [question, setquestion] = useState([
     {
-      jobTypeId: 0,
-      name: "test"
-    }
+      worksheetQuestionId: 0,
+      worksheetId:0,
+      question: ""
+    },
   ]);
-  let [resource, setResource] = useState([
-    {
-      resourceId: 0,
-      name: "string"
-    }
-  ]);
+  
 
   useEffect(() => {
     getinitiallist();
   }, []);
 
   async function getinitiallist() {
-    const { data: Job } = await JobGroupType();
-    setJob(Job);
-    const { data: resource } = await GetListingForAddEdit();
-    setResource(resource);
+    console.log(props.idofquestion)
+    await GetListingForWorkSheetQ(props.idofquestion,0, 0).then(res => {
+        // console.log(props.idofquestion);
+        setquestion((question = res.data));
+        
+      });
 
-    Job.map(e => {
-      jobtype[e.jobTypeId] = e.name;
-    });
-    resource.map(e => {
-      resourcetype[e.resourceId] = e.name;
-    });
+      question.map(e => {
+        questions[e.worksheetQuestionId] = e.question;
+      });
+
+      cond[1]="go to question";
+      cond[2]="view questiont";
+
+      expression["equal to"] = "equal to";
+      expression["greater then"] = "greater then";
+      expression["less then"] = "less then";
+      expression["between"] = "between";
+
     settabledistatus(true);
+                        
   }
+
 
   const [state, setState] = React.useState({
     columns: [
       {
-        title: "Job Type",
-        field: "name",
-        lookup: jobtype
+        title: "Expression",
+        field: "expression",
+        lookup: expression
       },
-      { title: "Contact", field: "namecon" },
+      { title: "Statement", field: "statement" },
       {
-        title: "Resources",
-        field: "namres",
-        lookup: resourcetype
-      }
+        title: "Selection",
+        field: "cond",
+        lookup: cond
+      },
+      { title: "Questions", field: "question", lookup:questions },
+      
+      
+      
     ],
     data: [
       // { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
@@ -680,10 +708,10 @@ let GroupTemplate = (props) => {
     EditshowModel = "";
   }
 
-  let [menushow, setMenushow] = useState(false);
+  // let [menushow, setMenushow] = useState(false);
   function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = row.jobGroupTemplateId;
+    idofEdit = row.worksheetQConditionId;
     console.log(idofEdit);
     return setMenushow((menushow = true));
   }
@@ -734,6 +762,4 @@ let GroupTemplate = (props) => {
   );
 };
 
-
-
-export default GroupTemplate;
+export default CoditionTemplateAdd;

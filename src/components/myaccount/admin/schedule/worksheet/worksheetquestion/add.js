@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from "react";
 import {  PostListingForWorkSheetQ } from "../../shared/worksheetquestion";
-import CoditionTemplateAdd from "./worksheetqcondition/listinga";
+import CoditionTemplateAdd from "./worksheetqcondition/listing";
 import {
   Button,
   Card,
@@ -49,6 +49,7 @@ let AddWorkSheetQ = props => {
 
     let data =[];
     function handletemplatedata(value) {
+      console.log(data);
       data=value;
     }
 
@@ -95,10 +96,11 @@ let AddWorkSheetQ = props => {
           
           console.log(props.idworksheet)
           data.map(async (e)=>{
-            delete e.count;
+            // delete e.count;
             e.worksheetQuestionId=idtemp;
             
             e.worksheetId =props.idworksheet; 
+            console.log(idtemp, props.idworksheet)
            await PostListingForWorkSheetQCondition(props.idworksheet, idtemp,e)
             .then((res) => success())
             .catch(error => errort());
@@ -606,7 +608,7 @@ let AddWorkSheetQ = props => {
                         <div className="row mb-2">
                           <div className="container">
                             <h2 style={classes.h2}>Add Condition</h2>
-                            <CoditionTemplateAdd templatedata={handletemplatedata} />
+                            <CoditionTemplateAdd idofquestion={props.idworksheet} templatedata={handletemplatedata} />
                           </div>
                         </div>
                         <ModalFooter>
