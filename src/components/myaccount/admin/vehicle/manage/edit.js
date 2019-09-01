@@ -1,7 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import {
-  GetTrackingDeviceData
-} from "..//shared/manage";
+  GetTrackingDeviceData} from "..//shared/manage";
 import ManageVehAttribute from './attribute';
 import {
   Button,
@@ -22,7 +21,7 @@ import {
 import Select from "react-select";
 // import "react-select/dist/react-select.min.css";
 import 'react-select/dist/react-select.css';
-import { Formik } from "formik";
+import { Formik, setIn } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -31,7 +30,7 @@ import { GetListingForcurrency } from "../../resources/shared/currency";
 import { GetListingForVehicleType } from "../shared/vehicletype";
 import { GetListingForVehicleGroups } from "../shared/vehiclegroup";
 import { GetListingForVehicleChecktype } from "../shared/vehiclechecktype";
-import {PutVehiclemanageDataById} from '../shared/manage';
+import {PutVehiclemanageDataById,GetVehiclemanageDataById} from '../shared/manage';
 let iconpack = "https://cdn.bigchangeapps.com/img/Map/cn/40/air-n.png";
 
 
@@ -62,9 +61,13 @@ let EditVehicleManage = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    let newvalue = values;
-    console.log(newvalue);
-    await PutVehiclemanageDataById(props.IDforAPI, newvalue)
+    Object.keys(initialValues).map(function(keyName, keyIndex) {
+      if(!values.hasOwnProperty(keyName)){
+        // values.keyName=editValue.keyName;
+        values[keyName]=initialValues[keyName]
+      }
+    })
+    await PutVehiclemanageDataById(props.IDforAPI, values)
       .then(() => success())
       .catch(error => errort());
       handleOpen();
@@ -109,7 +112,10 @@ let EditVehicleManage = props => {
     name: "",
     isActive: true
   }]);
+
+
   useEffect(() => {
+    getlistapi();
     getvehchecktype();
     getcurrlist();
     getVehicletype();
@@ -117,7 +123,12 @@ let EditVehicleManage = props => {
     getvehiclegroup();
   }, []);
 
-
+async function getlistapi(){
+  const {data: initialValues}= await GetVehiclemanageDataById(props.IDforAPI);
+  setInitialvalues(initialValues);
+  console.log(initialValues)
+  setModal(true);
+}
   async function getvehchecktype() {
     const { data: vehchecktype } = await GetListingForVehicleChecktype();
     setVehiclechecktype(vehchecktype);
@@ -289,15 +300,16 @@ let EditVehicleManage = props => {
     handleOpenMT();
   };
 
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
   let [modalMT, setModalMT] = useState(false);
 
   let handleOpen = () => {
-    return setModal((modal=!modal));
+    return setModal((modal=false));
   };
 
   let handleOpenMT = () => {
-    return setModalMT((modalMT = !modalMT));
+    return setModal((modal = false)), setTimeout(() => props.cross(), 200);
+    // return setModalMT((modalMT = !modalMT));
   };
 
 
@@ -426,7 +438,7 @@ let EditVehicleManage = props => {
                                   // maxLength={8}
                                   // style={classes.input}
                                 >
-                                  <option selected />
+                                  {/* <option selected hidden >{editValue.vehicleTypeId}</option> */}
                                   {vehicledata.map(e => (
                                     <option value={e.vehicleTypeId}>
                                       {e.name}
@@ -466,8 +478,11 @@ let EditVehicleManage = props => {
                                   // maxLength={8}
                                   // style={classes.input}
                                 >
-                                  <option selected />
                                   {trackingdata.map(e => (
+                                    // (!(initialValues.trackingDeviceId===undefined))? (e.trackingDeviceId===initialValues.trackingDeviceId)?
+                                    //   <option selected hidden >{e.code}</option>
+                                    // : <option selected ></option> :
+
                                     <option value={e.code}>
                                       {e.trackingDeviceId}
                                     </option>

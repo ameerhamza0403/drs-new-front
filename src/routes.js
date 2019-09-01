@@ -220,7 +220,7 @@ const routes = [
   { path: '/admin/form/filelibrary', exact: true, name: 'File Library', component: FileLibraryListing },
   { path: '/admin/finance/departmentcode', exact: true, name: 'Department Code', component:  DepartmentCodeListing },
 
-  { path: '/admin/finance/nominalcode', exact: true, name: 'Nominal Code', component:  NominalCodeListing },
+  { path: '/admin/finance/nominalcode', exact: true, name: 'Nominal code', component:  NominalCodeListing },
   { path: '/admin/finance/salesopportunitystage', exact: true, name: 'Sales Opportunity Stages', component:  SalesOpportunityStage },
   { path: '/admin/finance/salesopportunityflag', exact: true, name: 'Sales Opportunity Flags', component:  SalesOpportunityFlag },
 

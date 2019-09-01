@@ -245,11 +245,11 @@ export default {
           url: "/admin/resources/skills",
           icon: "fa fa-user-o"
         },
-        {
-          name: "Custom Fields",
-          url: "/admin/resources/custom",
-          icon: "fa fa-user-o"
-        },
+        // {
+        //   name: "Custom Fields",
+        //   url: "/admin/resources/custom",
+        //   icon: "fa fa-user-o"
+        // },
         {
           name: "Phone Book",
           url: "/admin/resources/phone",
@@ -292,11 +292,11 @@ export default {
           url: "/admin/vehicle/attribute",
           icon: "fa fa-truck"
         },
-        {
-          name: "Vehicle Custom Fields",
-          url: "/admin/vehicle/custom",
-          icon: "fa fa-truck"
-        },
+        // {
+        //   name: "Vehicle Custom Fields",
+        //   url: "/admin/vehicle/custom",
+        //   icon: "fa fa-truck"
+        // },
         {
           name: "Vehicle Check",
           url: "/admin/vehicle/check",
@@ -339,16 +339,16 @@ export default {
           url: "/admin/schedule/jobcategory",
           icon: "fa fa-clock-o"
         },
-        {
-          name: "Job Custom Field",
-          url: "/admin/schedule/custom",
-          icon: "fa fa-clock-o"
-        },
-        {
-          name: "Job Flags",
-          url: "/admin/schedule/jobflag",
-          icon: "fa fa-users"
-        },
+        // {
+        //   name: "Job Custom Field",
+        //   url: "/admin/schedule/custom",
+        //   icon: "fa fa-clock-o"
+        // },
+        // {
+        //   name: "Job Flags",
+        //   url: "/admin/schedule/jobflag",
+        //   icon: "fa fa-users"
+        // },
 
         {
           name: "Work Sheet",
@@ -372,11 +372,11 @@ export default {
           url: "/admin/contact/group",
           icon: "fa fa-users"
         },
-        {
-          name: "Contact Custom Fields",
-          url: "/admin/contact/custom",
-          icon: "fa fa-users"
-        },
+        // {
+        //   name: "Contact Custom Fields",
+        //   url: "/admin/contact/custom",
+        //   icon: "fa fa-users"
+        // },
         {
           name: "Person Flags",
           url: "/admin/contact/flag",
@@ -387,11 +387,11 @@ export default {
           url: "/admin/contact/type",
           icon: "fa fa-users"
         },
-        {
-          name: "Notes Custom Fields",
-          url: "/admin/notes/custom",
-          icon: "fa fa-users"
-        },
+        // {
+        //   name: "Notes Custom Fields",
+        //   url: "/admin/notes/custom",
+        //   icon: "fa fa-users"
+        // },
         {
           name: "Note Workflows",
           url: "/admin/note/workflow",
@@ -424,34 +424,34 @@ export default {
           url: "/admin/finance/docs",
           icon: "fa fa-bank"
         },
-        {
-          name: "Custom fields",
-          url: "/admin/finance/custom",
-          icon: "fa fa-bank"
-        },
+        // {
+        //   name: "Custom fields",
+        //   url: "/admin/finance/custom",
+        //   icon: "fa fa-bank"
+        // },
         {
           name: "Predefined items",
           url: "/admin/finance/predefinvoice",
           icon: "fa fa-bank"
         },
-        {
-          name: "Items Custom fields",
-          url: "/admin/finance/invoice-custom",
-          icon: "fa fa-bank"
-        },
+        // {
+        //   name: "Items Custom fields",
+        //   url: "/admin/finance/invoice-custom",
+        //   icon: "fa fa-bank"
+        // },
         {
           name: "Bank accounts",
           url: "/admin/finance/account",
           icon: "fa fa-bank"
         },
         {
-          name: "Nominal codes",
-          url: "/admin/finance/nominal",
+          name: "Nominal code",
+          url: "/admin/finance/nominalcode",
           icon: "fa fa-bank"
         },
         {
           name: "Department codes",
-          url: "/admin/finance/dept",
+          url: "/admin/finance/departmentcode",
           icon: "fa fa-bank"
         },
         {
@@ -516,6 +516,9 @@ export default {
         {
           name: "File Library",
           url: "/admin/form/filelibrary",
+          icon: "fa fa-bank"
+        },
+        {
           name: "Timesheet Activities",
           url: "/admin/forms/timesheetactivity",
           icon: "fa fa-bank"
