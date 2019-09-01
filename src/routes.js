@@ -1,4 +1,5 @@
 import React from 'react';
+import AccountListing from './components/myaccount/admin/account/accounts/listing';
 //import TrackingDeviceListing from './components/myaccount/admin/vehicle/trackingdevice/listing';
 
 const CodeEditors = React.lazy(() => import('./views/Editors/CodeEditors'));
@@ -109,6 +110,9 @@ const ExpenseCategoryListing = React.lazy(() => import('./components/myaccount/a
 //Web Users
 const RoleListing = React.lazy(() => import('./components/myaccount/admin/webusers/role/listing'));
 const UserListing = React.lazy(() => import('./components/myaccount/admin/webusers/adduser/listing'));
+
+
+const TestListing = React.lazy(() => import('./components/myaccount/admin/test/test/listing'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -232,5 +236,12 @@ const routes = [
   //Web USers
   { path: '/admin/webusers/role', exact: true, name: 'Roles', component:  RoleListing },
   { path: '/admin/webusers/adduser', exact: true, name: 'Add User', component:  UserListing },
+
+  //Account
+  { path: '/admin/account/accounts', exact: true, name: 'Account Settings', component:  AccountListing },
+
+
+  { path: '/admin/test/test', exact: true, name: 'Test', component:  TestListing },
+
 ];
 export default routes;

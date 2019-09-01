@@ -1,7 +1,7 @@
 import { GetWorkSheetQDataById, PutWorkSheetQDataById } from "../../shared/worksheetquestion";
 import React, { Component, useState, useEffect } from "react";
 import { PutWorkSheetQConditionDataById } from "../../shared/worksheetqcondition"
-import CoditionTemplateEdit from "./worksheetqcondition/listinga";
+import CoditionTemplateEdit from "./worksheetqcondition/listing";
 import {
   Button,
   Card,
