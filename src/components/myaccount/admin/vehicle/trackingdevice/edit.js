@@ -130,7 +130,7 @@ let EditTrackingDevice= props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return (
@@ -148,7 +148,6 @@ let EditTrackingDevice= props => {
   async function getlistapi() {
     const { data: initialValues } = await GetTrackingDeviceDataById(props.IDforAPI);
     setInitialValues(initialValues)
-    setModal(true);
   }
 
 

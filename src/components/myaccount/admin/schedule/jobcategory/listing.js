@@ -16,8 +16,8 @@ let EditshowModel = "";
 let ColorStyle = {};
 let idofEdit = 0;
 let count = 0;
-let Page = 0;
-let PageSize = 0;
+let Page = 1;
+let PageSize = 10;
 
 const classes = {
   linearprogress: {
@@ -144,7 +144,7 @@ let JobCategoryListing = () => {
   }, [count]);
 
   async function getlistapi() {
-    const { data: Atlist } = await GetListingForJobcategory();
+    const { data: Atlist } = await GetListingForJobcategory(Page, PageSize);
     setAtlist(Atlist);
     // Atlist.map((e,i)=>
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>

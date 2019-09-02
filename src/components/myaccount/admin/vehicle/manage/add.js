@@ -73,17 +73,6 @@ let VehicleAddManage = props => {
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
     let newvalue = values;
-    if(initialValues.hasOwnProperty('attributes')){
-        values.attributes=initialValues.attributes;
-    }
-    if(newvalue.hasOwnProperty('cO2Unit')){
-      if(newvalue.cO2Unit===true){
-        newvalue.cO2Unit=1;
-      }
-      else{
-        newvalue.cO2Unit=0;
-      }
-    }
     console.log(newvalue);
     await PostListingForVehiclemanage(newvalue)
       .then(() => success())
@@ -136,35 +125,6 @@ let VehicleAddManage = props => {
     getVehicletype();
     gettracking();
     getvehiclegroup();
-    // setInitialvalues(initialValues=[{
-    //   vehicleId: 0,
-    // registration: "",
-    // vehicleTypeId: 0,
-    // vehicleTypeName: "",
-    // vehicleGroupId: 0,
-    // vehicleGroupName: "",
-    // make: "",
-    // model: "",
-    // year: "",
-    // odometerUnit: "",
-    // refernce: "",
-    // trackingDeviceId: 0,
-    // usedForJobs: true,
-    // fixedResource: true,
-    // resourceId: 0,
-    // resourceName: "",
-    // costPerMile: 0.0,
-    // costPerDay: 0.0,
-    // cO2: 0.0,
-    // cO2Unit: 0.0,
-    // idleFuelConsump: 0.0,
-    // status: "",
-    // maxRPM: 0.0,
-    // attributes: "",
-    // vehicleCheckTypes: "",
-    // icon: iconpack,
-    // isActive: true
-    // }]);
     // modal=true;
   }, []);
 
@@ -279,7 +239,7 @@ let VehicleAddManage = props => {
     iconpack
   ];
 
-  let [initialValues, setInitialvalues] = useState({
+  const [initialValues, setInitialvalues] = useState({
     vehicleId: 0,
     registration: "",
     vehicleTypeId: 0,
@@ -296,14 +256,14 @@ let VehicleAddManage = props => {
     fixedResource: true,
     resourceId: 0,
     resourceName: "",
-    costPerMile: 0.0,
-    costPerDay: 0.0,
-    cO2: 0.0,
-    // cO2Unit: ,
-    idleFuelConsump: 0.0,
+    costPerMile: 0,
+    costPerDay: 0,
+    cO2: 0,
+    cO2Unit: 0,
+    idleFuelConsump: 0,
     status: "",
-    maxRPM: 0.0,
-    // attributes: "",
+    maxRPM: 0,
+    attributes: "",
     vehicleCheckTypes: "",
     icon: iconpack,
     isActive: true
@@ -586,7 +546,6 @@ let VehicleAddManage = props => {
                                     type="radio"
                                     id="radio1"
                                     name="usedForJobs"
-                                    defaultChecked={true}
                                     value={true}
                                   />
                                   <Label
@@ -654,7 +613,7 @@ let VehicleAddManage = props => {
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
                               <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                                <Label for="usedForJobs">Fixed Staff</Label>
+                                <Label for="usedForJobs">Fixed resource</Label>
                               </div>
                               <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
                                 <FormGroup check inline className="radio">
@@ -663,7 +622,6 @@ let VehicleAddManage = props => {
                                     type="radio"
                                     id="radio3"
                                     name="fixedResource"
-                                    defaultChecked={true}
                                     value={true}
                                   />
                                   <Label
@@ -1019,8 +977,7 @@ let VehicleAddManage = props => {
                                         type="radio"
                                         id="radio5"
                                         name="cO2Unit"
-
-                                        value={true}
+                                        value={0}
                                       />
                                       <Label
                                         check
@@ -1036,7 +993,7 @@ let VehicleAddManage = props => {
                                         type="radio"
                                         id="radio6"
                                         name="cO2Unit"
-                                        value={false}
+                                        value={1}
                                       />
                                       <Label
                                         check

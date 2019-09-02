@@ -68,7 +68,6 @@ let VatCodeEdit = props => {
       setGetValues((GetValues = res.data));
       // setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
-    setModal(true);
   }
   //Tost
 
@@ -141,7 +140,7 @@ let VatCodeEdit = props => {
     validateForm(errors);
   }
 
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -160,7 +159,7 @@ let VatCodeEdit = props => {
         <ModalBody>
           <div className="container">
             <Formik
-              initialValues={GetValues}
+              GetValues={GetValues}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
               render={({
@@ -198,8 +197,7 @@ let VatCodeEdit = props => {
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={GetValues.code}
-                              // defaultValue={GetValues.code}
+                              defaultValue={GetValues.code}
                             />
 
                             <FormFeedback>{errors.code}</FormFeedback>
@@ -222,8 +220,7 @@ let VatCodeEdit = props => {
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.rate}
-                              // defaultValue={GetValues.rate}
+                              defaultValue={GetValues.rate}
                             />
 
                             <FormFeedback>{errors.rate}</FormFeedback>
@@ -246,7 +243,7 @@ let VatCodeEdit = props => {
                               // required
                               onChange={handleChange}
                               // onBlur={handleBlur}
-                              value={values.description}
+                              defaultValue={GetValues.description}
                             />
 
                             {/* <FormFeedback>{errors.description}</FormFeedback> */}
@@ -260,9 +257,7 @@ let VatCodeEdit = props => {
                           onClick={handleChange}
                           onBlur={handleBlur}
                           value={values.isActive}
-                          defaultChecked={GetValues.isActive}
                           type="checkbox"
-
                         />
                         &nbsp;&nbsp;&nbsp;
                         <label className="form-check-label" for="defaultCheck1">

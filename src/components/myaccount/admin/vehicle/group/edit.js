@@ -121,7 +121,7 @@ let EditVehicleGroup = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -136,7 +136,6 @@ let EditVehicleGroup = props => {
       props.IDforAPI
     );
     setInitialValues(initialValues);
-    setModal(true);
   }
 
   return (
@@ -195,11 +194,10 @@ let EditVehicleGroup = props => {
                             <input
                               name="isActive"
                               id="isActive"
-                              // valid={!errors.isActive}
-                              // invalid={touched.isActive && !!errors.isActive}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
-                              defaultChecked={initialValues.isActive}
-                              // onBlur={handleBlur}
+                              onBlur={handleBlur}
                               value={values.isActive}
                               type="checkbox"
                             />

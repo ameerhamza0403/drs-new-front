@@ -9,7 +9,6 @@ import {
 import LinearProgress from "@material-ui/core/LinearProgress";
 import DriverBehListingdefault from "./listingdefault";
 import { Button } from "reactstrap";
-import ChangeDriverBehListing from './changelistdefault';
 
 let classes = {
   linearprogress: {
@@ -133,8 +132,7 @@ let DriverBehaviour = () => {
   }
   if (showliststate) {
     if (reselect === "any") {
-      showlist= <ChangeDriverBehListing  refresh={refreshfn}/>;
-      // showlist = <DriverBehListingdefault data={reslist} />;
+      showlist = <DriverBehListingdefault data={reslist} />;
     } else {
       if(newbtn){
         showlist = <DriverBehListingdefault data={reslist} createnew={newbtn} resource={reselect} refresh={refreshfn}/>;
@@ -149,7 +147,7 @@ let DriverBehaviour = () => {
       <div id="divNoScore">
         No scoring system has been created specifically for this group yet
         <br />
-        The one set up for the whole company will be used for Staff in this
+        The one set up for the whole company will be used for resources in this
         group
         <br />
         Do you want to add a specific scoring system for this group?

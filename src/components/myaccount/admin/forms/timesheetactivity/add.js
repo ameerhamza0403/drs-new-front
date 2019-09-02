@@ -45,7 +45,7 @@ const classes = {
 };
 
 let AddTimesheetActivity = props => {
-  const [values, setValues] = React.useState({
+  const [initialValues, setInitialValues] = React.useState({
     name: "",
     colour: "",
     isActive: false
@@ -135,8 +135,8 @@ let AddTimesheetActivity = props => {
     // setSlctdcode({ Slctdcode: event.target.getAttribute('value')})
     valofCod = event.target.getAttribute("value");
     console.log(valofCod)
-    setValues({ ...values, [namer]: valofCod });
-    console.log(values)
+    setInitialValues({ ...initialValues, [namer]: valofCod });
+    console.log(initialValues)
     setCodeswitch({ codeswitch: true });
     // console.log(Slctdcode + 'Hello')
   };
@@ -155,8 +155,9 @@ let AddTimesheetActivity = props => {
   const validationSchema = function(values) {
     return Yup.object().shape({
     name: Yup.string()
-    .min(4, `Code has to be at least 4 characters`)
-    .required("Nominal Code is requierd"),    
+    .min(4, `Name has to be at least 4 characters`)
+    .required("Name is requierd"), 
+       
 
     });
   };
@@ -229,7 +230,7 @@ let AddTimesheetActivity = props => {
         <ModalBody style={{'max-height': 'calc(100vh - 150px)', 'overflow-y': 'auto'}}>
           <div className="container">
             <Formik
-              values={values}
+              initialValues={initialValues}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
               render={({
@@ -277,18 +278,18 @@ let AddTimesheetActivity = props => {
                         
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="sharing"></Label>
+                            <Label for="isActive"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -303,7 +304,7 @@ let AddTimesheetActivity = props => {
                       </FormGroup>
                       <FormGroup>
                         <div className="row">
-                            <p>Color&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<p>Color&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                             {showSlccode}
                           </div>
                           <div className="row">

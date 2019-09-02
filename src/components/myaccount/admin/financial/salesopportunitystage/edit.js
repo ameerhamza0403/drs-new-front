@@ -40,7 +40,7 @@ const classes = {
     // marginTop: '10px',
     // marginLeft: '5px',
   },
-
+  
 
 };
 let valofCod = "";
@@ -118,12 +118,12 @@ let EditSalesOpportunityStage = props => {
 
   let [editvalues, seteditValues] = React.useState({});
 
-
+  
   const validationSchema = function(values) {
     return Yup.object().shape({
     name: Yup.string()
-    .min(4, `Code has to be at least 4 characters`)
-    .required("Nominal Code is requierd"),
+    .min(4, `Name has to be at least 4 characters`)
+    .required("Name is requierd"),
 
     });
   };
@@ -150,17 +150,7 @@ let EditSalesOpportunityStage = props => {
     }, {});
   };
 
-  const [initialValues, setInitialValues] = useState({
-    // name: "",
-    // ctBackOffice:"",
-    // ctResource:"",
-    // ctBookingSite:"",
-    // headerAnswer:"",
-    // headerNotes:"",
-    // sharing:"",
-    // order:0,
-    active: false
-  });
+  const [initialValues, setInitialValues] = useState();
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -226,7 +216,9 @@ let EditSalesOpportunityStage = props => {
 
   async function getlistapi() {
     const { data: initialValues } = await GetSalesOpportunityStageDataById(props.IDforAPI);
+    
     setInitialValues(initialValues)
+    console.log(initialValues);
     setModal(true);
   }
 
@@ -290,27 +282,27 @@ let EditSalesOpportunityStage = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
-
+                           
                           </div>
                         </div>
-
-
+                        
+                        
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="sharing"></Label>
+                            <Label for="isActive"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-
+                            
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              //value={values.isActive}
+                              defaultChecked={initialValues.isActive}
                               type="checkbox"
-                              defaultChecked={initialValues.active}
                             />
                             &nbsp;&nbsp;&nbsp;
                             <label
@@ -320,7 +312,7 @@ let EditSalesOpportunityStage = props => {
                               Active
                             </label>
                           </div>
-                        </div>
+                        </div>  
                       </FormGroup>
                       {/* <FormGroup>
                         <div className="row">

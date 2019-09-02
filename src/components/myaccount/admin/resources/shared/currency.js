@@ -12,27 +12,9 @@ function Apiwithidcurrency(Id) {
     return `${apiurlcurrency}/${Id}`;
   }
 
-
-function Apiwithidcurrencypag(pg,pgsize) {
-  return `${apiurlcurrency}/${pg}/${pgsize}`;
-}
-
-
 //-------- GetAPi
 export function GetListingForcurrency() {
-  return axios.get(Apiwithidcurrencypag(0,0),
-           {headers: {
-               //"Authorization": authIt,
-               //"accept": "application/json",
-               //"Access-Control-Allow-Origin": "*",
-               'Content-Type': 'application/json',
-              }}
-          )
-
-}
-//-------- GetAPi
-export function GetListingForlistcurrency(Page,pagesize) {
-    return axios.get(Apiwithidcurrencypag(Page,pagesize),
+    return axios.get(apiurlcurrency, 
              {headers: {
                  //"Authorization": authIt,
                  //"accept": "application/json",
@@ -46,7 +28,7 @@ export function GetListingForlistcurrency(Page,pagesize) {
 //---------Edit APi
 export function GetcurrencyDataById(id) {
     // console.log(id)
-    return axios.get(Apiwithidcurrency(id),
+    return axios.get(Apiwithidcurrency(id), 
              {headers: {
                  'Content-Type': 'application/json',
                 }}

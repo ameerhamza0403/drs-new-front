@@ -97,7 +97,7 @@ let VehicleCheckTypeAdd = props => {
 
   const initialValues = {
     name: "",
-    isActive: true
+    isActive: false
   };
 
   function findFirstError(formName, hasError) {

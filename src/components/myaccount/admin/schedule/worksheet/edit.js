@@ -268,7 +268,7 @@ let EditWorkSheet = props => {
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
-                            <Label for="extensions">Completion time for staff</Label>
+                            <Label for="extensions">Completion time for resource</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
                             <Input

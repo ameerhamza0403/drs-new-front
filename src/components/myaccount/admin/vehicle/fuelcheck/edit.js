@@ -1,8 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import {
-  PutVehiclefuelcostDataById,
-  GetVehiclefuelcostDataById
-} from "../shared/fuelcost";
+import {PutVehiclefuelcostDataById,GetVehiclefuelcostDataById} from '../shared/fuelcost';
 import {
   Button,
   Card,
@@ -49,26 +46,18 @@ const classes = {
   }
 };
 
-
-let enddate='';
-let startdate='';
 let EditFuelCost = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
-  let [timevalue, setTimevalue] = useState({
-    startDate: "",
-    endDate: ""
+  let [timevalue,setTimevalue] = useState({
+    startDate: '',
+    endDate: '',
   });
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    if((values.startDate===null)){
-      values.startDate=startdate;
-    }
-    if((values.endDate===null)){
-      values.endDate=enddate;
-    }
-    await PutVehiclefuelcostDataById(props.IDforAPI, values)
-      .then(() => success())
-      .catch(error => errort());
+    let newvalue=values;
+    newvalue.startDate=timevalue.startDate;
+    newvalue.endDate=timevalue.endDate;
+    await PutVehiclefuelcostDataById(props.IDforAPI, newvalue).then(()=>success()).catch(error=>errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);
@@ -97,29 +86,6 @@ let EditFuelCost = props => {
       props.IDforAPI
     );
     setInitialValues(initialValues);
-    if(!(initialValues.startDate===null)){
-      startdate =
-      // formatDate(
-        initialValues.startDate.substr(0, initialValues.startDate.length - 9)
-      // );
-
-    }
-    if(!(initialValues.endDate===null)){
-    enddate =
-    // formatDate(
-      initialValues.endDate.substr(0, initialValues.endDate.length - 9)
-    // );
-    }
-    console.log(initialValues);
-    setModal(true);
-  }
-
-  function formatDate(input) {
-    return input
-      .toString()
-      .split("-")
-      .reverse()
-      .join("-");
   }
 
   //Tost
@@ -169,7 +135,9 @@ let EditFuelCost = props => {
     }, {});
   };
 
-  const [initialValues, setInitialValues] = useState({});
+  const [initialValues, setInitialValues] = useState({
+
+  });
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -194,17 +162,18 @@ let EditFuelCost = props => {
     validateForm(errors);
   }
 
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
   };
 
+
   const handleDataChange = name => event => {
     if (name === "startDate") {
-      setTimevalue({ ...timevalue, [name]: event.target.value });
+      setTimevalue( {...timevalue, [name] : event.target.value});
     } else {
-      setTimevalue({ ...timevalue, [name]: event.target.value });
+      setTimevalue( {...timevalue, [name] : event.target.value});
     }
   };
   return (
@@ -265,7 +234,7 @@ let EditFuelCost = props => {
                                   required
                                   onChange={handleChange}
                                   onBlur={handleBlur}
-                                  value={values.costPerLitre}
+                                  // value={values.costPerLitre}
                                   maxLength={8}
                                   style={classes.input}
                                 />
@@ -301,62 +270,64 @@ let EditFuelCost = props => {
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <br />
-                        <div className="row">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">From</Label>
                           </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                            <TextField
-                              id="date"
-                              label="startDate"
-                              type="date"
-                              defaultValue={startdate}
-                              InputLabelProps={{
-                                shrink: true
-                              }}
-                              onChange={handleDataChange("startDate")}
-                            />
+                          <br />
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="name">From</Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <TextField
+                                id="date"
+                                label="startDate"
+                                type="date"
+                                defaultValue={timevalue.startDate}
+                                InputLabelProps={{
+                                  shrink: true
+                                }}
+                                onChange={handleDataChange("startDate")}
+                              />
+                            </div>
                           </div>
-                        </div>
-                        <br />
-                        <div className="row">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">To</Label>
+                          <br />
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="name">To</Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <TextField
+                                id="date"
+                                label="endDate"
+                                type="date"
+                                defaultValue={timevalue.endDate}
+                                InputLabelProps={{
+                                  shrink: true
+                                }}
+                                onChange={handleDataChange("endDate")}
+                              />
+                            </div>
                           </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                            <TextField
-                              id="date"
-                              label="endDate"
-                              type="date"
-                              defaultValue={enddate}
-                              InputLabelProps={{
-                                shrink: true
-                              }}
-                              onChange={handleDataChange("endDate")}
-                            />
-                          </div>
-                        </div>
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input
-                          name="isActive"
-                          id="isActive"
-                          // valid={!errors.isActive}
-                          // invalid={touched.isActive && !!errors.isActive}
-                          onClick={handleChange}
-                          // onBlur={handleBlur}
-                          value={values.isActive}
-                          defaultChecked={initialValues.isActive}
-                          type="checkbox"
-                        />
-                        &nbsp;&nbsp;&nbsp;
-                        <label className="form-check-label" for="defaultCheck1">
-                          isActive
-                        </label>
+                          <br />
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          <input
+                            name="isActive"
+                            id="isActive"
+                            valid={!errors.isActive}
+                            invalid={touched.isActive && !!errors.isActive}
+                            onClick={handleChange}
+                            onBlur={handleBlur}
+                            value={values.isActive}
+                            type="checkbox"
+                          />
+                          &nbsp;&nbsp;&nbsp;
+                          <label
+                            className="form-check-label"
+                            for="defaultCheck1"
+                          >
+                            isActive
+                          </label>
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>
@@ -390,5 +361,6 @@ let EditFuelCost = props => {
     </div>
   );
 };
+
 
 export default EditFuelCost;

@@ -125,7 +125,7 @@ let EditAbsence = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return (
@@ -143,8 +143,6 @@ let EditAbsence = props => {
   async function getlistapi() {
     const { data: initialValues } = await GetAbsenceDataById(props.IDforAPI);
     setInitialValues(initialValues)
-    console.log(initialValues)
-    setModal(true);
   }
 
 
@@ -191,7 +189,7 @@ let EditAbsence = props => {
                               type="text"
                               name="name"
                               id="name"
-                              // placeholder={initialValues.name}
+                              placeholder={initialValues.name}
                               autoComplete="given-name"
                               valid={!errors.name}
                               invalid={touched.name && !!errors.name}
@@ -206,12 +204,11 @@ let EditAbsence = props => {
                             <input
                               name="isActive"
                               id="isActive"
-                              // valid={!errors.isActive}
-                              // invalid={touched.isActive && !!errors.isActive}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
-                              // onBlur={handleBlur}
+                              onBlur={handleBlur}
                               value={values.isActive}
-                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

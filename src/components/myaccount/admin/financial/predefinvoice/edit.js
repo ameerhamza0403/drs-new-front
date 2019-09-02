@@ -49,12 +49,12 @@ const classes = {
 let PredefInvEdit = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    Object.keys(editValue).map(function(keyName, keyIndex) {
-      if(!values.hasOwnProperty(keyName)){
-        // values.keyName=editValue.keyName;
-        values[keyName]=editValue[keyName]
+    Object.keys(values).map(function(keyName, keyIndex) {
+      if(keyName===null){
+        values.keyName=editValue.keyName;
       }
     })
+   console.log(values)
     await PutPredefInvoiceItemDataById(props.IDforAPI, values)
       .then(() => success())
       .catch(error => errort());
@@ -143,7 +143,6 @@ let PredefInvEdit = props => {
   async function getlistapi() {
     const { data: editValue } = await GetPredefInvoiceItemDataById(props.IDforAPI);
     seteditValue(editValue);
-    setModal(true);
   }
 
   async function getcurrlist() {
@@ -194,7 +193,7 @@ let PredefInvEdit = props => {
     validateForm(errors);
   }
 
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -496,7 +495,6 @@ let PredefInvEdit = props => {
                               onBlur={handleBlur}
                               value={values.recurringPayment}
                               type="checkbox"
-                              defaultChecked={editValue.recurringPayment}
                             />
                             &nbsp;&nbsp;&nbsp;
                             <label
@@ -523,7 +521,6 @@ let PredefInvEdit = props => {
                               onBlur={handleBlur}
                               value={values.atBookingSite}
                               type="checkbox"
-                              defaultChecked={editValue.atBookingSite}
                             />
                             &nbsp;&nbsp;&nbsp;
                             <label
@@ -548,7 +545,6 @@ let PredefInvEdit = props => {
                               onBlur={handleBlur}
                               value={values.onDevices}
                               type="checkbox"
-                              defaultChecked={editValue.onDevices}
                             />
                             &nbsp;&nbsp;&nbsp;
                             <label
@@ -573,7 +569,6 @@ let PredefInvEdit = props => {
                               onBlur={handleBlur}
                               value={values.showPrice}
                               type="checkbox"
-                              defaultChecked={editValue.showPrice}
                             />
                             &nbsp;&nbsp;&nbsp;
                             <label
@@ -598,7 +593,6 @@ let PredefInvEdit = props => {
                               onBlur={handleBlur}
                               value={values.isActive}
                               type="checkbox"
-                              defaultChecked={editValue.isActive}
                             />
                             &nbsp;&nbsp;&nbsp;
                             <label

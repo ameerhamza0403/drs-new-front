@@ -314,7 +314,7 @@ function success() {
             {menuDiv}
           </div>
           <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-            <h3 className="heading">MANAGE STAFF</h3>
+            <h3 className="heading">MANAGE</h3>
           </div>
         </div>
         <br />

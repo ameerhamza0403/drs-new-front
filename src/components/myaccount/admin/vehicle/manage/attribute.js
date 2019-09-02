@@ -43,7 +43,6 @@ let ManageVehAttribute = props => {
 
   useEffect(() => {
     getlistapi();
-    arrForAttribute=[]
   },[]);
 
   let [attr, setAtrr] = useState([

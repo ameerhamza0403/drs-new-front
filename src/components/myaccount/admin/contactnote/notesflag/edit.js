@@ -121,7 +121,6 @@ let EditButtonForNotesFlag = props => {
   async function getlistapi() {
     const { data: editvalues } = await GetNoteflagDataById(props.IDforAPI);
     seteditValues(editvalues);
-    setModal(true);
   }
 
   async function putlistapi() {
@@ -166,7 +165,7 @@ let EditButtonForNotesFlag = props => {
     );
   }
 
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -190,7 +189,7 @@ let EditButtonForNotesFlag = props => {
                   class="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
-                  defaultValue={editvalues.name}
+                  placeholder={editvalues.name}
                   // value={values.name}
                   onChange={handleEditChange("name")}
                 />
@@ -200,7 +199,7 @@ let EditButtonForNotesFlag = props => {
                 className="form-check-input"
                 type="checkbox"
                 // value={values.isActive}
-                defaultChecked={editvalues.isActive}
+                // placeholder={values.isActive}
                 id="defaultCheck2"
                 onChange={handleEditChange("isActive")}
               />

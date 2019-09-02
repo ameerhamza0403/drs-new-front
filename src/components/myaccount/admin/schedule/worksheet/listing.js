@@ -194,7 +194,7 @@ const options = {
             Completion time for back office
           </TableHeaderColumn>
           <TableHeaderColumn dataField="ctResource" dataSort>
-            Completion time for staff
+            Completion time for resource
           </TableHeaderColumn>
           <TableHeaderColumn dataField="ctBookingSite" dataSort>
             Completion time on booking site
