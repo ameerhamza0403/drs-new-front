@@ -74,7 +74,7 @@ let CustomFieldListing=(props)=>{
             {EditshowModel}
 
             <MUIDataTable
-                title={"Resource Custom Fields"}
+                title={"Staff Custom Fields"}
                 data={data}
                 columns={columns}
                 options={options}

@@ -40,7 +40,7 @@ const classes = {
     // marginTop: '10px',
     // marginLeft: '5px',
   },
-  
+
 
 };
 let valofCod = "";
@@ -118,7 +118,7 @@ let EditSalesOpportunityStage = props => {
 
   let [editvalues, seteditValues] = React.useState({});
 
-  
+
   const validationSchema = function(values) {
     return Yup.object().shape({
     name: Yup.string()
@@ -209,7 +209,7 @@ let EditSalesOpportunityStage = props => {
       <div className="ColorCodesl" style={ColorStyleFn("000000")} />
     );
   }
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return (
@@ -226,8 +226,8 @@ let EditSalesOpportunityStage = props => {
 
   async function getlistapi() {
     const { data: initialValues } = await GetSalesOpportunityStageDataById(props.IDforAPI);
-    console.log(initialValues);
     setInitialValues(initialValues)
+    setModal(true);
   }
 
 
@@ -290,17 +290,17 @@ let EditSalesOpportunityStage = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
-                           
+
                           </div>
                         </div>
-                        
-                        
+
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="active"
                               id="active"
@@ -310,6 +310,7 @@ let EditSalesOpportunityStage = props => {
                               onBlur={handleBlur}
                               value={values.active}
                               type="checkbox"
+                              defaultChecked={initialValues.active}
                             />
                             &nbsp;&nbsp;&nbsp;
                             <label
@@ -319,7 +320,7 @@ let EditSalesOpportunityStage = props => {
                               Active
                             </label>
                           </div>
-                        </div>  
+                        </div>
                       </FormGroup>
                       {/* <FormGroup>
                         <div className="row">

@@ -96,7 +96,7 @@ let VehicleTypeAdd = props => {
 
   const initialValues = {
     name: "",
-    isActive: false
+    isActive: true
   };
 
   function findFirstError(formName, hasError) {
@@ -188,11 +188,12 @@ let VehicleTypeAdd = props => {
                             <input
                               name="isActive"
                               id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              // valid={!errors.isActive}
+                              // invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
-                              onBlur={handleBlur}
+                              // onBlur={handleBlur}
                               value={values.isActive}
+                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

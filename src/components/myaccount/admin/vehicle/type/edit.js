@@ -96,7 +96,7 @@ let EditVehicleType = props => {
 
   const [initialValues, setInitialValues] = useState({
     name: "",
-    isActive: false
+    isActive: true
   });
 
   function findFirstError(formName, hasError) {
@@ -121,7 +121,7 @@ let EditVehicleType = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -136,6 +136,7 @@ let EditVehicleType = props => {
       props.IDforAPI
     );
     setInitialValues(initialValues);
+    setModal(true);
   }
 
   return (
@@ -194,11 +195,12 @@ let EditVehicleType = props => {
                             <input
                               name="isActive"
                               id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              // valid={!errors.isActive}
+                              // invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
-                              onBlur={handleBlur}
+                              // onBlur={handleBlur}
                               value={values.isActive}
+                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

@@ -32,7 +32,7 @@ const classes = {
     borderRadius: "50px",
     width: "10px",
     cursor: "pointer",
-    float: "left"
+    float: "left",
     // marginTop: '10px',
     // marginLeft: '5px',
   }
@@ -123,7 +123,7 @@ let EditJobCategory = (props) => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -139,6 +139,7 @@ let EditJobCategory = (props) => {
     );
     console.log(initialValues.visiblity);
     setInitialValues(initialValues);
+    setModal(true);
   }
 
   return (
@@ -232,7 +233,8 @@ let EditJobCategory = (props) => {
                                 invalid={touched.name && !!errors.name}
                                 value="Either"
 
-                                onChange={handleChange}/>Both &nbsp;&nbsp;&nbsp;
+                                onChange={handleChange}
+                                />Both &nbsp;&nbsp;&nbsp;
 
                                 <br />
                                 <br />

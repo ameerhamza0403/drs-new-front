@@ -112,7 +112,7 @@ export default {
 },
 // {
 //   title: true,
-//   name: "FLEET & RESOURCES",
+//   name: "FLEET & STAFF",
 //   wrapper: {
 //     // optional wrapper object
 //     element: "", // required valid HTML5 element tag
@@ -121,7 +121,7 @@ export default {
 //   class: "" // optional class names space delimited list for title item ex: "text-center"
 // },
 {
-  name: "FLEET & RESOURCES",
+  name: "FLEET & STAFF",
   url: "/fleet",
   icon: "fa fa-truck",
   children: [
@@ -226,43 +226,43 @@ export default {
   icon: "fa fa-user-secret",
   children: [
     {
-      name: "RESOURCES",
-      url: "/admin/resources",
+      name: "STAFF",
+      url: "/admin/staff",
       icon: "fa fa-user-o",
       children: [
         {
-          name: "Manage",
-          url: "/admin/resources/manage",
+          name: "Manage Staff",
+          url: "/admin/staff/manage",
           icon: "fa fa-user-o"
         },
         {
-          name: "Groups",
-          url: "/admin/resources/group",
+          name: "Staff Groups",
+          url: "/admin/staff/group",
           icon: "fa fa-user-o"
         },
         {
-          name: "Resource Skills",
-          url: "/admin/resources/skills",
+          name: "Staff Skills",
+          url: "/admin/staff/skills",
           icon: "fa fa-user-o"
         },
         // {
         //   name: "Custom Fields",
-        //   url: "/admin/resources/custom",
+        //   url: "/admin/staff/custom",
         //   icon: "fa fa-user-o"
         // },
         {
           name: "Phone Book",
-          url: "/admin/resources/phone",
+          url: "/admin/staff/phone",
           icon: "fa fa-user-o"
         },
         {
           name: "Driver Behaviour",
-          url: "/admin/resources/driver",
+          url: "/admin/staff/driver",
           icon: "fa fa-user-o"
         },
         {
           name: "Absence Types",
-          url: "/admin/resources/absencetype",
+          url: "/admin/staff/absencetype",
           icon: "fa fa-user-o"
         }
       ]
@@ -273,7 +273,7 @@ export default {
       icon: "fa fa-truck",
       children: [
         {
-          name: "Manage",
+          name: "Manage Vehicle",
           url: "/admin/vehicle/manage",
           icon: "fa fa-truck"
         },
@@ -557,22 +557,22 @@ export default {
           url: "/admin/account/accounts",
           icon: "fa fa-bank"
         },
-        
+
       ]
     },
-    {
-      name: "TEST",
-      url: "/admin/test",
-      icon: "fa fa-bank",
-      children: [
-        {
-          name: "Test",
-          url: "/admin/test/test",
-          icon: "fa fa-bank"
-        },
-        
-      ]
-    },
+    // {
+    //   name: "TEST",
+    //   url: "/admin/test",
+    //   icon: "fa fa-bank",
+    //   children: [
+    //     {
+    //       name: "Test",
+    //       url: "/admin/test/test",
+    //       icon: "fa fa-bank"
+    //     },
+
+    //   ]
+    // },
   ],
 },
 {

@@ -216,7 +216,7 @@ let iconint=(cell,row)=>{
             Cost Per Mile
           </TableHeaderColumn>
           <TableHeaderColumn dataField="resourceName" dataSort>
-            Fixed Resource
+            Fixed Staff
           </TableHeaderColumn>
           <TableHeaderColumn dataField="trackingDeviceId"  dataFormat={iconint} dataSort>
             Tracking Device

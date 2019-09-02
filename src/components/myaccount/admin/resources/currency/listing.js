@@ -2,15 +2,23 @@ import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
 import EditCurrency from "./edit";
-import { GetListingForcurrency, DeletecurrencyDataById } from "..//shared/currency";
+import { GetListingForlistcurrency, DeletecurrencyDataById } from "..//shared/currency";
 import AddCurrency from './add';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
+import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
+let Page = 1;
+let PageSize = 10;
+let paging = "";
+let TotalPages = 2;
+
 
 const classes = {
   linearprogress: {
@@ -43,55 +51,75 @@ const classes = {
 let CurrencyListing = () => {
   let [Atlist, setAtlist] = useState([]);
 
-  const columns = [
-    {
-      name: "currencyId",
-      label: "ID",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    },
-    {
-      name: "name",
-      label: "Currency Name",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    },
-    {
-      name: "code",
-      label: "Currency",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "isActive",
-      label: "Status",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    }
-  ];
+  // const columns = [
+  //   {
+  //     name: "currencyId",
+  //     label: "ID",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   },
+  //   {
+  //     name: "name",
+  //     label: "Currency Name",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   },
+  //   {
+  //     name: "code",
+  //     label: "Currency",
+  //     options: {
+  //       filter: true,
+  //       sort: true
+  //     }
+  //   },
+  //   {
+  //     name: "isActive",
+  //     label: "Status",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   }
+  // ];
 
+  // const options = {
+  //   filterType: "multiselect",
+  //   onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+  //   customToolbar: () => console.log("rowData"),
+  //   rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+  //   selectableRows: "none",
+  //   viewColumns: true,
+  //   responsive: 'scroll',
+
+  //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+  // };
+
+
+  let [paginate, setPaginate] = useState();
+
+  //-- React Data Table
   const options = {
-    filterType: "multiselect",
-    onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-    customToolbar: () => console.log("rowData"),
-    rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-    selectableRows: "none",
-    viewColumns: true,
-    responsive: 'scroll',
-
-    // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+    sortIndicator: true,
+    // page: Page,
+    hideSizePerPage: true,
+    // paginationSize: PageSize,
+    hidePageListOnlyOnePage: true,
+    // sizePerPage: PageSize,
+    // clearSearch: true,
+    alwaysShowAllBtns: false,
+    onRowClick: HandlerowSelect,
+    withFirstAndLast: false
+    // onPageChange: onPageChange,
+    // onSizePerPageList: sizePerPageListChange,
   };
+
 
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
@@ -99,12 +127,34 @@ let CurrencyListing = () => {
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
-      <MUIDataTable
-        title={"Actions & Filters"}
-        data={Atlist}
-        columns={columns}
-        options={options}
-      />
+      // <MUIDataTable
+      //   title={"Actions & Filters"}
+      //   data={Atlist}
+      //   columns={columns}
+      //   options={options}
+      // />
+      <BootstrapTable
+          data={Atlist}
+          version="4"
+          striped
+          hover
+          // pagination
+          // search
+          options={options}
+        >
+          <TableHeaderColumn
+            isKey={true}
+            hidden={true}
+            dataField="currencyId"
+            dataSort
+          >
+            currencyId
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="code" dataSort>
+            Name
+          </TableHeaderColumn>
+
+        </BootstrapTable>
     );
   } else {
     Tabledisplay = (
@@ -121,14 +171,18 @@ let CurrencyListing = () => {
   }, []);
 
   async function getlistapi() {
-    const { data: Atlist } = await GetListingForcurrency();
-    setAtlist(Atlist);
+    await GetListingForlistcurrency(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
     // Atlist.map((e,i)=>
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
     //                 )
+    TotalPages = paginate.totalPages;
     settabledistatus((Tabledistatus = true));
   }
+
 
    // Toast
 
@@ -181,12 +235,13 @@ let CurrencyListing = () => {
   }
 
   let [menushow, setMenushow] = useState(false);
-  let HandlerowSelect = (data, meta) => {
+  function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = data[0];
+    console.log(row);
+    idofEdit = row.currencyId;
     return setMenushow((menushow = true));
-  };
-  let Handlerowclose = (data, meta) => {
+  }
+  let Handlerowclose = row => {
     return setMenushow((menushow = false));
   };
   if (menushow) {

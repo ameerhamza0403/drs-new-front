@@ -61,6 +61,15 @@ let EditVehicleManage = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
+    console.log(values)
+    if(values.hasOwnProperty('cO2Unit')){
+      if(values.cO2Unit===true){
+        values.cO2Unit=1;
+      }
+      else{
+        values.cO2Unit=0;
+      }
+    }
     Object.keys(initialValues).map(function(keyName, keyIndex) {
       if(!values.hasOwnProperty(keyName)){
         // values.keyName=editValue.keyName;
@@ -239,7 +248,7 @@ async function getlistapi(){
     iconpack
   ];
 
-  const [initialValues, setInitialvalues] = useState({
+  let [initialValues, setInitialvalues] = useState({
     vehicleId: 0,
     registration: "",
     vehicleTypeId: 0,
@@ -547,6 +556,7 @@ async function getlistapi(){
                                     id="radio1"
                                     name="usedForJobs"
                                     value={true}
+                                    defaultChecked={(initialValues.usedForJobs===true)?true:false}
                                   />
                                   <Label
                                     check
@@ -563,6 +573,7 @@ async function getlistapi(){
                                     id="radio2"
                                     name="usedForJobs"
                                     value={false}
+                                    defaultChecked={(initialValues.usedForJobs===false)?false:true}
                                   />
                                   <Label
                                     check
@@ -613,7 +624,7 @@ async function getlistapi(){
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
                               <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                                <Label for="usedForJobs">Fixed resource</Label>
+                                <Label for="usedForJobs">Fixed staff</Label>
                               </div>
                               <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
                                 <FormGroup check inline className="radio">
@@ -622,6 +633,7 @@ async function getlistapi(){
                                     type="radio"
                                     id="radio3"
                                     name="fixedResource"
+                                    defaultChecked={(initialValues.fixedResource)?true:false}
                                     value={true}
                                   />
                                   <Label
@@ -638,6 +650,7 @@ async function getlistapi(){
                                     type="radio"
                                     id="radio4"
                                     name="fixedResource"
+                                    defaultChecked={(initialValues.fixedResource)?false:true}
                                     value={false}
                                   />
                                   <Label
@@ -736,6 +749,7 @@ async function getlistapi(){
                                     type="radio"
                                     id="radio5"
                                     name="odometerUnit"
+                                    defaultChecked={(initialValues.odometerUnit==='kilometers')?true:false}
                                     value={"kilometers"}
                                   />
                                   <Label
@@ -752,6 +766,7 @@ async function getlistapi(){
                                     type="radio"
                                     id="radio6"
                                     name="odometerUnit"
+                                    defaultChecked={(initialValues.odometerUnit==='miles')?true:false}
                                     value={"miles"}
                                   />
                                   <Label
@@ -976,8 +991,9 @@ async function getlistapi(){
                                         className="form-check-input"
                                         type="radio"
                                         id="radio5"
+                                        defaultChecked={(initialValues.cO2Unit===0)?true:false}
                                         name="cO2Unit"
-                                        value={0}
+                                        value={true}
                                       />
                                       <Label
                                         check
@@ -993,7 +1009,8 @@ async function getlistapi(){
                                         type="radio"
                                         id="radio6"
                                         name="cO2Unit"
-                                        value={1}
+                                        defaultChecked={(initialValues.cO2Unit===1)?true:false}
+                                        value={false}
                                       />
                                       <Label
                                         check

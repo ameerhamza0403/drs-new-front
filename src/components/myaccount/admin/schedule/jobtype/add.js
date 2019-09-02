@@ -107,7 +107,7 @@ let AddJobType = props => {
     return Yup.object().shape({
         name: Yup.string()
         .min(4, `Name has to be at least 4 characters`)
-        
+
         .required("Name is required"),
         positiveResults: Yup.string()
         .min(4, `Positive Result has to be at least 4 characters`)
@@ -169,9 +169,9 @@ let AddJobType = props => {
     active: false
   };
 
-  
 
-  
+
+
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -259,10 +259,10 @@ let AddJobType = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
-                           
+
                           </div>
                         </div>
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="defaultJobCard">Default Job Card</Label>
@@ -272,7 +272,7 @@ let AddJobType = props => {
                               type="select"
                               name="defaultJobCard"
                               id="defaultJobCard"
-                              
+
                               autoComplete="given-name"
                               valid={!errors.defaultJobCard}
                               invalid={touched.defaultJobCard && !!errors.defaultJobCard}
@@ -281,8 +281,8 @@ let AddJobType = props => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.defaultJobCard}
-                         
-                              
+
+
                             >
                                <option value="">--Standard job card--</option>
                                <option value="Custom JobCard">Custom JobCard</option>
@@ -291,7 +291,7 @@ let AddJobType = props => {
                                <option value="EN 16005 2012 Compliance test Sheet-Swing">EN 16005 2012 Compliance test Sheet-Swing</option>
                             </Input>
                             <FormFeedback>{errors.ctBackOffice}</FormFeedback>
-                            
+
                           </div>
                         </div>
 
@@ -315,7 +315,7 @@ let AddJobType = props => {
                               value={values.jobCardTitle}
                             />
                             <FormFeedback>{errors.jobCardTitle}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -328,7 +328,7 @@ let AddJobType = props => {
                               type="text"
                               name="nominalCode"
                               id="nominalCode"
-                              
+
                               autoComplete="given-name"
                               valid={!errors.nominalCode}
                               invalid={touched.ctResource && !!errors.nominalCode}
@@ -338,9 +338,9 @@ let AddJobType = props => {
                               onBlur={handleBlur}
                               value={values.nominalCode}
                               />
-                              
+
                             <FormFeedback>{errors.nominalCode}</FormFeedback>
-                           
+
                           </div>
 
                           <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
@@ -351,7 +351,7 @@ let AddJobType = props => {
                               type="text"
                               name="department"
                               id="department"
-                              
+
                               autoComplete="given-name"
                               valid={!errors.department}
                               invalid={touched.department && !!errors.department}
@@ -361,9 +361,9 @@ let AddJobType = props => {
                               onBlur={handleBlur}
                               value={values.department}
                               />
-                              
+
                             <FormFeedback>{errors.department}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -390,7 +390,7 @@ let AddJobType = props => {
                               Used in BigData report and Dashboard
                             </label>
                             <FormFeedback>{errors.ctResource}</FormFeedback>
-                           
+
                           </div>
 
                           <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
@@ -401,7 +401,7 @@ let AddJobType = props => {
                               type="text"
                               name="reference"
                               id="reference"
-                              
+
                               autoComplete="given-name"
                               valid={!errors.reference}
                               invalid={touched.reference && !!errors.reference}
@@ -411,9 +411,9 @@ let AddJobType = props => {
                               onBlur={handleBlur}
                               value={values.reference}
                               />
-                            
+
                             <FormFeedback>{errors.reference}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -437,7 +437,7 @@ let AddJobType = props => {
                               value={values.defaultJobDuraiton}
                             />
                             <FormFeedback>{errors.defaultJobDuraiton}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -446,7 +446,7 @@ let AddJobType = props => {
                             <Label for="durationDivision"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="durationDivision"
                               id="durationDivision"
@@ -462,7 +462,7 @@ let AddJobType = props => {
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              Duration will be divided by the number of resources allocated
+                              Duration will be divided by the number of Staff allocated
                             </label>
                           </div>
                         </div>
@@ -476,7 +476,7 @@ let AddJobType = props => {
                               type="select"
                               name="firstWorksheet"
                               id="firstWorksheet"
-                              
+
                               autoComplete="given-name"
                               valid={!errors.firstWorksheet}
                               invalid={touched.firstWorksheet && !!errors.firstWorksheet}
@@ -485,7 +485,7 @@ let AddJobType = props => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.firstWorksheet}
-                              
+
                             >
                                <option selected />
                                   {worksheetdata.map(e => (
@@ -495,7 +495,7 @@ let AddJobType = props => {
                                   ))}
                             </Input>
                             <FormFeedback>{errors.firstWorksheet}</FormFeedback>
-                            
+
                           </div>
                         </div>
 
@@ -504,7 +504,7 @@ let AddJobType = props => {
                             <Label for="worksheetOrder"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="worksheetOrder"
                               id="worksheetOrder"
@@ -530,7 +530,7 @@ let AddJobType = props => {
                             <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="firstWorksheet"
                               id="firstWorksheet"
@@ -556,7 +556,7 @@ let AddJobType = props => {
                             <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="negativeJobResults"
                               id="negativeJobResults"
@@ -586,7 +586,7 @@ let AddJobType = props => {
                               type="select"
                               name="jobCategoryId"
                               id="jobCategoryId"
-                              
+
                               autoComplete="given-name"
                               valid={!errors.jobCategoryId}
                               invalid={touched.jobCategoryId && !!errors.jobCategoryId}
@@ -595,7 +595,7 @@ let AddJobType = props => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.jobCategoryId}
-                              
+
                             >
                               <option selected />
                                 {jobcategorydata.map(e => (
@@ -603,11 +603,11 @@ let AddJobType = props => {
                                     {e.name}
                                   </option>
                                 ))}
-                               
-                               
+
+
                             </Input>
                             <FormFeedback>{errors.jobCategoryId}</FormFeedback>
-                            
+
                           </div>
                         </div>
 
@@ -631,7 +631,7 @@ let AddJobType = props => {
                               value={values.positiveResults}
                             />
                             <FormFeedback>{errors.positiveResults}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -655,7 +655,7 @@ let AddJobType = props => {
                               value={values.negativeResults}
                             />
                             <FormFeedback>{errors.negativeResults}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -668,7 +668,7 @@ let AddJobType = props => {
                               type="select"
                               name="stockCategories"
                               id="stockCategories"
-                              
+
                               autoComplete="given-name"
                               valid={!errors.stockCategories}
                               invalid={touched.stockCategories && !!errors.stockCategories}
@@ -677,7 +677,7 @@ let AddJobType = props => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.stockCategories}
-                              
+
                             >
                                <option value=""></option>
                                <option value="Folding Door">Folding Door</option>
@@ -686,11 +686,11 @@ let AddJobType = props => {
                                <option value="Sliding Door">Sliding Door</option>
                                <option value="Swing Door">Swing Door</option>
                                <option value="Tools">Tools</option>
-                               
-                               
+
+
                             </Input>
                             <FormFeedback>{errors.stockCategories}</FormFeedback>
-                            
+
                           </div>
                         </div>
 
@@ -703,7 +703,7 @@ let AddJobType = props => {
                               type="select"
                               name="ctBackOffice"
                               id="ctBackOffice"
-                              
+
                               autoComplete="given-name"
                               valid={!errors.ctBackOffice}
                               invalid={touched.ctBackOffice && !!errors.ctBackOffice}
@@ -712,7 +712,7 @@ let AddJobType = props => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.ctBackOffice}
-                              
+
                             >
                                <option value=""></option>
                                <option value="Brought to job and left at location">Brought to job and left at location</option>
@@ -720,11 +720,11 @@ let AddJobType = props => {
                                <option value="Brought to job to swap with other stock item">Brought to job to swap with other stock item</option>
                                <option value="Taken from job location">Taken from job location</option>
                                <option value="Already on site and left at location">Already on site and left at location</option>
-                               
-                               
+
+
                             </Input>
                             <FormFeedback>{errors.ctBackOffice}</FormFeedback>
-                            
+
                           </div>
                         </div>
 
@@ -733,7 +733,7 @@ let AddJobType = props => {
                             <Label for="userSystems">Systems</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="userSystems"
                               id="userSystems"
@@ -759,7 +759,7 @@ let AddJobType = props => {
                             <Label for="orderNumber">Order number</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="orderNumber"
                               id="orderNumber"
@@ -779,18 +779,18 @@ let AddJobType = props => {
                             </label>
                           </div>
                         </div>
-                        
- 
-                        
-                        
-                        
+
+
+
+
+
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="active"
                               id="active"
@@ -810,8 +810,8 @@ let AddJobType = props => {
                             </label>
                           </div>
                         </div>
-                        
-                        
+
+
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>

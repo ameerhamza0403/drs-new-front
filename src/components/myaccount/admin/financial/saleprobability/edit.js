@@ -121,6 +121,7 @@ let EditButtonforSaleOppProb = props => {
   async function getlistapi() {
     const { data: editvalues } = await GetSaleProbDataById(props.IDforAPI);
     seteditValues(editvalues);
+    setModal(true);
   }
 
   async function putlistapi() {
@@ -165,7 +166,7 @@ let EditButtonforSaleOppProb = props => {
     );
   }
 
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -189,7 +190,7 @@ let EditButtonforSaleOppProb = props => {
                   class="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
-                  placeholder={editvalues.name}
+                  defaultValue={editvalues.name}
                   // value={values.name}
                   onChange={handleEditChange("name")}
                 />
@@ -202,6 +203,7 @@ let EditButtonforSaleOppProb = props => {
                 // placeholder={values.isActive}
                 id="defaultCheck2"
                 onChange={handleEditChange("isActive")}
+                defaultChecked={editvalues.isActive}
               />
               <label className="form-check-label" for="defaultCheck2">
                 isActive

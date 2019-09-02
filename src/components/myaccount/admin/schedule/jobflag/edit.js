@@ -121,6 +121,7 @@ let EditButtonForJobFlag = props => {
   async function getlistapi() {
     const { data: editvalues } = await GetJobflagDataById(props.IDforAPI);
     seteditValues(editvalues);
+    setModal(true);
   }
 
   async function putlistapi() {
@@ -165,7 +166,7 @@ let EditButtonForJobFlag = props => {
     );
   }
 
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -189,7 +190,7 @@ let EditButtonForJobFlag = props => {
                   class="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
-                  placeholder={editvalues.name}
+                  defaultValue={editvalues.name}
                   // value={values.name}
                   onChange={handleEditChange("name")}
                 />
@@ -201,6 +202,7 @@ let EditButtonForJobFlag = props => {
                 // value={values.isActive}
                 // placeholder={values.isActive}
                 id="defaultCheck2"
+                defaultChecked={editvalues.isActive}
                 onChange={handleEditChange("isActive")}
               />
               <label className="form-check-label" for="defaultCheck2">

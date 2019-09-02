@@ -43,7 +43,7 @@ const classes = {
     // marginTop: '10px',
     // marginLeft: '5px',
   },
-  
+
 
 };
 
@@ -94,10 +94,10 @@ let [pCategory, setPCategory] = useState([
     ]);
 
     const [editvalues, seteditvalues] = useState({
-    
+
         active: false
     });
-    
+
 
     useEffect(() => {
     getinitiallist();
@@ -119,7 +119,8 @@ let [pCategory, setPCategory] = useState([
     const { data: editvalues } = await GetManageMakesnModelDataById(props.IDforAPI);
     console.log(editvalues);
     seteditvalues(editvalues)
-    
+    setModal(true);
+
     }
 
 
@@ -137,15 +138,15 @@ let [pCategory, setPCategory] = useState([
     setSubmitting(false);
   }
 
-  
+
   const validationSchema = function(values) {
     return Yup.object().shape({
     name: Yup.string()
     .min(4, `Category has to be at least 4 characters`)
     .required("Category Code is requierd"),
 
-        
-        
+
+
 
     });
   };
@@ -172,7 +173,7 @@ let [pCategory, setPCategory] = useState([
     }, {});
   };
 
-  
+
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -196,7 +197,7 @@ let [pCategory, setPCategory] = useState([
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return (
@@ -267,7 +268,7 @@ let [pCategory, setPCategory] = useState([
                               defaultValue={ editvalues.group}
                             />
                             <FormFeedback>{errors.group}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -291,7 +292,7 @@ let [pCategory, setPCategory] = useState([
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -301,13 +302,13 @@ let [pCategory, setPCategory] = useState([
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             <input
-                             
-                             
+
+
                               type="text"
                               name="defaultVAT"
                               id="defaultVAT"
                               placeholder="e.g. Taxi, train, Fuel etc..."
-                              
+
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={editvalues.defaultVAT}
@@ -322,7 +323,7 @@ let [pCategory, setPCategory] = useState([
                               {errors.name}
                             </FormFeedback>
                             )}
-                           
+
                           </div>
                         </div>
 
@@ -351,7 +352,7 @@ let [pCategory, setPCategory] = useState([
                               {errors.defaultCost}
                             </FormFeedback>
                             )}
-                           
+
                           </div>
                         </div>
 
@@ -360,7 +361,7 @@ let [pCategory, setPCategory] = useState([
                             <Label for="amountChangeable"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="amountChangeable"
                               id="amountChangeable"
@@ -386,7 +387,7 @@ let [pCategory, setPCategory] = useState([
                             <Label for="isFuel">is Fuel</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="isFuel"
                               id="isFuel"
@@ -402,18 +403,18 @@ let [pCategory, setPCategory] = useState([
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              If selected, the resource will be prompted to enter isFuel quantity as well as cost
+                              If selected, the staff will be prompted to enter isFuel quantity as well as cost
                             </label>
                           </div>
                         </div>
 
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="active"
                               id="active"
@@ -433,8 +434,8 @@ let [pCategory, setPCategory] = useState([
                             </label>
                           </div>
                         </div>
-                        
-                        
+
+
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>

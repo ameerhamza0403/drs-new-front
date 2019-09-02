@@ -40,7 +40,7 @@ const classes = {
     // marginTop: '10px',
     // marginLeft: '5px',
   },
-  
+
 
 };
 
@@ -117,7 +117,7 @@ let EditSalesOpportunityFlag = props => {
     setSubmitting(false);
   }
 
-  
+
   const validationSchema = function(values) {
     return Yup.object().shape({
     name: Yup.string()
@@ -210,7 +210,7 @@ let EditSalesOpportunityFlag = props => {
       <div className="ColorCodesl" style={ColorStyleFn("000000")} />
     );
   }
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return (
@@ -229,6 +229,7 @@ let EditSalesOpportunityFlag = props => {
     const { data: values } = await GetSalesOpportunityFlagDataById(props.IDforAPI);
     console.log(values);
     setValues(values)
+    setModal(true);
   }
 
 
@@ -291,17 +292,17 @@ let EditSalesOpportunityFlag = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
-                           
+
                           </div>
                         </div>
-                        
-                        
+
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="active"
                               id="active"
@@ -311,6 +312,7 @@ let EditSalesOpportunityFlag = props => {
                               onBlur={handleBlur}
                               value={values.active}
                               type="checkbox"
+                              defaultChecked={values.isActive}
                             />
                             &nbsp;&nbsp;&nbsp;
                             <label
@@ -320,7 +322,7 @@ let EditSalesOpportunityFlag = props => {
                               Active
                             </label>
                           </div>
-                        </div>  
+                        </div>
                       </FormGroup>
                       <FormGroup>
                         <div className="row">

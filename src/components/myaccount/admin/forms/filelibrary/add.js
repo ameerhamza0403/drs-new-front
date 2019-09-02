@@ -351,7 +351,7 @@ let FileLibraryAdd = props => {
                         </div>
                         <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="resourceGroupId">Resource group</Label>
+                            <Label for="resourceGroupId">Staff group</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <div className="row">

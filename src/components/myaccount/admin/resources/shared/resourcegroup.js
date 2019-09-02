@@ -12,9 +12,13 @@ function ApiwithidResourceGroup(Id) {
     return `${apiurlResourceGroup}/${Id}`;
   }
 
+  function ApiPagingResourceGroup(PG,PGSIZE) {
+    return `${apiurlResourceGroup}/${PG}/${PGSIZE}`;
+  }
+
 //-------- GetAPi
-export function GetListingForResourceGroup() {
-    return axios.get(apiurlResourceGroup, 
+export function GetListingForResourceGroup(pg, pgsize) {
+    return axios.get(ApiPagingResourceGroup(pg,pgsize),
              {headers: {
                  //"Authorization": authIt,
                  //"accept": "application/json",
@@ -28,7 +32,7 @@ export function GetListingForResourceGroup() {
 //---------Edit APi
 export function GetResourceGroupDataById(id) {
     // console.log(id)
-    return axios.get(ApiwithidResourceGroup(id), 
+    return axios.get(ApiwithidResourceGroup(id),
              {headers: {
                  'Content-Type': 'application/json',
                 }}

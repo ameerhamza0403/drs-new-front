@@ -324,7 +324,7 @@ let JobGroupTemplateAdd = props => {
                               for="defaultCheck2"
                             >
                               All jobs within the group are scheduled to the
-                              same resource
+                              same staff
                             </label>
                           </div>
                         </div>

@@ -106,7 +106,7 @@ let AddCurrency = props => {
   const initialValues = {
     name: "",
     code: "",
-    isActive: false
+    isActive: true
   };
 
   function findFirstError(formName, hasError) {
@@ -174,7 +174,7 @@ let AddCurrency = props => {
                   <Col lg="12">
                     <Form onSubmit={handleSubmit} noValidate name="simpleForm">
                       <FormGroup>
-                        <div className="row">
+                        <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="name">Currency Name</Label>
                           </div>
@@ -194,10 +194,9 @@ let AddCurrency = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
-                            <br />
                           </div>
                         </div>
-                        <div className="row">
+                        <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="name">Currency Code</Label>
                           </div>
@@ -222,11 +221,12 @@ let AddCurrency = props => {
                             <input
                               name="isActive"
                               id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              // valid={!errors.isActive}
+                              // invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
-                              onBlur={handleBlur}
+                              // onBlur={handleBlur}
                               value={values.isActive}
+                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
