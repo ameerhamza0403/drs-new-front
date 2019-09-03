@@ -7,6 +7,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../../../scss/override/listing.scss";
 import {GetListingForVehicleChecktype, DeleteVehicleChecktypeDataById} from '../shared/vehiclechecktype';
+import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
+import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -50,44 +53,64 @@ let TotalPages = 2;
 let VehicleCheckTypeListing =()=>{
   let [Atlist, setAtlist] = useState([]);
 
-  const columns = [
-    {
-      name: "vehicleCheckTypeId",
-      label: "ID",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    },
-    {
-      name: "name",
-      label: "Name",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "isActive",
-      label: "Status",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    }
-  ];
 
+  let [paginate, setPaginate] = useState();
+
+  //-- React Data Table
   const options = {
-    filterType: "multiselect",
-    onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-    rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-    selectableRows: "none",
-    viewColumns: true
-
-    // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+    sortIndicator: true,
+    // page: Page,
+    hideSizePerPage: true,
+    // paginationSize: PageSize,
+    hidePageListOnlyOnePage: true,
+    // sizePerPage: PageSize,
+    // clearSearch: true,
+    alwaysShowAllBtns: false,
+    onRowClick: HandlerowSelect,
+    withFirstAndLast: false
+    // onPageChange: onPageChange,
+    // onSizePerPageList: sizePerPageListChange,
   };
+
+
+  // const columns = [
+  //   {
+  //     name: "vehicleCheckTypeId",
+  //     label: "ID",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   },
+  //   {
+  //     name: "name",
+  //     label: "Name",
+  //     options: {
+  //       filter: true,
+  //       sort: true
+  //     }
+  //   },
+  //   {
+  //     name: "isActive",
+  //     label: "Status",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   }
+  // ];
+
+  // const options = {
+  //   filterType: "multiselect",
+  //   onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+  //   rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+  //   selectableRows: "none",
+  //   viewColumns: true
+
+  //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+  // };
 
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
@@ -95,12 +118,39 @@ let VehicleCheckTypeListing =()=>{
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
-      <MUIDataTable
-        title={"Actions & Filters"}
-        data={Atlist}
-        columns={columns}
-        options={options}
-      />
+      // <MUIDataTable
+      //   title={"Actions & Filters"}
+      //   data={Atlist}
+      //   columns={columns}
+      //   options={options}
+      // />
+      <BootstrapTable
+      data={Atlist}
+      version="4"
+      striped
+      hover
+      // pagination
+      // search
+      options={options}
+    >
+      <TableHeaderColumn
+        isKey={true}
+        hidden={true}
+        dataField="vehicleCheckTypeId"
+        dataSort
+      >
+        vehicleCheckTypeId
+      </TableHeaderColumn>
+      <TableHeaderColumn
+        // isKey={true}
+        // hidden={true}
+        dataField="name"
+        dataSort
+      >
+        Name
+      </TableHeaderColumn>
+
+    </BootstrapTable>
     );
   } else {
     Tabledisplay = (
@@ -181,12 +231,13 @@ function success() {
   }
 
   let [menushow, setMenushow] = useState(false);
-  let HandlerowSelect = (data, meta) => {
+  function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = data[0];
+    console.log(row);
+    idofEdit = row.vehicleCheckTypeId;
     return setMenushow((menushow = true));
-  };
-  let Handlerowclose = (data, meta) => {
+  }
+  let Handlerowclose = row => {
     return setMenushow((menushow = false));
   };
   if (menushow) {

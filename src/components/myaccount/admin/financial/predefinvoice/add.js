@@ -48,7 +48,7 @@ const classes = {
 let PredefInvAdd = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    values.currencyCode = parseInt(values.currencyCode);
+    // values.currencyCode = parseInt(values.currencyCode);
     values.departmentCodeId = parseInt(values.departmentCodeId);
     values.nominalCodeId = parseInt(values.nominalCodeId);
     values.predefinedItemId = parseInt(values.predefinedItemId);

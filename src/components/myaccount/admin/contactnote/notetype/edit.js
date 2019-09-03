@@ -121,7 +121,7 @@ let EditNoteType = (props) => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -136,6 +136,7 @@ let EditNoteType = (props) => {
       props.IDforAPI
     );
     setInitialValues(initialValues);
+    setModal(true);
   }
 
   return (
@@ -199,6 +200,7 @@ let EditNoteType = (props) => {
                               onClick={handleChange}
                               onBlur={handleBlur}
                               value={values.isActive}
+                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

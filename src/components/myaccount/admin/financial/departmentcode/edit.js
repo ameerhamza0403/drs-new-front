@@ -39,7 +39,7 @@ const classes = {
     // marginTop: '10px',
     // marginLeft: '5px',
   },
-  
+
 
 };
 
@@ -70,7 +70,7 @@ let EditDepartmentCode = props => {
     setSubmitting(false);
   }
 
-  
+
   const validationSchema = function(values) {
     return Yup.object().shape({
     code: Yup.string()
@@ -80,8 +80,8 @@ let EditDepartmentCode = props => {
     description: Yup.string()
     .min(4, `Description has to be at least 4 characters`)
     .required("Description is requierd")
-        
-        
+
+
 
     });
   };
@@ -117,7 +117,7 @@ let EditDepartmentCode = props => {
     // headerNotes:"",
     // sharing:"",
     // order:0,
-    active: false
+    isActive: false
   });
 
   function findFirstError(formName, hasError) {
@@ -142,7 +142,7 @@ let EditDepartmentCode = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return (
@@ -159,9 +159,8 @@ let EditDepartmentCode = props => {
 
   async function getlistapi() {
     const { data: initialValues } = await GetDepartmentCodeDataById(props.IDforAPI);
-    
     setInitialValues(initialValues)
-    //console.log(initialValues);
+    console.log(initialValues);
     setModal(true);
   }
 
@@ -225,7 +224,7 @@ let EditDepartmentCode = props => {
                               value={values.code}
                             />
                             <FormFeedback>{errors.code}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -249,25 +248,25 @@ let EditDepartmentCode = props => {
                               value={values.description}
                             />
                             <FormFeedback>{errors.description}</FormFeedback>
-                           
+
                           </div>
                         </div>
-                        
-                        
+
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="isActive"></Label>
+                            <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
-                              name="isActive"
-                              id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.active && !!errors.isActive}
+                              name="active"
+                              id="active"
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              //value={values.active}
+                              value={values.active}
                               defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
@@ -280,8 +279,8 @@ let EditDepartmentCode = props => {
                             </label>
                           </div>
                         </div>
-                        
-                        
+
+
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>

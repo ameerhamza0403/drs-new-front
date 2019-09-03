@@ -45,7 +45,7 @@ const classes = {
 };
 
 let AddSalesOpportunityStage = props => {
-  const [initialValues, setinitialValues] = React.useState({
+  const [values, setValues] = React.useState({
     name: "",
     colour: "",
     isActive: false
@@ -131,7 +131,7 @@ let AddSalesOpportunityStage = props => {
     //console.log(event.target.getAttribute('value'))
     // setSlctdcode({ Slctdcode: event.target.getAttribute('value')})
     valofCod = event.target.getAttribute("value");
-    setinitialValues({ ...initialValues, [namer]: valofCod });
+    setValues({ ...values, [namer]: valofCod });
     setCodeswitch({ codeswitch: true });
     // console.log(Slctdcode + 'Hello')
   };
@@ -150,8 +150,8 @@ let AddSalesOpportunityStage = props => {
   const validationSchema = function(values) {
     return Yup.object().shape({
     name: Yup.string()
-    .min(4, `Name has to be at least 4 characters`)
-    .required("Name is requierd"),    
+    .min(4, `Code has to be at least 4 characters`)
+    .required("Nominal Code is requierd"),    
 
     });
   };
@@ -229,7 +229,7 @@ let AddSalesOpportunityStage = props => {
         <ModalBody style={{'max-height': 'calc(100vh - 150px)', 'overflow-y': 'auto'}}>
           <div className="container">
             <Formik
-              initialValues={initialValues}
+              values={values}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
               render={({
@@ -277,18 +277,18 @@ let AddSalesOpportunityStage = props => {
                         
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="isActive"></Label>
+                            <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             
                             <input
-                              name="isActive"
-                              id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              name="active"
+                              id="active"
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.isActive}
+                              value={values.active}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

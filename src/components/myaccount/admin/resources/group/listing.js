@@ -10,11 +10,18 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../../../scss/override/listing.scss";
+import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
+import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 
 
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
+let Page = 1;
+let PageSize = 10;
+let paging = "";
+let TotalPages = 2;
 
 const classes = {
   linearprogress: {
@@ -47,46 +54,62 @@ const classes = {
 let ResourceGroupListing = () => {
   let [Atlist, setAtlist] = useState([]);
 
-  const columns = [
-    {
-      name: "resourceGroupId",
-      label: "ID",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    },
-    {
-      name: "name",
-      label: "Name",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "isActive",
-      label: "Status",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    }
-  ];
+  // const columns = [
+  //   {
+  //     name: "resourceGroupId",
+  //     label: "ID",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   },
+  //   {
+  //     name: "name",
+  //     label: "Name",
+  //     options: {
+  //       filter: true,
+  //       sort: true
+  //     }
+  //   },
+  //   {
+  //     name: "isActive",
+  //     label: "Status",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   }
+  // ];
 
-  const options = {
-    filterType: "multiselect",
-    onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-    customToolbar: () => console.log("rowData"),
-    rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-    selectableRows: "none",
-    viewColumns: true,
-    responsive: 'scroll',
+  // const options = {
+  //   filterType: "multiselect",
+  //   onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+  //   customToolbar: () => console.log("rowData"),
+  //   rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+  //   selectableRows: "none",
+  //   viewColumns: true,
+  //   responsive: 'scroll',
 
-    // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
-  };
+  //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+  // };
+
+//-- React Data Table
+const options = {
+  sortIndicator: true,
+  // page: Page,
+  hideSizePerPage: true,
+  // paginationSize: 5,
+  // hidePageListOnlyOnePage: false,
+  // clearSearch: true,
+  alwaysShowAllBtns: false,
+  onRowClick: HandlerowSelect,
+  withFirstAndLast: false,
+
+  // onPageChange: onPageChange,
+  // onSizePerPageList: sizePerPageListChange
+};
 
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
@@ -94,12 +117,29 @@ let ResourceGroupListing = () => {
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
-      <MUIDataTable
-        title={"Actions & Filters"}
-        data={Atlist}
-        columns={columns}
-        options={options}
-      />
+      // <MUIDataTable
+      //   title={"Actions & Filters"}
+      //   data={Atlist}
+      //   columns={columns}
+      //   options={options}
+      // />
+<BootstrapTable
+                    data={Atlist}
+                    version="4"
+                    striped
+                    hover
+
+                    // search
+                    options={options}
+                    >
+                    <TableHeaderColumn dataField="name" dataSort>
+                    Name
+                    </TableHeaderColumn>
+                    <TableHeaderColumn isKey dataField="resourceGroupId" hidden dataSort>
+
+                    </TableHeaderColumn>
+
+                </BootstrapTable>
     );
   } else {
     Tabledisplay = (
@@ -115,17 +155,36 @@ let ResourceGroupListing = () => {
     getlistapi();
   }, []);
 
+    let [paginate, setPaginate] = useState();
+
   async function getlistapi() {
-    const { data: Atlist } = await GetListingForResourceGroup();
-    setAtlist(Atlist);
+
+    await GetListingForResourceGroup(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
     // Atlist.map((e,i)=>
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
     //                 )
+    TotalPages = paginate.totalPages;
     settabledistatus((Tabledistatus = true));
   }
 
  // Toast
+
+ function handlePageSize(event) {
+  PageSize = event.target.value;
+  refreshfn();
+}
+
+let PageSizeComp = (
+  <select onChange={handlePageSize} value={PageSize}>
+    <option selected />
+    <option value={10}>10</option>
+    <option value={20}>20</option>
+  </select>
+);
 
  function errort() {
   // add type: 'error' to options
@@ -174,10 +233,10 @@ function success() {
     EditshowModel = "";
   }
 
-  let [menushow, setMenushow] = useState(false);
-  let HandlerowSelect = (data, meta) => {
+let [menushow, setMenushow] = useState(false);
+  function HandlerowSelect  (row) {
     menuDiv = "";
-    idofEdit = data[0];
+    idofEdit = row.resourceGroupId;
     return setMenushow((menushow = true));
   };
   let Handlerowclose = (data, meta) => {
@@ -219,7 +278,7 @@ function success() {
           {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">RESOURCE GROUP</h3>
+          <h3 className="heading">STAFF GROUP</h3>
         </div>
       </div>
       <br />

@@ -156,7 +156,10 @@ const options = {
       console.log(res.data);
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
-                  
+    // Atlist.map((e,i)=>
+    //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
+
+    //                 )
     TotalPages = paginate.totalPages;
     //settabledistatus((Tabledistatus = false));
     settabledistatus((Tabledistatus = true));

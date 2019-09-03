@@ -81,6 +81,7 @@ let VehicleFuelCostAdd = props => {
   async function getcurrlist() {
     const { data: currency } = await GetListingForcurrency();
     setCurrency(currency);
+    console.log(currency)
   }
 
   //Tost
@@ -211,7 +212,7 @@ let VehicleFuelCostAdd = props => {
                   <Col lg="12">
                     <Form onSubmit={handleSubmit} noValidate name="simpleForm">
                       <FormGroup>
-                        <div className="row">
+                        <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="name">Fuel Cost</Label>
                           </div>

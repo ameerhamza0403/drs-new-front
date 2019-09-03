@@ -1,32 +1,19 @@
 import React, { useState, useEffect } from "react";
 // import MUIDataTable from "mui-datatables";
+import FileLibraryEdit from "./edit";
+import FileLibraryAdd from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import "../../../../../scss/override/listing.scss";
-import MaterialTable from "material-table";
-// import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
+import "../../../../../scss/override/listing.scss";
+import {
+  GetListingForFileLibrary,
+  DeleteFileLibraryDataById
+} from "../shared/filelibrary";
+import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-import { JobGroupType } from "../../shared/jobgrouptemplate";
-import { GetListingpgForResource } from "../../../resources/shared/addedit";
-import { forwardRef } from 'react';
-import AddBox from '@material-ui/icons/AddBox';
-import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import Check from '@material-ui/icons/Check';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Clear from '@material-ui/icons/Clear';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import Edit from '@material-ui/icons/Edit';
-import FilterList from '@material-ui/icons/FilterList';
-import FirstPage from '@material-ui/icons/FirstPage';
-import LastPage from '@material-ui/icons/LastPage';
-import Remove from '@material-ui/icons/Remove';
-import SaveAlt from '@material-ui/icons/SaveAlt';
-import Search from '@material-ui/icons/Search';
-import ViewColumn from '@material-ui/icons/ViewColumn';
-
-
+import MyCustomPagination from "./pagination";
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -34,9 +21,7 @@ let idofEdit = 0;
 let Page = 1;
 let PageSize = 10;
 let paging = "";
-let TotalPages = 2;
-let jobtype = [];
-let resourcetype = [];
+let TotalPages;
 
 const classes = {
   linearprogress: {
@@ -66,9 +51,16 @@ const classes = {
   }
 };
 
-let GroupTemplate = (props) => {
+let FileLibraryListing = () => {
   let [Atlist, setAtlist] = useState([
-    { name: "", sameContact: true, sameResource: true, isActive: true }
+    {
+      fileLibraryId: 0,
+      fileGroupId: 0,
+      fileGroupName: "",
+      createdOn: "",
+      name: "",
+      isActive: true
+    }
   ]);
   let [paginate, setPaginate] = useState();
 
@@ -87,26 +79,6 @@ let GroupTemplate = (props) => {
     // onPageChange: onPageChange,
     // onSizePerPageList: sizePerPageListChange,
   };
-
-  const tableIcons = {
-    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-    Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-    Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-    DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-    Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-    Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-    LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-    NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-    PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-    ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-    SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
-    ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-    };
 
   // function sizePerPageListChange(sizePerPage) {
   //   PageSize=sizePerPage;
@@ -188,10 +160,6 @@ let GroupTemplate = (props) => {
     <LinearProgress style={classes.linearprogress} color="secondary" />
   );
   let [Tabledistatus, settabledistatus] = useState(false);
-  function handlePageSize(event) {
-    PageSize = event.target.value;
-    refreshfn();
-  }
 
   let PageSizeComp = (
     <select onChange={handlePageSize} value={PageSize}>
@@ -201,64 +169,13 @@ let GroupTemplate = (props) => {
     </select>
   );
 
-  let [job, setJob] = useState([
-    {
-      jobTypeId: 0,
-      name: "test"
+  function activefn(cell, row) {
+    let iconvalue = <i></i>;
+    if (cell === true) {
+      iconvalue = <i className="fa fa-check-square fa-2x"></i>;
     }
-  ]);
-  let [resource, setResource] = useState([
-    {
-      resourceId: 0,
-      name: "string"
-    }
-  ]);
-
-  useEffect(() => {
-    getinitiallist();
-  }, []);
-
-  async function getinitiallist() {
-    const { data: Job } = await JobGroupType();
-    setJob(Job);
-    const { data: resource } = await GetListingpgForResource(0,0);
-    setResource(resource);
-
-    Job.map(e => {
-      jobtype[e.jobTypeId] = e.name;
-    });
-    resource.map(e => {
-      resourcetype[e.resourceId] = e.name;
-    });
-    settabledistatus(true);
+    return iconvalue;
   }
-
-  const [state, setState] = React.useState({
-    columns: [
-      {
-        title: "Job Type",
-        field: "name",
-        lookup: jobtype
-      },
-      { title: "Contact", field: "namecon" },
-      {
-        title: "Resources",
-        field: "namres",
-        lookup: resourcetype
-      }
-    ],
-    data: [
-      // { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-      // {
-      //   name: 'Zerya Betül',
-      //   surname: 'Baran',
-      //   birthYear: 2017,
-      //   birthCity: 34,
-      // },
-    ]
-  });
-
-
 
   if (Tabledistatus) {
     Tabledisplay = (
@@ -269,48 +186,41 @@ let GroupTemplate = (props) => {
       //   options={options}
       // />
       <div>
-        <MaterialTable
-          title="Editable Example"
-          columns={state.columns}
-          icons={tableIcons}
-          data={state.data}
-          editable={{
-            onRowAdd: newData =>
-              new Promise(resolve => {
-                setTimeout(() => {
-                  resolve();
-                  const data = [...state.data];
-                  data.push(newData);
-                  props.templatedata(data)
-                  setState({ ...state, data });
-                }, 600);
-              },
-              )
-
-              // props.templatedata(state.data)
-              ,
-            onRowUpdate: (newData, oldData) =>
-              new Promise(resolve => {
-                setTimeout(() => {
-                  resolve();
-                  const data = [...state.data];
-                  data[data.indexOf(oldData)] = newData;
-                  props.templatedata(data)
-                  setState({ ...state, data });
-                }, 600);
-              }),
-            onRowDelete: oldData =>
-              new Promise(resolve => {
-                setTimeout(() => {
-                  resolve();
-                  const data = [...state.data];
-                  data.splice(data.indexOf(oldData), 1);
-                  props.templatedata(data)
-                  setState({ ...state, data });
-                }, 600);
-              })
-          }}
-        />
+        <BootstrapTable
+          data={Atlist}
+          version="4"
+          striped
+          hover
+          // pagination
+          // search
+          options={options}
+        >
+          <TableHeaderColumn
+            isKey={true}
+            hidden={true}
+            dataField="fileLibraryId"
+            dataSort
+          >
+            FileLibraryId
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="name" dataSort>
+            Name
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="fileGroupName"
+            // dataFormat={activefn}
+            dataSort
+          >
+            File Group
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="createdOn"
+            // dataFormat={activefn}
+            dataSort
+          >
+            Date
+          </TableHeaderColumn>
+        </BootstrapTable>
         <br />
         <div className="row">
           <div className="col">
@@ -329,25 +239,25 @@ let GroupTemplate = (props) => {
   }
   let refreshfn = () => {
     settabledistatus((Tabledistatus = false));
-    // getlistapi();
+    getlistapi();
   };
 
-  // useEffect(() => {
-  //   getlistapi();
-  // }, []);
+  useEffect(() => {
+    getlistapi();
+  }, []);
 
-  // async function getlistapi() {
-  //   await GetListingForjobgrouptemplate(Page, PageSize).then(res => {
-  //     setAtlist((Atlist = res.data));
-  //     setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-  //   });
-  //   // Atlist.map((e,i)=>
-  //   //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
+  async function getlistapi() {
+    await GetListingForFileLibrary(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
+    // Atlist.map((e,i)=>
+    //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
-  //   //                 )
-  //   TotalPages = paginate.totalPages;
-  //   settabledistatus((Tabledistatus = true));
-  // }
+    //                 )
+    TotalPages = paginate.totalPages;
+    settabledistatus((Tabledistatus = true));
+  }
   //--- Pagination ------------------
   function handlePageSize(event) {
     PageSize = event.target.value;
@@ -381,19 +291,19 @@ let GroupTemplate = (props) => {
           />
         </PaginationItem>
         {/* <PaginationItem>
-            <PaginationLink
-              tag="button"
-              onClick={() => {
-                if(Page-2>0){
-                Page = Page - 2;
-                handlepagin();
-                }
-              }}
-            >
+              <PaginationLink
+                tag="button"
+                onClick={() => {
+                  if(Page-2>0){
+                  Page = Page - 2;
+                  handlepagin();
+                  }
+                }}
+              >
 
-              {(Page-2>0)? Page-2 : '...'}
-            </PaginationLink>
-          </PaginationItem> */}
+                {(Page-2>0)? Page-2 : '...'}
+              </PaginationLink>
+            </PaginationItem> */}
         <PaginationItem>
           <PaginationLink
             tag="button"
@@ -682,13 +592,13 @@ let GroupTemplate = (props) => {
     });
   }
   async function Dellistapi() {
-    // await DeletejobgrouptemplateDataById(idofEdit)
-    //   .then(() => {
-    //     success();
-    //   })
-    //   .catch(error => {
-    //     errort();
-    //   });
+    await DeleteFileLibraryDataById(idofEdit)
+      .then(() => {
+        success();
+      })
+      .catch(error => {
+        errort();
+      });
     Handlerowclose();
     refreshfn();
   }
@@ -708,12 +618,11 @@ let GroupTemplate = (props) => {
 
   if (Editstate) {
     EditshowModel = (
-      <div></div>
-      // <JobGroupTemplateEdit
-      //   IDforAPI={idofEdit}
-      //   refresh={refreshfn}
-      //   cross={HandleCrossEditforlisting}
-      // />
+      <FileLibraryEdit
+        IDforAPI={idofEdit}
+        refresh={refreshfn}
+        cross={HandleCrossEditforlisting}
+      />
     );
   } else {
     EditshowModel = "";
@@ -722,8 +631,8 @@ let GroupTemplate = (props) => {
   let [menushow, setMenushow] = useState(false);
   function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = row.jobGroupTemplateId;
-    console.log(idofEdit);
+    console.log(row);
+    idofEdit = row.fileLibraryId;
     return setMenushow((menushow = true));
   }
   let Handlerowclose = row => {
@@ -732,7 +641,9 @@ let GroupTemplate = (props) => {
   if (menushow) {
     menuDiv = (
       <ul className="tool">
-        <li> {/* <JobGroupTemplateAdd refresh={refreshfn} />{" "} */}</li>
+        <li>
+          <FileLibraryAdd refresh={refreshfn} />
+        </li>
         <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <i className="fa fa-pencil-square fa-2x" />
@@ -751,7 +662,7 @@ let GroupTemplate = (props) => {
     menuDiv = (
       <ul className="tool">
         <li />
-        {/* <JobGroupTemplateAdd refresh={refreshfn} /> */}
+        <FileLibraryAdd refresh={refreshfn} />
       </ul>
     );
   }
@@ -763,7 +674,7 @@ let GroupTemplate = (props) => {
           {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">TEMPLATE JOBS</h3>
+          <h3 className="heading">FILE LIBRARY</h3>
         </div>
       </div>
       <br />
@@ -773,6 +684,4 @@ let GroupTemplate = (props) => {
   );
 };
 
-
-
-export default GroupTemplate;
+export default FileLibraryListing;

@@ -69,13 +69,13 @@ let AddExpenseCategory = props => {
     setSubmitting(false);
   }
 
-  
+
   const validationSchema = function(values) {
     return Yup.object().shape({
-    // name: Yup.string()
-    // .min(4, `Category has to be at least 4 characters`)
-    // .required("Category is requierd"),
-        
+    name: Yup.string()
+    .min(4, `Category has to be at least 4 characters`)
+    .required("Category is requierd"),
+
 
     });
   };
@@ -109,12 +109,12 @@ let AddExpenseCategory = props => {
     defaultCost:0,
     amountChangeable :false,
     isFuel:false,
-    isActive: false
+    active: false
   };
 
-  
 
-  
+
+
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -192,17 +192,17 @@ let AddExpenseCategory = props => {
                               name="group"
                               id="group"
                               placeholder="e.g. Accommodation, Travel etc..."
-                              // autoComplete="given-name"
-                              // valid={!errors.group}
-                              // invalid={touched.group && !!errors.group}
-                              // autoFocus={true}
-                              // required
+                              autoComplete="given-name"
+                              valid={!errors.group}
+                              invalid={touched.group && !!errors.group}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.group}
                             />
                             <FormFeedback>{errors.group}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -215,18 +215,18 @@ let AddExpenseCategory = props => {
                               type="text"
                               name="name"
                               id="name"
-                              placeholder="e.g. Taxi, train, fuel etc..."
-                              // autoComplete="given-name"
-                              // valid={!errors.name}
-                              // invalid={touched.name && !!errors.name}
-                              // autoFocus={true}
-                              // required
+                              placeholder=""
+                              autoComplete="given-name"
+                              valid={!errors.name}
+                              invalid={touched.name && !!errors.name}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -236,21 +236,21 @@ let AddExpenseCategory = props => {
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             <Input
-                              type="number"
+                              type="text"
                               name="defaultVAT"
                               id="defaultVAT"
-                              placeholder="%"
-                              // autoComplete="given-name"
-                              // valid={!errors.defaultVAT}
-                              // invalid={touched.defaultVAT && !!errors.defaultVAT}
-                              // autoFocus={true}
-                              // required
+                              placeholder="e.g. Taxi, train, Fuel etc..."
+                              autoComplete="given-name"
+                              valid={!errors.defaultVAT}
+                              invalid={touched.defaultVAT && !!errors.defaultVAT}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.defaultVAT}
                             />
                             <FormFeedback>{errors.defaultVAT}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -260,21 +260,21 @@ let AddExpenseCategory = props => {
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             <Input
-                              type="number"
+                              type="text"
                               name="defaultCost"
                               id="defaultCost"
-                              placeholder="amount can be changed"
-                              // autoComplete="given-name"
-                              // valid={!errors.defaultCost}
-                              // invalid={touched.defaultCost && !!errors.defaultCost}
-                              // autoFocus={true}
-                              // required
+                              placeholder=""
+                              autoComplete="given-name"
+                              valid={!errors.defaultCost}
+                              invalid={touched.defaultCost && !!errors.defaultCost}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.defaultCost}
                             />
                             <FormFeedback>{errors.defaultCost}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -283,15 +283,15 @@ let AddExpenseCategory = props => {
                             <Label for="amountChangeable"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="amountChangeable"
                               id="amountChangeable"
-                              valid={!errors.amountChangeable}
-                              invalid={touched.amountChangeable && !!errors.amountChangeable}
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.amountChangeable}
+                              value={values.active}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -309,15 +309,15 @@ let AddExpenseCategory = props => {
                             <Label for="isFuel">is Fuel</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="isFuel"
                               id="isFuel"
-                              valid={!errors.isFuel}
-                              invalid={touched.isFuel&& !!errors.isFuel}
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.isFuel}
+                              value={values.active}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -325,26 +325,26 @@ let AddExpenseCategory = props => {
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              If selected, the resource will be prompted to enter isFuel quantity as well as cost
+                              If selected, the staff will be prompted to enter isFuel quantity as well as cost
                             </label>
                           </div>
                         </div>
 
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
-                              name="isActive"
-                              id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              name="active"
+                              id="active"
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.isActive}
+                              value={values.active}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -356,8 +356,8 @@ let AddExpenseCategory = props => {
                             </label>
                           </div>
                         </div>
-                        
-                        
+
+
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>

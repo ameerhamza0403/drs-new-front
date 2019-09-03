@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from "react";
 // import MUIDataTable from "mui-datatables";
-import EditVehicleManage from "./edit";
-import VehicleAddManage from "./add";
+import FileGroupEdit from "./edit";
+import FileGroupAdd from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../../../scss/override/listing.scss";
 import {
-  GetListingForVehiclemanage,
-  DeleteVehiclemanageDataById
-} from "../shared/manage";
+  GetListingForFileGroup,
+  DeleteFileGroupDataById
+} from "../shared/filegroup";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
-import Icon2 from '@material-ui/icons/Clear';
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -22,7 +20,7 @@ let idofEdit = 0;
 let Page = 1;
 let PageSize = 10;
 let paging = "";
-let TotalPages = 3;
+let TotalPages = 2;
 
 const classes = {
   linearprogress: {
@@ -51,9 +49,15 @@ const classes = {
     marginLeft: "70%"
   }
 };
-let VehicleManage =()=>{
 
-  let [Atlist, setAtlist] = useState([]);
+let FileGroupListing = () => {
+  let [Atlist, setAtlist] = useState([
+    {
+      fileGroupId: 0,
+      name: '',
+      isActive: true,
+    }
+  ]);
   let [paginate, setPaginate] = useState();
 
   //-- React Data Table
@@ -67,7 +71,7 @@ let VehicleManage =()=>{
     // clearSearch: true,
     alwaysShowAllBtns: false,
     onRowClick: HandlerowSelect,
-    withFirstAndLast: false,
+    withFirstAndLast: false
     // onPageChange: onPageChange,
     // onSizePerPageList: sizePerPageListChange,
   };
@@ -82,7 +86,6 @@ let VehicleManage =()=>{
   //   PageSize=sizePerPage;
   //   getlistapi()
   // };
-
 
   //---- Material Table
 
@@ -152,6 +155,12 @@ let VehicleManage =()=>{
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
   );
+  let [Tabledistatus, settabledistatus] = useState(false);
+  function handlePageSize(event) {
+    PageSize = event.target.value;
+    refreshfn();
+  }
+
   let PageSizeComp = (
     <select onChange={handlePageSize} value={PageSize}>
       <option selected />
@@ -159,28 +168,14 @@ let VehicleManage =()=>{
       <option value={20}>20</option>
     </select>
   );
-  let [Tabledistatus, settabledistatus] = useState(false);
-  let icon=(cell,row)=>{
-    let iconvalue =  <i className='fa fa-plus-circle fa-2x' ></i>
-    if(cell===true){
-        iconvalue =  <i className='fa fa-check-circle fa-2x' ></i>
-    }
-    else if(cell===false){
-        iconvalue =  <i className='fa fa-remove fa-2x' ></i>
+
+  function activefn(cell, row) {
+    let iconvalue = <i></i>;
+    if (cell === true) {
+      iconvalue = <i className="fa fa-check-square fa-2x"></i>;
     }
     return iconvalue;
-}
-
-let iconint=(cell,row)=>{
-  let iconvalue =  <i className='fa fa-remove fa-2x' ></i>
-  if(cell!==''){
-      iconvalue =  <i className='fa fa-remove fa-2x' ></i>
   }
-  else{
-      iconvalue =  <i className='fa fa-check-circle fa-2x' ></i>
-  }
-  return iconvalue;
-}
 
   if (Tabledistatus) {
     Tabledisplay = (
@@ -196,36 +191,23 @@ let iconint=(cell,row)=>{
           version="4"
           striped
           hover
-          pagination
-          search
+          // pagination
+          // search
           options={options}
         >
-          <TableHeaderColumn dataField="registration" dataSort>
-            Registration
+          <TableHeaderColumn
+            isKey={true}
+            hidden={true}
+            dataField="fileGroupId"
+            dataSort
+          >
+            FileGroupId
           </TableHeaderColumn>
-          <TableHeaderColumn isKey dataField="vehicleGroupName" dataSort>
-            Group
+          <TableHeaderColumn dataField="name" dataSort>
+          Name
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="refernce" dataSort>
-            Reference
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="vehicleTypeName" dataSort>
-            Vehicle Type
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="costPerMile" dataSort>
-            Cost Per Mile
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="resourceName" dataSort>
-            Fixed Staff
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="trackingDeviceId"  dataFormat={iconint} dataSort>
-            Tracking Device
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="usedForJobs" dataFormat={icon} dataSort>
-            Used For Jobs
-          </TableHeaderColumn>
-        </BootstrapTable>
 
+        </BootstrapTable>
         <br />
         <div className="row">
           <div className="col">
@@ -242,12 +224,8 @@ let iconint=(cell,row)=>{
       <LinearProgress style={classes.linearprogress} color="secondary" />
     );
   }
-
-
-
-
   let refreshfn = () => {
-    // settabledistatus((Tabledistatus = false));
+    settabledistatus((Tabledistatus = false));
     getlistapi();
   };
 
@@ -256,46 +234,18 @@ let iconint=(cell,row)=>{
   }, []);
 
   async function getlistapi() {
-    await GetListingForVehiclemanage(Page, PageSize).then(res => {
+    await GetListingForFileGroup(Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
-    // Atlist.map(
-    //   (e, i) =>
-    //     (
-    //     Atlist[i].trackingDeviceId =iconint(Atlist[i].trackingDeviceId),
-    //     Atlist[i].usedForJobs =icon(Atlist[i].usedForJobs)
-    //     )
-    // );
-    TotalPages = paginate.totalPages;
     // Atlist.map((e,i)=>
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
     //                 )
-    settabledistatus((Tabledistatus = false));
+    TotalPages = paginate.totalPages;
     settabledistatus((Tabledistatus = true));
   }
-
-  // Toast
-
-  function errort() {
-    // add type: 'error' to options
-    return toast.error("Failed with Error...", {
-      position: toast.POSITION.BOTTOM_RIGHT
-    });
-  }
-  function success() {
-    return toast.success("Deleted Successfully... ", {
-      position: toast.POSITION.BOTTOM_RIGHT
-    });
-  }
-
   //--- Pagination ------------------
-
-  function handlePageSize(event) {
-    PageSize = event.target.value;
-    refreshfn();
-  }
 
   let [pgin, setPgin] = useState(true);
 
@@ -316,10 +266,8 @@ let iconint=(cell,row)=>{
             previous
             tag="button"
             onClick={() => {
-              if(Page!=1){
               Page = Page - 1;
               handlepagin();
-              }
             }}
           />
         </PaginationItem>
@@ -327,28 +275,22 @@ let iconint=(cell,row)=>{
               <PaginationLink
                 tag="button"
                 onClick={() => {
-                  if(Page-2!=0){
                   Page = Page - 2;
                   handlepagin();
-                  }
                 }}
               >
-                {/* {Page - 2} */}
-                {(Page-2!=0)? Page-2 : '...'}
+                {Page - 2}
               </PaginationLink>
-            </PaginationItem>
+            </PaginationItem> */}
          <PaginationItem>
               <PaginationLink
                 tag="button"
                 onClick={() => {
-                  if(Page-1!=0){
                   Page = Page - 1;
                   handlepagin();
-                  }
                 }}
               >
-                {/* {Page - 1} */}
-                {(Page-1!=0)? Page-1 : '...'}
+                {Page - 1}
               </PaginationLink>
             </PaginationItem>
         <PaginationItem>
@@ -374,10 +316,8 @@ let iconint=(cell,row)=>{
                 previous
                 tag="button"
                 onClick={() => {
-                  if(Page-1!=0){
                   Page = Page - 1;
                   handlepagin();
-                }
                 }}
               />
             </PaginationItem>
@@ -385,28 +325,22 @@ let iconint=(cell,row)=>{
               <PaginationLink
                 tag="button"
                 onClick={() => {
-                  if(Page-2!=0){
                   Page = Page - 2;
                   handlepagin();
-                  }
                 }}
               >
-                {/* {Page - 2} */}
-                {(Page-2!=0)? Page-2 : '...'}
+                {Page - 2}
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
               <PaginationLink
                 tag="button"
                 onClick={() => {
-                  if(Page-1!=0){
                   Page = Page - 1;
                   handlepagin();
-                  }
                 }}
               >
-                {/* {Page - 1} */}
-                {(Page-1!=0)? Page-1 : '...'}
+                {Page - 1}
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
@@ -425,14 +359,11 @@ let iconint=(cell,row)=>{
               <PaginationLink
                 tag="button"
                 onClick={() => {
-                  if(Page+1<0){
                   Page = Page + 1;
                   handlepagin();
-                  }
                 }}
               >
-                {/* {Page + 1} */}
-                {(Page+1<TotalPages)? Page+1 : '...'}
+                {Page + 1}
               </PaginationLink>
             </PaginationItem>
           </Pagination>
@@ -445,10 +376,8 @@ let iconint=(cell,row)=>{
                 previous
                 tag="button"
                 onClick={() => {
-                  if(Page-1!=0){
                   Page = Page - 1;
                   handlepagin();
-                  }
                 }}
               />
             </PaginationItem>
@@ -456,14 +385,11 @@ let iconint=(cell,row)=>{
               <PaginationLink
                 tag="button"
                 onClick={() => {
-                  if(Page-1!=0){
                   Page = Page - 1;
                   handlepagin();
-                  }
                 }}
               >
-                {/* {Page - 1} */}
-                {(Page-1!=0)? Page-1 : '...'}
+                {Page - 1}
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
@@ -481,39 +407,31 @@ let iconint=(cell,row)=>{
               <PaginationLink
                 tag="button"
                 onClick={() => {
-                  if(!(Page+1>TotalPages)){
                   Page = Page + 1;
                   handlepagin();
-                  }
                 }}
               >
-                {/* {Page + 1} */}
-                {(!(Page+1>TotalPages))? Page+1 : '...'}
+                {Page + 1}
               </PaginationLink>
             </PaginationItem>
-             {/* <PaginationItem>
+            <PaginationItem>
               <PaginationLink
                 tag="button"
                 onClick={() => {
-                  if(!(Page+2>TotalPages)){
                   Page = Page + 2;
                   handlepagin();
-                  }
                 }}
-              > */}
-                {/* {Page + 2}
-                {/* {(!(Page+2>TotalPages))? Page+1 : '...'}
+              >
+                {Page + 2}
               </PaginationLink>
-            </PaginationItem> */}
+            </PaginationItem>
             <PaginationItem>
               <PaginationLink
                 next
                 tag="button"
                 onClick={() => {
-                  if(!(Page+1>TotalPages)){
-                    Page = Page + 1;
-                    handlepagin();
-                  }
+                  Page = Page + 1;
+                  handlepagin();
                 }}
               />
             </PaginationItem>
@@ -538,39 +456,31 @@ let iconint=(cell,row)=>{
             <PaginationLink
               tag="button"
               onClick={() => {
-                if(!(Page+1>TotalPages)){
                 Page = Page + 1;
                 handlepagin();
-                }
               }}
             >
-              {/* {Page + 1} */}
-              {(!(Page+1>TotalPages))? Page+1 : '...'}
+              {Page + 1}
             </PaginationLink>
           </PaginationItem>
-          {/* <PaginationItem>
+          <PaginationItem>
             <PaginationLink
               tag="button"
               onClick={() => {
-                if(!(Page+2>TotalPages)){
                 Page = Page + 2;
                 handlepagin();
-                }
               }}
-            > */}
-              {/* {Page + 2} */}
-              {/* {(!(Page+2>TotalPages))? Page+2 : '...'}
+            >
+              {Page + 2}
             </PaginationLink>
-          </PaginationItem> */}
+          </PaginationItem>
           <PaginationItem>
             <PaginationLink
               next
               tag="button"
               onClick={() => {
-                if(!(Page+2>TotalPages)){
                 Page = Page + 1;
                 handlepagin();
-                }
               }}
             />
           </PaginationItem>
@@ -578,17 +488,27 @@ let iconint=(cell,row)=>{
       );
     }
   }
-
   else {
     paging = "";
   }
 
-
-
   //----- Finished Pagination---------
 
+  // Toast
+
+  function errort() {
+    // add type: 'error' to options
+    return toast.error("Failed with Error...", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+  function success() {
+    return toast.success("Deleted Successfully... ", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
   async function Dellistapi() {
-    await DeleteVehiclemanageDataById(idofEdit)
+    await DeleteFileGroupDataById(idofEdit)
       .then(() => {
         success();
       })
@@ -614,7 +534,7 @@ let iconint=(cell,row)=>{
 
   if (Editstate) {
     EditshowModel = (
-      <EditVehicleManage
+      <FileGroupEdit
         IDforAPI={idofEdit}
         refresh={refreshfn}
         cross={HandleCrossEditforlisting}
@@ -625,19 +545,20 @@ let iconint=(cell,row)=>{
   }
 
   let [menushow, setMenushow] = useState(false);
-  function HandlerowSelect  (row) {
+  function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = row.vehicleId;
+    console.log(row)
+    idofEdit = row.fileGroupId;
     return setMenushow((menushow = true));
-  };
-  let Handlerowclose = (row) => {
+  }
+  let Handlerowclose = row => {
     return setMenushow((menushow = false));
   };
   if (menushow) {
     menuDiv = (
       <ul className="tool">
         <li>
-          <VehicleAddManage refresh={refreshfn} />
+          <FileGroupAdd refresh={refreshfn} />
         </li>
         <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -657,7 +578,7 @@ let iconint=(cell,row)=>{
     menuDiv = (
       <ul className="tool">
         <li />
-        <VehicleAddManage refresh={refreshfn} />
+        <FileGroupAdd refresh={refreshfn} />
       </ul>
     );
   }
@@ -669,7 +590,7 @@ let iconint=(cell,row)=>{
           {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">MANAGE VEHICLES</h3>
+          <h3 className="heading">FILE GROUP</h3>
         </div>
       </div>
       <br />
@@ -677,7 +598,6 @@ let iconint=(cell,row)=>{
       {Tabledisplay}
     </div>
   );
+};
 
-}
-
-export default VehicleManage;
+export default FileGroupListing;

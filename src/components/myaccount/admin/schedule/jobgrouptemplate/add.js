@@ -51,10 +51,12 @@ const classes = {
   }
 };
 
+
+let data = [];
+
 let JobGroupTemplateAdd = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
-  let data = [];
   function handletemplatedata(value) {
     data = value;
     console.log(data)
@@ -74,13 +76,19 @@ let JobGroupTemplateAdd = props => {
       setSubmitting(true);
       setSubmitting(false);
     } else {
+      let newdata=[{}];
+      data.map((e,i)=>{
+        newdata[i].contact=e.namecon
+        newdata[i].jobTypeId=parseInt(e.name,10)
+        newdata[i].resourceId=parseInt(e.namres,10)
+      })
       let idtemp;
       await PostListingForjobgrouptemplate(values)
         .then(res => {
           success();
           idtemp = res.data.jobGroupTemplateId;
-          data.map(async e => {
-            delete e.count;
+          newdata.map(async e => {
+            // delete e.count;
             e.jobGroupTemplateId = idtemp;
             await PostListingFortemplategroup(idtemp, e)
               .then(() => success())
@@ -146,12 +154,18 @@ let JobGroupTemplateAdd = props => {
     }, {});
   };
 
-  const initialValues = {
+  let initialValues={
     name: "",
     sameContact: false,
     sameResource: false,
     isActive: true
   };
+
+  function HandleContact(event){
+    return(
+      initialValues.sameContact=event.target.value
+      )
+  }
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -274,7 +288,7 @@ let JobGroupTemplateAdd = props => {
                               invalid={
                                 touched.sameContact && !!errors.sameContact
                               }
-                              onClick={handleChange}
+                              onClick={HandleContact}
                               onBlur={handleBlur}
                               value={values.sameContact}
                               type="checkbox"
@@ -310,7 +324,7 @@ let JobGroupTemplateAdd = props => {
                               for="defaultCheck2"
                             >
                               All jobs within the group are scheduled to the
-                              same resource
+                              same staff
                             </label>
                           </div>
                         </div>
@@ -343,7 +357,7 @@ let JobGroupTemplateAdd = props => {
                         <div className="row mb-2">
                           <div className="container">
                             <h2 style={classes.h2}>Template jobs</h2>
-                            <GroupTemplate templatedata={handletemplatedata} />
+                            <GroupTemplate templatedata={handletemplatedata}/>
                           </div>
                         </div>
 

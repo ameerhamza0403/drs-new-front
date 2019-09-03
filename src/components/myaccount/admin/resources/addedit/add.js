@@ -291,7 +291,7 @@ let AddeditAdd = props => {
                   onClick={handleChange("viewOwnResource")}
                 />
                 <label className="form-check-label" for="defaultCheck22">
-                  Web user only allowed to view his own resource
+                  Web user only allowed to view his own Staff
                 </label>
               </div>
             </div>
@@ -375,7 +375,7 @@ let AddeditAdd = props => {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title" className={classesM.root}>
-          {"New Resources"}
+          {"New Staff"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -653,7 +653,7 @@ let AddeditAdd = props => {
                         onClick={handleChange("tracked")}
                       />
                       <label className="form-check-label" for="defaultCheck10">
-                        Resource is tracked
+                        Staff is tracked
                       </label>
                       <br />
                       &nbsp;&nbsp;&nbsp;&nbsp;
@@ -750,7 +750,7 @@ let AddeditAdd = props => {
                           onClick={handleChange("jobWatchSetting")}
                         />
                         <label className="form-check-label" for="inlineRadio4">
-                          Resource is subcontractor(0 licence(s) remaining)
+                          Staff is subcontractor(0 licence(s) remaining)
                         </label>
                       </div>
                     </div>

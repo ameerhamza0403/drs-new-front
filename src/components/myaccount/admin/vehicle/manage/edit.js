@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
-import {GetTrackingDeviceData} from "..//shared/manage";
+import {
+  GetTrackingDeviceData} from "..//shared/manage";
 import ManageVehAttributeEdit from './attributeedit';
 import {
   Button,
@@ -20,7 +21,7 @@ import {
 import Select from "react-select";
 // import "react-select/dist/react-select.min.css";
 import 'react-select/dist/react-select.css';
-import { Formik } from "formik";
+import { Formik, setIn } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,7 +30,7 @@ import { GetListingForcurrency } from "../../resources/shared/currency";
 import { GetListingPageForVehicletype } from "../shared/vehicletype";
 import { GetPagListingForVehicleGroup } from "../shared/vehiclegroup";
 import { GetListingForVehicleChecktype } from "../shared/vehiclechecktype";
-import {PutVehiclemanageDataById} from '../shared/manage';
+import {PutVehiclemanageDataById,GetVehiclemanageDataById} from '../shared/manage';
 let iconpack = "https://cdn.bigchangeapps.com/img/Map/cn/40/air-n.png";
 
 
@@ -60,9 +61,22 @@ let EditVehicleManage = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    let newvalue = values;
-    console.log(newvalue);
-    await PutVehiclemanageDataById(props.IDforAPI, newvalue)
+    console.log(values)
+    if(values.hasOwnProperty('cO2Unit')){
+      if(values.cO2Unit===true){
+        values.cO2Unit=1;
+      }
+      else{
+        values.cO2Unit=0;
+      }
+    }
+    Object.keys(initialValues).map(function(keyName, keyIndex) {
+      if(!values.hasOwnProperty(keyName)){
+        // values.keyName=editValue.keyName;
+        values[keyName]=initialValues[keyName]
+      }
+    })
+    await PutVehiclemanageDataById(props.IDforAPI, values)
       .then(() => success())
       .catch(error => errort());
       handleOpen();
@@ -107,6 +121,8 @@ let EditVehicleManage = props => {
     name: "",
     isActive: true
   }]);
+
+
   useEffect(() => {
     getvehchecktype();
     getcurrlist();
@@ -116,7 +132,12 @@ let EditVehicleManage = props => {
     getlistapi();
   }, []);
 
-
+async function getlistapi(){
+  const {data: initialValues}= await GetVehiclemanageDataById(props.IDforAPI);
+  setInitialvalues(initialValues);
+  console.log(initialValues)
+  setModal(true);
+}
   async function getvehchecktype() {
     const { data: vehchecktype } = await GetListingForVehicleChecktype();
     setVehiclechecktype(vehchecktype);
@@ -227,7 +248,7 @@ let EditVehicleManage = props => {
     iconpack
   ];
 
-  const [initialValues, setInitialvalues] = useState({
+  let [initialValues, setInitialvalues] = useState({
     vehicleId: 0,
     registration: "",
     vehicleTypeId: 0,
@@ -288,15 +309,16 @@ let EditVehicleManage = props => {
     handleOpenMT();
   };
 
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
   let [modalMT, setModalMT] = useState(false);
 
   let handleOpen = () => {
-    return setModal((modal=!modal));
+    return setModal((modal=false));
   };
 
   let handleOpenMT = () => {
-    return setModalMT((modalMT = !modalMT));
+    return setModal((modal = false)), setTimeout(() => props.cross(), 200);
+    // return setModalMT((modalMT = !modalMT));
   };
 
 
@@ -425,7 +447,7 @@ let EditVehicleManage = props => {
                                   // maxLength={8}
                                   // style={classes.input}
                                 >
-                                  <option selected />
+                                  {/* <option selected hidden >{editValue.vehicleTypeId}</option> */}
                                   {vehicledata.map(e => (
                                     <option value={e.vehicleTypeId}>
                                       {e.name}
@@ -465,8 +487,11 @@ let EditVehicleManage = props => {
                                   // maxLength={8}
                                   // style={classes.input}
                                 >
-                                  <option selected />
                                   {trackingdata.map(e => (
+                                    // (!(initialValues.trackingDeviceId===undefined))? (e.trackingDeviceId===initialValues.trackingDeviceId)?
+                                    //   <option selected hidden >{e.code}</option>
+                                    // : <option selected ></option> :
+
                                     <option value={e.code}>
                                       {e.trackingDeviceId}
                                     </option>
@@ -531,6 +556,7 @@ let EditVehicleManage = props => {
                                     id="radio1"
                                     name="usedForJobs"
                                     value={true}
+                                    defaultChecked={(initialValues.usedForJobs===true)?true:false}
                                   />
                                   <Label
                                     check
@@ -547,6 +573,7 @@ let EditVehicleManage = props => {
                                     id="radio2"
                                     name="usedForJobs"
                                     value={false}
+                                    defaultChecked={(initialValues.usedForJobs===false)?false:true}
                                   />
                                   <Label
                                     check
@@ -597,7 +624,7 @@ let EditVehicleManage = props => {
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
                               <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                                <Label for="usedForJobs">Fixed resource</Label>
+                                <Label for="usedForJobs">Fixed staff</Label>
                               </div>
                               <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
                                 <FormGroup check inline className="radio">
@@ -606,6 +633,7 @@ let EditVehicleManage = props => {
                                     type="radio"
                                     id="radio3"
                                     name="fixedResource"
+                                    defaultChecked={(initialValues.fixedResource)?true:false}
                                     value={true}
                                   />
                                   <Label
@@ -622,6 +650,7 @@ let EditVehicleManage = props => {
                                     type="radio"
                                     id="radio4"
                                     name="fixedResource"
+                                    defaultChecked={(initialValues.fixedResource)?false:true}
                                     value={false}
                                   />
                                   <Label
@@ -720,6 +749,7 @@ let EditVehicleManage = props => {
                                     type="radio"
                                     id="radio5"
                                     name="odometerUnit"
+                                    defaultChecked={(initialValues.odometerUnit==='kilometers')?true:false}
                                     value={"kilometers"}
                                   />
                                   <Label
@@ -736,6 +766,7 @@ let EditVehicleManage = props => {
                                     type="radio"
                                     id="radio6"
                                     name="odometerUnit"
+                                    defaultChecked={(initialValues.odometerUnit==='miles')?true:false}
                                     value={"miles"}
                                   />
                                   <Label
@@ -960,8 +991,9 @@ let EditVehicleManage = props => {
                                         className="form-check-input"
                                         type="radio"
                                         id="radio5"
+                                        defaultChecked={(initialValues.cO2Unit===0)?true:false}
                                         name="cO2Unit"
-                                        value={0}
+                                        value={true}
                                       />
                                       <Label
                                         check
@@ -977,7 +1009,8 @@ let EditVehicleManage = props => {
                                         type="radio"
                                         id="radio6"
                                         name="cO2Unit"
-                                        value={1}
+                                        defaultChecked={(initialValues.cO2Unit===1)?true:false}
+                                        value={false}
                                       />
                                       <Label
                                         check

@@ -180,9 +180,9 @@ const options = {
           <div className="row">
               <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
               <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
-              
-              
-              
+
+
+
 
               <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                 <div>
@@ -192,7 +192,7 @@ const options = {
                     striped
                     hover
 
-                    search
+                    // search
                     options={options}
                     >
                     <TableHeaderColumn dataField="name" dataSort>

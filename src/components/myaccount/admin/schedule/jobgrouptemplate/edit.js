@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TextField from "@material-ui/core/TextField";
 // import {GetListingForAddEdit} from '../../resources/shared/addedit';
-// import GroupTemplateedit from "./templatejobs/editlisting";
+import EditGroupTemplate from "./templatejobs/editlisting";
 import { GetListingForAddEdit } from "../../resources/shared/addedit";
 import { async } from "q";
 
@@ -295,7 +295,7 @@ let JobGroupTemplateEdit = props => {
                               for="defaultCheck2"
                             >
                               All jobs within the group are scheduled to the
-                              same resource
+                              same staff
                             </label>
                           </div>
                         </div>
@@ -329,7 +329,7 @@ let JobGroupTemplateEdit = props => {
                         <div className="row mb-2">
                           <div className="container">
                             <h2 style={classes.h2}>Template jobs</h2>
-                            {/* <GroupTemplateedit templatedata={handletemplatedata} id={props.IDforAPI}/> */}
+                            <EditGroupTemplate templatedata={handletemplatedata} id={props.IDforAPI}/>
                           </div>
                         </div>
 
