@@ -11,6 +11,23 @@ function ApiwithidAbsencetype(Id) {
     return `${apiurlAbsenceType}/${Id}`;
   }
 
+  function ApiPagingAbsencetype(PG,PGSIZE) {
+    return `${apiurlAbsenceType}/${PG}/${PGSIZE}`;
+  }
+
+//-------- GetAPi
+export function GetListingpgForAbsencetype(pg, pgsize) {
+    return axios.get(ApiPagingAbsencetype(pg,pgsize),
+             {headers: {
+                 //"Authorization": authIt,
+                 //"accept": "application/json",
+                 //"Access-Control-Allow-Origin": "*",
+                 'Content-Type': 'application/json',
+                }}
+            )
+
+}
+
 //-------- GetAPi
 export function GetListingForAbsence() {
     return axios.get(apiurlAbsenceType,

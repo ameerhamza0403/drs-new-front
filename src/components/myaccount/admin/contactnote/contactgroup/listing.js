@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import MUIDataTable from "mui-datatables";
 import EditButton from "./edit";
 import {
-  GetListingForContactGroup,
+  GetListingForContactGrouppg,
   DeleteContactGroupDataById
 } from "..//shared/contact";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -15,6 +15,12 @@ let idofEdit = 0;
 let menuDiv = "";
 let EditshowModel = "";
 let count = 0;
+let Page = 1;
+let PageSize = 10;
+let paging = "";
+let TotalPages = 2;
+
+
 const classes = {
   linearprogress: {
     // backgroundColor: '#EE7647',
@@ -50,6 +56,8 @@ let ContactsGroupListingTable = () => {
       name: ""
     }
   ]);
+  let [paginate, setPaginate] = useState();
+
 
   const columns = [
     {
@@ -146,8 +154,16 @@ let ContactsGroupListingTable = () => {
   }, [count]);
 
   async function getlistapi() {
-    let { data: Atlist } = await GetListingForContactGroup();
-    setAtlist(Atlist);
+
+    await GetListingForContactGrouppg(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
+    // Atlist.map((e,i)=>
+    //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
+
+    //                 )
+    TotalPages = paginate.totalPages;
     Atlist.map((e, i) => (Atlist[i].icon = <img src={e.icon} />));
     settabledistatus((Tabledistatus = true));
   }

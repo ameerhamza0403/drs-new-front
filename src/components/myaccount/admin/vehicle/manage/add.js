@@ -29,8 +29,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TextField from "@material-ui/core/TextField";
 import { GetListingForcurrency } from "../../resources/shared/currency";
-import { GetListingForVehicleType } from "../shared/vehicletype";
-import { GetListingForVehicleGroups } from "../shared/vehiclegroup";
+import { GetListingPageForVehicletype } from "../shared/vehicletype";
+import { GetPagListingForVehicleGroup } from "../shared/vehiclegroup";
 import { GetListingForVehicleChecktype } from "../shared/vehiclechecktype";
 let iconpack = "https://cdn.bigchangeapps.com/img/Map/cn/40/air-n.png";
 
@@ -184,7 +184,7 @@ let VehicleAddManage = props => {
   }
 
   async function getVehicletype() {
-    const { data: vehicledata } = await GetListingForVehicleType();
+    const { data: vehicledata } = await GetListingPageForVehicletype(0,0);
     setVehicledata(vehicledata);
   }
 
@@ -194,7 +194,7 @@ let VehicleAddManage = props => {
   }
 
   async function getvehiclegroup() {
-    const { data: vehiclegroupdata } = await GetListingForVehicleGroups();
+    const { data: vehiclegroupdata } = await GetPagListingForVehicleGroup(0,0);
     setVehicleGroupdata(vehiclegroupdata);
     // handleOpen();
   }

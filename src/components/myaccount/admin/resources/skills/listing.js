@@ -3,7 +3,7 @@ import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
 import EditResouceSkill from "./edit";
 import {
-  GetListingForResourceSkill,
+  GetListingpgForResourceSkill,
   DeleteResourceSkillDataById
 } from "..//shared/resourceskill";
 import AddResourceSkill from "./add";
@@ -17,6 +17,10 @@ import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
+let Page = 1;
+let PageSize = 10;
+let paging = "";
+let TotalPages = 2;
 
 const classes = {
   linearprogress: {
@@ -155,12 +159,16 @@ let ResourceSkillListing = () => {
   }, []);
 
   async function getlistapi() {
-    const { data: Atlist } = await GetListingForResourceSkill();
-    setAtlist(Atlist);
+
+    await GetListingpgForResourceSkill(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
     // Atlist.map((e,i)=>
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
     //                 )
+    TotalPages = paginate.totalPages;
     settabledistatus((Tabledistatus = true));
   }
 

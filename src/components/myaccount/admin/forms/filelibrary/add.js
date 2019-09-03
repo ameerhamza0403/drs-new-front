@@ -143,7 +143,7 @@ let FileLibraryAdd = props => {
 
   let [res,setRes]=useState(false);
   async function getReslist() {
-    const { data: resource } = await GetListingForResourceGroup();
+    const { data: resource } = await GetListingForResourceGroup(0,0);
     setResource(resource);
     setRes(true);
   }

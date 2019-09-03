@@ -56,12 +56,12 @@ let resgrouparr=[];
 let FileLibraryEdit = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    Object.keys(editValue).map(function(keyName, keyIndex) {
-      if(!values.hasOwnProperty(keyName)){
-        // values.keyName=editValue.keyName;
-        values[keyName]=editValue[keyName]
-      }
-    })
+    // Object.keys(editValue).map(function(keyName, keyIndex) {
+    //   if(!values.hasOwnProperty(keyName)){
+    //     // values.keyName=editValue.keyName;
+    //     values[keyName]=editValue[keyName]
+    //   }
+    // })
     let formdata = new FormData();
     formdata.append(values.name,selectedFile);
    console.log(values)
@@ -140,6 +140,7 @@ let FileLibraryEdit = props => {
     getGroupList();
     getReslist();
     reslistedit();
+    resgrouparr=[]
   }, []);
 
   let [filegroup, setFileGroup] = useState([]);
@@ -156,11 +157,12 @@ let FileLibraryEdit = props => {
   async function getlistapi() {
     const { data: editValue } = await GetFileLibraryDataById(props.IDforAPI);
     seteditValue(editValue);
+    setModal(true);
   }
 
   let [res,setRes]=useState(false);
   async function getReslist() {
-    const { data: resource } = await GetListingForResourceGroup();
+    const { data: resource } = await GetListingForResourceGroup(0,0);
     setResource(resource);
   }
 
@@ -168,6 +170,7 @@ let FileLibraryEdit = props => {
   async function reslistedit(){
     const {data: resgroup} = await GetbyidListingForResourceGroup(props.IDforAPI,0,0);
     setResgroup(resgroup);
+
     resgroup.map(e=>{
       if(resgrouparr===[]){
         resgrouparr[0]=e.resourceGroupId;
@@ -177,6 +180,7 @@ let FileLibraryEdit = props => {
       }
 
     })
+    console.log(resgrouparr)
     setRes(true);
   }
 
@@ -190,17 +194,15 @@ let FileLibraryEdit = props => {
   }
 
   function checkifchecked(data){
-    let check;
-    (resgrouparr.map(e=>{
+    return (resgrouparr.map(e=>{
       if(e===data){
-        check= true;
+        console.log(e)
+        return true;
       }
       else{
-        check= false;
+        return false;
       }
     }))
-    console.log(check)
-    return check;
   }
 
   if(res){
@@ -214,7 +216,7 @@ let FileLibraryEdit = props => {
           //   touched.resourceGroupId &&
           //   !!errors.resourceGroupId
           // }
-          // checked={checkifchecked(e.resourceGroupId)}
+          defaultChecked={(checkifchecked(e.resourceGroupId))? true: false}
           onClick={handleresource}
           // onBlur={handleBlur}
           value={e.resourceGroupId}
@@ -267,7 +269,7 @@ let FileLibraryEdit = props => {
     validateForm(errors);
   }
 
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -287,7 +289,7 @@ let FileLibraryEdit = props => {
         <ModalBody>
           <div className="container">
             <Formik
-              editValue={editValue}
+              initialValues={editValue}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
               render={({
@@ -361,7 +363,7 @@ let FileLibraryEdit = props => {
                               // value={values.reference}
                             />
                             <Label for="name">
-                              Choose A File to Attach
+                              {editValue.name} is Selected Choose another File to Replace
                             </Label>
                             <FormFeedback>{errors.reference}</FormFeedback>
                           </div>

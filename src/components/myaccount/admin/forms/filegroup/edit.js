@@ -45,12 +45,12 @@ const classes = {
 let FileGroupEdit = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    Object.keys(editValue).map(function(keyName, keyIndex) {
-      if(!values.hasOwnProperty(keyName)){
-        // values.keyName=editValue.keyName;
-        values[keyName]=editValue[keyName]
-      }
-    })
+    // Object.keys(editValue).map(function(keyName, keyIndex) {
+    //   if(!values.hasOwnProperty(keyName)){
+    //     // values.keyName=editValue.keyName;
+    //     values[keyName]=editValue[keyName]
+    //   }
+    // })
    console.log(values)
     await PutFileGroupDataById(props.IDforAPI, values)
       .then(() => success())
@@ -118,6 +118,7 @@ let FileGroupEdit = props => {
   async function getlistapi() {
     const { data: editValue } = await GetFileGroupDataById(props.IDforAPI);
     seteditValue(editValue);
+    setModal(true);
   }
 
   function findFirstError(formName, hasError) {
@@ -143,7 +144,7 @@ let FileGroupEdit = props => {
     validateForm(errors);
   }
 
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -163,7 +164,7 @@ let FileGroupEdit = props => {
         <ModalBody>
           <div className="container">
             <Formik
-              editValue={editValue}
+              initialValues={editValue}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
               render={({
@@ -221,6 +222,7 @@ let FileGroupEdit = props => {
                               onClick={handleChange}
                               onBlur={handleBlur}
                               value={values.isActive}
+                              defaultChecked={editValue.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

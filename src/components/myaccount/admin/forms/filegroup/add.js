@@ -39,7 +39,6 @@ const classes = {
 let FileGroupAdd = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    values.isActive = true;
     await PostListingForFileGroup(values)
       .then(() => success())
       .catch(error => errort());
@@ -202,6 +201,7 @@ let FileGroupAdd = props => {
                               onClick={handleChange}
                               onBlur={handleBlur}
                               value={values.isActive}
+                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

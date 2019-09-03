@@ -4,12 +4,30 @@ import axios from 'axios';
 
 
 /* *************************Absence Type*********************** */
- let apiurlPhoneBook= apiUrl + '/masterdata/PhoneBook';
+ let apiurlPhoneBook= apiUrl + '/masterdata/PhoneBooks';
 // let apiurlAbsenceType= 'https://reqres.in/api/users/2';
 
 function ApiwithidPhonebook(Id) {
     return `${apiurlPhoneBook}/${Id}`;
   }
+
+
+  function ApiPagingPhonebook(PG,PGSIZE) {
+    return `${apiurlPhoneBook}/${PG}/${PGSIZE}`;
+  }
+
+//-------- GetAPi
+export function GetListingpgForPhonebook(pg, pgsize) {
+    return axios.get(ApiPagingPhonebook(pg,pgsize),
+             {headers: {
+                 //"Authorization": authIt,
+                 //"accept": "application/json",
+                 //"Access-Control-Allow-Origin": "*",
+                 'Content-Type': 'application/json',
+                }}
+            )
+
+}
 
 //-------- GetAPi
 export function GetListingForPhoneBook() {
