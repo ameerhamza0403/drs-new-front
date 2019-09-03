@@ -37,12 +37,16 @@ let classes = {
 let arrForAttribute=[];
 let count=0;
 
-let ManageVehAttribute = props => {
+let ManageVehAttributeEdit = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
   let ValuesAHshow = "";
 
   useEffect(() => {
     getlistapi();
+    arrForAttribute=[]
+    if(props.data!=undefined){
+    arrForAttribute=JSON.parse(props.data);
+}
   },[]);
 
   let [attr, setAtrr] = useState([
@@ -241,4 +245,4 @@ let ManageVehAttribute = props => {
   );
 };
 
-export default ManageVehAttribute;
+export default ManageVehAttributeEdit;

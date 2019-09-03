@@ -1,8 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
-import {
-  GetTrackingDeviceData
-} from "..//shared/manage";
-import ManageVehAttribute from './attribute';
+import {GetTrackingDeviceData} from "..//shared/manage";
+import ManageVehAttributeEdit from './attributeedit';
 import {
   Button,
   Card,
@@ -28,8 +26,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TextField from "@material-ui/core/TextField";
 import { GetListingForcurrency } from "../../resources/shared/currency";
-import { GetListingForVehicleType } from "../shared/vehicletype";
-import { GetListingForVehicleGroups } from "../shared/vehiclegroup";
+import { GetListingPageForVehicletype } from "../shared/vehicletype";
+import { GetPagListingForVehicleGroup } from "../shared/vehiclegroup";
 import { GetListingForVehicleChecktype } from "../shared/vehiclechecktype";
 import {PutVehiclemanageDataById} from '../shared/manage';
 let iconpack = "https://cdn.bigchangeapps.com/img/Map/cn/40/air-n.png";
@@ -115,6 +113,7 @@ let EditVehicleManage = props => {
     getVehicletype();
     gettracking();
     getvehiclegroup();
+    getlistapi();
   }, []);
 
 
@@ -133,7 +132,7 @@ let EditVehicleManage = props => {
   }
 
   async function getVehicletype() {
-    const { data: vehicledata } = await GetListingForVehicleType();
+    const { data: vehicledata } = await GetListingPageForVehicletype(0,0);
     setVehicledata(vehicledata);
   }
 
@@ -143,7 +142,7 @@ let EditVehicleManage = props => {
   }
 
   async function getvehiclegroup() {
-    const { data: vehiclegroupdata } = await GetListingForVehicleGroups();
+    const { data: vehiclegroupdata } = await GetPagListingForVehicleGroup(0,0);
     setVehicleGroupdata(vehiclegroupdata);
     // handleOpen();
   }
@@ -1077,7 +1076,7 @@ let EditVehicleManage = props => {
                             <Label for="year">Attributes</Label>
                           </div>
                           <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8" >
-                            <ManageVehAttribute shrvalue={HandleSHR} />
+                            <ManageVehAttributeEdit shrvalue={HandleSHR} data={initialValues.attributes}/>
                           </div>
                         </div>
 

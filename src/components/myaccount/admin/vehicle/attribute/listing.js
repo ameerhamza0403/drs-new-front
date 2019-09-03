@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
 import EditAttribute from "./edit";
-import { GetListingForVehicleAttribute, DeleteVehicleAttributeDataById } from "..//shared/vehattribute";
+import { GetPagListingForVehicleAttribute, DeleteVehicleAttributeDataById } from "..//shared/vehattribute";
 import AddAtrribute from './add';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { toast } from "react-toastify";
@@ -11,6 +11,10 @@ import "react-toastify/dist/ReactToastify.css";
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
+let Page = 1;
+let PageSize = 10;
+let paging = "";
+let TotalPages = 3;
 
 const classes = {
   linearprogress: {
@@ -42,6 +46,7 @@ const classes = {
 
 let VehicleAttribute = () => {
   let [Atlist, setAtlist] = useState([]);
+  let [paginate, setPaginate] = useState();
 
   const columns = [
     {
@@ -112,12 +117,19 @@ let VehicleAttribute = () => {
   }, []);
 
   async function getlistapi() {
-    const { data: Atlist } = await GetListingForVehicleAttribute();
-    setAtlist(Atlist);
-    // Atlist.map((e,i)=>
-    //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
-    //                 )
+    await GetPagListingForVehicleAttribute(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
+    // Atlist.map(
+    //   (e, i) =>
+    //     (
+    //     Atlist[i].trackingDeviceId =iconint(Atlist[i].trackingDeviceId),
+    //     Atlist[i].usedForJobs =icon(Atlist[i].usedForJobs)
+    //     )
+    // );
+    TotalPages = paginate.totalPages;
     settabledistatus((Tabledistatus = true));
   }
 

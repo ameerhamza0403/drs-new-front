@@ -11,6 +11,25 @@ function ApiwithidVehicleAttribute(Id) {
     return `${apiurlVehicleAttribute}/${Id}`;
   }
 
+
+
+  function ApibyPageVehicleAttribute(Pg, PgSize) {
+    return `${apiurlVehicleAttribute}/${Pg}/${PgSize}`;
+  }
+
+  //-------- GetAPi
+  export function GetPagListingForVehicleAttribute(pg, pgsize) {
+    return axios.get(ApibyPageVehicleAttribute(pg, pgsize), {
+      headers: {
+        //"Authorization": authIt,
+        //"accept": "application/json",
+        //"Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
+
 //-------- GetAPi
 export function GetListingForVehicleAttribute() {
     return axios.get(apiurlVehicleAttribute,

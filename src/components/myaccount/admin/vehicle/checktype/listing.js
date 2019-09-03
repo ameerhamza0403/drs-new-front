@@ -40,6 +40,13 @@ const classes = {
   }
 };
 
+
+let Page = 1;
+let PageSize = 10;
+let paging = "";
+let TotalPages = 2;
+
+
 let VehicleCheckTypeListing =()=>{
   let [Atlist, setAtlist] = useState([]);
 
@@ -110,12 +117,17 @@ let VehicleCheckTypeListing =()=>{
   }, []);
 
   async function getlistapi() {
-    const { data: Atlist } = await GetListingForVehicleChecktype();
-    setAtlist(Atlist);
+
+    await GetListingForVehicleChecktype(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
     // Atlist.map((e,i)=>
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
     //                 )
+    TotalPages = paginate.totalPages;
+
     settabledistatus((Tabledistatus = true));
   }
 

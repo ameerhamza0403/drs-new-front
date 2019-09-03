@@ -213,7 +213,7 @@ let PredefInvEdit = props => {
         <ModalBody>
           <div className="container">
             <Formik
-              editValue={editValue}
+              initialValues={editValue}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
               render={({
@@ -275,7 +275,7 @@ let PredefInvEdit = props => {
                               // onBlur={handleBlur}
                               value={values.productCategoryId}
                             >
-                              <option selected></option>
+                              {/* <option selected></option> */}
                               {groupcat.map(e => (
                                 <option value={e.productCategoryId}>
                                   {e.name}
@@ -304,7 +304,7 @@ let PredefInvEdit = props => {
                               // onBlur={handleBlur}
                               value={values.nominalCodeId}
                             >
-                              <option selected></option>
+                              {/* <option selected></option> */}
                               {nominalcode.map(e => (
                                 <option value={e.nominalCodeId}>
                                   {e.code} - {e.description}
@@ -333,7 +333,7 @@ let PredefInvEdit = props => {
                               // onBlur={handleBlur}
                               value={values.departmentCodeId}
                             >
-                              <option selected></option>
+                              {/* <option selected></option> */}
                               {deptcode.map(e => (
                                 <option value={e.departmentCodeId}>
                                   {e.code} - {e.description}

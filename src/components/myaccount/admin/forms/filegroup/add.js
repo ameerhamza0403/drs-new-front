@@ -1,9 +1,7 @@
+import { PostListingForFileGroup } from "../shared/filegroup";
 import React, { Component, useState, useEffect } from "react";
-import { PostListingForTrackingDevice } from "..//shared/trackingdevice";
 import {
   Button,
-  Card,
-  CardBody,
   Col,
   Modal,
   ModalBody,
@@ -30,50 +28,44 @@ const classes = {
   plusbutton: {
     color: "white",
     borderRadius: "50px",
-    width: '10px',
-    cursor: 'pointer',
-    float: 'left',
+    width: "10px",
+    cursor: "pointer",
+    float: "left"
     // marginTop: '10px',
     // marginLeft: '5px',
-  },
-
+  }
 };
 
-let AddTrackingDevice = props => {
+let FileGroupAdd = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
-
-      //Tost
-
-      function errort() {
-        // add type: 'error' to options
-        return toast.error('Failed with Error...', {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
-
-      }
-      function success() {
-        return toast.success("Saved Successfully... ", {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
-      }
-
-
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PostListingForTrackingDevice(values).then(()=>success()).catch(error=>errort());
+    await PostListingForFileGroup(values)
+      .then(() => success())
+      .catch(error => errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);
   }
 
+  //Tost
+
+  function errort() {
+    // add type: 'error' to options
+    return toast.error("Failed with Error...", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+  function success() {
+    return toast.success("Saved Successfully... ", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+
   const validationSchema = function(values) {
     return Yup.object().shape({
-      trackingDeviceId: Yup.string()
-        .required("Tracking Id is required"),
-      code: Yup.string()
-        .required("code is required"),
-
-      remarks: Yup.string()
-        .required("Remarks is required")
+      name: Yup.string()
+        .min(2, `File Group has to be at least 2 characters`)
+        .required("File Group is required")
     });
   };
 
@@ -101,10 +93,7 @@ let AddTrackingDevice = props => {
 
   const initialValues = {
     name: "",
-    phoneNumber:"",
-    extensions:"",
-    email:"",
-    isActive: false
+    isActive: true
   };
 
   function findFirstError(formName, hasError) {
@@ -139,15 +128,18 @@ let AddTrackingDevice = props => {
   return (
     <div>
       <div onClick={handleOpen} style={classes.plusbutton}>
-      <i className="fa fa-plus-circle fa-2x"></i>
+        <i className="fa fa-plus-circle fa-2x" />
       </div>
 
       <Modal
         isOpen={modal}
         toggle={handleOpen}
         className={"modal-primary " + props.className}
+        // size={"lg"}
       >
-        <ModalHeader toggle={handleOpen}>Add Tracking Device</ModalHeader>
+        <ModalHeader toggle={handleOpen}>
+          <h3 className="font-weight:bold;">File Group</h3>
+        </ModalHeader>
         <ModalBody>
           <div className="container">
             <Formik
@@ -172,73 +164,35 @@ let AddTrackingDevice = props => {
                   <Col lg="12">
                     <Form onSubmit={handleSubmit} noValidate name="simpleForm">
                       <FormGroup>
-                      <div className="row mb-2">
+                        <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="trackingDeviceId">Tracking Id</Label>
+                            <Label for="name">File Group</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
                               type="text"
-                              name="trackingDeviceId"
-                              id="trackingDeviceId"
-                              placeholder="i.e. 12345"
+                              name="name"
+                              id="name"
+                              placeholder="i.e. "
                               autoComplete="given-name"
-                              valid={!errors.trackingDeviceId}
-                              invalid={touched.trackingDeviceId && !!errors.trackingDeviceId}
+                              valid={!errors.name}
+                              invalid={touched.name && !!errors.name}
                               autoFocus={true}
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.trackingDeviceId}
+                              value={values.name}
                             />
-                            <FormFeedback>{errors.trackingDeviceId}</FormFeedback>
 
+                            <FormFeedback>{errors.name}</FormFeedback>
                           </div>
                         </div>
 
                         <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="code">Code</Label>
+                            <Label for="reference">Active</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                            <Input
-                              type="text"
-                              name="code"
-                              id="code"
-                              placeholder="i.e. +XXXXXXXXX"
-                              autoComplete="given-name"
-                              valid={!errors.code}
-                              invalid={touched.code && !!errors.code}
-                              autoFocus={true}
-                              required
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.code}
-                            />
-                            <FormFeedback>{errors.code}</FormFeedback>
-
-                          </div>
-                        </div>
-                        <div className="row mb-2">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="remarks">Remarks</Label>
-                          </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                            <Input
-                              type="text"
-                              name="remarks"
-                              id="remarks"
-                              placeholder=""
-                              autoComplete="given-name"
-                              valid={!errors.remarks}
-                              invalid={touched.remarks && !!errors.remarks}
-                              autoFocus={true}
-                              required
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.remarks}
-                            />
-                            <FormFeedback>{errors.remarks}</FormFeedback>
                             <input
                               name="isActive"
                               id="isActive"
@@ -247,6 +201,7 @@ let AddTrackingDevice = props => {
                               onClick={handleChange}
                               onBlur={handleBlur}
                               value={values.isActive}
+                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -292,4 +247,4 @@ let AddTrackingDevice = props => {
   );
 };
 
-export default AddTrackingDevice;
+export default FileGroupAdd;

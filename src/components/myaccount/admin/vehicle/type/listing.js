@@ -6,11 +6,19 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../../../scss/override/listing.scss";
-import {GetListingForVehicleType, DeleteVehicleTypeDataById} from '../shared/vehicletype';
+import {GetListingPageForVehicletype, DeleteVehicleTypeDataById} from '../shared/vehicletype';
+import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
+import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+
 
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
+let Page = 1;
+let PageSize = 10;
+let paging = "";
+let TotalPages = 3;
 
 const classes = {
   linearprogress: {
@@ -110,12 +118,18 @@ let VehicleTypeListing =()=>{
   }, []);
 
   async function getlistapi() {
-    const { data: Atlist } = await GetListingForVehicleType();
-    setAtlist(Atlist);
-    // Atlist.map((e,i)=>
-    //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
-
-    //                 )
+    await GetListingPageForVehicletype(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
+    // Atlist.map(
+    //   (e, i) =>
+    //     (
+    //     Atlist[i].trackingDeviceId =iconint(Atlist[i].trackingDeviceId),
+    //     Atlist[i].usedForJobs =icon(Atlist[i].usedForJobs)
+    //     )
+    // );
+    TotalPages = paginate.totalPages;
     settabledistatus((Tabledistatus = true));
   }
 
