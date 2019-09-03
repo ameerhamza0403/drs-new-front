@@ -3,7 +3,7 @@ import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
 import EditPhoneBook from "./edit";
 import {
-  GetListingpgForPhonebook,
+  GetListingForPhoneBook,
   DeletePhoneBookDataById
 } from "..//shared/phonebook";
 import AddPhoneBook from "./add";
@@ -18,10 +18,10 @@ import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
-let Page = 1;
-let PageSize = 10;
-let paging = "";
-let TotalPages = 3;
+// let Page = 1;
+// let PageSize = 10;
+// let paging = "";
+// let TotalPages = 3;
 
 const classes = {
   linearprogress: {
@@ -53,7 +53,7 @@ const classes = {
 
   let PhoneBookListing = () => {
   let [Atlist, setAtlist] = useState();
-  let [paginate, setPaginate] = useState();
+//   let [paginate, setPaginate] = useState();
 
 //   const columns = [
 //     {
@@ -151,12 +151,14 @@ const options = {
 
 
   async function getlistapi() {
+  const {data:Atlist} =  await GetListingForPhoneBook();
+  setAtlist(Atlist);
+      //setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    //TotalPages = paginate.totalPages;
+    // Atlist.map((e,i)=>
+    //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
-    await GetListingpgForPhonebook(Page, PageSize).then(res => {
-      setAtlist((Atlist = res.data));
-      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-    });
-    TotalPages = paginate.totalPages;
+    //                 )
     settabledistatus((Tabledistatus = true));
 
 
@@ -180,9 +182,9 @@ const options = {
           <div className="row">
               <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
               <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
-
-
-
+              
+              
+              
 
               <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                 <div>
@@ -192,7 +194,7 @@ const options = {
                     striped
                     hover
 
-                    // search
+                    search
                     options={options}
                     >
                     <TableHeaderColumn dataField="name" dataSort>

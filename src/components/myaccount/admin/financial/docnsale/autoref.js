@@ -128,7 +128,7 @@ let DocnSaleAuto = (props) => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return setModal((modal = !modal)), setTimeout(() => props.cross(), 200);
@@ -141,13 +141,7 @@ let DocnSaleAuto = (props) => {
     const { data: initialValues } = await GetFinancialDocumentnSaleDataById(
       props.IDforAPI
     );
-      setInitialValues(initialValues);
-
-    setModal(true)
-
-
-
-
+    setInitialValues(initialValues);
   }
 
   return (

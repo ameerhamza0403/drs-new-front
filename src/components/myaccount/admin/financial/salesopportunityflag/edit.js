@@ -40,7 +40,7 @@ const classes = {
     // marginTop: '10px',
     // marginLeft: '5px',
   },
-
+  
 
 };
 
@@ -111,18 +111,25 @@ let EditSalesOpportunityFlag = props => {
 
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
+    Object.keys(initialValues).map(function(keyName, keyIndex) {
+      if(!values.hasOwnProperty(keyName)){
+        // values.keyName=editValue.keyName;
+        values[keyName]=initialValues[keyName]
+      }
+    })
+    values.colour = valofCod;
     await PutSalesOpportunityFlagDataById(props.IDforAPI, values).then(()=>success()).catch(error=>errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);
   }
 
-
+  
   const validationSchema = function(values) {
     return Yup.object().shape({
     name: Yup.string()
-    .min(4, `Code has to be at least 4 characters`)
-    .required("Nominal Code is requierd"),
+    .min(4, `Name has to be at least 4 characters`)
+    .required("Name is requierd"),
 
     });
   };
@@ -149,19 +156,7 @@ let EditSalesOpportunityFlag = props => {
     }, {});
   };
 
-  const [values, setValues] = useState({
-    // name: "",
-    // ctBackOffice:"",
-    // ctResource:"",
-    // ctBookingSite:"",
-    // headerAnswer:"",
-    // headerNotes:"",
-    // sharing:"",
-    // order:0,
-    isActive: false
-  });
-
-  let [editvalues, seteditValues] = React.useState({});
+  let [initialValues, setinitialValues] = useState();
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -196,7 +191,7 @@ let EditSalesOpportunityFlag = props => {
     //console.log(event.target.getAttribute('value'))
     // setSlctdcode({ Slctdcode: event.target.getAttribute('value')})
     valofCod = event.target.getAttribute("value");
-    seteditValues({ ...editvalues, [namer]: valofCod });
+    setinitialValues({ ...initialValues, [namer]: valofCod });
     setCodeswitch({ codeswitch: true });
     // console.log(Slctdcode + 'Hello')
   };
@@ -226,9 +221,10 @@ let EditSalesOpportunityFlag = props => {
   }, []);
 
   async function getlistapi() {
-    const { data: values } = await GetSalesOpportunityFlagDataById(props.IDforAPI);
-    console.log(values);
-    setValues(values)
+    const { data: initialValues } = await GetSalesOpportunityFlagDataById(props.IDforAPI);
+    
+    setinitialValues(initialValues)
+    valofCod = initialValues.colour;
     setModal(true);
   }
 
@@ -251,7 +247,7 @@ let EditSalesOpportunityFlag = props => {
         <ModalBody style={{'max-height': 'calc(100vh - 150px)', 'overflow-y': 'auto'}}>
           <div className="container">
             <Formik
-              values={values}
+              initialValues={initialValues}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
               render={({
@@ -292,27 +288,27 @@ let EditSalesOpportunityFlag = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
-
+                           
                           </div>
                         </div>
-
-
+                        
+                        
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="sharing"></Label>
+                            <Label for="isActive"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-
+                            
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              //value={values.isActive}
+                              defaultChecked={initialValues.isActive}
                               type="checkbox"
-                              defaultChecked={values.isActive}
                             />
                             &nbsp;&nbsp;&nbsp;
                             <label
@@ -322,7 +318,7 @@ let EditSalesOpportunityFlag = props => {
                               Active
                             </label>
                           </div>
-                        </div>
+                        </div>  
                       </FormGroup>
                       <FormGroup>
                         <div className="row">

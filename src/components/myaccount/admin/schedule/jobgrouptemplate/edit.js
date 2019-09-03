@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { PutjobgrouptemplateDataById, PostListingFortemplategroup,GetjobgrouptemplateDataById } from "..//shared/jobgrouptemplate";
+import { PutjobgrouptemplateDataById, PostListingFortemplategroup } from "..//shared/jobgrouptemplate";
 import {
   Button,
   Col,
@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TextField from "@material-ui/core/TextField";
 // import {GetListingForAddEdit} from '../../resources/shared/addedit';
-import EditGroupTemplate from "./templatejobs/editlisting";
+// import GroupTemplateedit from "./templatejobs/editlisting";
 import { GetListingForAddEdit } from "../../resources/shared/addedit";
 import { async } from "q";
 
@@ -58,15 +58,7 @@ let JobGroupTemplateEdit = props => {
     data=value;
   }
 
-  useEffect(()=>{
-    getlistApi();
-  },[]);
 
-  async function getlistApi(){
-    const {data: initialValues} = await GetjobgrouptemplateDataById(props.IDforAPI);
-    setInitialValues(initialValues);
-    setModal(true);
-  }
 
   let [newvalue, setNewvalue] = useState([{
     jobGroupTemplateId: 0,
@@ -154,14 +146,12 @@ let JobGroupTemplateEdit = props => {
     }, {});
   };
 
-
-
-  let [initialValues,setInitialValues] = useState({
+  const initialaddvalues = {
     name: "",
     sameContact: true,
     sameResource: true,
     isActive: true
-  });
+  };
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -186,7 +176,7 @@ let JobGroupTemplateEdit = props => {
     validateForm(errors);
   }
 
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -204,7 +194,7 @@ let JobGroupTemplateEdit = props => {
         <ModalBody>
           <div className="container">
             <Formik
-              initialValues={initialValues}
+              initialaddvalues={initialaddvalues}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
               render={({
@@ -234,7 +224,7 @@ let JobGroupTemplateEdit = props => {
                               type="text"
                               name="name"
                               id="name"
-                              // placeholder={initialaddvalues.name}
+                              placeholder={initialaddvalues.name}
                               autoComplete="given-name"
                               valid={!errors.name}
                               invalid={touched.name && !!errors.name}
@@ -253,14 +243,13 @@ let JobGroupTemplateEdit = props => {
                             <input
                               name="sameContact"
                               id="sameContact"
-                              // valid={!errors.sameContact}
-                              // invalid={
-                              //   touched.sameContact && !!errors.sameContact
-                              // }
+                              valid={!errors.sameContact}
+                              invalid={
+                                touched.sameContact && !!errors.sameContact
+                              }
                               onClick={handleChange}
-                              // onBlur={handleBlur}
+                              onBlur={handleBlur}
                               value={values.sameContact}
-                              defaultChecked={initialValues.sameContact}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -279,14 +268,13 @@ let JobGroupTemplateEdit = props => {
                             <input
                               name="sameResource"
                               id="sameResource"
-                              // valid={!errors.sameResource}
-                              // invalid={
-                              //   touched.sameResource && !!errors.sameResource
-                              // }
+                              valid={!errors.sameResource}
+                              invalid={
+                                touched.sameResource && !!errors.sameResource
+                              }
                               onClick={handleChange}
-                              // onBlur={handleBlur}
+                              onBlur={handleBlur}
                               value={values.sameResource}
-                              defaultChecked={initialValues.sameResource}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -295,7 +283,7 @@ let JobGroupTemplateEdit = props => {
                               for="defaultCheck2"
                             >
                               All jobs within the group are scheduled to the
-                              same staff
+                              same resource
                             </label>
                           </div>
                         </div>
@@ -305,12 +293,11 @@ let JobGroupTemplateEdit = props => {
                             <input
                               name="isActive"
                               id="isActive"
-                              // valid={!errors.isActive}
-                              // invalid={touched.isActive && !!errors.isActive}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
-                              // onBlur={handleBlur}
+                              onBlur={handleBlur}
                               value={values.isActive}
-                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -329,7 +316,7 @@ let JobGroupTemplateEdit = props => {
                         <div className="row mb-2">
                           <div className="container">
                             <h2 style={classes.h2}>Template jobs</h2>
-                            <EditGroupTemplate templatedata={handletemplatedata} id={props.IDforAPI}/>
+                            {/* <GroupTemplateedit templatedata={handletemplatedata} id={props.IDforAPI}/> */}
                           </div>
                         </div>
 

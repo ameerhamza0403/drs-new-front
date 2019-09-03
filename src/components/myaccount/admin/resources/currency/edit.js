@@ -107,7 +107,7 @@ let EditCurrency = props => {
   const [initialValues, setInitialValues] = useState({
     name: "",
     code: "",
-    isActive: true
+    isActive: false
   });
 
   function findFirstError(formName, hasError) {
@@ -132,7 +132,7 @@ let EditCurrency = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -145,7 +145,6 @@ let EditCurrency = props => {
   async function getlistapi() {
     const { data: initialValues } = await GetcurrencyDataById(props.IDforAPI);
     setInitialValues(initialValues);
-    setModal(true);
   }
 
   return (
@@ -180,7 +179,7 @@ let EditCurrency = props => {
                   <Col lg="12">
                     <Form onSubmit={handleSubmit} noValidate name="simpleForm">
                       <FormGroup>
-                        <div className="row mb-2">
+                        <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="name">Currency Name</Label>
                           </div>
@@ -200,9 +199,10 @@ let EditCurrency = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
+                            <br />
                           </div>
                         </div>
-                        <div className="row mb-2">
+                        <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="name">Currency Code</Label>
                           </div>
@@ -232,7 +232,6 @@ let EditCurrency = props => {
                               onClick={handleChange}
                               onBlur={handleBlur}
                               value={values.isActive}
-                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

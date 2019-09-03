@@ -107,12 +107,12 @@ let AddDepartmentCode = props => {
     }, {});
   };
 
-  const initialValues = {
+  const [initialValues, setInitialValues] = useState({
     code: "",
     description :"",
     
-    active: false
-  };
+    isActive: false
+  });
 
   
 
@@ -235,18 +235,18 @@ let AddDepartmentCode = props => {
                         
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="sharing"></Label>
+                            <Label for="isActive"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

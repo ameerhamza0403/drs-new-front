@@ -11,6 +11,10 @@ function ApiwithidPersonflag(Id) {
     return `${apiurlPersonflag}/${Id}`;
   }
 
+  function ApiwithbyPgPersonflag(Pg,PgSize) {
+    return `${apiurlPersonflag}/${Pg}/${PgSize}`;
+  }
+
 //-------- GetAPi
 export function GetListingForPersonflag() {
     return axios.get(apiurlPersonflag, 

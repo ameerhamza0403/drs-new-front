@@ -12,26 +12,9 @@ function ApiwithidAddEdit(Id) {
     return `${apiurlAddEdit}/${Id}`;
   }
 
-  function ApiPagingResource(PG,PGSIZE) {
-    return `${apiurlAddEdit}/${PG}/${PGSIZE}`;
-  }
-
-//-------- GetAPi
-export function GetListingpgForResource(pg, pgsize) {
-    return axios.get(ApiPagingResource(pg,pgsize),
-             {headers: {
-                 //"Authorization": authIt,
-                 //"accept": "application/json",
-                 //"Access-Control-Allow-Origin": "*",
-                 'Content-Type': 'application/json',
-                }}
-            )
-
-}
-
 //-------- GetAPi
 export function GetListingForAddEdit() {
-    return axios.get(apiurlAddEdit,
+    return axios.get(apiurlAddEdit, 
              {headers: {
                  //"Authorization": authIt,
                  //"accept": "application/json",
@@ -45,7 +28,7 @@ export function GetListingForAddEdit() {
 //---------Edit APi
 export function GetAddEditDataById(id) {
     // console.log(id)
-    return axios.get(ApiwithidAddEdit(id),
+    return axios.get(ApiwithidAddEdit(id), 
              {headers: {
                  'Content-Type': 'application/json',
                 }}

@@ -17,10 +17,6 @@ import { GetVehicleCheckDataById } from "../shared/vehiclecheck";
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
-let Page = 1;
-let PageSize = 10;
-let paging = "";
-let TotalPages = 3;
 
 const classes = {
   linearprogress: {
@@ -142,7 +138,7 @@ let VehicleCheck = () => {
 
   async function getlistByResID(id) {
     settabledistatus((Tabledistatus = false));
-    const { data: Atlist } = await GetVehicleCheckDataByTypeId(id,Page,PageSize);
+    const { data: Atlist } = await GetVehicleCheckDataByTypeId(id);
     setAtlist(Atlist);
     Atlist.map((e, i) => (e.atRisk = atriskicon(e.atRisk)));
     settabledistatus((Tabledistatus = true));
@@ -189,7 +185,7 @@ let VehicleCheck = () => {
     }
   }
   async function getlistapi() {
-    const { data: checktype } = await GetListingForVehicleChecktype(0,0);
+    const { data: checktype } = await GetListingForVehicleChecktype();
     setChecktype(checktype);
     setSelectdistatus((selectdistatus = true));
   }

@@ -4,21 +4,16 @@ import axios from 'axios';
 
 
 /* *************************VehicleChecktype*********************** */
- let apiurlVehicleChecktype= apiUrl + '/masterdata/VehicleCheckTypes';
+ let apiurlVehicleChecktype= apiUrl + '/masterdata/VehicleCheckTypeTypes';
 // let apiurlVehicleChecktype= 'https://reqres.in/api/users/2';
 
 function ApiwithidVehicleChecktype(Id) {
     return `${apiurlVehicleChecktype}/${Id}`;
   }
 
-  function ApiwithpagVehicleChecktype(pg,pgsize) {
-    return `${apiurlVehicleChecktype}/${pg}/${pgsize}`;
-  }
-
-
 //-------- GetAPi
-export function GetListingForVehicleChecktype(pg,pgsize) {
-    return axios.get(ApiwithpagVehicleChecktype(pg,pgsize),
+export function GetListingForVehicleChecktype() {
+    return axios.get(apiurlVehicleChecktype,
              {headers: {
                  //"Authorization": authIt,
                  //"accept": "application/json",

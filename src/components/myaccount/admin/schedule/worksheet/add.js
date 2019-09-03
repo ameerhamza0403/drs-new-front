@@ -222,10 +222,10 @@ let AddWorkSheet = props => {
                               id="ctBackOffice"
 
                               autoComplete="given-name"
-                              valid={!errors.ctBackOffice}
-                              invalid={touched.ctBackOffice && !!errors.ctBackOffice}
-                              autoFocus={true}
-                              required
+                              // valid={!errors.ctBackOffice}
+                              // invalid={touched.ctBackOffice && !!errors.ctBackOffice}
+                              // autoFocus={true}
+                              // required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.ctBackOffice}
@@ -245,7 +245,7 @@ let AddWorkSheet = props => {
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
-                            <Label for="extensions">Completion time for staff</Label>
+                            <Label for="extensions">Completion time for resource</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
                             <Input
@@ -254,10 +254,10 @@ let AddWorkSheet = props => {
                               id="ctResource"
 
                               autoComplete="given-name"
-                              valid={!errors.ctResource}
-                              invalid={touched.ctResource && !!errors.ctResource}
-                              autoFocus={true}
-                              required
+                              // valid={!errors.ctResource}
+                              // invalid={touched.ctResource && !!errors.ctResource}
+                              // autoFocus={true}
+                              // required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.ctResource}
@@ -285,10 +285,10 @@ let AddWorkSheet = props => {
                               id="ctBookingSite"
 
                               autoComplete="given-name"
-                              valid={!errors.ctBookingSite}
-                              invalid={touched.ctBookingSite && !!errors.ctBookingSite}
-                              autoFocus={true}
-                              required
+                              // valid={!errors.ctBookingSite}
+                              // invalid={touched.ctBookingSite && !!errors.ctBookingSite}
+                              // autoFocus={true}
+                              // required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.ctBookingSite}
@@ -314,10 +314,10 @@ let AddWorkSheet = props => {
                               id="headerAnswer"
                               placeholder=""
                               autoComplete="given-name"
-                              valid={!errors.headerAnswer}
-                              invalid={touched.headerAnswer && !!errors.headerAnswer}
-                              autoFocus={true}
-                              required
+                              // valid={!errors.headerAnswer}
+                              // invalid={touched.headerAnswer && !!errors.headerAnswer}
+                              // autoFocus={true}
+                              // required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.headerAnswer}
@@ -338,10 +338,10 @@ let AddWorkSheet = props => {
                               id="headerNotes"
                               placeholder=""
                               autoComplete="given-name"
-                              valid={!errors.headerNotes}
-                              invalid={touched.headerNotes && !!errors.headerNotes}
-                              autoFocus={true}
-                              required
+                              // valid={!errors.headerNotes}
+                              // invalid={touched.headerNotes && !!errors.headerNotes}
+                              // autoFocus={true}
+                              // required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.headerNotes}
@@ -356,30 +356,15 @@ let AddWorkSheet = props => {
                             <Label for="sharing">Sharing</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
-                            <Input
-                              type="checkbox"
+
+                            <input
                               name="sharing"
                               id="sharing"
-                              selected=""
-                              autoComplete="given-name"
-                              valid={!errors.sharing}
-                              invalid={touched.sharing && !!errors.sharing}
-                              autoFocus={true}
-                              required
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.sharing}
-                            />share with job contractors
-                            <FormFeedback>{errors.sharing}</FormFeedback>
-                            <br />
-                            <input
-                              name="isActive"
-                              id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              // valid={!errors.sharing}
+                              // invalid={touched.sharing && !!errors.sharing}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.isActive}
+                              value={values.sharing}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -387,7 +372,7 @@ let AddWorkSheet = props => {
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              isActive
+                              share with job contractors
                             </label>
                           </div>
                         </div>

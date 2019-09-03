@@ -199,8 +199,8 @@ let EditNoteType = (props) => {
                               invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.isActive}
-                              defaultChecked={initialValues.isActive}
+                              //value={values.isActive}
+                              defaultChecked={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

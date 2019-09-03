@@ -11,22 +11,6 @@ function ApiwithidVehicleGroups(Id) {
     return `${apiurlVehicleGroups}/${Id}`;
   }
 
-  function ApibyPageVehicleGroup(Pg, PgSize) {
-    return `${apiurlVehicleGroups}/${Pg}/${PgSize}`;
-  }
-
-  //-------- GetAPi
-  export function GetPagListingForVehicleGroup(pg, pgsize) {
-    return axios.get(ApibyPageVehicleGroup(pg, pgsize), {
-      headers: {
-        //"Authorization": authIt,
-        //"accept": "application/json",
-        //"Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json"
-      }
-    });
-  }
-
 //-------- GetAPi
 export function GetListingForVehicleGroups() {
     return axios.get(apiurlVehicleGroups,

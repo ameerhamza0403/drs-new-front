@@ -14,7 +14,7 @@ import {
   Input
 } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
-import { GetPagListingForVehicleAttribute } from "../shared/vehattribute";
+import { GetListingForVehicleAttribute } from "../shared/vehattribute";
 import "./addedit.scss";
 
 let classes = {
@@ -43,7 +43,6 @@ let ManageVehAttribute = props => {
 
   useEffect(() => {
     getlistapi();
-    arrForAttribute=[]
   },[]);
 
   let [attr, setAtrr] = useState([
@@ -55,7 +54,7 @@ let ManageVehAttribute = props => {
   ]);
 
   async function getlistapi() {
-    const { data: attr } = await GetPagListingForVehicleAttribute(0,0);
+    const { data: attr } = await GetListingForVehicleAttribute();
     setAtrr(attr);
   }
 

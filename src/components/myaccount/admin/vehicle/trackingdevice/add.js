@@ -172,9 +172,9 @@ let AddTrackingDevice = props => {
                   <Col lg="12">
                     <Form onSubmit={handleSubmit} noValidate name="simpleForm">
                       <FormGroup>
-                      <div className="row mb-2">
+                      <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="trackingDeviceId">Tracking Id</Label>
+                            <Label for="trackingDeviceId">TRacking Id</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
@@ -195,8 +195,9 @@ let AddTrackingDevice = props => {
 
                           </div>
                         </div>
+                        <br />
 
-                        <div className="row mb-2">
+                        <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="code">Code</Label>
                           </div>
@@ -219,7 +220,8 @@ let AddTrackingDevice = props => {
 
                           </div>
                         </div>
-                        <div className="row mb-2">
+                        <br />
+                        <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="remarks">Remarks</Label>
                           </div>
@@ -239,6 +241,7 @@ let AddTrackingDevice = props => {
                               value={values.remarks}
                             />
                             <FormFeedback>{errors.remarks}</FormFeedback>
+                            <br />
                             <input
                               name="isActive"
                               id="isActive"

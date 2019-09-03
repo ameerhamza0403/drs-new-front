@@ -11,24 +11,6 @@ function ApiwithidVehicleType(Id) {
     return `${apiurlVehicleType}/${Id}`;
   }
 
-  function ApiwithpagVehicletype(pg,pgsize) {
-    return `${apiurlVehicleType}/${pg}/${pgsize}`;
-  }
-
-
-//-------- GetAPi
-export function GetListingPageForVehicletype(pg,pgsize) {
-    return axios.get(ApiwithpagVehicletype(pg,pgsize),
-             {headers: {
-                 //"Authorization": authIt,
-                 //"accept": "application/json",
-                 //"Access-Control-Allow-Origin": "*",
-                 'Content-Checktype': 'application/json',
-                }}
-            )
-
-}
-
 //-------- GetAPi
 export function GetListingForVehicleType() {
     return axios.get(apiurlVehicleType,

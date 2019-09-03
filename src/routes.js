@@ -92,8 +92,6 @@ const VatCodeListing = React.lazy(() => import('./components/myaccount/admin/fin
 const SaleOppProbListing = React.lazy(() => import('./components/myaccount/admin/financial/saleprobability/listing'));
 const DoortypeListing = React.lazy(() => import('./components/myaccount/admin/financial/doortype/listing'));
 const PredefInvoiceListing = React.lazy(() => import('./components/myaccount/admin/financial/predefinvoice/listing'));
-const FileGroupListing = React.lazy(() => import('./components/myaccount/admin/forms/filegroup/listing'));
-const FileLibraryListing = React.lazy(() => import('./components/myaccount/admin/forms/filelibrary/listing'));
 const NominalCodeListing = React.lazy(() => import('./components/myaccount/admin/financial/nominalcode/listing'));
 const DepartmentCodeListing = React.lazy(() => import('./components/myaccount/admin/financial/departmentcode/listing'));
 const SalesOpportunityFlag = React.lazy(() => import('./components/myaccount/admin/financial/salesopportunityflag/listing'));
@@ -183,11 +181,11 @@ const routes = [
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   //my routes
-  { path: '/admin/staff/group', exact: true, name: 'Staff Groups', component: ResourceGroupListing },
-  { path: '/admin/staff/skills', exact: true, name: 'Staff Skills', component: ResourceSkillListing },
-  { path: '/admin/staff/custom', exact: true, name: 'Custom Fields', component: CustomFieldListing },
-  { path: '/admin/staff/manage', exact: true, name: 'Manage Staff', component: AddeditListing },
-  { path: '/admin/staff/absencetype', exact: true, name: 'Absence Types', component: AbsenceListing },
+  { path: '/admin/resources/group', exact: true, name: 'Groups', component: ResourceGroupListing },
+  { path: '/admin/resources/skills', exact: true, name: 'Resource Skills', component: ResourceSkillListing },
+  { path: '/admin/resources/custom', exact: true, name: 'Custom Fields', component: CustomFieldListing },
+  { path: '/admin/resources/manage', exact: true, name: 'Manage', component: AddeditListing },
+  { path: '/admin/resources/absencetype', exact: true, name: 'Absence Types', component: AbsenceListing },
   { path: '/admin/contact/group', exact: true, name: 'Contact Groups', component: ContactsGroupListingTable },
   { path: '/admin/contact/flag', exact: true, name: 'Person Flags', component: PersonFlagListing },
   { path: '/admin/contact/type', exact: true, name: 'Note types', component: NotesTypeListing },
@@ -195,7 +193,7 @@ const routes = [
   { path: '/admin/note/flag', exact: true, name: 'Note Flags', component: NotesFlagListingTable },
   { path: '/admin/vehicle/group', exact: true, name: 'Vehicle Group', component: VehicleGroupListing },
   { path: '/admin/vehicle/type', exact: true, name: 'Vehicle Type', component: VehicleTypeListing },
-  { path: '/admin/staff/driver', exact: true, name: 'Driver Behaviour', component: DriverBehaviour },
+  { path: '/admin/resources/driver', exact: true, name: 'Driver Behaviour', component: DriverBehaviour },
   { path: '/admin/vehicle/attribute', exact: true, name: 'Vehicle Attributes', component: VehicleAttribute },
   { path: '/admin/vehicle/check', exact: true, name: 'Vehicle Check', component: VehicleCheck },
   { path: '/admin/vehicle/check/type', exact: true, name: 'Vehicle Check Type', component: VehicleCheckTypeListing },
@@ -203,8 +201,8 @@ const routes = [
   { path: '/admin/vehicle/trackingdevice', exact: true, name: 'Tracking Device', component: TrackingDeviceListing },
   { path: '/admin/schedule/jobflag', exact: true, name: 'Job Flags', component: JobFlagListing },
   { path: '/admin/schedule/jobcategory', exact: true, name: 'Job Category', component: JobCategoryListing },
-  { path: '/admin/staff/phone', exact: true, name: 'Phone Book', component: PhoneBookListing },
-  { path: '/admin/vehicle/manage', exact: true, name: 'Manage Vehicle', component: VehicleManage },
+  { path: '/admin/resources/phone', exact: true, name: 'Phone Book', component: PhoneBookListing },
+  { path: '/admin/vehicle/manage', exact: true, name: 'Manage', component: VehicleManage },
 
   { path: '/admin/schedule/jobtype', exact: true, name: 'Job Type', component: JobTypeListing },
   { path: '/admin/schedule/jobgroup', exact: true, name: 'Job Group Template', component: JobGroupTemplateListing },
@@ -220,13 +218,12 @@ const routes = [
   { path: '/admin/finance/saleprob', exact: true, name: 'Sales Opportunity Probabilities', component: SaleOppProbListing },
   { path: '/admin/finance/doortype', exact: true, name: 'Door Type', component: DoortypeListing },
   { path: '/admin/finance/predefinvoice', exact: true, name: 'Predefined Invoicing Items', component: PredefInvoiceListing },
-  { path: '/admin/form/filegroup', exact: true, name: 'File Group', component: FileGroupListing },
-  { path: '/admin/form/filelibrary', exact: true, name: 'File Library', component: FileLibraryListing },
   { path: '/admin/finance/departmentcode', exact: true, name: 'Department Code', component:  DepartmentCodeListing },
-
-  { path: '/admin/finance/nominalcode', exact: true, name: 'Nominal code', component:  NominalCodeListing },
+  
+  { path: '/admin/finance/nominalcode', exact: true, name: 'Nominal Code', component:  NominalCodeListing },
   { path: '/admin/finance/salesopportunitystage', exact: true, name: 'Sales Opportunity Stages', component:  SalesOpportunityStage },
   { path: '/admin/finance/salesopportunityflag', exact: true, name: 'Sales Opportunity Flags', component:  SalesOpportunityFlag },
+  { path: '/admin/finance/saleprobability', exact: true, name: 'Sales Opportunity Probability', component:  SaleOppProbListing },
 
   //Stock
   { path: '/admin/stocknequipment/productcategory', exact: true, name: 'Product Categories', component:  ProductCategoryListing },

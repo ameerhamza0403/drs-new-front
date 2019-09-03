@@ -13,7 +13,7 @@ function ApiwithidContactgroup(Id) {
 
 //-------- GetAPi
 export function GetListingForContactGroup() {
-    return axios.get(apiurlContactgroup,
+    return axios.get(apiurlContactgroup, 
              {headers: {
                  //"Authorization": authIt,
                  //"accept": "application/json",
@@ -24,27 +24,10 @@ export function GetListingForContactGroup() {
 
 }
 
-function ApiwithidContactgrouppg(pg,pgsize) {
-  return `${apiurlContactgroup}/${pg}/${pgsize}`;
-}
-
-//-------- GetAPi
-export function GetListingForContactGrouppg(pg,pgsize) {
-  return axios.get(ApiwithidContactgrouppg(pg,pgsize),
-           {headers: {
-               //"Authorization": authIt,
-               //"accept": "application/json",
-               //"Access-Control-Allow-Origin": "*",
-               'Content-Type': 'application/json',
-              }}
-          )
-
-}
-
 //---------Edit APi
 export function GetContactGroupDataById(id) {
     // console.log(id)
-    return axios.get(ApiwithidContactgroup(id),
+    return axios.get(ApiwithidContactgroup(id), 
              {headers: {
                  'Content-Type': 'application/json',
                 }}

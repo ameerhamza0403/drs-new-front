@@ -32,7 +32,7 @@ const classes = {
     borderRadius: "50px",
     width: "10px",
     cursor: "pointer",
-    float: "left",
+    float: "left"
     // marginTop: '10px',
     // marginLeft: '5px',
   }
@@ -58,6 +58,7 @@ let EditJobCategory = (props) => {
 
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
+  
     await PutJobcategoryDataById(props.IDforAPI, values).then(()=>success()).catch(error=>errort());
     handleOpen();
     props.refresh();
@@ -69,7 +70,7 @@ let EditJobCategory = (props) => {
       name: Yup.string()
         .min(4, `Job Category has to be at least 4 characters`)
         .required("Job Category is required"),
-      visiblity:Yup.string().required("please select one radio button")
+      //visiblity:Yup.string().required("please select one radio button")
     });
   };
 
@@ -134,11 +135,17 @@ let EditJobCategory = (props) => {
   }, []);
 
   async function getlistapi() {
-    const { data: initialValues } = await GetJobcategoryDataById(
-      props.IDforAPI
-    );
-    console.log(initialValues.visiblity);
+
+    const { data: initialValues } = await GetJobcategoryDataById(props.IDforAPI);
+   
     setInitialValues(initialValues);
+    Object.keys(initialValues).map(function(keyName, keyIndex) {
+      if(!initialValues.hasOwnProperty(keyName)){
+        // initialvalue.keyName=initialvalue.keyName;
+        initialValues[keyName]=initialValues[keyName].trim()
+      }
+    })
+    console.log(initialValues);
     setModal(true);
   }
 
@@ -187,7 +194,7 @@ let EditJobCategory = (props) => {
                               type="text"
                               name="name"
                               id="name"
-                              placeholder={initialValues.name}
+                              //placeholder="i.e. Manager"
                               autoComplete="given-name"
                               valid={!errors.name}
                               invalid={touched.name && !!errors.name}
@@ -207,58 +214,87 @@ let EditJobCategory = (props) => {
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="name">Visiblity</Label>
                           </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                              <input type="radio"
-                                name="visiblity"
-                                valid={!errors.name}
-                                onBlur={handleBlur}
-                                required
-                                invalid={touched.name && !!errors.name}
-                                value="Job"
-
-                                onChange={handleChange}/>Job &nbsp;&nbsp;&nbsp;
-                              <input type="radio"
-                                name="visiblity"
-                                valid={!errors.name}
-                                onBlur={handleBlur}
-                                required
-                                invalid={touched.name && !!errors.name}
-                                value="Group"
-                                onChange={handleChange}/>Group &nbsp;&nbsp;&nbsp;
-                              <input type="radio"
-                                name="visiblity"
-                                valid={!errors.name}
-                                onBlur={handleBlur}
-                                required
-                                invalid={touched.name && !!errors.name}
-                                value="Either"
-
-                                onChange={handleChange}
-                                />Both &nbsp;&nbsp;&nbsp;
-
-                                <br />
-                                <br />
-                                <input
-                                  name="isActive"
-                                  id="isActive"
-                                  valid={!errors.isActive}
-                                  invalid={touched.isActive && !!errors.isActive}
-                                  onClick={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.isActive}
-                                  type="checkbox"
-                                />
-                                &nbsp;&nbsp;&nbsp;
-                                <label
-                                  className="form-check-label"
-                                  for="defaultCheck1"
-                                >
-                                  isActive
-                                </label>
+                         
+                              <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                                <FormGroup check inline className="radio">
+                                  <Input
+                                    className="form-check-input"
+                                    type="radio"
+                                    //id="radio1"
+                                    name="visiblity"
+                                    
+                                    defaultChecked={(initialValues.visiblity.trim()==="Job")?true:false}
+                                  />
+                                  <Label
+                                    check
+                                    className="form-check-label"
+                                    htmlFor="usedForJobs"
+                                  >
+                                    Job
+                                  </Label>
+                                </FormGroup>
+                                <FormGroup check inline className="radio">
+                                  <Input
+                                    className="form-check-input"
+                                    type="radio"
+                                    //id="radio2"
+                                    name="visiblity"
+                                    //value={initialValues}
+                                    defaultChecked={(initialValues.visiblity.trim()==="Group")?true:false}
+                                  />
+                                  <Label
+                                    check
+                                    className="form-check-label"
+                                    htmlFor="usedForJobs"
+                                  >
+                                    Group
+                                  </Label>
+                                </FormGroup>
+                                <FormGroup check inline className="radio">
+                                  <Input
+                                    className="form-check-input"
+                                    type="radio"
+                                    //id="radio2"
+                                    name="visiblity"
+                                    defaultChecked={(initialValues.visiblity.trim()==="Either")?true:false}
+                                  />
+                                  <Label
+                                    check
+                                    className="form-check-label"
+                                    htmlFor="usedForJobs"
+                                  >
+                                    Both
+                                  </Label>
+                                </FormGroup>
+                              </div>
                             </div>
 
-
+                            <div className="row">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="isActive"></Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
+                            
+                            <input
+                              name="isActive"
+                              id="isActive"
+                              // valid={!errors.isActive}
+                              // invalid={touched.isActive && !!errors.isActive}
+                              onClick={handleChange}
+                              onBlur={handleBlur}
+                              value={values.isActive}
+                              type="checkbox"
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <label
+                              className="form-check-label"
+                              for="defaultCheck1"
+                            >
+                              Active
+                            </label>
+                          </div>
                         </div>
+                          
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>

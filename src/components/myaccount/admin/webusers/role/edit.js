@@ -39,7 +39,7 @@ const classes = {
     // marginTop: '10px',
     // marginLeft: '5px',
   },
-
+  
 
 };
 
@@ -70,7 +70,7 @@ let EditRole = props => {
     setSubmitting(false);
   }
 
-
+  
   const validationSchema = function(values) {
     return Yup.object().shape({
     name: Yup.string()
@@ -103,7 +103,7 @@ let EditRole = props => {
   };
 
   const [initialValues, setInitialValues] = useState({
-
+    
     active: false
   });
 
@@ -129,7 +129,7 @@ let EditRole = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return (
@@ -146,9 +146,8 @@ let EditRole = props => {
 
   async function getlistapi() {
     const { data: initialValues } = await GetRoleDataById(props.IDforAPI);
-    setInitialValues(initialValues);
     console.log(initialValues);
-    setModal(true);
+    setInitialValues(initialValues)
   }
 
 
@@ -211,18 +210,18 @@ let EditRole = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
-
+                           
                           </div>
                         </div>
 
-
-
+                        
+                        
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-
+                            
                             <input
                               name="active"
                               id="active"
@@ -242,8 +241,8 @@ let EditRole = props => {
                             </label>
                           </div>
                         </div>
-
-
+                        
+                        
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>

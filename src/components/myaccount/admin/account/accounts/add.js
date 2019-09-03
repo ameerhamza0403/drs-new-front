@@ -82,6 +82,8 @@ let AddAccount = props => {
     .min(4, `Name has to be at least 4 characters`)
     .required("Name is requierd"),
 
+    addressLine1: Yup.string()
+    .required("Address Line 1 is requierd"),
     });
   };
 
@@ -209,27 +211,22 @@ let AddAccount = props => {
                             <Label for="name">Your Company Name</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <input
-                                id="name"
-                                placeholder="Enter your name"
-                                type="text"
-                                value={values.name}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                name="name"
-                                className={
-                                    errors.name && touched.name
-                                    ? "form-control error"
-                                    : "form-control"
-                                }
-                              
+                          <Input
+                              type="text"
+                              name="name"
+                              id="name"
+                              placeholder="Enter Your Company Name"
+                              autoComplete="given-name"
+                              valid={!errors.name}
+                              invalid={touched.name && !!errors.name}
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.name}
                             />
-                            {errors.name && touched.name && (
-                              <FormFeedback>
-                              {errors.name}
-                            </FormFeedback>
-                            )}
-                           
+                            <FormFeedback>{errors.code}</FormFeedback>
+                            
                           </div>
                         </div>
 
@@ -238,26 +235,23 @@ let AddAccount = props => {
                             <Label for="addressLine1">Address Line 1</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <input
+                            <Input
                                 id="addressLine1"
                                 placeholder="Enter your Address Line 1"
                                 type="text"
-                                value={values.addressLine1}
+                                name="addressLine1"
+                                autoComplete="given-name"
+                                valid={!errors.addressLine1}
+                                invalid={touched.addressLine1 && !!errors.addressLine1}
+                                autoFocus={true}
+                                required
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                name="addressLine1"
-                                className={
-                                    errors.addressLine1 && touched.addressLine1
-                                    ? "form-control error"
-                                    : "form-control"
-                                }
+                                value={values.addressLine1}
                               
                             />
-                            {errors.addressLine1 && touched.addressLine1 && (
-                              <FormFeedback>
-                              {errors.addressLine1}
-                            </FormFeedback>
-                            )}
+                            
+                            <FormFeedback>{errors.addressLine1}</FormFeedback>
                            
                           </div>
                         </div>
@@ -267,26 +261,23 @@ let AddAccount = props => {
                             <Label for="addressLine2">Address Line 2</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <input
+                            <Input
                                 id="addressLine2"
                                 placeholder="Enter your Address Line 2"
                                 type="text"
-                                value={values.addressLine2}
+                                name="addressLin2"
+                                // autoComplete="given-name"
+                                // valid={!errors.addressLine2}
+                                // invalid={touched.addressLine2 && !!errors.addressLine2}
+                                // autoFocus={true}
+                                // required
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                name="addressLine2"
-                                className={
-                                    errors.addressLine2 && touched.addressLine2
-                                    ? "form-control error"
-                                    : "form-control"
-                                }
+                                value={values.addressLine2}
                               
                             />
-                            {errors.addressLine2 && touched.addressLine2 && (
-                              <FormFeedback>
-                              {errors.addressLine2}
-                            </FormFeedback>
-                            )}
+                            
+                            <FormFeedback>{errors.addressLine2}</FormFeedback>
                            
                           </div>
                         </div>
@@ -296,55 +287,51 @@ let AddAccount = props => {
                             <Label for="addressLine3">Address Line 3</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <input
+                            <Input
                                 id="addressLine3"
                                 placeholder="Enter your Address Line 3"
                                 type="text"
-                                value={values.addressLine3}
+                                // autoComplete="given-name"
+                                // valid={!errors.addressLine3}
+                                // invalid={touched.addressLine3 && !!errors.addressLine3}
+                                // autoFocus={true}
+                                // required
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 name="addressLine3"
-                                className={
-                                    errors.addressLine3 && touched.addressLine3
-                                    ? "form-control error"
-                                    : "form-control"
-                                }
-                              
+                                value={values.addressLine3}
                             />
-                            {errors.addressLine3 && touched.addressLine3 && (
-                              <FormFeedback>
-                              {errors.addressLine3}
-                            </FormFeedback>
-                            )}
+                            <FormFeedback>{errors.addressLine3}</FormFeedback>
+                            
                            
                           </div>
                         </div>
+
+                        
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="jobFooterText ">Default text for the job card footer</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <input
+                            <Input
                                 id="jobFooterText "
                                 placeholder="Enter your Footer Text"
                                 type="text"
+                                // autoComplete="given-name"
+                                // valid={!errors.jobFooterText}
+                                // invalid={touched.jobFooterText && !!errors.jobFooterText}
+                                // autoFocus={true}
+                                // required
                                 value={values.jobFooterText }
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 name="jobFooterText"
-                                className={
-                                    errors.jobFooterText  && touched.jobFooterText 
-                                    ? "form-control error"
-                                    : "form-control"
-                                }
+                                
                               
                             />
-                            {errors.jobFooterText  && touched.jobFooterText  && (
-                              <FormFeedback>
-                              {errors.jobFooterText }
-                            </FormFeedback>
-                            )}
+                            <FormFeedback>{errors.jobFooterText}</FormFeedback>
+                            
                            
                           </div>
                         </div>
@@ -354,7 +341,7 @@ let AddAccount = props => {
                             Url of your logo
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                          <input
+                          <Input
                               type="file"
                               name="logo"
                               id="name"
@@ -374,36 +361,7 @@ let AddAccount = props => {
                           </div>
                         </div>
 
-                        
-
-                        {/* <div className="row">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Skin(contact your c/s rep. for more info)</Label>
-                          </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <input
-                                id="skin"
-                                placeholder=""
-                                type="text"
-                                value={values.skin}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                name="skin"
-                                className={
-                                    errors.skin && touched.skin
-                                    ? "form-control error"
-                                    : "form-control"
-                                }
-                              
-                            />
-                            {errors.skin && touched.skin && (
-                              <FormFeedback>
-                              {errors.name}
-                            </FormFeedback>
-                            )}
-                           
-                          </div>
-                        </div> */}
+                    
                         
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
@@ -414,8 +372,8 @@ let AddAccount = props => {
                             <input
                               name="isActive"
                               id="isActive"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
                               value={values.isActive}

@@ -136,7 +136,7 @@ let EditCurrency = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -157,7 +157,6 @@ let EditCurrency = props => {
   async function getlistapi() {
     const { data: initialValues } = await GetVehicleCheckDataById(props.IDforAPI);
     setInitialValues(initialValues);
-    setModal(true);
   }
 
 

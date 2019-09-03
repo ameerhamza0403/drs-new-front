@@ -40,7 +40,7 @@ const classes = {
 
 let VatCodeEdit = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
-  let [GetValues, setGetValues] = useState([
+  let [initialValues, setinitialValues] = useState([
     // {
     //   code: "",
     //   rete: 0,
@@ -65,7 +65,7 @@ let VatCodeEdit = props => {
 
   async function getlistapi() {
     await GetTaxCodeDataById(props.IDforAPI).then(res => {
-      setGetValues((GetValues = res.data));
+      setinitialValues((initialValues = res.data));
       // setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
     setModal(true);
@@ -160,7 +160,7 @@ let VatCodeEdit = props => {
         <ModalBody>
           <div className="container">
             <Formik
-              initialValues={GetValues}
+              initialValues={initialValues}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
               render={({
@@ -190,16 +190,15 @@ let VatCodeEdit = props => {
                               type="text"
                               name="code"
                               id="code"
-                              // placeholder={GetValues.code}
-                              // autoComplete="given-name"
+                              // placeholder={initialValues.code}
+                               autoComplete="given-name"
                               valid={!errors.code}
                               invalid={touched.code && !!errors.code}
                               autoFocus={true}
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={GetValues.code}
-                              // defaultValue={GetValues.code}
+                              value={values.code}
                             />
 
                             <FormFeedback>{errors.code}</FormFeedback>
@@ -214,16 +213,15 @@ let VatCodeEdit = props => {
                               type="text"
                               name="rate"
                               id="rate"
-                              // placeholder={GetValues.rate}
-                              // autoComplete="given-name"
+                              // placeholder={initialValues.rate}
+                              autoComplete="given-name"
                               valid={!errors.rate}
                               invalid={touched.rate && !!errors.rate}
-                              // autoFocus={true}
+                              autoFocus={true}
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.rate}
-                              // defaultValue={GetValues.rate}
                             />
 
                             <FormFeedback>{errors.rate}</FormFeedback>
@@ -238,14 +236,15 @@ let VatCodeEdit = props => {
                               type="text"
                               name="description"
                               id="description"
-                              // placeholder={GetValues.description}
-                              // autoComplete="given-name"
+                              // placeholder={initialValues.description}
+                               autoComplete="given-name"
                               // valid={!errors.description}
                               // invalid={touched.description && !!errors.description}
                               // autoFocus={true}
                               // required
                               onChange={handleChange}
                               // onBlur={handleBlur}
+                              //defaultValue={initialValues.description}
                               value={values.description}
                             />
 
@@ -259,10 +258,9 @@ let VatCodeEdit = props => {
                           invalid={touched.isActive && !!errors.isActive}
                           onClick={handleChange}
                           onBlur={handleBlur}
-                          value={values.isActive}
-                          defaultChecked={GetValues.isActive}
+                          //value={values.isActive}
+                          defaultChecked={initialValues.isActive}
                           type="checkbox"
-
                         />
                         &nbsp;&nbsp;&nbsp;
                         <label className="form-check-label" for="defaultCheck1">

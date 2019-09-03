@@ -148,7 +148,7 @@ let EditWorkSheet = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return (
@@ -165,8 +165,10 @@ let EditWorkSheet = props => {
 
   async function getlistapi() {
     const { data: initialValues } = await GetWorkSheetDataById(props.IDforAPI);
-    console.log(initialValues);
+    
     setInitialValues(initialValues)
+    console.log(initialValues);
+    setModal(true);
   }
 
 
@@ -243,14 +245,15 @@ let EditWorkSheet = props => {
                               type="select"
                               name="ctBackOffice"
                               id="ctBackOffice"
-                              selected={initialValues.ctBackOffice}
+                              //selected={initialValues.ctBackOffice}
                               autoComplete="given-name"
-                              valid={!errors.ctBackOffice}
-                              invalid={touched.ctBackOffice && !!errors.ctBackOffice}
+                              // valid={!errors.ctBackOffice}
+                              // invalid={touched.ctBackOffice && !!errors.ctBackOffice}
                               autoFocus={true}
-                              required
+                              // required
                               onChange={handleChange}
                               onBlur={handleBlur}
+                              //defaultChecked={initialValues.ctBackOffice}
                               value={values.ctBackOffice}
 
                             >
@@ -268,21 +271,22 @@ let EditWorkSheet = props => {
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
-                            <Label for="extensions">Completion time for staff</Label>
+                            <Label for="extensions">Completion time for resource</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
                             <Input
                               type="select"
                               name="ctResource"
                               id="ctResource"
-                              selected={values.ctResource}
+                              //selected={values.ctResource}
                               autoComplete="given-name"
-                              valid={!errors.ctResource}
-                              invalid={touched.ctResource && !!errors.ctResource}
-                              autoFocus={true}
-                              required
+                              // valid={!errors.ctResource}
+                              // invalid={touched.ctResource && !!errors.ctResource}
+                              // autoFocus={true}
+                              // required
                               onChange={handleChange}
                               onBlur={handleBlur}
+                              //defaultChecked={initialValues.ctResource}
                               value={values.ctResource}
                               >
                                 <option value="">N/A</option>
@@ -307,14 +311,15 @@ let EditWorkSheet = props => {
                               type="select"
                               name="ctBookingSite"
                               id="ctBookingSite"
-                              selected={initialValues.ctBookingSite}
+                              //selected={initialValues.ctBookingSite}
                               autoComplete="given-name"
-                              valid={!errors.ctBookingSite}
-                              invalid={touched.ctBookingSite && !!errors.ctBookingSite}
-                              autoFocus={true}
-                              required
+                              // valid={!errors.ctBookingSite}
+                              // invalid={touched.ctBookingSite && !!errors.ctBookingSite}
+                              // autoFocus={true}
+                              // required
                               onChange={handleChange}
                               onBlur={handleBlur}
+                              //defaultChecked={initialValues.ctBookingSite}
                               value={values.ctBookingSite}
                               >
                                 <option value="">N/A</option>
@@ -338,10 +343,10 @@ let EditWorkSheet = props => {
                               id="headerAnswer"
                               placeholder={initialValues.headerAnswer}
                               autoComplete="given-name"
-                              valid={!errors.headerAnswer}
-                              invalid={touched.headerAnswer && !!errors.headerAnswer}
-                              autoFocus={true}
-                              required
+                              // valid={!errors.headerAnswer}
+                              // invalid={touched.headerAnswer && !!errors.headerAnswer}
+                              // autoFocus={true}
+                              // required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.headerAnswer}
@@ -362,10 +367,10 @@ let EditWorkSheet = props => {
                               id="headerNotes"
                               placeholder={initialValues.headerNotes}
                               autoComplete="given-name"
-                              valid={!errors.headerNotes}
-                              invalid={touched.headerNotes && !!errors.headerNotes}
-                              autoFocus={true}
-                              required
+                              // valid={!errors.headerNotes}
+                              // invalid={touched.headerNotes && !!errors.headerNotes}
+                              // autoFocus={true}
+                              // required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.headerNotes}
@@ -380,29 +385,25 @@ let EditWorkSheet = props => {
                             <Label for="sharing">Sharing</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
-                            <Input
-                              type="checkbox"
+
+                            <input
                               name="sharing"
                               id="sharing"
-                              selected={initialValues.sharing}
-                              autoComplete="given-name"
-                              valid={!errors.sharing}
-                              invalid={touched.sharing && !!errors.sharing}
-                              autoFocus={true}
-                              required
-                              onChange={handleChange}
+                              // valid={!errors.sharing}
+                              // invalid={touched.sharing && !!errors.sharing}
+                              onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.sharing}
+                              defaultChecked={initialValues.sharing}
+                              //value={values.sharing}
+                              type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
                             <label
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              Shared with job contractors
+                              share with job contractors
                             </label>
-
-
                           </div>
                         </div>
                         <div className="row">
@@ -414,11 +415,12 @@ let EditWorkSheet = props => {
                             <input
                               name="isActive"
                               id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              // valid={!errors.isActive}
+                              // invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.isActive}
+                              defaultChecked={initialValues.isActive}
+                              //value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

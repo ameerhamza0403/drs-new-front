@@ -81,6 +81,8 @@ let EditAccount = props => {
     .min(4, `Name has to be at least 4 characters`)
     .required("Name is requierd"),
 
+    addressLine1: Yup.string()
+    .required("Address Line 1 is requierd"),
     });
   };
 
@@ -133,6 +135,7 @@ let EditAccount = props => {
   let [filen, setFilen] = useState(false);
   let handleFileSelect = event => {
     setFilen(false);
+    initialValues.logo = "";
     return (selectedFile=event.target.files[0]), setFilen(true);
   };
 
@@ -142,10 +145,9 @@ let EditAccount = props => {
     nameoffile = "";
   }
 
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
-    console.log("jsdh");
     return (
       setModal((modal = !modal)),
       setTimeout(()=> props.cross(), 200)
@@ -157,7 +159,9 @@ let EditAccount = props => {
   useEffect(() => {
     getlistapi();
   }, []);
-
+  let [initialValues, setInitialValues] = useState({
+    
+  });
   let [editValues, setEditValues] = useState({
     name: "",
     addressLine1 :"",
@@ -168,9 +172,11 @@ let EditAccount = props => {
     isActive: false
   });
   async function getlistapi() {
-    const { data: editValues } = await GetAccountDataById(props.IDforAPI);
-    console.log(editValues);
-    setEditValues(editValues)
+    const { data: initialValues } = await GetAccountDataById(props.IDforAPI);
+    
+    setInitialValues(initialValues)
+    console.log(initialValues);
+    setModal(true);
   }
 
 
@@ -192,7 +198,7 @@ let EditAccount = props => {
         <ModalBody style={{'max-height': 'calc(100vh - 150px)', 'overflow-y': 'auto'}}>
           <div className="container">
             <Formik
-              editValues={editValues}
+              initialValues={initialValues}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
               render={({
@@ -218,28 +224,22 @@ let EditAccount = props => {
                             <Label for="name">Your Company Name</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <input
-                                id="name"
-                                placeholder=""
-                                type="text"
-                                //value={values.name}
-                                defaultValue={editValues.name}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                name="name"
-                                className={
-                                    errors.name && touched.name
-                                    ? "form-control error"
-                                    : "form-control"
-                                }
-                              
+                          <Input
+                              type="text"
+                              name="name"
+                              id="name"
+                              //placeholder="Enter Your Company Name"
+                              autoComplete="given-name"
+                              valid={!errors.name}
+                              invalid={touched.name && !!errors.name}
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.name}
                             />
-                            {errors.name && touched.name && (
-                              <FormFeedback>
-                              {errors.name}
-                            </FormFeedback>
-                            )}
-                           
+                            <FormFeedback>{errors.code}</FormFeedback>
+                            
                           </div>
                         </div>
 
@@ -248,27 +248,23 @@ let EditAccount = props => {
                             <Label for="addressLine1">Address Line 1</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <input
+                            <Input
                                 id="addressLine1"
-                                placeholder="Enter your Address Line 1"
+                                //placeholder="Enter your Address Line 1"
                                 type="text"
-                                //value={values.addressLine1}
-                                defaultValue={editValues.addressLine1}
+                                name="addressLine1"
+                                autoComplete="given-name"
+                                valid={!errors.addressLine1}
+                                invalid={touched.addressLine1 && !!errors.addressLine1}
+                                autoFocus={true}
+                                required
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                name="addressLine1"
-                                className={
-                                    errors.addressLine1 && touched.addressLine1
-                                    ? "form-control error"
-                                    : "form-control"
-                                }
+                                value={values.addressLine1}
                               
                             />
-                            {errors.addressLine1 && touched.addressLine1 && (
-                              <FormFeedback>
-                              {errors.addressLine1}
-                            </FormFeedback>
-                            )}
+                            
+                            <FormFeedback>{errors.addressLine1}</FormFeedback>
                            
                           </div>
                         </div>
@@ -278,27 +274,22 @@ let EditAccount = props => {
                             <Label for="addressLine2">Address Line 2</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <input
+                            <Input
                                 id="addressLine2"
-                                placeholder="Enter your Address Line 2"
+                                //placeholder="Enter your Address Line 3"
                                 type="text"
-                                //value={values.addressLine2}
-                                defaultValue={editValues.addressLine2}
+                                autoComplete="given-name"
+                                // valid={!errors.addressLine3}
+                                // invalid={touched.addressLine3 && !!errors.addressLine3}
+                                // autoFocus={true}
+                                // required
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                name="addressLine1"
-                                className={
-                                    errors.addressLine2 && touched.addressLine2
-                                    ? "form-control error"
-                                    : "form-control"
-                                }
-                              
+                                name="addressLine2"
+                                value={values.addressLine2}
                             />
-                            {errors.addressLine2 && touched.addressLine2 && (
-                              <FormFeedback>
-                              {errors.addressLine2}
-                            </FormFeedback>
-                            )}
+                            <FormFeedback>{errors.addressLine2}</FormFeedback>
+                            
                            
                           </div>
                         </div>
@@ -308,27 +299,22 @@ let EditAccount = props => {
                             <Label for="addressLine3">Address Line 3</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <input
+                            <Input
                                 id="addressLine3"
-                                placeholder="Enter your Address Line 1"
+                                //placeholder="Enter your Address Line 3"
                                 type="text"
-                                //value={values.addressLine3}
-                                defaultValue={editValues.addressLine3}
+                                autoComplete="given-name"
+                                // valid={!errors.addressLine3}
+                                // invalid={touched.addressLine3 && !!errors.addressLine3}
+                                // autoFocus={true}
+                                // required
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 name="addressLine3"
-                                className={
-                                    errors.addressLine3 && touched.addressLine3
-                                    ? "form-control error"
-                                    : "form-control"
-                                }
-                              
+                                value={values.addressLine3}
                             />
-                            {errors.addressLine3 && touched.addressLine3 && (
-                              <FormFeedback>
-                              {errors.addressLine3}
-                            </FormFeedback>
-                            )}
+                            <FormFeedback>{errors.addressLine3}</FormFeedback>
+                            
                            
                           </div>
                         </div>
@@ -338,131 +324,71 @@ let EditAccount = props => {
                             <Label for="jobFooterText ">Default text for the job card footer</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <input
+                            <Input
                                 id="jobFooterText "
-                                placeholder=""
+                                //placeholder="Enter your Footer Text"
                                 type="text"
-                                //value={values.jobFooterText }
-                                defaultValue={editValues.jobFooterText}
+                                // autoComplete="given-name"
+                                // valid={!errors.jobFooterText}
+                                // invalid={touched.jobFooterText && !!errors.jobFooterText}
+                                // autoFocus={true}
+                                // required
+                                value={values.jobFooterText }
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                name="jobFooterText "
-                                className={
-                                    errors.jobFooterText  && touched.jobFooterText 
-                                    ? "form-control error"
-                                    : "form-control"
-                                }
+                                name="jobFooterText"
+                                
                               
                             />
-                            {errors.jobFooterText  && touched.jobFooterText  && (
-                              <FormFeedback>
-                              {errors.jobFooterText }
-                            </FormFeedback>
-                            )}
+                            <FormFeedback>{errors.jobFooterText}</FormFeedback>
+                            
                            
                           </div>
                         </div>
-                        
+
                         <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             Url of your logo
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
                           <input
-                            type="text"
-                            name="logo"
-                            id="name"
-                            placeholder={editValues.logo}
-                            autoComplete="given-name"
-                            // valid={!errors.reference}
-                            // invalid={touched.reference && !!errors.reference}
-                            // autoFocus={true}
-                            // required
-                            onChange={handleFileSelect}
-                            // onBlur={handleBlur}
-                            // value={values.reference}
-                            defaultValue={editValues.logo}
-                              
+                              type="file"
+                              name="logo"
+                              id="name"
+                              // placeholder="i.e. "
+                              autoComplete="given-name"
+                              // valid={!errors.reference}
+                              // invalid={touched.reference && !!errors.reference}
+                              // autoFocus={true}
+                              // required
+                              onChange={handleFileSelect}
+                              // onBlur={handleBlur}
+                              // value={values.reference}
+                              //value={values.logo}
                             />
-                            {errors.logo  && touched.logo  && (
-                              <FormFeedback>
-                              {errors.logo }
-                            </FormFeedback>
-                            )}
+                            {initialValues.logo}
+                            
+                            <FormFeedback>{errors.logo}</FormFeedback>
                           </div>
                         </div>
-                        <div className="row mb-2">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                          </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                          <input
-                            type="file"
-                            name="logo"
-                            id="name"
-                            placeholder={editValues.logo}
-                            autoComplete="given-name"
-                            // valid={!errors.reference}
-                            // invalid={touched.reference && !!errors.reference}
-                            // autoFocus={true}
-                            // required
-                            onChange={handleFileSelect}
-                            // onBlur={handleBlur}
-                            value={values.logo}
-                            defaultValue={editValues.logo}
-                              
-                            />
-                            {errors.logo  && touched.logo  && (
-                              <FormFeedback>
-                              {errors.logo }
-                            </FormFeedback>
-                            )}
-                          </div>
-                        </div>
-                        
 
-                        {/* <div className="row">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Skin(contact your c/s rep. for more info)</Label>
-                          </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <input
-                                id="skin"
-                                placeholder=""
-                                type="text"
-                                value={values.skin}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                name="skin"
-                                className={
-                                    errors.skin && touched.skin
-                                    ? "form-control error"
-                                    : "form-control"
-                                }
-                              
-                            />
-                            {errors.skin && touched.skin && (
-                              <FormFeedback>
-                              {errors.name}
-                            </FormFeedback>
-                            )}
-                           
-                          </div>
-                        </div> */}
+                    
                         
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="sharing"></Label>
+                            <Label for="isActive"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              value={values.isActive}
+                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

@@ -11,8 +11,6 @@ import AddTrackingDevice from "./add";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
-import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -64,69 +62,53 @@ let TrackingDeviceListing = () => {
     }
   ]);
 
-  // const columns = [
-  //   {
-  //     name: "trackingDeviceId",
-  //     label: "ID",
-  //     options: {
-  //       filter: true,
-  //       sort: true,
-  //     }
-  //   },
-  //   {
-  //     name: "code",
-  //     label: "Code",
-  //     options: {
-  //       filter: true,
-  //       sort: true
-  //     }
-  //   },
-  //   {
-  //       name: "remarks",
-  //       label: "Remarks",
-  //       options: {
-  //         filter: true,
-  //         sort: true
-  //       }
-  //   },
-  //   {
-  //     name: "isActive",
-  //     label: "Status",
-  //     options: {
-  //       filter: false,
-  //       sort: false,
-  //       display: false
-  //     }
-  //   }
+  const columns = [
+    {
+      name: "trackingDeviceId",
+      label: "ID",
+      options: {
+        filter: true,
+        sort: true,
+      }
+    },
+    {
+      name: "code",
+      label: "Code",
+      options: {
+        filter: true,
+        sort: true
+      }
+    },
+    {
+        name: "remarks",
+        label: "Remarks",
+        options: {
+          filter: true,
+          sort: true
+        }
+    },
+    {
+      name: "isActive",
+      label: "Status",
+      options: {
+        filter: false,
+        sort: false,
+        display: false
+      }
+    }
 
-  // ];
+  ];
 
-  // const options = {
-  //   filterType: "multiselect",
-  //   onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-  //   // onChangePage: (currentPage)=> handlechangepage(currentPage),
-  //   // onChangeRowsPerPage: (numberOfRows)=> handlechangepagesize(numberOfRows),
-  //   rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-  //   selectableRows: "none",
-  //   viewColumns: true
-  //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
-  // };
- //-- React Data Table
- const options = {
-  sortIndicator: true,
-  // page: Page,
-  hideSizePerPage: true,
-  // paginationSize: PageSize,
-  hidePageListOnlyOnePage: true,
-  sizePerPage: PageSize,
-  // clearSearch: true,
-  alwaysShowAllBtns: false,
-  onRowClick: HandlerowSelect,
-  withFirstAndLast: false,
-  // onPageChange: onPageChange,
-  // onSizePerPageList: sizePerPageListChange,
-};
-
+  const options = {
+    filterType: "multiselect",
+    onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+    // onChangePage: (currentPage)=> handlechangepage(currentPage),
+    // onChangeRowsPerPage: (numberOfRows)=> handlechangepagesize(numberOfRows),
+    rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+    selectableRows: "none",
+    viewColumns: true
+    // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+  };
 
   let PageSizeComp = (
     <select onChange={handlePageSize} value={PageSize}>
@@ -409,31 +391,12 @@ let TrackingDeviceListing = () => {
   if (Tabledistatus) {
     Tabledisplay = (
       <div>
-      {/* <MUIDataTable
+      <MUIDataTable
         title={"Actions & Filters"}
         data={Atlist}
         columns={columns}
         options={options}
-      /> */}
-       <BootstrapTable
-          data={Atlist}
-          version="4"
-          striped
-          hover
-          pagination
-          search
-          options={options}
-        >
-          <TableHeaderColumn isKey  dataField="trackingDeviceId" dataSort>
-          Device Tracking ID
-          </TableHeaderColumn>
-          <TableHeaderColumn  dataField="code" dataSort>
-          Code
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="remarks" dataSort>
-          Remarks
-          </TableHeaderColumn>
-        </BootstrapTable>
+      />
       <br />
         <div className="row">
           <div className="col">
@@ -538,12 +501,12 @@ let TrackingDeviceListing = () => {
   }
 
   let [menushow, setMenushow] = useState(false);
-  function HandlerowSelect  (row) {
+  let HandlerowSelect = (data, meta) => {
     menuDiv = "";
-    idofEdit = row.trackingDeviceId;
+    idofEdit = data[0];
     return setMenushow((menushow = true));
   };
-  let Handlerowclose = (row) => {
+  let Handlerowclose = (data, meta) => {
     return setMenushow((menushow = false));
   };
   if (menushow) {

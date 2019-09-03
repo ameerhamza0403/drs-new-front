@@ -39,9 +39,9 @@ export function GetListingForWorkSheetQ(Id,pg,pgsize) {
 }
 
 //---------Edit APi
-export function GetWorkSheetQDataById(id) {
+export function GetWorkSheetQDataById(idm, idq) {
     // console.log(id)
-    return axios.get(ApiwithidWorkSheetQ(id),
+    return axios.get(ApiwithidforputWorkSheetQ(idm,idq),
              {headers: {
                  'Content-Type': 'application/json',
                 }}

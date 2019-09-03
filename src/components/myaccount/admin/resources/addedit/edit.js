@@ -241,7 +241,7 @@ function success(response) {
                   onClick={handleChange("viewOwnResource")}
                 />
                 <label className="form-check-label" for="defaultCheck22">
-                  Web user only allowed to view his own Staff
+                  Web user only allowed to view his own resource
                 </label>
               </div>
             </div>
@@ -322,7 +322,7 @@ function success(response) {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title" className={classes.root}>
-          {"New Staff"}
+          {"New Resources"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -599,7 +599,7 @@ function success(response) {
                         onClick={handleChange("tracked")}
                       />
                       <label className="form-check-label" for="defaultCheck10">
-                        Staff is tracked
+                        Resource is tracked
                       </label>
                       <br />
                       &nbsp;&nbsp;&nbsp;&nbsp;
@@ -696,7 +696,7 @@ function success(response) {
                           onClick={handleChange("jobWatchSetting")}
                         />
                         <label className="form-check-label" for="inlineRadio4">
-                          Staff is subcontractor(0 licence(s) remaining)
+                          Resource is subcontractor(0 licence(s) remaining)
                         </label>
                       </div>
                     </div>

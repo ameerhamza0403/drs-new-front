@@ -64,10 +64,10 @@ let EditExpenseCategory = props => {
 
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    Object.keys(editvalues).map(function(keyName, keyIndex) {
+    Object.keys(initialValues).map(function(keyName, keyIndex) {
       if(!values.hasOwnProperty(keyName)){
         // values.keyName=editValue.keyName;
-        values[keyName]=editvalues[keyName]
+        values[keyName]=initialValues[keyName]
       }
     })
     await PutExpenseCategoryDataById(props.IDforAPI, values).then(()=>success()).catch(error=>errort());
@@ -111,10 +111,15 @@ let EditExpenseCategory = props => {
     }, {});
   };
 
-  const [editvalues, seteditvalues] = useState({
+  const [initialValues, setInitialValues] = useState({
     
-    active: false
+    isActive: false
   });
+
+  // const [editvalues, seteditvalues] = useState({
+    
+  //   isActive: false
+  // });
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -138,7 +143,7 @@ let EditExpenseCategory = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return (
@@ -154,9 +159,11 @@ let EditExpenseCategory = props => {
   }, []);
 
   async function getlistapi() {
-    const { data: editvalues } = await GetExpenseCategoryDataById(props.IDforAPI);
-    console.log(editvalues);
-    seteditvalues(editvalues)
+    const { data: initialValues } = await GetExpenseCategoryDataById(props.IDforAPI);
+    
+    setInitialValues(initialValues);
+    console.log(initialValues);
+    setModal(true);
   }
 
 
@@ -178,7 +185,7 @@ let EditExpenseCategory = props => {
         <ModalBody style={{'max-height': 'calc(100vh - 150px)', 'overflow-y': 'auto'}}>
           <div className="container">
             <Formik
-              editvalues={editvalues}
+              initialValues={initialValues}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
               render={({
@@ -208,16 +215,16 @@ let EditExpenseCategory = props => {
                               type="text"
                               name="group"
                               id="group"
-                              placeholder={editvalues.group}
+                              //placeholder={editvalues.group}
                               autoComplete="given-name"
-                              valid={!errors.group}
-                              invalid={touched.group && !!errors.group}
-                              autoFocus={true}
-                              required
+                              // valid={!errors.group}
+                              // invalid={touched.group && !!errors.group}
+                              // autoFocus={true}
+                              // required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.group}
-                              defaultValue={ editvalues.group}
+                              //defaultValue={ editvalues.group}
                             />
                             <FormFeedback>{errors.group}</FormFeedback>
                            
@@ -233,12 +240,12 @@ let EditExpenseCategory = props => {
                               type="text"
                               name="name"
                               id="name"
-                              placeholder={editvalues.name}
+                              //placeholder={editvalues.name}
                               autoComplete="given-name"
-                              valid={!errors.name}
-                              invalid={touched.name && !!errors.name}
-                              autoFocus={true}
-                              required
+                              // valid={!errors.name}
+                              // invalid={touched.name && !!errors.name}
+                              // autoFocus={true}
+                              // required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.name}
@@ -253,28 +260,17 @@ let EditExpenseCategory = props => {
                             <Label for="defaultVAT">defaultVAT</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <input
-                             
-                             
-                              type="text"
+                            <Input
+                              type="number"
                               name="defaultVAT"
                               id="defaultVAT"
-                              placeholder="e.g. Taxi, train, Fuel etc..."
-                              
+                              //placeholder="e.g. Taxi, train, Fuel etc..."
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={editvalues.defaultVAT}
-                              className={
-                                errors.name && touched.name
-                                  ? "form-control error"
-                                  : "form-control"
-                              }
+                              value={values.defaultVAT}
+                              
                             />
-                            {errors.name && touched.name && (
-                              <FormFeedback>
-                              {errors.name}
-                            </FormFeedback>
-                            )}
+                            
                            
                           </div>
                         </div>
@@ -284,26 +280,18 @@ let EditExpenseCategory = props => {
                             <Label for="defaultCost">Default Cost</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <input
-                              type="text"
+                            <Input
+                              type="number"
                               name="defaultCost"
                               id="defaultCost"
                               placeholder=""
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              defaultValue={editvalues.defaultCost}
-                              //value={values.defaultCost}
-                              className={
-                                errors.defaultCost && touched.defaultCost
-                                  ? "form-control error"
-                                  : "form-control"
-                              }
+                              //defaultValue={editvalues.defaultCost}
+                              value={values.defaultCost}
+                              
                             />
-                            {errors.defaultCost && touched.defaultCost && (
-                              <FormFeedback>
-                              {errors.defaultCost}
-                            </FormFeedback>
-                            )}
+                           
                            
                           </div>
                         </div>
@@ -321,7 +309,7 @@ let EditExpenseCategory = props => {
                               invalid={touched.amountChangeable && !!errors.amountChangeable}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={editvalues.amountChangeable}
+                              defaultChecked={initialValues.amountChangeable}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -347,7 +335,7 @@ let EditExpenseCategory = props => {
                               invalid={touched.isFuel && !!errors.isFuel}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={editvalues.isFuel}
+                              defaultChecked={initialValues.isFuel}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -363,18 +351,18 @@ let EditExpenseCategory = props => {
                         
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="sharing"></Label>
+                            <Label for="isActive"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={editvalues.active}
+                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

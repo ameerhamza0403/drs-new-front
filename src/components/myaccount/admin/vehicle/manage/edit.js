@@ -1,7 +1,8 @@
 import React, { Component, useEffect, useState } from "react";
 import {
-  GetTrackingDeviceData} from "..//shared/manage";
-import ManageVehAttributeEdit from './attributeedit';
+  GetTrackingDeviceData
+} from "..//shared/manage";
+import ManageVehAttribute from './attribute';
 import {
   Button,
   Card,
@@ -21,16 +22,16 @@ import {
 import Select from "react-select";
 // import "react-select/dist/react-select.min.css";
 import 'react-select/dist/react-select.css';
-import { Formik, setIn } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TextField from "@material-ui/core/TextField";
 import { GetListingForcurrency } from "../../resources/shared/currency";
-import { GetListingPageForVehicletype } from "../shared/vehicletype";
-import { GetPagListingForVehicleGroup } from "../shared/vehiclegroup";
+import { GetListingForVehicleType } from "../shared/vehicletype";
+import { GetListingForVehicleGroups } from "../shared/vehiclegroup";
 import { GetListingForVehicleChecktype } from "../shared/vehiclechecktype";
-import {PutVehiclemanageDataById,GetVehiclemanageDataById} from '../shared/manage';
+import {PutVehiclemanageDataById} from '../shared/manage';
 let iconpack = "https://cdn.bigchangeapps.com/img/Map/cn/40/air-n.png";
 
 
@@ -61,22 +62,9 @@ let EditVehicleManage = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    console.log(values)
-    if(values.hasOwnProperty('cO2Unit')){
-      if(values.cO2Unit===true){
-        values.cO2Unit=1;
-      }
-      else{
-        values.cO2Unit=0;
-      }
-    }
-    Object.keys(initialValues).map(function(keyName, keyIndex) {
-      if(!values.hasOwnProperty(keyName)){
-        // values.keyName=editValue.keyName;
-        values[keyName]=initialValues[keyName]
-      }
-    })
-    await PutVehiclemanageDataById(props.IDforAPI, values)
+    let newvalue = values;
+    console.log(newvalue);
+    await PutVehiclemanageDataById(props.IDforAPI, newvalue)
       .then(() => success())
       .catch(error => errort());
       handleOpen();
@@ -121,23 +109,15 @@ let EditVehicleManage = props => {
     name: "",
     isActive: true
   }]);
-
-
   useEffect(() => {
     getvehchecktype();
     getcurrlist();
     getVehicletype();
     gettracking();
     getvehiclegroup();
-    getlistapi();
   }, []);
 
-async function getlistapi(){
-  const {data: initialValues}= await GetVehiclemanageDataById(props.IDforAPI);
-  setInitialvalues(initialValues);
-  console.log(initialValues)
-  setModal(true);
-}
+
   async function getvehchecktype() {
     const { data: vehchecktype } = await GetListingForVehicleChecktype();
     setVehiclechecktype(vehchecktype);
@@ -153,7 +133,7 @@ async function getlistapi(){
   }
 
   async function getVehicletype() {
-    const { data: vehicledata } = await GetListingPageForVehicletype(0,0);
+    const { data: vehicledata } = await GetListingForVehicleType();
     setVehicledata(vehicledata);
   }
 
@@ -163,7 +143,7 @@ async function getlistapi(){
   }
 
   async function getvehiclegroup() {
-    const { data: vehiclegroupdata } = await GetPagListingForVehicleGroup(0,0);
+    const { data: vehiclegroupdata } = await GetListingForVehicleGroups();
     setVehicleGroupdata(vehiclegroupdata);
     // handleOpen();
   }
@@ -248,7 +228,7 @@ async function getlistapi(){
     iconpack
   ];
 
-  let [initialValues, setInitialvalues] = useState({
+  const [initialValues, setInitialvalues] = useState({
     vehicleId: 0,
     registration: "",
     vehicleTypeId: 0,
@@ -309,16 +289,15 @@ async function getlistapi(){
     handleOpenMT();
   };
 
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
   let [modalMT, setModalMT] = useState(false);
 
   let handleOpen = () => {
-    return setModal((modal=false));
+    return setModal((modal=!modal));
   };
 
   let handleOpenMT = () => {
-    return setModal((modal = false)), setTimeout(() => props.cross(), 200);
-    // return setModalMT((modalMT = !modalMT));
+    return setModalMT((modalMT = !modalMT));
   };
 
 
@@ -447,7 +426,7 @@ async function getlistapi(){
                                   // maxLength={8}
                                   // style={classes.input}
                                 >
-                                  {/* <option selected hidden >{editValue.vehicleTypeId}</option> */}
+                                  <option selected />
                                   {vehicledata.map(e => (
                                     <option value={e.vehicleTypeId}>
                                       {e.name}
@@ -487,11 +466,8 @@ async function getlistapi(){
                                   // maxLength={8}
                                   // style={classes.input}
                                 >
+                                  <option selected />
                                   {trackingdata.map(e => (
-                                    // (!(initialValues.trackingDeviceId===undefined))? (e.trackingDeviceId===initialValues.trackingDeviceId)?
-                                    //   <option selected hidden >{e.code}</option>
-                                    // : <option selected ></option> :
-
                                     <option value={e.code}>
                                       {e.trackingDeviceId}
                                     </option>
@@ -556,7 +532,6 @@ async function getlistapi(){
                                     id="radio1"
                                     name="usedForJobs"
                                     value={true}
-                                    defaultChecked={(initialValues.usedForJobs===true)?true:false}
                                   />
                                   <Label
                                     check
@@ -573,7 +548,6 @@ async function getlistapi(){
                                     id="radio2"
                                     name="usedForJobs"
                                     value={false}
-                                    defaultChecked={(initialValues.usedForJobs===false)?false:true}
                                   />
                                   <Label
                                     check
@@ -624,7 +598,7 @@ async function getlistapi(){
                           <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div className="row">
                               <div className="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                                <Label for="usedForJobs">Fixed staff</Label>
+                                <Label for="usedForJobs">Fixed resource</Label>
                               </div>
                               <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
                                 <FormGroup check inline className="radio">
@@ -633,7 +607,6 @@ async function getlistapi(){
                                     type="radio"
                                     id="radio3"
                                     name="fixedResource"
-                                    defaultChecked={(initialValues.fixedResource)?true:false}
                                     value={true}
                                   />
                                   <Label
@@ -650,7 +623,6 @@ async function getlistapi(){
                                     type="radio"
                                     id="radio4"
                                     name="fixedResource"
-                                    defaultChecked={(initialValues.fixedResource)?false:true}
                                     value={false}
                                   />
                                   <Label
@@ -749,7 +721,6 @@ async function getlistapi(){
                                     type="radio"
                                     id="radio5"
                                     name="odometerUnit"
-                                    defaultChecked={(initialValues.odometerUnit==='kilometers')?true:false}
                                     value={"kilometers"}
                                   />
                                   <Label
@@ -766,7 +737,6 @@ async function getlistapi(){
                                     type="radio"
                                     id="radio6"
                                     name="odometerUnit"
-                                    defaultChecked={(initialValues.odometerUnit==='miles')?true:false}
                                     value={"miles"}
                                   />
                                   <Label
@@ -991,9 +961,8 @@ async function getlistapi(){
                                         className="form-check-input"
                                         type="radio"
                                         id="radio5"
-                                        defaultChecked={(initialValues.cO2Unit===0)?true:false}
                                         name="cO2Unit"
-                                        value={true}
+                                        value={0}
                                       />
                                       <Label
                                         check
@@ -1009,8 +978,7 @@ async function getlistapi(){
                                         type="radio"
                                         id="radio6"
                                         name="cO2Unit"
-                                        defaultChecked={(initialValues.cO2Unit===1)?true:false}
-                                        value={false}
+                                        value={1}
                                       />
                                       <Label
                                         check
@@ -1109,7 +1077,7 @@ async function getlistapi(){
                             <Label for="year">Attributes</Label>
                           </div>
                           <div className="col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8" >
-                            <ManageVehAttributeEdit shrvalue={HandleSHR} data={initialValues.attributes}/>
+                            <ManageVehAttribute shrvalue={HandleSHR} />
                           </div>
                         </div>
 

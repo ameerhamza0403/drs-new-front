@@ -3,25 +3,19 @@ import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
 import EditAbsence from "./edit";
 import {
-  GetListingpgForAbsencetype,
+  GetListingForAbsence,
   DeleteAbsenceDataById
 } from "..//shared/absencetype";
 import AddAbsencetype from "./add";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
-import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
-import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+
 
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
 let count = false;
-let Page = 1;
-let PageSize = 10;
-let paging = "";
-let TotalPages = 2;
 
 const classes = {
   linearprogress: {
@@ -53,75 +47,55 @@ const classes = {
 
 let AbsenceListing = () => {
   let [Atlist, setAtlist] = useState([]);
-  let [paginate, setPaginate] = useState();
 
+  const columns = [
+    {
+      name: "absenceTypeId",
+      label: "ID",
+      options: {
+        filter: false,
+        sort: false,
+        display: false
+      }
+    },
+    {
+      name: "name",
+      label: "Name",
+      options: {
+        filter: true,
+        sort: true
+      }
+    },
+    {
+      name: "isActive",
+      label: "Status",
+      options: {
+        filter: false,
+        sort: false,
+        display: false
+      }
+    }
+    //   {
+    //     name: "action",
+    //     label: "Action",
+    //     options: {
+    //       filter: false,
+    //       sort: false,
+    //       display: true
+    //     }
+    // }
+  ];
 
-  //-- React Data Table
-const options = {
-  sortIndicator: true,
-  // page: Page,
-  hideSizePerPage: true,
-  // paginationSize: 5,
-  // hidePageListOnlyOnePage: false,
-  // clearSearch: true,
-  alwaysShowAllBtns: false,
-  onRowClick: HandlerowSelect,
-  withFirstAndLast: false,
+  const options = {
+    filterType: "multiselect",
+    onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+    customToolbar: () => console.log("rowData"),
+    rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+    selectableRows: "none",
+    viewColumns: true
 
-  // onPageChange: onPageChange,
-  // onSizePerPageList: sizePerPageListChange
-};
-
-
-
-  // const columns = [
-  //   {
-  //     name: "absenceTypeId",
-  //     label: "ID",
-  //     options: {
-  //       filter: false,
-  //       sort: false,
-  //       display: false
-  //     }
-  //   },
-  //   {
-  //     name: "name",
-  //     label: "Name",
-  //     options: {
-  //       filter: true,
-  //       sort: true
-  //     }
-  //   },
-  //   {
-  //     name: "isActive",
-  //     label: "Status",
-  //     options: {
-  //       filter: false,
-  //       sort: false,
-  //       display: false
-  //     }
-  //   }
-  //   //   {
-  //   //     name: "action",
-  //   //     label: "Action",
-  //   //     options: {
-  //   //       filter: false,
-  //   //       sort: false,
-  //   //       display: true
-  //   //     }
-  //   // }
-  // ];
-
-  // const options = {
-  //   filterType: "multiselect",
-  //   onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-  //   customToolbar: () => console.log("rowData"),
-  //   rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-  //   selectableRows: "none",
-  //   viewColumns: true
-
-  //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
-  // };
+    // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+  };
 
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
@@ -129,29 +103,12 @@ const options = {
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
-      // <MUIDataTable
-      //   title={"Actions & Filters"}
-      //   data={Atlist}
-      //   columns={columns}
-      //   options={options}
-      // />
-      <BootstrapTable
-                    data={Atlist}
-                    version="4"
-                    striped
-                    hover
-
-                    // search
-                    options={options}
-                    >
-                    <TableHeaderColumn dataField="name" dataSort>
-                    Name
-                    </TableHeaderColumn>
-                    <TableHeaderColumn isKey dataField="isActive" hidden dataSort>
-                    isActive
-                    </TableHeaderColumn>
-
-                </BootstrapTable>
+      <MUIDataTable
+        title={"Actions & Filters"}
+        data={Atlist}
+        columns={columns}
+        options={options}
+      />
     );
   } else {
     Tabledisplay = (
@@ -168,13 +125,12 @@ const options = {
   }, []);
 
   async function getlistapi() {
+    const { data: Atlist } = await GetListingForAbsence();
+    setAtlist(Atlist);
+    // Atlist.map((e,i)=>
+    //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
-
-    await GetListingpgForAbsencetype(Page, PageSize).then(res => {
-      setAtlist((Atlist = res.data));
-      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-    });
-    TotalPages = paginate.totalPages;
+    //                 )
     settabledistatus((Tabledistatus = true));
   }
 
@@ -229,9 +185,9 @@ function success() {
   }
 
   let [menushow, setMenushow] = useState(false);
-  function HandlerowSelect  (row) {
+  let HandlerowSelect = (data, meta) => {
     menuDiv = "";
-    idofEdit = row.absenceTypeId;
+    idofEdit = data[0];
     return setMenushow((menushow = true));
   };
   let Handlerowclose = (data, meta) => {

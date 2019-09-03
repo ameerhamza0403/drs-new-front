@@ -124,7 +124,7 @@ let EditGroup = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -139,7 +139,6 @@ let EditGroup = props => {
       props.IDforAPI
     );
     setInitialValues(initialValues);
-    setModal(true);
   }
 
   return (
@@ -149,7 +148,7 @@ let EditGroup = props => {
         toggle={handleOpen}
         className={"modal-primary " + props.className}
       >
-        <ModalHeader toggle={handleOpen}>Edit Staff Group</ModalHeader>
+        <ModalHeader toggle={handleOpen}>Edit Resource Group</ModalHeader>
         <ModalBody>
           <div className="container">
             <Formik
@@ -176,14 +175,14 @@ let EditGroup = props => {
                       <FormGroup>
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Staff Group</Label>
+                            <Label for="name">Resource Group</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
                               type="text"
                               name="name"
                               id="name"
-                              // placeholder={initialValues.name}
+                              placeholder={initialValues.name}
                               autoComplete="given-name"
                               valid={!errors.name}
                               invalid={touched.name && !!errors.name}
@@ -203,7 +202,6 @@ let EditGroup = props => {
                               onClick={handleChange}
                               onBlur={handleBlur}
                               value={values.isActive}
-                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

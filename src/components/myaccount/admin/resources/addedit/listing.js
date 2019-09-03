@@ -4,7 +4,7 @@ import "../../../../../scss/override/listing.scss";
 import AddeditEdit from './edit';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import Icon2 from '@material-ui/icons/Clear';
-import {GetListingpgForResource, DeleteAddEditDataById} from '..//shared/addedit';
+import {GetListingForAddEdit, DeleteAddEditDataById} from '..//shared/addedit';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import AddeditAdd from './add';
 import { toast } from "react-toastify";
@@ -14,10 +14,6 @@ let idofEdit = 0;
 let count=0;
 let menuDiv='';
 let EditshowModel='';
-let Page = 1;
-let PageSize = 10;
-let paging = "";
-let TotalPages = 2;
 
 const classes = {
   linearprogress: {
@@ -49,9 +45,6 @@ const classes = {
 
 
 let AddeditListing=()=>{
-
-  let [paginate, setPaginate] = useState();
-
 
   let Tabledisplay=<LinearProgress style={classes.linearprogress} color="secondary" />
     let [Tabledistatus, settabledistatus]=useState(false)
@@ -199,11 +192,8 @@ let AddeditListing=()=>{
       }, [count]);
 
       async function getlistapi() {
-        await GetListingpgForResource(Page, PageSize).then(res => {
-          setAtlist((Atlist = res.data));
-          setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-        });
-        TotalPages = paginate.totalPages;
+        let { data: Atlist } = await GetListingForAddEdit();
+        setAtlist(Atlist);
         Atlist.map(
           (e, i) =>
             (
@@ -324,7 +314,7 @@ function success() {
             {menuDiv}
           </div>
           <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-            <h3 className="heading">MANAGE STAFF</h3>
+            <h3 className="heading">MANAGE</h3>
           </div>
         </div>
         <br />

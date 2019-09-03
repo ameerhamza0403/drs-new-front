@@ -74,7 +74,7 @@ let AddResourceSkill = (props) => {
   const validationSchema = function(values) {
     return Yup.object().shape({
       name: Yup.string()
-        .min(2, `Skill name has to be at least 4 characters`)
+        .min(4, `Skill name has to be at least 4 characters`)
         .required("Skill Name is required")
     });
   };
@@ -101,10 +101,10 @@ let AddResourceSkill = (props) => {
     }, {});
   };
 
-  let [initialValues, setInitialValues] =useState( {
+  const initialValues = {
     name: "",
     isActive: false
-  });
+  };
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -173,7 +173,7 @@ let AddResourceSkill = (props) => {
                       <FormGroup>
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Staff Skill Name</Label>
+                            <Label for="name">Resource Skill Name</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input

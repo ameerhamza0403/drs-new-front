@@ -112,7 +112,7 @@ export default {
 },
 // {
 //   title: true,
-//   name: "FLEET & STAFF",
+//   name: "FLEET & RESOURCES",
 //   wrapper: {
 //     // optional wrapper object
 //     element: "", // required valid HTML5 element tag
@@ -121,7 +121,7 @@ export default {
 //   class: "" // optional class names space delimited list for title item ex: "text-center"
 // },
 {
-  name: "FLEET & STAFF",
+  name: "FLEET & RESOURCES",
   url: "/fleet",
   icon: "fa fa-truck",
   children: [
@@ -226,43 +226,43 @@ export default {
   icon: "fa fa-user-secret",
   children: [
     {
-      name: "STAFF",
-      url: "/admin/staff",
+      name: "RESOURCES",
+      url: "/admin/resources",
       icon: "fa fa-user-o",
       children: [
         {
-          name: "Manage Staff",
-          url: "/admin/staff/manage",
+          name: "Manage",
+          url: "/admin/resources/manage",
           icon: "fa fa-user-o"
         },
         {
-          name: "Staff Groups",
-          url: "/admin/staff/group",
+          name: "Groups",
+          url: "/admin/resources/group",
           icon: "fa fa-user-o"
         },
         {
-          name: "Staff Skills",
-          url: "/admin/staff/skills",
+          name: "Resource Skills",
+          url: "/admin/resources/skills",
           icon: "fa fa-user-o"
         },
-        // {
-        //   name: "Custom Fields",
-        //   url: "/admin/staff/custom",
-        //   icon: "fa fa-user-o"
-        // },
+        {
+          name: "Custom Fields",
+          url: "/admin/resources/custom",
+          icon: "fa fa-user-o"
+        },
         {
           name: "Phone Book",
-          url: "/admin/staff/phone",
+          url: "/admin/resources/phone",
           icon: "fa fa-user-o"
         },
         {
           name: "Driver Behaviour",
-          url: "/admin/staff/driver",
+          url: "/admin/resources/driver",
           icon: "fa fa-user-o"
         },
         {
           name: "Absence Types",
-          url: "/admin/staff/absencetype",
+          url: "/admin/resources/absencetype",
           icon: "fa fa-user-o"
         }
       ]
@@ -273,7 +273,7 @@ export default {
       icon: "fa fa-truck",
       children: [
         {
-          name: "Manage Vehicle",
+          name: "Manage",
           url: "/admin/vehicle/manage",
           icon: "fa fa-truck"
         },
@@ -292,11 +292,11 @@ export default {
           url: "/admin/vehicle/attribute",
           icon: "fa fa-truck"
         },
-        // {
-        //   name: "Vehicle Custom Fields",
-        //   url: "/admin/vehicle/custom",
-        //   icon: "fa fa-truck"
-        // },
+        {
+          name: "Vehicle Custom Fields",
+          url: "/admin/vehicle/custom",
+          icon: "fa fa-truck"
+        },
         {
           name: "Vehicle Check",
           url: "/admin/vehicle/check",
@@ -339,16 +339,16 @@ export default {
           url: "/admin/schedule/jobcategory",
           icon: "fa fa-clock-o"
         },
-        // {
-        //   name: "Job Custom Field",
-        //   url: "/admin/schedule/custom",
-        //   icon: "fa fa-clock-o"
-        // },
-        // {
-        //   name: "Job Flags",
-        //   url: "/admin/schedule/jobflag",
-        //   icon: "fa fa-users"
-        // },
+        {
+          name: "Job Custom Field",
+          url: "/admin/schedule/custom",
+          icon: "fa fa-clock-o"
+        },
+        {
+          name: "Job Flags",
+          url: "/admin/schedule/jobflag",
+          icon: "fa fa-users"
+        },
 
         {
           name: "Work Sheet",
@@ -372,11 +372,11 @@ export default {
           url: "/admin/contact/group",
           icon: "fa fa-users"
         },
-        // {
-        //   name: "Contact Custom Fields",
-        //   url: "/admin/contact/custom",
-        //   icon: "fa fa-users"
-        // },
+        {
+          name: "Contact Custom Fields",
+          url: "/admin/contact/custom",
+          icon: "fa fa-users"
+        },
         {
           name: "Person Flags",
           url: "/admin/contact/flag",
@@ -387,11 +387,11 @@ export default {
           url: "/admin/contact/type",
           icon: "fa fa-users"
         },
-        // {
-        //   name: "Notes Custom Fields",
-        //   url: "/admin/notes/custom",
-        //   icon: "fa fa-users"
-        // },
+        {
+          name: "Notes Custom Fields",
+          url: "/admin/notes/custom",
+          icon: "fa fa-users"
+        },
         {
           name: "Note Workflows",
           url: "/admin/note/workflow",
@@ -420,32 +420,27 @@ export default {
       icon: "fa fa-bank",
       children: [
         {
-          name: "Financial documents",
+          name: "Financial documents & Sales Opps",
           url: "/admin/finance/docs",
           icon: "fa fa-bank"
         },
-        // {
-        //   name: "Custom fields",
-        //   url: "/admin/finance/custom",
-        //   icon: "fa fa-bank"
-        // },
         {
-          name: "Predefined items",
+          name: "Financial documents' custom fields",
+          url: "/admin/finance/custom",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Predefined invoicing items",
           url: "/admin/finance/predefinvoice",
           icon: "fa fa-bank"
         },
-        // {
-        //   name: "Items Custom fields",
-        //   url: "/admin/finance/invoice-custom",
-        //   icon: "fa fa-bank"
-        // },
         {
-          name: "Bank accounts",
-          url: "/admin/finance/account",
+          name: "Predef. invoice items' custom fields",
+          url: "/admin/finance/invoice-custom",
           icon: "fa fa-bank"
         },
         {
-          name: "Nominal code",
+          name: "Nominal codes",
           url: "/admin/finance/nominalcode",
           icon: "fa fa-bank"
         },
@@ -461,17 +456,17 @@ export default {
         },
         {
           name: "Sales opportunity stages",
-          url: "/admin/finance/sale",
+          url: "/admin/finance/salesopportunitystage",
           icon: "fa fa-bank"
         },
         {
           name: "Sales opportunity probabilities",
-          url: "/admin/finance/saleprob",
+          url: "/admin/finance/saleprobability",
           icon: "fa fa-bank"
         },
         {
           name: "Sales opportunity flags",
-          url: "/admin/finance/saleflag",
+          url: "/admin/finance/salesopportunityflag",
           icon: "fa fa-bank"
         },
         {
@@ -508,16 +503,6 @@ export default {
       url: "/admin/forms",
       icon: "fa fa-bank",
       children: [
-        {
-          name: "File Group",
-          url: "/admin/form/filegroup",
-          icon: "fa fa-bank"
-        },
-        {
-          name: "File Library",
-          url: "/admin/form/filelibrary",
-          icon: "fa fa-bank"
-        },
         {
           name: "Timesheet Activities",
           url: "/admin/forms/timesheetactivity",
@@ -557,22 +542,22 @@ export default {
           url: "/admin/account/accounts",
           icon: "fa fa-bank"
         },
-
+        
       ]
     },
-    // {
-    //   name: "TEST",
-    //   url: "/admin/test",
-    //   icon: "fa fa-bank",
-    //   children: [
-    //     {
-    //       name: "Test",
-    //       url: "/admin/test/test",
-    //       icon: "fa fa-bank"
-    //     },
-
-    //   ]
-    // },
+    {
+      name: "TEST",
+      url: "/admin/test",
+      icon: "fa fa-bank",
+      children: [
+        {
+          name: "Test",
+          url: "/admin/test/test",
+          icon: "fa fa-bank"
+        },
+        
+      ]
+    },
   ],
 },
 {

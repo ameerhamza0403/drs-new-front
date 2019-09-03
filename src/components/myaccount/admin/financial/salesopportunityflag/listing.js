@@ -178,13 +178,7 @@ const options = {
       console.log(Atlist)
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
-    
-
-    
     TotalPages = paginate.totalPages;
-    
-
-    
     settabledistatus((Tabledistatus = false));
     settabledistatus((Tabledistatus = true));
   }

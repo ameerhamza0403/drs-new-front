@@ -2,7 +2,7 @@ import { apiUrl } from "..//..//..//..//..//config.json";
 import axios from "axios";
 
 /* *************************VehicleCheck Check*********************** */
-let apiurlVehicleCheck = apiUrl + "/masterdata/VehicleChecks";
+let apiurlVehicleCheck = apiUrl + "/masterdata/VehicleCheckes";
 // let apiurlVehicleCheck= 'https://reqres.in/api/users/2';
 let apiurlVehicleCheckByTypeID =
   apiUrl + "/masterdata/VehicleCheckes/bychecktype";
@@ -12,22 +12,6 @@ function ApiwithidVehicleCheck(Id) {
 
 function ApiwithidVehicleCheckType(Id) {
   return `${apiurlVehicleCheckByTypeID}/${Id}`;
-}
-
-function ApibyPageVehicleCheckType(Pg, PgSize) {
-  return `${apiurlVehicleCheck}/${Pg}/${PgSize}`;
-}
-
-//-------- GetAPi
-export function GetPagListingForVehicleCheckType(pg, pgsize) {
-  return axios.get(ApibyPageVehicleCheckType(pg, pgsize), {
-    headers: {
-      //"Authorization": authIt,
-      //"accept": "application/json",
-      //"Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
-    }
-  });
 }
 
 //-------- GetAPi
@@ -43,9 +27,6 @@ export function GetListingForVehicleCheck() {
 }
 
 //---------Edit APi
-
-
-
 export function GetVehicleCheckDataById(id) {
   // console.log(id)
   return axios.get(ApiwithidVehicleCheck(id), {
@@ -73,14 +54,9 @@ export function PostListingForVehicleCheck(body) {
 }
 
 //-------------Search by ID -----
-function ApiwithidVehicleCheckedit(Id,pg,pgsize) {
-  return `${apiurlVehicleCheck}/${Id}/${pg}/${pgsize}`;
-}
-
-
-export function GetVehicleCheckDataByTypeId(id,pg,pgsize) {
+export function GetVehicleCheckDataByTypeId(id) {
   // console.log(id)
-  return axios.get(ApiwithidVehicleCheckedit(id,pg,pgsize), {
+  return axios.get(ApiwithidVehicleCheckType(id), {
     headers: {
       "Content-Check": "application/json"
     }

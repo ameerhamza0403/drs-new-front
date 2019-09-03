@@ -39,7 +39,7 @@ const classes = {
     // marginTop: '10px',
     // marginLeft: '5px',
   },
-
+  
 
 };
 
@@ -70,7 +70,7 @@ let EditNominalCode = props => {
     setSubmitting(false);
   }
 
-
+  
   const validationSchema = function(values) {
     return Yup.object().shape({
     code: Yup.string()
@@ -80,8 +80,8 @@ let EditNominalCode = props => {
     description: Yup.string()
     .min(4, `Description has to be at least 4 characters`)
     .required("Description is requierd")
-
-
+        
+        
 
     });
   };
@@ -109,15 +109,6 @@ let EditNominalCode = props => {
   };
 
   const [initialValues, setInitialValues] = useState({
-    // name: "",
-    // ctBackOffice:"",
-    // ctResource:"",
-    // ctBookingSite:"",
-    // headerAnswer:"",
-    // headerNotes:"",
-    // sharing:"",
-    // order:0,
-    active: false
   });
 
   function findFirstError(formName, hasError) {
@@ -159,9 +150,10 @@ let EditNominalCode = props => {
 
   async function getlistapi() {
     const { data: initialValues } = await GetNominalCodeDataById(props.IDforAPI);
-    console.log(initialValues);
+    
     setInitialValues(initialValues)
     setModal(true);
+    console.log(initialValues);
   }
 
 
@@ -224,7 +216,7 @@ let EditNominalCode = props => {
                               value={values.code}
                             />
                             <FormFeedback>{errors.code}</FormFeedback>
-
+                           
                           </div>
                         </div>
 
@@ -248,10 +240,10 @@ let EditNominalCode = props => {
                               value={values.description}
                             />
                             <FormFeedback>{errors.description}</FormFeedback>
-
+                           
                           </div>
                         </div>
-
+                        
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="defaultJobCard">Class</Label>
@@ -261,7 +253,7 @@ let EditNominalCode = props => {
                               type="select"
                               name="class"
                               id="class"
-
+                              
                               autoComplete="given-name"
                               valid={!errors.class}
                               invalid={touched.class && !!errors.class}
@@ -270,9 +262,10 @@ let EditNominalCode = props => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.class}
-
-
+                         
+                              
                             >
+                              <option value=""></option>
                                <option value="A">A</option>
                                <option value="E">E</option>
                                <option value="L">L</option>
@@ -281,7 +274,7 @@ let EditNominalCode = props => {
                                <option value="P">P</option>
                             </Input>
                             <FormFeedback>{errors.class}</FormFeedback>
-
+                            
                           </div>
                         </div>
 
@@ -294,7 +287,7 @@ let EditNominalCode = props => {
                               type="select"
                               name="nominalType"
                               id="nominalType"
-
+                              
                               autoComplete="given-name"
                               valid={!errors.nominalType}
                               invalid={touched.nominalType && !!errors.nominalType}
@@ -303,36 +296,39 @@ let EditNominalCode = props => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.nominalType}
-
-
+                         
+                              
                             >
+                              <option value=""></option>
                                <option value="Fixed Asset">Fixed Asset</option>
+                               <option value="Current Asset">Current Asset</option>
                                <option value="Expense">Expense</option>
                                <option value="Current Liability">Current Liability</option>
+                               <option value="Long-Term Liability">Long-Term Liability</option>
                                <option value="Capital (Source of funds)">Capital (Source of funds)</option>
                                <option value="Revenue">Revenue</option>
                                <option value="Purchase">Purchase</option>
                             </Input>
                             <FormFeedback>{errors.nominalType}</FormFeedback>
-
+                            
                           </div>
                         </div>
 
-
+                        
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-
+                            
                             <input
-                              name="active"
-                              id="active"
-                              valid={!errors.active}
-                              invalid={touched.active && !!errors.active}
+                              name="isActive"
+                              id="isActive"
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.active}
+                              //value={values.isActive}
                               defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
@@ -345,8 +341,8 @@ let EditNominalCode = props => {
                             </label>
                           </div>
                         </div>
-
-
+                        
+                        
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>

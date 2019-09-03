@@ -2,23 +2,15 @@ import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
 import EditAttribute from "./edit";
-import { GetPagListingForVehicleAttribute, DeleteVehicleAttributeDataById } from "..//shared/vehattribute";
+import { GetListingForVehicleAttribute, DeleteVehicleAttributeDataById } from "..//shared/vehattribute";
 import AddAtrribute from './add';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
-import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
-import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-
 
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
-let Page = 1;
-let PageSize = 10;
-let paging = "";
-let TotalPages = 3;
 
 const classes = {
   linearprogress: {
@@ -50,66 +42,47 @@ const classes = {
 
 let VehicleAttribute = () => {
   let [Atlist, setAtlist] = useState([]);
-  let [paginate, setPaginate] = useState();
 
+  const columns = [
+    {
+      name: "vehicleAttributeId",
+      label: "ID",
+      options: {
+        filter: false,
+        sort: false,
+        display: false
+      }
+    },
+    {
+      name: "name",
+      label: "Vehicle Attribute",
+      options: {
+        filter: false,
+        sort: false,
+        display: true,
+      }
+    },
+    {
+      name: "isActive",
+      label: "Status",
+      options: {
+        filter: false,
+        sort: false,
+        display: false
+      }
+    }
+  ];
 
-  //-- React Data Table
   const options = {
-    sortIndicator: true,
-    // page: Page,
-    hideSizePerPage: true,
-    // paginationSize: PageSize,
-    hidePageListOnlyOnePage: true,
-    // sizePerPage: PageSize,
-    // clearSearch: true,
-    alwaysShowAllBtns: false,
-    onRowClick: HandlerowSelect,
-    withFirstAndLast: false
-    // onPageChange: onPageChange,
-    // onSizePerPageList: sizePerPageListChange,
+    filterType: "multiselect",
+    onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+    customToolbar: () => console.log("rowData"),
+    rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+    selectableRows: "none",
+    viewColumns: true
+
+    // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
   };
-
-
-  // const columns = [
-  //   {
-  //     name: "vehicleAttributeId",
-  //     label: "ID",
-  //     options: {
-  //       filter: false,
-  //       sort: false,
-  //       display: false
-  //     }
-  //   },
-  //   {
-  //     name: "name",
-  //     label: "Vehicle Attribute",
-  //     options: {
-  //       filter: false,
-  //       sort: false,
-  //       display: true,
-  //     }
-  //   },
-  //   {
-  //     name: "isActive",
-  //     label: "Status",
-  //     options: {
-  //       filter: false,
-  //       sort: false,
-  //       display: false
-  //     }
-  //   }
-  // ];
-
-  // const options = {
-  //   filterType: "multiselect",
-  //   onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-  //   customToolbar: () => console.log("rowData"),
-  //   rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-  //   selectableRows: "none",
-  //   viewColumns: true
-
-  //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
-  // };
 
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
@@ -117,39 +90,12 @@ let VehicleAttribute = () => {
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
-      // <MUIDataTable
-      //   title={"Actions & Filters"}
-      //   data={Atlist}
-      //   columns={columns}
-      //   options={options}
-      // />
-      <BootstrapTable
-      data={Atlist}
-      version="4"
-      striped
-      hover
-      // pagination
-      // search
-      options={options}
-    >
-      <TableHeaderColumn
-        isKey={true}
-        hidden={true}
-        dataField="vehicleAttributeId"
-        dataSort
-      >
-        vehicleAttributeId
-      </TableHeaderColumn>
-      <TableHeaderColumn
-        // isKey={true}
-        // hidden={true}
-        dataField="name"
-        dataSort
-      >
-        Name
-      </TableHeaderColumn>
-
-    </BootstrapTable>
+      <MUIDataTable
+        title={"Actions & Filters"}
+        data={Atlist}
+        columns={columns}
+        options={options}
+      />
     );
   } else {
     Tabledisplay = (
@@ -166,19 +112,12 @@ let VehicleAttribute = () => {
   }, []);
 
   async function getlistapi() {
+    const { data: Atlist } = await GetListingForVehicleAttribute();
+    setAtlist(Atlist);
+    // Atlist.map((e,i)=>
+    //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
-    await GetPagListingForVehicleAttribute(Page, PageSize).then(res => {
-      setAtlist((Atlist = res.data));
-      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-    });
-    // Atlist.map(
-    //   (e, i) =>
-    //     (
-    //     Atlist[i].trackingDeviceId =iconint(Atlist[i].trackingDeviceId),
-    //     Atlist[i].usedForJobs =icon(Atlist[i].usedForJobs)
-    //     )
-    // );
-    TotalPages = paginate.totalPages;
+    //                 )
     settabledistatus((Tabledistatus = true));
   }
 
@@ -233,13 +172,12 @@ let VehicleAttribute = () => {
   }
 
   let [menushow, setMenushow] = useState(false);
-  function HandlerowSelect(row) {
+  let HandlerowSelect = (data, meta) => {
     menuDiv = "";
-    console.log(row);
-    idofEdit = row.vehicleAttributeId;
+    idofEdit = data[0];
     return setMenushow((menushow = true));
-  }
-  let Handlerowclose = row => {
+  };
+  let Handlerowclose = (data, meta) => {
     return setMenushow((menushow = false));
   };
   if (menushow) {

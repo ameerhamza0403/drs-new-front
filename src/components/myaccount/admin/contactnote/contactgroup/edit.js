@@ -99,7 +99,6 @@ let EditButton = props => {
   async function getlistapi() {
     const { data: values } = await GetContactGroupDataById(props.IDforAPI);
     setValues(values);
-    setModal(true);
   }
 
 
@@ -128,7 +127,7 @@ let EditButton = props => {
 
   let [modalMT, setModalMT] = useState(false);
 
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -158,7 +157,7 @@ let EditButton = props => {
                     className="form-control"
                     id="exampleInputEmail1"
                     aria-describedby="emailHelp"
-                    defaultValue={values.name}
+                    placeholder={values.name}
                     onChange={handleChange("name")}
                   />
                 </div>
@@ -172,7 +171,6 @@ let EditButton = props => {
                   value="true"
                   id="defaultCheck1"
                   onChange={handleChange("isActive")}
-                  defaultChecked={values.isActive}
                 />
                 <label className="form-check-label" for="defaultCheck1">
                   isActive
