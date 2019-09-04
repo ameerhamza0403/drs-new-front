@@ -10,6 +10,8 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import AddJobFlag from "./add";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 
 
@@ -69,56 +71,76 @@ let JobFlagListing = () => {
     }
   ]);
 
-  const columns = [
-    {
-      name: "jobFlagId",
-      label: "ID",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    },
-    {
-      name: "name",
-      label: "Name",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "isActive",
-      label: "Status",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    },
-    {
-      name: "colorCode",
-      label: "Color",
-      options: {
-        filter: false,
-        sort: false
-      }
-    }
-  ];
+  // const columns = [
+  //   {
+  //     name: "jobFlagId",
+  //     label: "ID",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   },
+  //   {
+  //     name: "name",
+  //     label: "Name",
+  //     options: {
+  //       filter: true,
+  //       sort: true
+  //     }
+  //   },
+  //   {
+  //     name: "isActive",
+  //     label: "Status",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   },
+  //   {
+  //     name: "colorCode",
+  //     label: "Color",
+  //     options: {
+  //       filter: false,
+  //       sort: false
+  //     }
+  //   }
+  // ];
 
-  const options = {
-    filterType: "multiselect",
-    onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-    // onChangePage: (currentPage)=> handlechangepage(currentPage),
-    // onChangeRowsPerPage: (numberOfRows)=> handlechangepagesize(numberOfRows),
-    // rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-    customFooter: () => "",
-    selectableRows: "none",
-    viewColumns: true,
-    rowsPerPage: PageSize,
-    responsive: "scroll"
-    // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
-  };
+  // const options = {
+  //   filterType: "multiselect",
+  //   onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+  //   // onChangePage: (currentPage)=> handlechangepage(currentPage),
+  //   // onChangeRowsPerPage: (numberOfRows)=> handlechangepagesize(numberOfRows),
+  //   // rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+  //   customFooter: () => "",
+  //   selectableRows: "none",
+  //   viewColumns: true,
+  //   rowsPerPage: PageSize,
+  //   responsive: "scroll"
+  //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+  // };
+
+  let [colorarr, setcolorarr]= useState();
+  let [c,setc]=useState();
+
+  
+   //-- React Data Table
+const options = {
+  sortIndicator: true,
+  // page: Page,
+  hideSizePerPage: true,
+  // paginationSize: 5,
+  // hidePageListOnlyOnePage: false,
+  // clearSearch: true,
+  alwaysShowAllBtns: false,
+  onRowClick: HandlerowSelect,
+  withFirstAndLast: false,
+
+  // onPageChange: onPageChange,
+  // onSizePerPageList: sizePerPageListChange
+};
 
   let PageSizeComp = (
     <select onChange={handlePageSize} value={PageSize}>
@@ -392,29 +414,41 @@ let JobFlagListing = () => {
   //   refreshfn();
   // }
 
-
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
   );
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
-      <div>
-        <MUIDataTable
-          title={"Actions & Filters"}
+        <div>
+        <BootstrapTable
           data={Atlist}
-          columns={columns}
+          version="4"
+          striped
+          hover
+          pagination
+          search
           options={options}
-        />
+        >
+          <TableHeaderColumn dataField="name" dataSort>
+            Name
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="colorCode" dataFormat={colorinit} dataSort>
+            Colour
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="isActive" hidden={true} isKey={true} dataSort>
+            Name
+          </TableHeaderColumn>
+          
+         
+        </BootstrapTable>
         <br />
         <div className="row">
           <div className="col">
             {PageSizeComp}
             {"  Showing " + PageSize + " Rows Per Page"}
           </div>
-          <div className="col">
-            {paging}
-          </div>
+          <div className="col">{paging}</div>
         </div>
       </div>
     );
@@ -448,17 +482,25 @@ let JobFlagListing = () => {
   async function getlistapi() {
     await GetListingForJobflag(Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
+      // Atlist.map(
+      //   (e, i) =>
+      //     (Atlist[i].colour = (
+      //       <div className="ColorCodesl" style={ColorStyleFn(e.colour)} />
+      //     ))
+      // );
+      console.log(Atlist)
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
     TotalPages = paginate.totalPages;
-    Atlist.map(
-      (e, i) =>
-        (Atlist[i].colorCode = (
-          <div className="ColorCodesl" style={ColorStyleFn(e.colorCode)} />
-        ))
-    );
     settabledistatus((Tabledistatus = false));
     settabledistatus((Tabledistatus = true));
+  }
+
+  let colorinit=(cell,row)=>{
+    console.log(c);
+    let colorvalue =  <div className="ColorCodesl" style={ColorStyleFn(cell)} />
+    
+    return colorvalue;
   }
 
   // Toast
@@ -512,9 +554,10 @@ let JobFlagListing = () => {
   }
 
   let [menushow, setMenushow] = useState(false);
-  let HandlerowSelect = (data, meta) => {
+  function HandlerowSelect  (row) {
     menuDiv = "";
-    idofEdit = data[0];
+    idofEdit = row.jobFlagId;
+    console.log(idofEdit);
     return setMenushow((menushow = true));
   };
   let Handlerowclose = (data, meta) => {

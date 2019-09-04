@@ -1,4 +1,5 @@
 import { GetAccountDataById, PutAccountDataById } from "../../shared/accounts";
+import { GetListingForAccountSetting } from '../../shared/accountsetting'
 import React, { Component, useState, useEffect } from "react";
 import AddAccountSetting from '../../accountsetting/add'
 import {
@@ -24,6 +25,12 @@ import "react-toastify/dist/ReactToastify.css";
 
 
 let formfull = "";
+let settingForm= "";
+let menuDiv = "";
+let EditshowModel = "";
+let selectedFile = [];
+let nameoffile = "";
+
 
 const classes = {
   button: {
@@ -43,9 +50,6 @@ const classes = {
   
 
 };
-
-let selectedFile = [];
-let nameoffile = "";
 
 
 let EditAccount = props => {
@@ -163,14 +167,16 @@ let EditAccount = props => {
   let [initialValues, setInitialValues] = useState({
     
   });
-  let [editValues, setEditValues] = useState({
-    
-  });
+  let [accountsettingdata, setaccountsettingdata] = useState();
+  let [menushow, setMenushow] = useState(false);
   async function getlistapi() {
     const { data: initialValues } = await GetAccountDataById();
-    
     setInitialValues(initialValues)
-    
+    //setShowForm(true);
+
+    const { data: accountsettingdata } = await GetListingForAccountSetting();
+    setaccountsettingdata(accountsettingdata)
+    console.log(accountsettingdata);
     setShowForm(true);
   }
 
@@ -404,7 +410,93 @@ let EditAccount = props => {
             </Row>
             )}
         />
-         ) 
+         ); 
+        
+         settingForm = (
+          <Formik
+          initialValues={initialValues}
+          validate={validate(validationSchema)}
+          onSubmit={onSubmit}
+          render={({
+          values,
+          errors,
+          touched,
+          status,
+          dirty,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+          isValid,
+          handleReset,
+          setTouched
+          }) => (
+          <Row>
+          <Col lg="12">
+          <Form onSubmit={handleSubmit} noValidate name="simpleForm">
+              <FormGroup>
+              <h2>Jobs on device</h2>
+              
+              {accountsettingdata.map(e => (
+                    <div className="container">
+
+                      <div className="row">
+                        <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                        <Label for="name">{e.name}</Label>
+                        </div>
+                        
+                        <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        {(e.type==="Yes/No")?
+                          <div >
+                          <Input type="radio"
+                            name={e.type}
+                            id={e.type}
+                            value="Yes/No"
+                            defaultChecked={(e.value==="Yes")?true:false}
+                            onChange={handleChange}/>&nbsp;Yes &nbsp;&nbsp;
+                          <Input type="radio"
+                            name={e.type}
+                            id={e.type}
+                            value="Yes/No"
+                            defaultChecked={(e.value==="No")?true:false}
+                            onChange={handleChange}/>&nbsp;No &nbsp;&nbsp;
+
+                        </div>: (e.type==="text")?
+                       <Input
+                          type="text"
+                          name="type"
+                          id="type"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          value={e.type}
+                          //value={e.type}
+                        />:(e.type==="select")?
+                          <Input
+                              type="select"
+                              name="defaultJobCard"
+                              id="defaultJobCard"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              defaultChecked={e.type}
+                            ><option>{e.type}</option></Input>:""
+                        }
+                        
+                        </div>
+                      </div>
+                    </div>
+                      
+
+                      
+
+                ))}
+              
+              </FormGroup>
+              </Form>
+              </Col>
+          </Row>
+          )}
+      />
+       ); 
     } 
     else if(showform===false){
         formfull = "";
@@ -414,12 +506,49 @@ let EditAccount = props => {
        return <AddAccountSetting />
     }
 
- 
-
-  return (
-      <div>
-          {formfull}  
-          <button onClick={addsetting}></button> 
+    if (menushow) {
+        menuDiv = (
+          <ul className="tool">
+            <li>
+              <AddAccountSetting  />
+            </li>
+            {/* <li onClick={HandleEditforlisting}>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <i className="fa fa-pencil-square fa-2x" />
+            </li>
+            <li onClick={Dellistapi}>
+              &nbsp;&nbsp;
+              <i className="fa fa-archive fa-2x" />
+            </li>
+            <li onClick={Handlerowclose}>
+              &nbsp;&nbsp;
+              <i className="fa fa-times-rectangle fa-2x" />
+            </li> */}
+          </ul>
+        );
+      } else if (!menushow) {
+        menuDiv = (
+          <ul className="tool">
+            <li />
+            <AddAccountSetting  />
+          </ul>
+        );
+      }
+    
+      return (
+        <div>
+        {formfull} 
+          <div className="row header">
+            <div className="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5">
+            {menuDiv}
+            </div>
+            <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
+              <h3 className="heading">ACCOUNT SETTING</h3>
+            </div>
+          </div>
+          <br />
+           
+          {settingForm}
       </div>
                     
   );
