@@ -13,6 +13,8 @@ function ApibyPageVehiclemanage(Pg, PgSize) {
   return `${apiurlVehiclemanage}/${Pg}/${PgSize}`;
 }
 
+
+
 //-------- GetAPi
 export function GetListingForVehiclemanage(pg, pgsize) {
   return axios.get(ApibyPageVehiclemanage(pg, pgsize), {

@@ -83,11 +83,11 @@ let AddWorkSheetQ = props => {
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
     
-    // if (data.length === 0) {
-    //   errorc();
-    //   setSubmitting(true);
-    //   setSubmitting(false);
-    // } else {
+    if (data.length === 0) {
+      errorc();
+      setSubmitting(true);
+      setSubmitting(false);
+    } else {
       let idtemp;
           await PostListingForWorkSheetQ(props.idworksheet,values)
         .then(res => {
@@ -113,7 +113,7 @@ let AddWorkSheetQ = props => {
       handleOpen();
       props.refresh();
       setSubmitting(false);
-    
+    }
     // console.log(values , props.idworksheet);
     // await PostListingForWorkSheetQ(props.idworksheet,values).then(()=>success()).catch(error=>errort());
     // handleOpen();
@@ -153,13 +153,13 @@ let AddWorkSheetQ = props => {
   };
 
   const initialValues = {
-    //worksheetQuestionId:0,
+    worksheetQuestionId:0,
     worksheetId:props.idworksheet,
     question: "",
     questionType:"",
     answer:"",
     defaultAnswer:"",
-    maxLength:1,
+    maxLength:0,
     notes:"",
     photoBW:false,
     mandatory:false,
@@ -333,11 +333,11 @@ let AddWorkSheetQ = props => {
                           <input
                               name="mandatory"
                               id="mandatory"
-                              valid={!errors.mandatory}
-                              invalid={touched.mandatory && !!errors.mandatory}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.mandatory}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -360,11 +360,11 @@ let AddWorkSheetQ = props => {
                           <input
                               name="appears"
                               id="appers"
-                              // valid={!errors.isActive}
-                              // invalid={touched.isActive && !!errors.isActive}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.appers}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -379,7 +379,7 @@ let AddWorkSheetQ = props => {
                           </div>
                         </div>
 
-                        {/* <div className="row">
+                        <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="defaultAnswer">Default Answer</Label>
                           </div>
@@ -412,7 +412,7 @@ let AddWorkSheetQ = props => {
 
 
                             </div>
-                        </div> */}
+                        </div>
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
@@ -423,19 +423,26 @@ let AddWorkSheetQ = props => {
                                 name="atRisk"
                                 valid={!errors.type}
                                 onBlur={handleBlur}
-                                // required
-                                // invalid={touched.type && !!errors.type}
-                                value="false"
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="no"
                                 onChange={handleChange}/>&nbsp;No &nbsp;&nbsp;
                               <input type="radio"
                                 name="atRisk"
                                 valid={!errors.type}
                                 onBlur={handleBlur}
-                                // required
-                                // invalid={touched.type && !!errors.type}
-                                value="{true"
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="yes"
                                 onChange={handleChange}/>&nbsp;Yes &nbsp;&nbsp;
-                             
+                              <input type="radio"
+                                name="atRisk"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="nodansweratrisk"
+                                onChange={handleChange}/>&nbsp;No Answer At Risk &nbsp;&nbsp;
 
 
                             </div>
@@ -452,10 +459,10 @@ let AddWorkSheetQ = props => {
                               id="defaultAnswer"
                               placeholder=""
                               autoComplete="given-name"
-                              // valid={!errors.answer}
-                              // invalid={touched.answer && !!errors.answer}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.answer}
+                              invalid={touched.answer && !!errors.answer}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.defaultAnswer}
@@ -465,7 +472,7 @@ let AddWorkSheetQ = props => {
                           </div>
                         </div>
 
-                        {/* <div className="row">
+                        <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="question">Answer At Risk</Label>
                           </div>
@@ -476,10 +483,10 @@ let AddWorkSheetQ = props => {
                               id="atRisk"
                               placeholder=""
                               autoComplete="given-name"
-                              // valid={!errors.answeratrisk}
-                              // invalid={touched.answeratrisk && !!errors.answeratrisk}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.answeratrisk}
+                              invalid={touched.answeratrisk && !!errors.answeratrisk}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.atRisk}
@@ -487,7 +494,7 @@ let AddWorkSheetQ = props => {
                             <FormFeedback>{errors.answeratrisk}</FormFeedback>
 
                           </div>
-                        </div> */}
+                        </div>
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
@@ -500,15 +507,15 @@ let AddWorkSheetQ = props => {
                               id="maxLength"
                               placeholder=""
                               autoComplete="given-name"
-                              // valid={!errors.answeratrisk}
-                              // invalid={touched.answeratrisk && !!errors.answeratrisk}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.answeratrisk}
+                              invalid={touched.answeratrisk && !!errors.answeratrisk}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.maxLength}
                             />
-                            <FormFeedback>{errors.maxLength}</FormFeedback>
+                            <FormFeedback>{errors.answeratrisk}</FormFeedback>
 
                           </div>
                         </div>
@@ -521,8 +528,8 @@ let AddWorkSheetQ = props => {
                           <input
                               name="appears"
                               id="appers"
-                              // valid={!errors.isActive}
-                              // invalid={touched.isActive && !!errors.isActive}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
                               value={values.isActive}
@@ -548,11 +555,11 @@ let AddWorkSheetQ = props => {
                           <input
                               name="photoBW"
                               id="photoBW"
-                              // valid={!errors.isActive}
-                              // invalid={touched.isActive && !!errors.isActive}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.photoBW}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -577,8 +584,8 @@ let AddWorkSheetQ = props => {
                             <input
                               name="isActive"
                               id="isActive"
-                              // valid={!errors.isActive}
-                              // invalid={touched.isActive && !!errors.isActive}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
                               value={values.isActive}

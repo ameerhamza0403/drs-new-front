@@ -67,7 +67,7 @@ let EditVehicleCheckType = props => {
   const validationSchema = function(values) {
     return Yup.object().shape({
       name: Yup.string()
-        .min(4, `Vehicle Type has to be at least 4 characters`)
+        .min(2, `Vehicle Type has to be at least 2 characters`)
         .required("Vehicle Check Type Name is required")
     });
   };
@@ -94,9 +94,9 @@ let EditVehicleCheckType = props => {
     }, {});
   };
 
-  const [initialValues, setInitialValues] = useState({
+  let [initialValues, setInitialValues] = useState({
     name: "",
-    isActive: false
+    isActive: true
   });
 
   function findFirstError(formName, hasError) {
@@ -121,7 +121,7 @@ let EditVehicleCheckType = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -136,6 +136,7 @@ let EditVehicleCheckType = props => {
       props.IDforAPI
     );
     setInitialValues(initialValues);
+    setModal(true);
   }
 
   return (
@@ -194,11 +195,12 @@ let EditVehicleCheckType = props => {
                             <input
                               name="isActive"
                               id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              // valid={!errors.isActive}
+                              // invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
-                              onBlur={handleBlur}
+                              // onBlur={handleBlur}
                               value={values.isActive}
+                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

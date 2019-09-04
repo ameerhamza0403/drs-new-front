@@ -74,8 +74,8 @@ let EditProductCategory = props => {
   const validationSchema = function(values) {
     return Yup.object().shape({
     name: Yup.string()
-    .min(4, `Name has to be at least 4 characters`)
-    .required("Name is requierd"),
+    .min(4, `Code has to be at least 4 characters`)
+    .required("Nominal Code is requierd"),
 
     });
   };
@@ -102,7 +102,10 @@ let EditProductCategory = props => {
     }, {});
   };
 
-  const [initialValues, setInitialValues] = useState();
+  const [initialValues, setInitialValues] = useState({
+    
+    active: false
+  });
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -126,7 +129,7 @@ let EditProductCategory = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return (
@@ -143,10 +146,8 @@ let EditProductCategory = props => {
 
   async function getlistapi() {
     const { data: initialValues } = await GetProductCategoryDataById(props.IDforAPI);
-    
-    setInitialValues(initialValues)
     console.log(initialValues);
-    setModal(true);
+    setInitialValues(initialValues)
   }
 
 
@@ -224,10 +225,10 @@ let EditProductCategory = props => {
                               id="type"
 
                               autoComplete="given-name"
-                              // valid={!errors.type}
-                              // invalid={touched.type && !!errors.type}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.type}
+                              invalid={touched.type && !!errors.type}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.type}
@@ -247,19 +248,18 @@ let EditProductCategory = props => {
                         
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="isActive"></Label>
+                            <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             
                             <input
-                              name="isActive"
-                              id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              name="active"
+                              id="active"
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              //value={values.isActive}
-                              defaultChecked={initialValues.isActive}
+                              value={values.active}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

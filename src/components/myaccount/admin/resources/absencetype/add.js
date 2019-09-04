@@ -97,7 +97,7 @@ let AddAbsencetype = props => {
 
   const initialValues = {
     name: "",
-    isActive: false
+    isActive: true
   };
 
   function findFirstError(formName, hasError) {
@@ -189,10 +189,11 @@ let AddAbsencetype = props => {
                             <input
                               name="isActive"
                               id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              // valid={!errors.isActive}
+                              // invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
-                              onBlur={handleBlur}
+                              // onBlur={handleBlur}
+                              defaultChecked={initialValues.isActive}
                               value={values.isActive}
                               type="checkbox"
                             />

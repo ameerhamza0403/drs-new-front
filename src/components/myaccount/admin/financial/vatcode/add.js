@@ -97,9 +97,7 @@ let VatCodeAdd = props => {
   };
 
   const initialValues = {
-    code:"",
-    rate:0,
-    description:"",
+
     isActive: false
   };
 
@@ -199,7 +197,7 @@ let VatCodeAdd = props => {
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
-                              type="number"
+                              type="text"
                               name="rate"
                               id="rate"
                               placeholder="i.e. 10"

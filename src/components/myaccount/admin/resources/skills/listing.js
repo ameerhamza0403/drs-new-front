@@ -1,24 +1,31 @@
 import React, { useState, useEffect } from "react";
-import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
 import EditResouceSkill from "./edit";
 import {
-  GetListingForResourceSkill,
+  GetListingpgForResourceSkill,
   DeleteResourceSkillDataById
 } from "..//shared/resourceskill";
+import { Spinner } from "reactstrap";
 import AddResourceSkill from "./add";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
+import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
+let Page = 1;
+let PageSize = 10;
+let paging = "";
+let TotalPages = 2;
 
 const classes = {
   linearprogress: {
     // backgroundColor: '#EE7647',
-    backgroundColor: "rgb(243, 153, 117)"
+    // backgroundColor: "rgb(243, 153, 117)"
+    marginLeft: "50%"
   },
   header: {
     backgroundColor: "#EE7647",
@@ -47,66 +54,218 @@ const classes = {
   }
 };
 
+let countforpagination = 0;
+
 let ResourceSkillListing = () => {
   let [Atlist, setAtlist] = useState([]);
+  let [paginate, setPaginate] = useState();
+  let [totalcount, setTotalCount] = useState();
 
-  const columns = [
-    {
-      name: "resourceSkillId",
-      label: "ID",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    },
-    {
-      name: "name",
-      label: "Name",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "isActive",
-      label: "Status",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    }
-  ];
-
+  //-- React Data Table
   const options = {
-    filterType: "multiselect",
-    onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-    customToolbar: () => console.log("rowData"),
-    rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-    selectableRows: "none",
-    viewColumns: true,
-    stripedRows: true
-
-    // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+    sortIndicator: true,
+    // page: Page,
+    hideSizePerPage: true,
+    // paginationSize: PageSize,
+    hidePageListOnlyOnePage: true,
+    // sizePerPage: PageSize,
+    // clearSearch: true,
+    alwaysShowAllBtns: false,
+    onRowClick: HandlerowSelect,
+    withFirstAndLast: false
+    // onPageChange: onPageChange,
+    // onSizePerPageList: sizePerPageListChange,
   };
 
+  // const columns = [
+  //   {
+  //     name: "resourceSkillId",
+  //     label: "ID",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   },
+  //   {
+  //     name: "name",
+  //     label: "Name",
+  //     options: {
+  //       filter: true,
+  //       sort: true
+  //     }
+  //   },
+  //   {
+  //     name: "isActive",
+  //     label: "Status",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   }
+  // ];
+
+  // const options = {
+  //   filterType: "multiselect",
+  //   onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+  //   customToolbar: () => console.log("rowData"),
+  //   rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+  //   selectableRows: "none",
+  //   viewColumns: true,
+  //   stripedRows: true
+
+  //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+  // };
+
+  //--- Pagination ------------------
+
+  function handlePageSize(event) {
+    PageSize = event.target.value;
+    refreshfn();
+  }
+
+  let PageSizeComp = (
+    <select onChange={handlePageSize} value={PageSize}>
+      <option value={10}>10</option>
+      <option value={20}>20</option>
+    </select>
+  );
+
+  let [pgin, setPgin] = useState(true);
+
+  function handlepagin() {
+    setPgin(false);
+    // setTimeout(() => setPgin(true), 10);
+    refreshfn();
+    setPgin(true);
+  }
+
+  if (pgin) {
+    paging = (
+      <Pagination>
+        <PaginationItem>
+          <PaginationLink
+            previous
+            disabled={!(Page > 1) ? true : false}
+            tag="button"
+            onClick={() => {
+              if (Page > 1) {
+                if (countforpagination === 0) {
+                  Page = Page - 1;
+                  countforpagination = 1;
+                  handlepagin();
+                }
+              }
+            }}
+          />
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            hidden={Page === 1 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page - 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          >
+            {Page - 1}
+          </PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem active>
+          <PaginationLink tag="button">{Page}</PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            hidden={Page === TotalPages || totalcount < 11 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page + 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          >
+            {Page + 1}
+          </PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            next
+            disabled={Page === TotalPages || totalcount < 11 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page + 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          />
+        </PaginationItem>
+      </Pagination>
+    );
+  } else {
+    paging = "";
+  }
+
+  //----- Finished Pagination---------
+
   let Tabledisplay = (
-    <LinearProgress style={classes.linearprogress} color="secondary" />
+    <div style={classes.linearprogress}>
+      <Spinner type="grow" color="dark" />
+    </div>
   );
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
-      <MUIDataTable
-        title={"Actions & Filters"}
-        data={Atlist}
-        columns={columns}
-        options={options}
-      />
+      <div>
+        <BootstrapTable
+          data={Atlist}
+          version="4"
+          striped
+          hover
+          // pagination
+          // search
+          options={options}
+        >
+          <TableHeaderColumn
+            isKey={true}
+            hidden={true}
+            dataField="resourceSkillId"
+            dataSort
+          >
+            resourceSkillId
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="name" dataSort>
+            Name
+          </TableHeaderColumn>
+        </BootstrapTable>
+        <br />
+        <div className="row">
+          <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
+            {PageSizeComp}
+            {"  Showing " + PageSize + " Rows Per Page"}
+          </div>
+          <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
+            {paging}
+          </div>
+        </div>
+      </div>
     );
   } else {
     Tabledisplay = (
-      <LinearProgress style={classes.linearprogress} color="secondary" />
+      <div style={classes.linearprogress}>
+        <Spinner type="grow" color="dark" />
+      </div>
     );
   }
   let refreshfn = () => {
@@ -119,12 +278,18 @@ let ResourceSkillListing = () => {
   }, []);
 
   async function getlistapi() {
-    const { data: Atlist } = await GetListingForResourceSkill();
-    setAtlist(Atlist);
+    await GetListingpgForResourceSkill(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
     // Atlist.map((e,i)=>
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
     //                 )
+    setTotalCount((totalcount = paginate.totalCount));
+    TotalPages = paginate.totalPages;
+    countforpagination = 0;
+    settabledistatus((Tabledistatus = false));
     settabledistatus((Tabledistatus = true));
   }
 
@@ -229,7 +394,7 @@ let ResourceSkillListing = () => {
           {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">RESOURCE SKILLS</h3>
+          <h3 className="heading">STAFF SKILLS</h3>
         </div>
       </div>
       <br />

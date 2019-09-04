@@ -128,7 +128,7 @@ let EditAttribute = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -141,6 +141,7 @@ let EditAttribute = props => {
   async function getlistapi() {
     const { data: initialValues } = await GetVehicleAttributeDataById(props.IDforAPI);
     setInitialValues(initialValues);
+    setModal(true);
   }
 
   return (
@@ -198,14 +199,20 @@ let EditAttribute = props => {
                             <br />
                           </div>
                         </div>
+
+                        <div className="row mb-2">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <input
                               name="isActive"
                               id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              // valid={!errors.isActive}
+                              // invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
-                              onBlur={handleBlur}
+                              // onBlur={handleBlur}
                               value={values.isActive}
+                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -215,6 +222,10 @@ let EditAttribute = props => {
                             >
                               isActive
                             </label>
+
+                            </div>
+                            </div>
+
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>

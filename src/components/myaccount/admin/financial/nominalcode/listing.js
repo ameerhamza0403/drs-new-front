@@ -191,14 +191,8 @@ const options = {
           <TableHeaderColumn dataField="code" dataSort>
             Code
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="description" dataSort>
+          <TableHeaderColumn isKey dataField="description" dataSort>
             Description
-          </TableHeaderColumn>
-          <TableHeaderColumn  dataField="class" dataSort>
-            Class
-          </TableHeaderColumn>
-          <TableHeaderColumn isKey dataField="nominalType" dataSort>
-            Nominal Type
           </TableHeaderColumn>
           
          

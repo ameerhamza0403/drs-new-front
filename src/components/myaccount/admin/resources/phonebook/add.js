@@ -68,15 +68,15 @@ let AddPhoneBook = props => {
   const validationSchema = function(values) {
     return Yup.object().shape({
       name: Yup.string()
-        .min(4, `Name has to be at least 4 characters`)
+        // .min(4, `Name has to be at least 4 characters`)
         .required("Name is required"),
       phoneNumber: Yup.string()
         .required("phoneNumber is required"),
-        extensions: Yup.string()
-        .min(4, `Extensions has to be at least 4 characters`)
-        .required("Extensions is required"),
-      email: Yup.string()
-        .required("Email is required")
+      // extensions: Yup.string()
+      //   // .min(4, `Extensions has to be at least 4 characters`)
+      //   .required("Extensions is required"),
+      // email: Yup.string()
+      //   .required("Email is required")
     });
   };
 
@@ -107,7 +107,7 @@ let AddPhoneBook = props => {
     phoneNumber:"",
     extensions:"",
     email:"",
-    isActive: false
+    isActive: true
   };
 
   function findFirstError(formName, hasError) {
@@ -175,7 +175,7 @@ let AddPhoneBook = props => {
                   <Col lg="12">
                     <Form onSubmit={handleSubmit} noValidate name="simpleForm">
                       <FormGroup>
-                      <div className="row">
+                      <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="name">Name</Label>
                           </div>
@@ -198,9 +198,8 @@ let AddPhoneBook = props => {
 
                           </div>
                         </div>
-                        <br />
 
-                        <div className="row">
+                        <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="phoneNumber">Phone</Label>
                           </div>
@@ -223,8 +222,7 @@ let AddPhoneBook = props => {
 
                           </div>
                         </div>
-                        <br />
-                        <div className="row">
+                        <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="extensions">Extensions</Label>
                           </div>
@@ -235,21 +233,20 @@ let AddPhoneBook = props => {
                               id="extensions"
                               placeholder=""
                               autoComplete="given-name"
-                              valid={!errors.extensions}
-                              invalid={touched.extensions && !!errors.extensions}
-                              autoFocus={true}
-                              required
+                              // valid={!errors.extensions}
+                              // invalid={touched.extensions && !!errors.extensions}
+                              // autoFocus={true}
+                              // required
                               onChange={handleChange}
-                              onBlur={handleBlur}
+                              // onBlur={handleBlur}
                               value={values.extensions}
                             />
-                            <FormFeedback>{errors.extensions}</FormFeedback>
+                            {/* <FormFeedback>{errors.extensions}</FormFeedback> */}
 
                           </div>
                         </div>
 
-                        <br />
-                        <div className="row">
+                        <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="email">Email</Label>
                           </div>
@@ -260,24 +257,24 @@ let AddPhoneBook = props => {
                               id="email"
                               placeholder=""
                               autoComplete="given-name"
-                              valid={!errors.email}
-                              invalid={touched.email && !!errors.email}
-                              autoFocus={true}
-                              required
+                              // valid={!errors.email}
+                              // invalid={touched.email && !!errors.email}
+                              // autoFocus={true}
+                              // required
                               onChange={handleChange}
-                              onBlur={handleBlur}
+                              // onBlur={handleBlur}
                               value={values.email}
                             />
                             <FormFeedback>{errors.email}</FormFeedback>
-                            <br />
                             <input
                               name="isActive"
                               id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              // valid={!errors.isActive}
+                              // invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
-                              onBlur={handleBlur}
+                              // onBlur={handleBlur}
                               value={values.isActive}
+                              defaultChecked={initialValues.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

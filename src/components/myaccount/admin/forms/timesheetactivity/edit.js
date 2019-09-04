@@ -111,13 +111,12 @@ let EditTimesheetActivity = props => {
 
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    Object.keys(initialValues).map(function(keyName, keyIndex) {
+    Object.keys(editvalues).map(function(keyName, keyIndex) {
       if(!values.hasOwnProperty(keyName)){
         // values.keyName=editValue.keyName;
-        values[keyName]=initialValues[keyName]
+        values[keyName]=editvalues[keyName]
       }
     })
-    values.colour = valofCod;
     await PutTimesheetActivityDataById(props.IDforAPI, values).then(()=>success()).catch(error=>errort());
     handleOpen();
     props.refresh();
@@ -128,8 +127,8 @@ let EditTimesheetActivity = props => {
   const validationSchema = function(values) {
     return Yup.object().shape({
     name: Yup.string()
-    .min(4, `Name has to be at least 4 characters`)
-    .required("Name is requierd"),
+    .min(4, `Code has to be at least 4 characters`)
+    .required("Nominal Code is requierd"),
 
     });
   };
@@ -156,9 +155,19 @@ let EditTimesheetActivity = props => {
     }, {});
   };
 
-  const [initialValues, setInitialValues] = useState();
+  const [values, setValues] = useState({
+    // name: "",
+    // ctBackOffice:"",
+    // ctResource:"",
+    // ctBookingSite:"",
+    // headerAnswer:"",
+    // headerNotes:"",
+    // sharing:"",
+    // order:0,
+    isActive: false
+  });
 
-  //let [editvalues, seteditValues] = React.useState({});
+  let [editvalues, seteditValues] = React.useState({});
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -193,7 +202,7 @@ let EditTimesheetActivity = props => {
     //console.log(event.target.getAttribute('value'))
     // setSlctdcode({ Slctdcode: event.target.getAttribute('value')})
     valofCod = event.target.getAttribute("value");
-    setInitialValues({ ...initialValues, [namer]: valofCod });
+    seteditValues({ ...editvalues, [namer]: valofCod });
     setCodeswitch({ codeswitch: true });
     // console.log(Slctdcode + 'Hello')
   };
@@ -207,7 +216,7 @@ let EditTimesheetActivity = props => {
       <div className="ColorCodesl" style={ColorStyleFn("000000")} />
     );
   }
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return (
@@ -223,14 +232,13 @@ let EditTimesheetActivity = props => {
   }, []);
 
   async function getlistapi() {
-    const { data: initialValues } = await GetTimesheetActivityDataById(props.IDforAPI);
-    
-    setInitialValues(initialValues);
-    valofCod = initialValues.colour;
-    setModal(true);
+    const { data: editvalues } = await GetTimesheetActivityDataById(props.IDforAPI);
+    console.log(values);
+    seteditValues(editvalues)
   }
- 
-  
+
+
+
 
   return (
     <div>
@@ -248,7 +256,7 @@ let EditTimesheetActivity = props => {
         <ModalBody style={{'max-height': 'calc(100vh - 150px)', 'overflow-y': 'auto'}}>
           <div className="container">
             <Formik
-              initialValues={initialValues}
+              values={values}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
               render={({
@@ -278,7 +286,7 @@ let EditTimesheetActivity = props => {
                               type="text"
                               name="name"
                               id="name"
-                              //placeholder={editvalues.name}
+                              placeholder={editvalues.name}
                               autoComplete="given-name"
                               valid={!errors.name}
                               invalid={touched.name && !!errors.name}
@@ -296,18 +304,18 @@ let EditTimesheetActivity = props => {
                         
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="isActive"></Label>
+                            <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             
                             <input
-                              name="isActive"
-                              id="isActive"
-                              // valid={!errors.isActive}
-                              // invalid={touched.isActive && !!errors.isActive}
+                              name="active"
+                              id="active"
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              defaultChecked={values.isActive}
+                              value={values.active}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

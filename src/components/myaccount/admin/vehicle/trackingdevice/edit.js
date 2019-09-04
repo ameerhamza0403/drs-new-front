@@ -130,7 +130,7 @@ let EditTrackingDevice= props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return (
@@ -148,6 +148,7 @@ let EditTrackingDevice= props => {
   async function getlistapi() {
     const { data: initialValues } = await GetTrackingDeviceDataById(props.IDforAPI);
     setInitialValues(initialValues)
+    setModal(true);
   }
 
 
@@ -189,9 +190,9 @@ let EditTrackingDevice= props => {
                   <Col lg="12">
                     <Form onSubmit={handleSubmit} noValidate name="simpleForm">
                       <FormGroup>
-                      <div className="row">
+                      <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="trackingDeviceId">TRacking Id</Label>
+                            <Label for="trackingDeviceId">Tracking Id</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
@@ -214,7 +215,7 @@ let EditTrackingDevice= props => {
                         </div>
                         <br />
 
-                        <div className="row">
+                        <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="code">Code</Label>
                           </div>
@@ -237,8 +238,7 @@ let EditTrackingDevice= props => {
 
                           </div>
                         </div>
-                        <br />
-                        <div className="row">
+                        <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="remarks">Remarks</Label>
                           </div>

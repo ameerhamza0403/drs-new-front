@@ -20,7 +20,7 @@ let idofEdit = 0;
 let Page = 1;
 let PageSize = 10;
 let paging = "";
-let TotalPages = 2;
+let TotalPages;
 
 const classes = {
   linearprogress: {
@@ -55,6 +55,7 @@ let VatCodeListing = () => {
     { code: "", rate: 0, description: "", isActive: true }
   ]);
   let [paginate, setPaginate] = useState();
+  let [totalcount, setTotalCount] = useState();
 
   //-- React Data Table
   const options = {
@@ -152,6 +153,33 @@ let VatCodeListing = () => {
     <LinearProgress style={classes.linearprogress} color="secondary" />
   );
   let [Tabledistatus, settabledistatus] = useState(false);
+
+
+
+  let refreshfn = () => {
+    settabledistatus((Tabledistatus = false));
+    getlistapi();
+  };
+
+  useEffect(() => {
+    getlistapi();
+  }, []);
+
+  async function getlistapi() {
+    await GetListingForTaxCode(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
+    // Atlist.map((e,i)=>
+    //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
+
+    //                 )
+    TotalPages = paginate.totalPages;
+    setTotalCount((totalcount = paginate.totalCount));
+    settabledistatus((Tabledistatus = true));
+  }
+  //--- Pagination ------------------
+
   function handlePageSize(event) {
     PageSize = event.target.value;
     refreshfn();
@@ -164,6 +192,88 @@ let VatCodeListing = () => {
       <option value={20}>20</option>
     </select>
   );
+
+  let [pgin, setPgin] = useState(true);
+
+  function handlepagin() {
+    setPgin(false);
+    // setTimeout(() => setPgin(true), 10);
+    refreshfn();
+    setPgin(true);
+  }
+
+  if (pgin) {
+
+      paging = (
+        <Pagination>
+          <PaginationItem>
+            <PaginationLink
+              previous
+              hidden={!(Page > 1) ? true : false}
+              tag="button"
+              onClick={() => {
+                  Page = Page - 1;
+                  handlepagin();
+              }}
+            />
+          </PaginationItem>
+
+          <PaginationItem>
+            <PaginationLink
+              hidden={(Page === 1) ? true : false}
+              tag="button"
+              onClick={() => {
+                  Page = Page - 1;
+                  handlepagin();
+              }}
+            >
+              {Page-1}
+              </PaginationLink>
+          </PaginationItem>
+
+          <PaginationItem
+          active
+          >
+            <PaginationLink
+              tag="button"
+            >
+              {Page}
+              </PaginationLink>
+          </PaginationItem>
+
+          <PaginationItem >
+            <PaginationLink
+              hidden={((Page === TotalPages)||((totalcount<11))) ? true : false}
+              tag="button"
+              onClick={() => {
+                  Page = Page + 1;
+                  handlepagin();
+              }}
+            >
+              {Page+1}
+              </PaginationLink>
+          </PaginationItem>
+
+          <PaginationItem>
+            <PaginationLink
+              next
+              hidden={((Page === TotalPages)||(totalcount<11)) ? true : false}
+              tag="button"
+              onClick={() => {
+                  Page = Page + 1;
+                  handlepagin();
+
+              }}
+            />
+          </PaginationItem>
+        </Pagination>
+      );
+
+  } else {
+    paging = "";
+  }
+
+  //----- Finished Pagination---------
 
   if (Tabledistatus) {
     Tabledisplay = (
@@ -198,13 +308,12 @@ let VatCodeListing = () => {
         </BootstrapTable>
         <br />
         <div className="row">
-          <div className="col">
+          <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
             {PageSizeComp}
             {"  Showing " + PageSize + " Rows Per Page"}
           </div>
-          <div className="col">{paging}</div>
+          <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">{paging}</div>
         </div>
-        {/* {Atlist.map(e=>e.usedForJobs)} */}
       </div>
     );
   } else {
@@ -212,273 +321,7 @@ let VatCodeListing = () => {
       <LinearProgress style={classes.linearprogress} color="secondary" />
     );
   }
-  let refreshfn = () => {
-    settabledistatus((Tabledistatus = false));
-    getlistapi();
-  };
 
-  useEffect(() => {
-    getlistapi();
-  }, []);
-
-  async function getlistapi() {
-    await GetListingForTaxCode(Page, PageSize).then(res => {
-      setAtlist((Atlist = res.data));
-      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-    });
-    // Atlist.map((e,i)=>
-    //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
-
-    //                 )
-    TotalPages = paginate.totalPages;
-    settabledistatus((Tabledistatus = true));
-  }
-  //--- Pagination ------------------
-
-  let [pgin, setPgin] = useState(true);
-
-  function handlepagin() {
-    setPgin(false);
-    // setTimeout(() => setPgin(true), 10);
-    refreshfn();
-    setPgin(true);
-  }
-
-  if (pgin) {
-    if (Page > 2 || Page === 2) {
-      if (Page === TotalPages) {
-        paging = (
-          <Pagination>
-            <PaginationItem>
-              <PaginationLink
-                previous
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 2;
-                  handlepagin();
-                }}
-              >
-                {Page - 2}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              >
-                {Page - 1}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                // onClick={() => {
-                //   Page = Page+1;
-                //   handlepagin();
-
-                // }}
-              >
-                {Page}
-              </PaginationLink>
-            </PaginationItem>
-          </Pagination>
-        );
-      } else if (Page === TotalPages - 1) {
-        paging = (
-          <Pagination>
-            <PaginationItem>
-              <PaginationLink
-                previous
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 2;
-                  handlepagin();
-                }}
-              >
-                {Page - 2}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              >
-                {Page - 1}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                // onClick={() => {
-                //   Page = Page+1;
-                //   handlepagin();
-
-                // }}
-              >
-                {Page}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page + 1;
-                  handlepagin();
-                }}
-              >
-                {Page + 1}
-              </PaginationLink>
-            </PaginationItem>
-          </Pagination>
-        );
-      } else {
-        paging = (
-          <Pagination>
-            <PaginationItem>
-              <PaginationLink
-                previous
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page - 1;
-                  handlepagin();
-                }}
-              >
-                {Page - 1}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page;
-                  handlepagin();
-                }}
-              >
-                {Page}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page + 1;
-                  handlepagin();
-                }}
-              >
-                {Page + 1}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                tag="button"
-                onClick={() => {
-                  Page = Page + 2;
-                  handlepagin();
-                }}
-              >
-                {Page + 2}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                next
-                tag="button"
-                onClick={() => {
-                  Page = Page + 1;
-                  handlepagin();
-                }}
-              />
-            </PaginationItem>
-          </Pagination>
-        );
-      }
-    } else if (Page < 2) {
-      paging = (
-        <Pagination>
-          <PaginationItem>
-            <PaginationLink
-              tag="button"
-              onClick={() => {
-                Page = Page;
-                handlepagin();
-              }}
-            >
-              {Page}
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              tag="button"
-              onClick={() => {
-                Page = Page + 1;
-                handlepagin();
-              }}
-            >
-              {Page + 1}
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              tag="button"
-              onClick={() => {
-                Page = Page + 2;
-                handlepagin();
-              }}
-            >
-              {Page + 2}
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              next
-              tag="button"
-              onClick={() => {
-                Page = Page + 1;
-                handlepagin();
-              }}
-            />
-          </PaginationItem>
-        </Pagination>
-      );
-    }
-  } else {
-    paging = "";
-  }
-
-  //----- Finished Pagination---------
 
   // Toast
 

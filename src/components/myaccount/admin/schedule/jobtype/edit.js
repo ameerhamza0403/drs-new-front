@@ -2,9 +2,6 @@ import { GetJobTypeDataById, PutJobTypeDataById } from "..//shared/jobtype";
 import React, { Component, useState, useEffect } from "react";
 import { GetListingForWorkSheet } from "..//shared/worksheet";
 import { GetListingForJobcategory } from "..//shared/jobcategory";
-import { GetListingForNominalCode } from "../../financial/shared/nominalcode";
-import { GetListingForDepartmentCode } from "../../financial/shared/departmentcode";
-
 import {
   Button,
   Card,
@@ -44,7 +41,7 @@ const classes = {
     // marginTop: '10px',
     // marginLeft: '5px',
   },
-  
+
 
 };
 
@@ -79,7 +76,7 @@ let EditJobType = props => {
     {
       worksheetId: 0,
       name: "",
-      isActive: true
+      active: true
     }
   ]);
 
@@ -87,31 +84,13 @@ let EditJobType = props => {
     {
       jobCategoryId: 0,
       name: "",
-      isActive: true
-    }
-  ]);
-
-  let [nominalcodedata, setnominalcodedata] = useState([
-    {
-      nominalCodeId: 0,
-      code: "",
-      
-    }
-  ]);
-
-  let [departmentcodedata, setdepartmentcodedata] = useState([
-    {
-      departmentCodeId: 0,
-      code: "",
-      
+      active: true
     }
   ]);
 
   useEffect(() => {
     getworksheet();
     getjobcategory();
-    getnominalcode();
-    getdepartmentcode();
   }, []);
 
   async function getworksheet() {
@@ -124,18 +103,6 @@ let EditJobType = props => {
     const { data: jobcategorydata } = await GetListingForJobcategory();
     console.log(jobcategorydata);
     setjobcategorydata(jobcategorydata);
-  }
-
-  async function getnominalcode() {
-    const { data: nominalcodedata } = await GetListingForNominalCode();
-    console.log(nominalcodedata);
-    setnominalcodedata(nominalcodedata);
-  }
-
-  async function getdepartmentcode() {
-    const { data: departmentcodedata } = await GetListingForDepartmentCode();
-    console.log(departmentcodedata);
-    setjobcategorydata(departmentcodedata);
   }
 
   const validationSchema = function(values) {
@@ -210,7 +177,7 @@ let EditJobType = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return (
@@ -227,10 +194,8 @@ let EditJobType = props => {
 
   async function getlistapi() {
     const { data: initialValues } = await GetJobTypeDataById(props.IDforAPI);
-    
-    setInitialValues(initialValues);
     console.log(initialValues);
-    setModal(true);
+    setInitialValues(initialValues)
   }
 
 
@@ -293,10 +258,10 @@ let EditJobType = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
-                           
+
                           </div>
                         </div>
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="defaultJobCard">Default Job Card</Label>
@@ -306,17 +271,17 @@ let EditJobType = props => {
                               type="select"
                               name="defaultJobCard"
                               id="defaultJobCard"
-                              
+
                               autoComplete="given-name"
-                              // valid={!errors.defaultJobCard}
-                              // invalid={touched.defaultJobCard && !!errors.defaultJobCard}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.defaultJobCard}
+                              invalid={touched.defaultJobCard && !!errors.defaultJobCard}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.defaultJobCard}
-                         
-                              
+
+
                             >
                                <option value="">--Standard job card--</option>
                                <option value="Custom JobCard">Custom JobCard</option>
@@ -325,7 +290,7 @@ let EditJobType = props => {
                                <option value="EN 16005 2012 Compliance test Sheet-Swing">EN 16005 2012 Compliance test Sheet-Swing</option>
                             </Input>
                             <FormFeedback>{errors.ctBackOffice}</FormFeedback>
-                            
+
                           </div>
                         </div>
 
@@ -340,16 +305,16 @@ let EditJobType = props => {
                               id="jobCardTitle"
                               placeholder=""
                               autoComplete="given-name"
-                              // valid={!errors.jobCardTitle}
-                              // invalid={touched.jobCardTitle && !!errors.jobCardTitle}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.jobCardTitle}
+                              invalid={touched.jobCardTitle && !!errors.jobCardTitle}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.jobCardTitle}
                             />
                             <FormFeedback>{errors.jobCardTitle}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -362,52 +327,42 @@ let EditJobType = props => {
                               type="text"
                               name="nominalCode"
                               id="nominalCode"
-                              
+
                               autoComplete="given-name"
-                              // valid={!errors.nominalCode}
-                              // invalid={touched.ctResource && !!errors.nominalCode}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.nominalCode}
+                              invalid={touched.ctResource && !!errors.nominalCode}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.nominalCode}
-                              >
-                              
-                              <option selected />
-                                  {nominalcodedata.map(e => (
-                                    <option value={e.nominalCodeId}>
-                                      {e.code}
-                                    </option>
-                                  ))}
-                              </Input>
+                              />
+
+                            <FormFeedback>{errors.nominalCode}</FormFeedback>
+
                           </div>
 
                           <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                            <Label for="department">Department Code</Label>
+                            <Label for="department">Department</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 mb-3">
                             <Input
                               type="text"
                               name="department"
                               id="department"
-                              
+
                               autoComplete="given-name"
-                              // valid={!errors.department}
-                              // invalid={touched.department && !!errors.department}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.department}
+                              invalid={touched.department && !!errors.department}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.department}
-                              >
-                              
-                              <option selected />
-                                  {departmentcodedata.map(e => (
-                                    <option value={e.departmentCodeId}>
-                                      {e.code}
-                                    </option>
-                                  ))}
-                              </Input>
+                              />
+
+                            <FormFeedback>{errors.department}</FormFeedback>
+
                           </div>
                         </div>
 
@@ -416,15 +371,14 @@ let EditJobType = props => {
                             <Label for="bigDataReport">Big Data Report</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5 mb-3">
-                            <Input
+                            <input
                               name="bigDataReport"
                               id="bigDataReport"
-                              // valid={!errors.active}
-                              // invalid={touched.active && !!errors.active}
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              defaultChecked={initialValues.bigDataReport}
-                              //value={values.bigDataReport}
+                              value={values.bigDataReport}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -435,7 +389,7 @@ let EditJobType = props => {
                               Used in BigData report and Dashboard
                             </label>
                             <FormFeedback>{errors.ctResource}</FormFeedback>
-                           
+
                           </div>
 
                           <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
@@ -446,19 +400,19 @@ let EditJobType = props => {
                               type="text"
                               name="reference"
                               id="reference"
-                              
+
                               autoComplete="given-name"
-                              // valid={!errors.reference}
-                              // invalid={touched.reference && !!errors.reference}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.reference}
+                              invalid={touched.reference && !!errors.reference}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.reference}
                               />
-                            
+
                             <FormFeedback>{errors.reference}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -473,16 +427,16 @@ let EditJobType = props => {
                               id="defaultJobDuraiton"
                               placeholder=""
                               autoComplete="given-name"
-                              // valid={!errors.defaultJobDuraiton}
-                              // invalid={touched.defaultJobDuraiton && !!errors.defaultJobDuraiton}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.defaultJobDuraiton}
+                              invalid={touched.defaultJobDuraiton && !!errors.defaultJobDuraiton}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.defaultJobDuraiton}
                             />
                             <FormFeedback>{errors.defaultJobDuraiton}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -491,16 +445,15 @@ let EditJobType = props => {
                             <Label for="durationDivision"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="durationDivision"
                               id="durationDivision"
-                              // valid={!errors.durationDivision}
-                              // invalid={touched.durationDivision && !!errors.durationDivision}
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              defaultChecked={initialValues.durationDivision}
-                              //value={values.durationDivision}
+                              value={values.durationDivision}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -508,7 +461,7 @@ let EditJobType = props => {
                               className="form-check-label"
                               for="defaultCheck1"
                             >
-                              Duration will be divided by the number of resources allocated
+                              Duration will be divided by the number of Staff allocated
                             </label>
                           </div>
                         </div>
@@ -522,17 +475,16 @@ let EditJobType = props => {
                               type="select"
                               name="firstWorksheet"
                               id="firstWorksheet"
-                              
+
                               autoComplete="given-name"
-                              // valid={!errors.firstWorksheet}
-                              // invalid={touched.firstWorksheet && !!errors.firstWorksheet}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.firstWorksheet}
+                              invalid={touched.firstWorksheet && !!errors.firstWorksheet}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              
                               value={values.firstWorksheet}
-                              
+
                             >
                                <option selected />
                                   {worksheetdata.map(e => (
@@ -542,26 +494,24 @@ let EditJobType = props => {
                                   ))}
                             </Input>
                             <FormFeedback>{errors.firstWorksheet}</FormFeedback>
-                            
+
                           </div>
                         </div>
-
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="worksheetOrder"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="worksheetOrder"
                               id="worksheetOrder"
-                              // valid={!errors.worksheetOrder}
-                              // invalid={touched.worksheetOrder && !!errors.worksheetOrder}
+                              valid={!errors.worksheetOrder}
+                              invalid={touched.worksheetOrder && !!errors.worksheetOrder}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              //value={values.worksheetOrder}
-                              defaultChecked={values.worksheetOrder}
+                              value={values.worksheetOrder}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -576,19 +526,18 @@ let EditJobType = props => {
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="firstWorksheet"></Label>
+                            <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="firstWorksheet"
                               id="firstWorksheet"
-                              // valid={!errors.firstWorksheet}
-                              // invalid={touched.firstWorksheet && !!errors.firstWorksheet}
+                              valid={!errors.firstWorksheet}
+                              invalid={touched.firstWorksheet && !!errors.firstWorksheet}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              defaultChecked={initialValues.firstWorksheet}
-                              //value={values.firstWorksheet}
+                              value={values.firstWorksheet}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -603,19 +552,18 @@ let EditJobType = props => {
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="negativeJobResults"></Label>
+                            <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="negativeJobResults"
                               id="negativeJobResults"
-                              // valid={!errors.negativeJobResults}
-                              // invalid={touched.negativeJobResults && !!errors.negativeJobResults}
+                              valid={!errors.negativeJobResults}
+                              invalid={touched.negativeJobResults && !!errors.negativeJobResults}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              //value={values.negativeJobResults}
-                              defaultChecked={initialValues.negativeJobResults}
+                              value={values.negativeJobResults}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -637,17 +585,16 @@ let EditJobType = props => {
                               type="select"
                               name="jobCategoryId"
                               id="jobCategoryId"
-                              
+
                               autoComplete="given-name"
-                              // valid={!errors.jobCategoryId}
-                              // invalid={touched.jobCategoryId && !!errors.jobCategoryId}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.jobCategoryId}
+                              invalid={touched.jobCategoryId && !!errors.jobCategoryId}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              defaultChecked={initialValues.jobCategoryId}
-                              //value={values.jobCategoryId}
-                              
+                              value={values.jobCategoryId}
+
                             >
                               <option selected />
                                 {jobcategorydata.map(e => (
@@ -655,11 +602,11 @@ let EditJobType = props => {
                                     {e.name}
                                   </option>
                                 ))}
-                               
-                               
+
+
                             </Input>
                             <FormFeedback>{errors.jobCategoryId}</FormFeedback>
-                            
+
                           </div>
                         </div>
 
@@ -683,7 +630,7 @@ let EditJobType = props => {
                               value={values.positiveResults}
                             />
                             <FormFeedback>{errors.positiveResults}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -698,16 +645,16 @@ let EditJobType = props => {
                               id="negativeResults"
                               placeholder=""
                               autoComplete="given-name"
-                              // valid={!errors.negativeResults}
-                              // invalid={touched.negativeResults && !!errors.negativeResults}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.negativeResults}
+                              invalid={touched.negativeResults && !!errors.negativeResults}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.negativeResults}
                             />
                             <FormFeedback>{errors.negativeResults}</FormFeedback>
-                           
+
                           </div>
                         </div>
 
@@ -720,16 +667,16 @@ let EditJobType = props => {
                               type="select"
                               name="stockCategories"
                               id="stockCategories"
-                              
+
                               autoComplete="given-name"
-                              // valid={!errors.stockCategories}
-                              // invalid={touched.stockCategories && !!errors.stockCategories}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.stockCategories}
+                              invalid={touched.stockCategories && !!errors.stockCategories}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.stockCategories}
-                              
+
                             >
                                <option value=""></option>
                                <option value="Folding Door">Folding Door</option>
@@ -738,11 +685,11 @@ let EditJobType = props => {
                                <option value="Sliding Door">Sliding Door</option>
                                <option value="Swing Door">Swing Door</option>
                                <option value="Tools">Tools</option>
-                               
-                               
+
+
                             </Input>
                             <FormFeedback>{errors.stockCategories}</FormFeedback>
-                            
+
                           </div>
                         </div>
 
@@ -755,16 +702,16 @@ let EditJobType = props => {
                               type="select"
                               name="ctBackOffice"
                               id="ctBackOffice"
-                              
+
                               autoComplete="given-name"
-                              // valid={!errors.ctBackOffice}
-                              // invalid={touched.ctBackOffice && !!errors.ctBackOffice}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.ctBackOffice}
+                              invalid={touched.ctBackOffice && !!errors.ctBackOffice}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.ctBackOffice}
-                              
+
                             >
                                <option value=""></option>
                                <option value="Brought to job and left at location">Brought to job and left at location</option>
@@ -772,11 +719,11 @@ let EditJobType = props => {
                                <option value="Brought to job to swap with other stock item">Brought to job to swap with other stock item</option>
                                <option value="Taken from job location">Taken from job location</option>
                                <option value="Already on site and left at location">Already on site and left at location</option>
-                               
-                               
+
+
                             </Input>
                             <FormFeedback>{errors.ctBackOffice}</FormFeedback>
-                            
+
                           </div>
                         </div>
 
@@ -785,16 +732,15 @@ let EditJobType = props => {
                             <Label for="userSystems">Systems</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="userSystems"
                               id="userSystems"
-                              // valid={!errors.userSystems}
-                              // invalid={touched.userSystems && !!errors.userSystems}
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              //value={values.userSystems}
-                              defaultChecked={initialValues.userSystems}
+                              value={values.userSystems}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -812,16 +758,15 @@ let EditJobType = props => {
                             <Label for="orderNumber">Order number</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
                               name="orderNumber"
                               id="orderNumber"
-                              // valid={!errors.orderNumber}
-                              // invalid={touched.orderNumber && !!errors.orderNumber}
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              //value={values.orderNumber}
-                              defaultChecked={initialValues.orderNumber}
+                              value={values.orderNumber}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -833,27 +778,26 @@ let EditJobType = props => {
                             </label>
                           </div>
                         </div>
-                        
- 
-                        
-                        
-                        
+
+
+
+
+
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="isActive"></Label>
+                            <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+
                             <input
-                              name="isActive"
-                              id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              name="active"
+                              id="active"
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              defaultChecked={initialValues.isActive}
-                              //value={values.isActive}
+                              value={values.active}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -865,8 +809,8 @@ let EditJobType = props => {
                             </label>
                           </div>
                         </div>
-                        
-                        
+
+
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>

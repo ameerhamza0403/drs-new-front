@@ -112,7 +112,7 @@ let AddNominalCode = props => {
     description :"",
     nominalType :"",
     class :"",
-    isActive: false
+    active: false
   };
 
   
@@ -253,8 +253,7 @@ let AddNominalCode = props => {
                               value={values.class}
                          
                               
-                            > 
-                              <option value=""></option>
+                            >
                                <option value="A">A</option>
                                <option value="E">E</option>
                                <option value="L">L</option>
@@ -288,12 +287,9 @@ let AddNominalCode = props => {
                          
                               
                             >
-                               <option value=""></option>
                                <option value="Fixed Asset">Fixed Asset</option>
-                               <option value="Current Asset">Current Asset</option>
                                <option value="Expense">Expense</option>
                                <option value="Current Liability">Current Liability</option>
-                               <option value="Long-Term Liability">Long-Term Liability</option>
                                <option value="Capital (Source of funds)">Capital (Source of funds)</option>
                                <option value="Revenue">Revenue</option>
                                <option value="Purchase">Purchase</option>
@@ -311,13 +307,13 @@ let AddNominalCode = props => {
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             
                             <input
-                              name="isActive"
-                              id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              name="active"
+                              id="active"
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.isActive}
+                              value={values.active}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

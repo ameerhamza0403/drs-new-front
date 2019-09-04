@@ -6,11 +6,18 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../../../scss/override/listing.scss";
-import {GetListingForVehicleGroups, DeleteVehicleGroupsDataById} from '../shared/vehiclegroup';
+import {GetPagListingForVehicleGroup, DeleteVehicleGroupsDataById} from '../shared/vehiclegroup';
+import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
+import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
+let Page = 1;
+let PageSize = 10;
+let paging = "";
+let TotalPages = 3;
 
 const classes = {
   linearprogress: {
@@ -43,45 +50,64 @@ const classes = {
 let VehicleGroupListing =()=>{
   let [Atlist, setAtlist] = useState([]);
 
-  const columns = [
-    {
-      name: "vehicleGroupId",
-      label: "ID",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    },
-    {
-      name: "name",
-      label: "Name",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "isActive",
-      label: "Status",
-      options: {
-        filter: false,
-        sort: false,
-        display: false
-      }
-    }
-  ];
+  let [paginate, setPaginate] = useState();
 
+  //-- React Data Table
   const options = {
-    filterType: "multiselect",
-    onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-    customToolbar: () => console.log("rowData"),
-    rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-    selectableRows: "none",
-    viewColumns: true
-
-    // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+    sortIndicator: true,
+    // page: Page,
+    hideSizePerPage: true,
+    // paginationSize: PageSize,
+    hidePageListOnlyOnePage: true,
+    // sizePerPage: PageSize,
+    // clearSearch: true,
+    alwaysShowAllBtns: false,
+    onRowClick: HandlerowSelect,
+    withFirstAndLast: false
+    // onPageChange: onPageChange,
+    // onSizePerPageList: sizePerPageListChange,
   };
+
+
+  // const columns = [
+  //   {
+  //     name: "vehicleGroupId",
+  //     label: "ID",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   },
+  //   {
+  //     name: "name",
+  //     label: "Name",
+  //     options: {
+  //       filter: true,
+  //       sort: true
+  //     }
+  //   },
+  //   {
+  //     name: "isActive",
+  //     label: "Status",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   }
+  // ];
+
+  // const options = {
+  //   filterType: "multiselect",
+  //   onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+  //   customToolbar: () => console.log("rowData"),
+  //   rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+  //   selectableRows: "none",
+  //   viewColumns: true
+
+  //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+  // };
 
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
@@ -89,12 +115,39 @@ let VehicleGroupListing =()=>{
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
-      <MUIDataTable
-        title={"Actions & Filters"}
-        data={Atlist}
-        columns={columns}
-        options={options}
-      />
+      // <MUIDataTable
+      //   title={"Actions & Filters"}
+      //   data={Atlist}
+      //   columns={columns}
+      //   options={options}
+      // />
+      <BootstrapTable
+      data={Atlist}
+      version="4"
+      striped
+      hover
+      // pagination
+      // search
+      options={options}
+    >
+      <TableHeaderColumn
+        isKey={true}
+        hidden={true}
+        dataField="vehicleGroupId"
+        dataSort
+      >
+        vehicleGroupId
+      </TableHeaderColumn>
+      <TableHeaderColumn
+        // isKey={true}
+        // hidden={true}
+        dataField="name"
+        dataSort
+      >
+        Name
+      </TableHeaderColumn>
+
+    </BootstrapTable>
     );
   } else {
     Tabledisplay = (
@@ -111,12 +164,19 @@ let VehicleGroupListing =()=>{
   }, []);
 
   async function getlistapi() {
-    const { data: Atlist } = await GetListingForVehicleGroups();
-    setAtlist(Atlist);
-    // Atlist.map((e,i)=>
-    //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
-    //                 )
+    await GetPagListingForVehicleGroup(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
+    // Atlist.map(
+    //   (e, i) =>
+    //     (
+    //     Atlist[i].trackingDeviceId =iconint(Atlist[i].trackingDeviceId),
+    //     Atlist[i].usedForJobs =icon(Atlist[i].usedForJobs)
+    //     )
+    // );
+    TotalPages = paginate.totalPages;
     settabledistatus((Tabledistatus = true));
   }
 
@@ -170,12 +230,13 @@ function success() {
   }
 
   let [menushow, setMenushow] = useState(false);
-  let HandlerowSelect = (data, meta) => {
+  function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = data[0];
+    console.log(row);
+    idofEdit = row.vehicleGroupId;
     return setMenushow((menushow = true));
-  };
-  let Handlerowclose = (data, meta) => {
+  }
+  let Handlerowclose = row => {
     return setMenushow((menushow = false));
   };
   if (menushow) {

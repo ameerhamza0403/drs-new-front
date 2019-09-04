@@ -566,7 +566,7 @@ function handlePageSize(event) {
         {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">DEPARTMENT CODE</h3>
+          <h3 className="heading">Department CODE</h3>
         </div>
       </div>
       <br />

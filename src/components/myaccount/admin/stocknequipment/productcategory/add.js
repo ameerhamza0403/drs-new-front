@@ -102,11 +102,11 @@ let AddProductCategory = props => {
     }, {});
   };
 
-  const [initialValues, setInitialValues] = useState({
+  const initialValues = {
     name: "",
     type:"",
-    isActive: false
-  });
+    active: false
+  };
 
   
 
@@ -187,7 +187,7 @@ let AddProductCategory = props => {
                               type="text"
                               name="name"
                               id="name"
-                              placeholder="E.g. Boiler, Skip, Fridge etc..."
+                              placeholder=""
                               autoComplete="given-name"
                               valid={!errors.name}
                               invalid={touched.name && !!errors.name}
@@ -213,10 +213,10 @@ let AddProductCategory = props => {
                               id="type"
 
                               autoComplete="given-name"
-                              // valid={!errors.type}
-                              // invalid={touched.type && !!errors.type}
-                              // autoFocus={true}
-                              // required
+                              valid={!errors.type}
+                              invalid={touched.type && !!errors.type}
+                              autoFocus={true}
+                              required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.type}
@@ -236,18 +236,18 @@ let AddProductCategory = props => {
                         
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="isActive"></Label>
+                            <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             
                             <input
-                              name="isActive"
-                              id="isActive"
-                              valid={!errors.isActive}
-                              invalid={touched.isActive && !!errors.isActive}
+                              name="active"
+                              id="active"
+                              valid={!errors.active}
+                              invalid={touched.active && !!errors.active}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              value={values.isActive}
+                              value={values.active}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

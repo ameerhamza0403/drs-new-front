@@ -68,6 +68,7 @@ let DoorTypeEdit = props => {
       setGetValues((GetValues = res.data));
       // setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
+    setModal(true);
   }
   //Tost
 
@@ -138,7 +139,7 @@ let DoorTypeEdit = props => {
     validateForm(errors);
   }
 
-  let [modal, setModal] = useState(true);
+  let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
     return setModal((modal = false)), setTimeout(() => props.cross(), 200);
@@ -195,7 +196,7 @@ let DoorTypeEdit = props => {
                               required
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              defaultValue={GetValues.name}
+                              value={GetValues.name}
                             />
 
                             <FormFeedback>{errors.name}</FormFeedback>
@@ -210,6 +211,7 @@ let DoorTypeEdit = props => {
                           onBlur={handleBlur}
                           value={values.isActive}
                           type="checkbox"
+                          defaultChecked={GetValues.isActive}
                         />
                         &nbsp;&nbsp;&nbsp;
                         <label className="form-check-label" for="defaultCheck1">

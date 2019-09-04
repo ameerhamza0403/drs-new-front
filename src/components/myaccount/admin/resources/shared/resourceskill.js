@@ -12,9 +12,26 @@ function ApiwithidResourceSkill(Id) {
     return `${apiurlResourceSkill}/${Id}`;
   }
 
+
+  function ApiPagingResourceSkill(PG,PGSIZE) {
+    return `${apiurlResourceSkill}/${PG}/${PGSIZE}`;
+  }
+
+//-------- GetAPi
+export function GetListingpgForResourceSkill(pg, pgsize) {
+    return axios.get(ApiPagingResourceSkill(pg,pgsize),
+             {headers: {
+                 //"Authorization": authIt,
+                 //"accept": "application/json",
+                 //"Access-Control-Allow-Origin": "*",
+                 'Content-Type': 'application/json',
+                }}
+            )
+
+}
 //-------- GetAPi
 export function GetListingForResourceSkill() {
-    return axios.get(apiurlResourceSkill, 
+    return axios.get(apiurlResourceSkill,
              {headers: {
                  //"Authorization": authIt,
                  //"accept": "application/json",
@@ -28,7 +45,7 @@ export function GetListingForResourceSkill() {
 //---------Edit APi
 export function GetResourceSkillDataById(id) {
     // console.log(id)
-    return axios.get(ApiwithidResourceSkill(id), 
+    return axios.get(ApiwithidResourceSkill(id),
              {headers: {
                  'Content-Type': 'application/json',
                 }}

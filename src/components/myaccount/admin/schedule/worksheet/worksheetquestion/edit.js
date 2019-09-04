@@ -80,7 +80,11 @@ let EditWorkSheetQ = props => {
     }
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    
+    if (data.length === 0) {
+      errorc();
+      setSubmitting(true);
+      setSubmitting(false);
+    } else {
       let idtemp;
       console.log(props.IDforAPI, props.idofEdit)
           await PutWorkSheetQDataById(props.IDforAPI,props.idofEdit,values)
@@ -101,7 +105,7 @@ let EditWorkSheetQ = props => {
       handleOpen();
       props.refresh();
       setSubmitting(false);
-    
+    }
   }
 
   const validationSchema = function(values) {
@@ -174,7 +178,7 @@ let EditWorkSheetQ = props => {
     });
     validateForm(errors);
   }
-  let [modal, setModal] = useState(false);
+  let [modal, setModal] = useState(true);
 
   let handleOpen = () => {
     return (
@@ -190,10 +194,8 @@ let EditWorkSheetQ = props => {
   }, []);
 
   async function getlistapi() {
-    const { data: initialValues } = await GetWorkSheetQDataById(props.IDforAPI,props.idofEdit);
+    const { data: initialValues } = await GetWorkSheetQDataById(props.IDforAPI);
     setInitialValues(initialValues)
-    console.log(initialValues);
-    setModal(true);
   }
 
 
@@ -245,7 +247,7 @@ let EditWorkSheetQ = props => {
                               type="text"
                               name="question"
                               id="question"
-                              //placeholder=""
+                              placeholder=""
                               autoComplete="given-name"
                               valid={!errors.question}
                               invalid={touched.question && !!errors.question}
@@ -271,8 +273,7 @@ let EditWorkSheetQ = props => {
                                 onBlur={handleBlur}
                                 required
                                 invalid={touched.type && !!errors.type}
-                                defaultChecked={initialValues.questionType==="Yes"?true:false}
-                                //value="Yes"
+                                value="Yes"
                                 onChange={handleChange}/>&nbsp;Yes/No &nbsp;&nbsp;
                               <input type="radio"
                                 name="questionType"
@@ -280,8 +281,7 @@ let EditWorkSheetQ = props => {
                                 onBlur={handleBlur}
                                 required
                                 invalid={touched.type && !!errors.type}
-                                defaultChecked={initialValues.questionType==="cost"?true:false}
-                                //value="cost"
+                                value="cost"
                                 onChange={handleChange}/>&nbsp;Cost &nbsp;&nbsp;
                               <input type="radio"
                                 name="questionType"
@@ -289,8 +289,7 @@ let EditWorkSheetQ = props => {
                                 onBlur={handleBlur}
                                 required
                                 invalid={touched.type && !!errors.type}
-                                defaultChecked={initialValues.questionType==="decimal"?true:false}
-                               // value="decimal"
+                                value="decimal"
                                 onChange={handleChange}/>&nbsp;Decimal &nbsp;&nbsp;
                               <input type="radio"
                                 name="questionType"
@@ -298,8 +297,7 @@ let EditWorkSheetQ = props => {
                                 onBlur={handleBlur}
                                 required
                                 invalid={touched.type && !!errors.type}
-                                defaultChecked={initialValues.questionType==="wholeNumber"?true:false}
-                                //value="wholeNumber"
+                                value="wholeNumber"
                                 onChange={handleChange}/>&nbsp;Whole Number &nbsp;&nbsp;
                               <input type="radio"
                                 name="questionType"
@@ -307,8 +305,7 @@ let EditWorkSheetQ = props => {
                                 onBlur={handleBlur}
                                 required
                                 invalid={touched.type && !!errors.type}
-                                defaultChecked={initialValues.questionType==="text"?true:false}
-                                //value="text"
+                                value="text"
                                 onChange={handleChange}/>&nbsp;Text
                               <input type="radio"
                                 name="questionType"
@@ -316,8 +313,7 @@ let EditWorkSheetQ = props => {
                                 onBlur={handleBlur}
                                 required
                                 invalid={touched.type && !!errors.type}
-                                defaultChecked={initialValues.questionType==="list"?true:false}
-                                //value="list"
+                                value="list"
                                 onChange={handleChange}/>&nbsp;List &nbsp;&nbsp;
                               <input type="radio"
                                 name="questionType"
@@ -325,8 +321,7 @@ let EditWorkSheetQ = props => {
                                 onBlur={handleBlur}
                                 required
                                 invalid={touched.type && !!errors.type}
-                                defaultChecked={initialValues.questionType==="photo"?true:false}
-                                //value="photo"
+                                value="photo"
                                 onChange={handleChange}/>&nbsp;Photo &nbsp;&nbsp;
 
 
@@ -341,12 +336,11 @@ let EditWorkSheetQ = props => {
                           <input
                               name="mandatory"
                               id="mandatory"
-                              // valid={!errors.isActive}
-                              // invalid={touched.isActive && !!errors.isActive}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              defaultChecked={initialValues.mandatory}
-                              //value={values.isActive}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -369,12 +363,11 @@ let EditWorkSheetQ = props => {
                           <input
                               name="appears"
                               id="appers"
-                              // valid={!errors.isActive}
-                              // invalid={touched.isActive && !!errors.isActive}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              defaultChecked={initialValues.appears}
-                              //value={values.isActive}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -389,19 +382,18 @@ let EditWorkSheetQ = props => {
                           </div>
                         </div>
 
-                        {/* <div className="row">
+                        <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="defaultAnswer">Default Answer</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
                               <input type="radio"
                                 name="defaultAnswer"
-                                // valid={!errors.type}
-                                 onBlur={handleBlur}
-                                // required
-                                // invalid={touched.type && !!errors.type}
-                                //defaultChecked={initialValues.defaultAnswer.trim()==="no"?true:false}
-                                //value="no"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="no"
                                 onChange={handleChange}/>&nbsp;No &nbsp;&nbsp;
                               <input type="radio"
                                 name="defaultAnswer"
@@ -409,8 +401,7 @@ let EditWorkSheetQ = props => {
                                 onBlur={handleBlur}
                                 required
                                 invalid={touched.type && !!errors.type}
-                                //defaultChecked={initialValues.defaultAnswer.trim()==="yes"?true:false}
-                                //value="yes"
+                                value="yes"
                                 onChange={handleChange}/>&nbsp;Yes &nbsp;&nbsp;
                               <input type="radio"
                                 name="defaultAnswer"
@@ -418,14 +409,13 @@ let EditWorkSheetQ = props => {
                                 onBlur={handleBlur}
                                 required
                                 invalid={touched.type && !!errors.type}
-                                //defaultChecked={initialValues.defaultAnswer.trim()==="nodefaultanswer"?true:false}
-                                //value="nodefaultanswer"
+                                value="nodefaultanswer"
                                 onChange={handleChange}/>&nbsp;No Default Answer &nbsp;&nbsp;
 
 
 
                             </div>
-                        </div> */}
+                        </div>
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
@@ -434,23 +424,29 @@ let EditWorkSheetQ = props => {
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
                           <input type="radio"
                                 name="atRisk"
-                                //valid={!errors.type}
+                                valid={!errors.type}
                                 onBlur={handleBlur}
-                                // required
-                                // invalid={touched.type && !!errors.type}
-                                defaultChecked={initialValues.atRisk==="false"?true:false}
-                                //value="no"
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="no"
                                 onChange={handleChange}/>&nbsp;No &nbsp;&nbsp;
                               <input type="radio"
                                 name="atRisk"
-                                //valid={!errors.type}
+                                valid={!errors.type}
                                 onBlur={handleBlur}
-                                // required
-                                // invalid={touched.type && !!errors.type}
-                                defaultChecked={initialValues.atRisk==="true"?true:false}
-                                //value="yes"
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="yes"
                                 onChange={handleChange}/>&nbsp;Yes &nbsp;&nbsp;
-                              
+                              <input type="radio"
+                                name="atRisk"
+                                valid={!errors.type}
+                                onBlur={handleBlur}
+                                required
+                                invalid={touched.type && !!errors.type}
+                                value="nodansweratrisk"
+                                onChange={handleChange}/>&nbsp;No Answer At Risk &nbsp;&nbsp;
+
 
                             </div>
                         </div>
@@ -479,7 +475,7 @@ let EditWorkSheetQ = props => {
                           </div>
                         </div>
 
-                        {/* <div className="row">
+                        <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
                             <Label for="question">Answer At Risk</Label>
                           </div>
@@ -501,7 +497,7 @@ let EditWorkSheetQ = props => {
                             <FormFeedback>{errors.answeratrisk}</FormFeedback>
 
                           </div>
-                        </div> */}
+                        </div>
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
@@ -539,8 +535,7 @@ let EditWorkSheetQ = props => {
                               invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              defaultChecked
-                              //value={values.isActive}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -563,12 +558,11 @@ let EditWorkSheetQ = props => {
                           <input
                               name="photoBW"
                               id="photoBW"
-                              // valid={!errors.isActive}
-                              // invalid={touched.isActive && !!errors.isActive}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              defaultChecked={initialValues.photoBW}
-                              //value={values.isActive}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;
@@ -587,18 +581,17 @@ let EditWorkSheetQ = props => {
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
-                            <Label for="isActive"></Label>
+                            <Label for="sharing"></Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">
                             <input
                               name="isActive"
                               id="isActive"
-                              // valid={!errors.isActive}
-                              // invalid={touched.isActive && !!errors.isActive}
+                              valid={!errors.isActive}
+                              invalid={touched.isActive && !!errors.isActive}
                               onClick={handleChange}
                               onBlur={handleBlur}
-                              defaultChecked={initialValues.isActive}
-                              //value={values.isActive}
+                              value={values.isActive}
                               type="checkbox"
                             />
                             &nbsp;&nbsp;&nbsp;

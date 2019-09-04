@@ -230,6 +230,19 @@ let VehicleFuelCost = () => {
 
     //                 )
     TotalPages = paginate.totalPages;
+    Atlist.map(e=>{
+      if(e.hasOwnProperty('startDate')){
+        if(!(e.startDate===null)){
+      e.startDate = e.startDate.substr(0, (e.startDate.length-9))
+        }
+      }
+      if(e.hasOwnProperty('endDate')){
+        if(!(e.endDate===null)){
+      e.endDate = e.endDate.substr(0, (e.endDate.length-9))
+        }
+      }
+    })
+
     settabledistatus((Tabledistatus = true));
   }
  //--- Pagination ------------------
