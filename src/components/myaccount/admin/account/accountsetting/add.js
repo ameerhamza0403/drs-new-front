@@ -69,7 +69,7 @@ let AddAccountSetting = props => {
     console.log(values)
     await PostListingForAccountSetting(values).then(()=>success()).catch(error=>errort());
     handleOpen();
-    props.refresh();
+    //props.refresh();
     setSubmitting(false);
   }
 
@@ -80,7 +80,7 @@ let AddAccountSetting = props => {
     .min(4, `Name has to be at least 4 characters`)
     .required("Name is requierd"),
 
-    addressLine1: Yup.string()
+    type: Yup.string()
     .required("Address Line 1 is requierd"),
     });
   };
@@ -204,19 +204,19 @@ let AddAccountSetting = props => {
                       <FormGroup>
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Your Company Name</Label>
+                            <Label for="name">Setting Name</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                           <Input
                               type="text"
                               name="name"
                               id="name"
-                              placeholder="Enter Your Company Name"
-                              autoComplete="given-name"
-                              valid={!errors.name}
-                              invalid={touched.name && !!errors.name}
-                              autoFocus={true}
-                              required
+                              placeholder="Enter Your Setting Name"
+                              // autoComplete="given-name"
+                              // valid={!errors.name}
+                              // invalid={touched.name && !!errors.name}
+                              // autoFocus={true}
+                              // required
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.name}
@@ -228,137 +228,82 @@ let AddAccountSetting = props => {
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="addressLine1">Address Line 1</Label>
+                            <Label for="type">Setting Type</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             <Input
-                                id="addressLine1"
-                                placeholder="Enter your Address Line 1"
+                                id="type"
+                                placeholder="Enter your Setting Type"
                                 type="text"
-                                name="addressLine1"
-                                autoComplete="given-name"
-                                valid={!errors.addressLine1}
-                                invalid={touched.addressLine1 && !!errors.addressLine1}
-                                autoFocus={true}
-                                required
+                                name="type"
+                                // autoComplete="given-name"
+                                // valid={!errors.type}
+                                // invalid={touched.type && !!errors.type}
+                                // autoFocus={true}
+                                // required
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.addressLine1}
+                                value={values.type}
                               
                             />
                             
-                            <FormFeedback>{errors.addressLine1}</FormFeedback>
+                            <FormFeedback>{errors.type}</FormFeedback>
                            
                           </div>
                         </div>
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="addressLine2">Address Line 2</Label>
+                            <Label for="module">Setting Module</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             <Input
-                                id="addressLine2"
-                                placeholder="Enter your Address Line 2"
+                                id="module"
+                                placeholder="Enter your Setting Module"
                                 type="text"
-                                name="addressLin2"
+                                name="module"
                                 // autoComplete="given-name"
-                                // valid={!errors.addressLine2}
-                                // invalid={touched.addressLine2 && !!errors.addressLine2}
+                                // valid={!errors.module}
+                                // invalid={touched.module && !!errors.module}
                                 // autoFocus={true}
                                 // required
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.addressLine2}
+                                value={values.module}
                               
                             />
                             
-                            <FormFeedback>{errors.addressLine2}</FormFeedback>
+                            <FormFeedback>{errors.module}</FormFeedback>
                            
                           </div>
                         </div>
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="addressLine3">Address Line 3</Label>
+                            <Label for="value">Setting Value</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
                             <Input
-                                id="addressLine3"
-                                placeholder="Enter your Address Line 3"
+                                id="value"
+                                placeholder="Enter your Setting Value"
                                 type="text"
                                 // autoComplete="given-name"
-                                // valid={!errors.addressLine3}
-                                // invalid={touched.addressLine3 && !!errors.addressLine3}
+                                // valid={!errors.value}
+                                // invalid={touched.value && !!errors.value}
                                 // autoFocus={true}
                                 // required
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                name="addressLine3"
-                                value={values.addressLine3}
+                                name="value"
+                                value={values.value}
                             />
-                            <FormFeedback>{errors.addressLine3}</FormFeedback>
+                            <FormFeedback>{errors.value}</FormFeedback>
                             
                            
                           </div>
                         </div>
 
-                        
-
-                        <div className="row">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="jobFooterText ">Default text for the job card footer</Label>
-                          </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            <Input
-                                id="jobFooterText "
-                                placeholder="Enter your Footer Text"
-                                type="text"
-                                // autoComplete="given-name"
-                                // valid={!errors.jobFooterText}
-                                // invalid={touched.jobFooterText && !!errors.jobFooterText}
-                                // autoFocus={true}
-                                // required
-                                value={values.jobFooterText }
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                name="jobFooterText"
-                                
-                              
-                            />
-                            <FormFeedback>{errors.jobFooterText}</FormFeedback>
-                            
-                           
-                          </div>
-                        </div>
-
-                        <div className="row mb-2">
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            Url of your logo
-                          </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                          <Input
-                              type="file"
-                              name="logo"
-                              id="name"
-                              // placeholder="i.e. "
-                              autoComplete="given-name"
-                              // valid={!errors.reference}
-                              // invalid={touched.reference && !!errors.reference}
-                              // autoFocus={true}
-                              // required
-                              onChange={handleFileSelect}
-                              // onBlur={handleBlur}
-                              // value={values.reference}
-                              //value={values.logo}
-                            />
-                            
-                            <FormFeedback>{errors.logo}</FormFeedback>
-                          </div>
-                        </div>
-
-                    
-                        
+                       
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="isActive"></Label>
