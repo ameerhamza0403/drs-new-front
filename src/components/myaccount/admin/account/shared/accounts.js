@@ -1,4 +1,4 @@
-import { apiUrl } from '..//..//..//..//..//config.json';
+import { apiUrl,accountId } from '..//..//..//..//..//config.json';
 import axios from 'axios';
 
 
@@ -30,9 +30,9 @@ export function GetListingForAccount(pg,pgsize) {
 }
 
 //---------Edit APi
-export function GetAccountDataById(id) {
+export function GetAccountDataById() {
     // console.log(id)
-    return axios.get(ApiwithidAccount(id),
+    return axios.get(ApiwithidAccount(accountId),
              {headers: {
                  'Content-Type': 'application/json',
                 }}
@@ -40,9 +40,9 @@ export function GetAccountDataById(id) {
 
 }
 
-export function PutAccountDataById(id,body) {
+export function PutAccountDataById(body) {
     // console.log(id)
-    return axios.put(ApiwithidAccount(id),body)
+    return axios.put(ApiwithidAccount(accountId),body)
 
 }
 
