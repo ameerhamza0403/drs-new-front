@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import EditVehicleGroup from "./edit";
 import VehicleGroupsAddGroup from "./add";
@@ -6,10 +6,14 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../../../scss/override/listing.scss";
-import {GetPagListingForVehicleGroup, DeleteVehicleGroupsDataById} from '../shared/vehiclegroup';
+import {
+  GetPagListingForVehicleGroup,
+  DeleteVehicleGroupsDataById
+} from "../shared/vehiclegroup";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { Spinner } from "reactstrap";
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -22,7 +26,8 @@ let TotalPages = 3;
 const classes = {
   linearprogress: {
     // backgroundColor: '#EE7647',
-    backgroundColor: "rgb(243, 153, 117)"
+    // backgroundColor: "rgb(243, 153, 117)"
+    marginLeft: "50%"
   },
   header: {
     backgroundColor: "#EE7647",
@@ -47,9 +52,10 @@ const classes = {
   }
 };
 
-let VehicleGroupListing =()=>{
+let countforpagination = 0;
+let VehicleGroupListing = () => {
   let [Atlist, setAtlist] = useState([]);
-
+  let [totalcount, setTotalCount] = useState();
   let [paginate, setPaginate] = useState();
 
   //-- React Data Table
@@ -67,7 +73,6 @@ let VehicleGroupListing =()=>{
     // onPageChange: onPageChange,
     // onSizePerPageList: sizePerPageListChange,
   };
-
 
   // const columns = [
   //   {
@@ -109,8 +114,111 @@ let VehicleGroupListing =()=>{
   //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
   // };
 
+  //--- Pagination ------------------
+
+  function handlePageSize(event) {
+    PageSize = event.target.value;
+    refreshfn();
+  }
+
+  let PageSizeComp = (
+    <select onChange={handlePageSize} value={PageSize}>
+      <option value={10}>10</option>
+      <option value={20}>20</option>
+    </select>
+  );
+
+  let [pgin, setPgin] = useState(true);
+
+  function handlepagin() {
+    setPgin(false);
+    // setTimeout(() => setPgin(true), 10);
+    refreshfn();
+    setPgin(true);
+  }
+
+  if (pgin) {
+    paging = (
+      <Pagination>
+        <PaginationItem>
+          <PaginationLink
+            previous
+            disabled={!(Page > 1) ? true : false}
+            tag="button"
+            onClick={() => {
+              if (Page > 1) {
+                if (countforpagination === 0) {
+                  Page = Page - 1;
+                  countforpagination = 1;
+                  handlepagin();
+                }
+              }
+            }}
+          />
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            hidden={Page === 1 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page - 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          >
+            {Page - 1}
+          </PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem active>
+          <PaginationLink tag="button">{Page}</PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            hidden={Page === TotalPages || totalcount < 11 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page + 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          >
+            {Page + 1}
+          </PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            next
+            disabled={Page === TotalPages || totalcount < 11 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page + 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          />
+        </PaginationItem>
+      </Pagination>
+    );
+  } else {
+    paging = "";
+  }
+
+  //----- Finished Pagination---------
+
   let Tabledisplay = (
-    <LinearProgress style={classes.linearprogress} color="secondary" />
+    <div style={classes.linearprogress}>
+      <Spinner type="grow" color="dark" />
+    </div>
   );
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
@@ -121,37 +229,49 @@ let VehicleGroupListing =()=>{
       //   columns={columns}
       //   options={options}
       // />
-      <BootstrapTable
-      data={Atlist}
-      version="4"
-      striped
-      hover
-      // pagination
-      // search
-      options={options}
-    >
-      <TableHeaderColumn
-        isKey={true}
-        hidden={true}
-        dataField="vehicleGroupId"
-        dataSort
-      >
-        vehicleGroupId
-      </TableHeaderColumn>
-      <TableHeaderColumn
-        // isKey={true}
-        // hidden={true}
-        dataField="name"
-        dataSort
-      >
-        Name
-      </TableHeaderColumn>
-
-    </BootstrapTable>
+      <div>
+        <BootstrapTable
+          data={Atlist}
+          version="4"
+          striped
+          hover
+          // pagination
+          // search
+          options={options}
+        >
+          <TableHeaderColumn
+            isKey={true}
+            hidden={true}
+            dataField="vehicleGroupId"
+            dataSort
+          >
+            vehicleGroupId
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            // isKey={true}
+            // hidden={true}
+            dataField="name"
+            dataSort
+          >
+            Name
+          </TableHeaderColumn>
+        </BootstrapTable>
+        <br />
+        <div className="row">
+          <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
+            {"  Showing "} {PageSizeComp} {" Results"}
+          </div>
+          <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
+            {paging}
+          </div>
+        </div>
+      </div>
     );
   } else {
     Tabledisplay = (
-      <LinearProgress style={classes.linearprogress} color="secondary" />
+      <div style={classes.linearprogress}>
+        <Spinner type="grow" color="dark" />
+      </div>
     );
   }
   let refreshfn = () => {
@@ -164,40 +284,36 @@ let VehicleGroupListing =()=>{
   }, []);
 
   async function getlistapi() {
-
     await GetPagListingForVehicleGroup(Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
-    // Atlist.map(
-    //   (e, i) =>
-    //     (
-    //     Atlist[i].trackingDeviceId =iconint(Atlist[i].trackingDeviceId),
-    //     Atlist[i].usedForJobs =icon(Atlist[i].usedForJobs)
-    //     )
-    // );
+    setTotalCount((totalcount = paginate.totalCount));
     TotalPages = paginate.totalPages;
+    countforpagination = 0;
+    settabledistatus((Tabledistatus = false));
     settabledistatus((Tabledistatus = true));
   }
 
- // Toast
+  // Toast
 
- function errort() {
-  // add type: 'error' to options
-  return toast.error('Failed with Error...', {
-    position: toast.POSITION.BOTTOM_RIGHT
-  });
-
-}
-function success() {
-  return toast.success("Deleted Successfully... ", {
-    position: toast.POSITION.BOTTOM_RIGHT
-  });
-}
+  function errort() {
+    // add type: 'error' to options
+    return toast.error("Failed with Error...", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+  function success() {
+    return toast.success("Deleted Successfully... ", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
   async function Dellistapi() {
-    await DeleteVehicleGroupsDataById(idofEdit).then(() => {
-      success();
-    }).catch(error => {
+    await DeleteVehicleGroupsDataById(idofEdit)
+      .then(() => {
+        success();
+      })
+      .catch(error => {
         errort();
       });
     Handlerowclose();

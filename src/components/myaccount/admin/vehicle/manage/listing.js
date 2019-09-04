@@ -369,8 +369,7 @@ let VehicleManage = () => {
         <br />
         <div className="row">
           <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
-            {PageSizeComp}
-            {"  Showing " + PageSize + " Rows Per Page"}
+            {"  Showing " }  {PageSizeComp} { " Results"}
           </div>
           <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
             {paging}

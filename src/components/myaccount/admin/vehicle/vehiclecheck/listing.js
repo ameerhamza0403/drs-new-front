@@ -13,6 +13,8 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GetVehicleCheckDataById } from "../shared/vehiclecheck";
+import { Spinner } from "reactstrap";
+import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -25,7 +27,8 @@ let TotalPages = 3;
 const classes = {
   linearprogress: {
     // backgroundColor: '#EE7647',
-    backgroundColor: "rgb(243, 153, 117)"
+    // backgroundColor: "rgb(243, 153, 117)"
+    marginLeft: "50%"
   },
   header: {
     backgroundColor: "#EE7647",
@@ -50,12 +53,15 @@ const classes = {
   }
 };
 
+let countforpagination = 0;
 let VehicleCheck = () => {
   let [Atlist, setAtlist] = useState([]);
   let [checktype, setChecktype] = useState([]);
   let [selectdistatus, setSelectdistatus] = useState(false);
   let [reselect, setReselect] = useState("none");
   let [Tabledistatus, settabledistatus] = useState(false);
+  let [paginate, setPaginate] = useState();
+  let [totalcount, setTotalCount] = useState();
 
   const columns = [
     {
@@ -141,15 +147,21 @@ let VehicleCheck = () => {
   };
 
   async function getlistByResID(id) {
-    settabledistatus((Tabledistatus = false));
-    const { data: Atlist } = await GetVehicleCheckDataByTypeId(id,Page,PageSize);
-    setAtlist(Atlist);
+    await GetVehicleCheckDataByTypeId(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
     Atlist.map((e, i) => (e.atRisk = atriskicon(e.atRisk)));
+    setTotalCount((totalcount = paginate.totalCount));
+    TotalPages = paginate.totalPages;
+    countforpagination = 0;
     settabledistatus((Tabledistatus = true));
   }
 
   let selectdisplay = (
-    <LinearProgress style={classes.linearprogress} color="secondary" />
+    <div style={classes.linearprogress}>
+      <Spinner type="grow" color="dark" />
+    </div>
   );
   if (selectdistatus) {
     selectdisplay = (
@@ -168,7 +180,9 @@ let VehicleCheck = () => {
     );
   } else {
     selectdisplay = (
-      <LinearProgress style={classes.linearprogress} color="secondary" />
+      <div style={classes.linearprogress}>
+        <Spinner type="grow" color="dark" />
+      </div>
     );
   }
 
@@ -189,7 +203,7 @@ let VehicleCheck = () => {
     }
   }
   async function getlistapi() {
-    const { data: checktype } = await GetListingForVehicleChecktype(0,0);
+    const { data: checktype } = await GetListingForVehicleChecktype(0, 0);
     setChecktype(checktype);
     setSelectdistatus((selectdistatus = true));
   }
@@ -233,21 +247,135 @@ let VehicleCheck = () => {
     return setEditstate((Editstate = false));
   };
 
+  //--- Pagination ------------------
+
+  function handlePageSize(event) {
+    PageSize = event.target.value;
+    refreshfn();
+  }
+
+  let PageSizeComp = (
+    <select onChange={handlePageSize} value={PageSize}>
+      <option value={10}>10</option>
+      <option value={20}>20</option>
+    </select>
+  );
+
+  let [pgin, setPgin] = useState(true);
+
+  function handlepagin() {
+    setPgin(false);
+    // setTimeout(() => setPgin(true), 10);
+    refreshfn();
+    setPgin(true);
+  }
+
+  if (pgin) {
+    paging = (
+      <Pagination>
+        <PaginationItem>
+          <PaginationLink
+            previous
+            disabled={!(Page > 1) ? true : false}
+            tag="button"
+            onClick={() => {
+              if (Page > 1) {
+                if (countforpagination === 0) {
+                  Page = Page - 1;
+                  countforpagination = 1;
+                  handlepagin();
+                }
+              }
+            }}
+          />
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            hidden={Page === 1 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page - 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          >
+            {Page - 1}
+          </PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem active>
+          <PaginationLink tag="button">{Page}</PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            hidden={Page === TotalPages || totalcount < 11 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page + 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          >
+            {Page + 1}
+          </PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            next
+            disabled={Page === TotalPages || totalcount < 11 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page + 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          />
+        </PaginationItem>
+      </Pagination>
+    );
+  } else {
+    paging = "";
+  }
+
+  //----- Finished Pagination---------
+
   if (Tabledistatus) {
     Tabledisplay = (
-      <MUIDataTable
-        title={"Actions & Filters"}
-        data={Atlist}
-        columns={columns}
-        options={options}
-      />
+      <div>
+        <MUIDataTable
+          title={"Actions & Filters"}
+          data={Atlist}
+          columns={columns}
+          options={options}
+        />
+        <br />
+        <div className="row">
+          <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
+            {"  Showing "} {PageSizeComp} {" Results"}
+          </div>
+          <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
+            {paging}
+          </div>
+        </div>
+      </div>
     );
   } else {
     if (reselect === "none") {
       Tabledisplay = "";
     } else {
       Tabledisplay = (
-        <LinearProgress style={classes.linearprogress} color="secondary" />
+        <div style={classes.linearprogress}>
+          <Spinner type="grow" color="dark" />
+        </div>
       );
     }
   }

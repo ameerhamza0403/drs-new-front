@@ -15,12 +15,13 @@ import iconForForm from "..//..//..//..//images/icon-1.png";
 import SkillsAdd from "./skilladdedit";
 import SpecialHourlyRate from "./specialrateedit";
 import AlwaysAssits from "./alwaysassist";
-import {GetListingForAddEdit} from "..//shared/addedit";
+import {GetListingpgForResource} from "..//shared/addedit";
 import { GetListingForcurrency } from "..//shared/currency";
 import { GetListingForResourceGroup } from "..//..//resources/shared/resourcegroup";
 import {GetAddEditDataById, PutAddEditDataById} from '..//shared/addedit';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -126,12 +127,12 @@ let AddeditEdit = (props) => {
   }, [count]);
 
   async function GetGroupResource() {
-    let { data: resvalue } = await GetListingForResourceGroup();
+    let { data: resvalue } = await GetListingForResourceGroup(0,0);
     setResvalue(resvalue);
   }
 
   async function GetList() {
-    let { data: listvalue } = await GetListingForAddEdit();
+    let { data: listvalue } = await GetListingpgForResource(0,0);
     setListvalue(listvalue);
   }
 

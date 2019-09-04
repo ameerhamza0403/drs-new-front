@@ -2,14 +2,18 @@ import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
 import EditCurrency from "./edit";
-import { GetListingForlistcurrency, DeletecurrencyDataById } from "..//shared/currency";
-import AddCurrency from './add';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import {
+  GetListingForlistcurrency,
+  DeletecurrencyDataById
+} from "..//shared/currency";
+import AddCurrency from "./add";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { Spinner } from "reactstrap";
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -19,11 +23,11 @@ let PageSize = 10;
 let paging = "";
 let TotalPages = 2;
 
-
 const classes = {
   linearprogress: {
     // backgroundColor: '#EE7647',
-    backgroundColor: "rgb(243, 153, 117)"
+    // backgroundColor: "rgb(243, 153, 117)"
+    marginLeft: "50%"
   },
   header: {
     backgroundColor: "#EE7647",
@@ -48,8 +52,12 @@ const classes = {
   }
 };
 
+let countforpagination = 0;
+
 let CurrencyListing = () => {
   let [Atlist, setAtlist] = useState([]);
+  let [paginate, setPaginate] = useState();
+  let [totalcount, setTotalCount] = useState();
 
   // const columns = [
   //   {
@@ -101,9 +109,6 @@ let CurrencyListing = () => {
   //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
   // };
 
-
-  let [paginate, setPaginate] = useState();
-
   //-- React Data Table
   const options = {
     sortIndicator: true,
@@ -120,9 +125,111 @@ let CurrencyListing = () => {
     // onSizePerPageList: sizePerPageListChange,
   };
 
+  //--- Pagination ------------------
+
+  function handlePageSize(event) {
+    PageSize = event.target.value;
+    refreshfn();
+  }
+
+  let PageSizeComp = (
+    <select onChange={handlePageSize} value={PageSize}>
+      <option value={10}>10</option>
+      <option value={20}>20</option>
+    </select>
+  );
+
+  let [pgin, setPgin] = useState(true);
+
+  function handlepagin() {
+    setPgin(false);
+    // setTimeout(() => setPgin(true), 10);
+    refreshfn();
+    setPgin(true);
+  }
+
+  if (pgin) {
+    paging = (
+      <Pagination>
+        <PaginationItem>
+          <PaginationLink
+            previous
+            disabled={!(Page > 1) ? true : false}
+            tag="button"
+            onClick={() => {
+              if (Page > 1) {
+                if (countforpagination === 0) {
+                  Page = Page - 1;
+                  countforpagination = 1;
+                  handlepagin();
+                }
+              }
+            }}
+          />
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            hidden={Page === 1 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page - 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          >
+            {Page - 1}
+          </PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem active>
+          <PaginationLink tag="button">{Page}</PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            hidden={Page === TotalPages || totalcount < 11 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page + 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          >
+            {Page + 1}
+          </PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            next
+            disabled={Page === TotalPages || totalcount < 11 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page + 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          />
+        </PaginationItem>
+      </Pagination>
+    );
+  } else {
+    paging = "";
+  }
+
+  //----- Finished Pagination---------
 
   let Tabledisplay = (
-    <LinearProgress style={classes.linearprogress} color="secondary" />
+    <div style={classes.linearprogress}>
+      <Spinner type="grow" color="dark" />
+    </div>
   );
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
@@ -133,7 +240,8 @@ let CurrencyListing = () => {
       //   columns={columns}
       //   options={options}
       // />
-      <BootstrapTable
+      <div>
+        <BootstrapTable
           data={Atlist}
           version="4"
           striped
@@ -153,12 +261,23 @@ let CurrencyListing = () => {
           <TableHeaderColumn dataField="code" dataSort>
             Name
           </TableHeaderColumn>
-
         </BootstrapTable>
+        <br />
+        <div className="row">
+          <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
+            {"  Showing "} {PageSizeComp} {" Results"}
+          </div>
+          <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
+            {paging}
+          </div>
+        </div>
+      </div>
     );
   } else {
     Tabledisplay = (
-      <LinearProgress style={classes.linearprogress} color="secondary" />
+      <div style={classes.linearprogress}>
+        <Spinner type="grow" color="dark" />
+      </div>
     );
   }
   let refreshfn = () => {
@@ -179,19 +298,20 @@ let CurrencyListing = () => {
     //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
 
     //                 )
+    setTotalCount((totalcount = paginate.totalCount));
     TotalPages = paginate.totalPages;
+    countforpagination = 0;
+    settabledistatus((Tabledistatus = false));
     settabledistatus((Tabledistatus = true));
   }
 
+  // Toast
 
-   // Toast
-
-   function errort() {
+  function errort() {
     // add type: 'error' to options
-    return toast.error('Failed with Error...', {
+    return toast.error("Failed with Error...", {
       position: toast.POSITION.BOTTOM_RIGHT
     });
-
   }
   function success() {
     return toast.success("Deleted Successfully... ", {
@@ -200,9 +320,11 @@ let CurrencyListing = () => {
   }
 
   async function Dellistapi() {
-    await DeletecurrencyDataById(idofEdit).then(() => {
-      success();
-    }).catch(error => {
+    await DeletecurrencyDataById(idofEdit)
+      .then(() => {
+        success();
+      })
+      .catch(error => {
         errort();
       });
     Handlerowclose();

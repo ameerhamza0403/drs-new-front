@@ -7,13 +7,11 @@ import {
   DeletePhoneBookDataById
 } from "..//shared/phonebook";
 import AddPhoneBook from "./add";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -22,6 +20,7 @@ let Page = 1;
 let PageSize = 10;
 let paging = "";
 let TotalPages = 3;
+let countforpagination = 0;
 
 const classes = {
   linearprogress: {
@@ -52,88 +51,86 @@ const classes = {
   }
 };
 
-  let countforpagination = 0;
-  let PhoneBookListing = () => {
+let PhoneBookListing = () => {
   let [Atlist, setAtlist] = useState();
   let [paginate, setPaginate] = useState();
   let [totalcount, setTotalCount] = useState();
 
-//   const columns = [
-//     {
-//       name: "phoneBookItemId",
-//       label: "ID",
-//       options: {
-//         filter: false,
-//         sort: false,
-//         display: false
-//       }
-//     },
-//     {
-//       name: "name",
-//       label: "Name",
-//       options: {
-//         filter: true,
-//         sort: true
-//       }
-//     },
-//     {
-//         name: "phoneNumber",
-//         label: "Phone",
-//         options: {
-//             filter: true,
-//             sort: true
-//         }
-//     },
-//     {
-//         name: "extensions",
-//         label: "Extensions",
-//         options: {
-//             filter: true,
-//             sort: true
-//         }
-//     },
-//     {
-//         name: "email",
-//         label: "Email",
-//         options: {
-//             filter: true,
-//             sort: true
-//         }
-//     },
-//     {
-//       name: "isActive",
-//       label: "Status",
-//       options: {
-//         filter: false,
-//         sort: false,
-//         display: false
-//       }
-//     }
-    //   {
-    //     name: "action",
-    //     label: "Action",
-    //     options: {
-    //       filter: false,
-    //       sort: false,
-    //       display: true
-    //     }
-    // }
-//   ];
+  //   const columns = [
+  //     {
+  //       name: "phoneBookItemId",
+  //       label: "ID",
+  //       options: {
+  //         filter: false,
+  //         sort: false,
+  //         display: false
+  //       }
+  //     },
+  //     {
+  //       name: "name",
+  //       label: "Name",
+  //       options: {
+  //         filter: true,
+  //         sort: true
+  //       }
+  //     },
+  //     {
+  //         name: "phoneNumber",
+  //         label: "Phone",
+  //         options: {
+  //             filter: true,
+  //             sort: true
+  //         }
+  //     },
+  //     {
+  //         name: "extensions",
+  //         label: "Extensions",
+  //         options: {
+  //             filter: true,
+  //             sort: true
+  //         }
+  //     },
+  //     {
+  //         name: "email",
+  //         label: "Email",
+  //         options: {
+  //             filter: true,
+  //             sort: true
+  //         }
+  //     },
+  //     {
+  //       name: "isActive",
+  //       label: "Status",
+  //       options: {
+  //         filter: false,
+  //         sort: false,
+  //         display: false
+  //       }
+  //     }
+  //   {
+  //     name: "action",
+  //     label: "Action",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: true
+  //     }
+  // }
+  //   ];
 
-//   const options = {
-//     filterType: "multiselect",
-//     onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-//     customToolbar: () => console.log("rowData"),
-//     rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-//     selectableRows: "none",
-//     viewColumns: true
+  //   const options = {
+  //     filterType: "multiselect",
+  //     onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+  //     customToolbar: () => console.log("rowData"),
+  //     rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+  //     selectableRows: "none",
+  //     viewColumns: true
 
-//     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
-//   };
+  //     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+  //   };
 
-
-//-- React Data Table
-const options = {
+  //-- React Data Table
+  const options = {
     sortIndicator: true,
     // page: Page,
     hideSizePerPage: true,
@@ -142,7 +139,7 @@ const options = {
     // clearSearch: true,
     alwaysShowAllBtns: false,
     onRowClick: HandlerowSelect,
-    withFirstAndLast: false,
+    withFirstAndLast: false
 
     // onPageChange: onPageChange,
     // onSizePerPageList: sizePerPageListChange
@@ -151,10 +148,7 @@ const options = {
     getlistapi();
   }, []);
 
-
-
   async function getlistapi() {
-
     await GetListingpgForPhonebook(Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
@@ -167,193 +161,198 @@ const options = {
   }
 
   let Tabledisplay = (
-<div style={classes.linearprogress}>
+    <div style={classes.linearprogress}>
       <Spinner type="grow" color="dark" />
-    </div>  );
-//   let PageSizeComp = (
-//     <select onChange={handlePageSize} value={PageSize}>
-//       <option selected />
-//       <option value={10}>10</option>
-//       <option value={20}>20</option>
-//     </select>
-//   );
+    </div>
+  );
+  //   let PageSizeComp = (
+  //     <select onChange={handlePageSize} value={PageSize}>
+  //       <option selected />
+  //       <option value={10}>10</option>
+  //       <option value={20}>20</option>
+  //     </select>
+  //   );
 
   let [Tabledistatus, settabledistatus] = useState(false);
-  if (Tabledistatus) {
-    Tabledisplay = (
-      <div className="container">
-          <div className="row">
-              <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
-              <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
 
-
-
-
-              <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <div>
-                    <BootstrapTable
-                    data={Atlist}
-                    version="4"
-                    striped
-                    hover
-
-                    // search
-                    options={options}
-                    >
-                    <TableHeaderColumn dataField="name" dataSort>
-                    Other Numbers
-                    </TableHeaderColumn>
-                    <TableHeaderColumn isKey dataField="phoneNumber" dataSort>
-
-                    </TableHeaderColumn>
-
-                </BootstrapTable>
-
-                    {/* <br />
-                    <div className="row">
-                        <div className="col">
-                            {PageSizeComp}
-                            {"  Showing " + PageSize + " Rows Per Page"}
-                        </div>
-                        <div className="col">{paging}</div>
-                    </div> */}
-                </div>
-              </div>
-              <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
-          </div>
-      </div>
-    );
-  } else {
-    Tabledisplay = (
-      <LinearProgress style={classes.linearprogress} color="secondary" />
-    );
-  }
   let refreshfn = () => {
     settabledistatus((Tabledistatus = false));
     getlistapi();
   };
 
+  // Toast
 
- // Toast
+  function errort() {
+    // add type: 'error' to options
+    return toast.error("Failed with Error...", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+  function success() {
+    return toast.success("Deleted Successfully... ", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
 
- function errort() {
-  // add type: 'error' to options
-  return toast.error('Failed with Error...', {
-    position: toast.POSITION.BOTTOM_RIGHT
-  });
+  //--- Pagination ------------------
 
-}
-function success() {
-  return toast.success("Deleted Successfully... ", {
-    position: toast.POSITION.BOTTOM_RIGHT
-  });
-}
+  function handlePageSize(event) {
+    PageSize = event.target.value;
+    refreshfn();
+  }
 
-//--- Pagination ------------------
+  let PageSizeComp = (
+    <select onChange={handlePageSize} value={PageSize}>
+      <option value={10}>10</option>
+      <option value={20}>20</option>
+    </select>
+  );
 
-function handlePageSize(event) {
-  PageSize = event.target.value;
-  refreshfn();
-}
+  let [pgin, setPgin] = useState(true);
 
-let PageSizeComp = (
-  <select onChange={handlePageSize} value={PageSize}>
-    <option value={10}>10</option>
-    <option value={20}>20</option>
-  </select>
-);
+  function handlepagin() {
+    setPgin(false);
+    // setTimeout(() => setPgin(true), 10);
+    refreshfn();
+    setPgin(true);
+  }
 
-let [pgin, setPgin] = useState(true);
+  if (pgin) {
+    paging = (
+      <Pagination>
+        <PaginationItem>
+          <PaginationLink
+            previous
+            disabled={!(Page > 1) ? true : false}
+            tag="button"
+            onClick={() => {
+              if (Page > 1) {
+                if (countforpagination === 0) {
+                  Page = Page - 1;
+                  countforpagination = 1;
+                  handlepagin();
+                }
+              }
+            }}
+          />
+        </PaginationItem>
 
-function handlepagin() {
-  setPgin(false);
-  // setTimeout(() => setPgin(true), 10);
-  refreshfn();
-  setPgin(true);
-}
-
-if (pgin) {
-  paging = (
-    <Pagination>
-      <PaginationItem>
-        <PaginationLink
-          previous
-          disabled={!(Page > 1) ? true : false}
-          tag="button"
-          onClick={() => {
-            if (Page > 1) {
+        <PaginationItem>
+          <PaginationLink
+            hidden={Page === 1 ? true : false}
+            tag="button"
+            onClick={() => {
               if (countforpagination === 0) {
                 Page = Page - 1;
                 countforpagination = 1;
                 handlepagin();
               }
-            }
-          }}
-        />
-      </PaginationItem>
+            }}
+          >
+            {Page - 1}
+          </PaginationLink>
+        </PaginationItem>
 
-      <PaginationItem>
-        <PaginationLink
-          hidden={Page === 1 ? true : false}
-          tag="button"
-          onClick={() => {
-            if (countforpagination === 0) {
-              Page = Page - 1;
-              countforpagination = 1;
-              handlepagin();
-            }
-          }}
-        >
-          {Page - 1}
-        </PaginationLink>
-      </PaginationItem>
+        <PaginationItem active>
+          <PaginationLink tag="button">{Page}</PaginationLink>
+        </PaginationItem>
 
-      <PaginationItem active>
-        <PaginationLink tag="button">{Page}</PaginationLink>
-      </PaginationItem>
+        <PaginationItem>
+          <PaginationLink
+            hidden={Page === TotalPages || totalcount < 11 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page + 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          >
+            {Page + 1}
+          </PaginationLink>
+        </PaginationItem>
 
-      <PaginationItem>
-        <PaginationLink
-          hidden={Page === TotalPages || totalcount < 11 ? true : false}
-          tag="button"
-          onClick={() => {
-            if (countforpagination === 0) {
-              Page = Page + 1;
-              countforpagination = 1;
-              handlepagin();
-            }
-          }}
-        >
-          {Page + 1}
-        </PaginationLink>
-      </PaginationItem>
+        <PaginationItem>
+          <PaginationLink
+            next
+            disabled={Page === TotalPages || totalcount < 11 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page + 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          />
+        </PaginationItem>
+      </Pagination>
+    );
+  } else {
+    paging = "";
+  }
 
-      <PaginationItem>
-        <PaginationLink
-          next
-          disabled={Page === TotalPages || totalcount < 11 ? true : false}
-          tag="button"
-          onClick={() => {
-            if (countforpagination === 0) {
-              Page = Page + 1;
-              countforpagination = 1;
-              handlepagin();
-            }
-          }}
-        />
-      </PaginationItem>
-    </Pagination>
-  );
-} else {
-  paging = "";
-}
+  //----- Finished Pagination---------
 
-//----- Finished Pagination---------
+  if (Tabledistatus) {
+    Tabledisplay = (
+      <div className="container">
+        <div className="row">
+          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
+          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
+
+          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+            <div>
+              <BootstrapTable
+                data={Atlist}
+                version="4"
+                striped
+                hover
+                // search
+                options={options}
+              >
+                <TableHeaderColumn dataField="name" dataSort>
+                  Other Numbers
+                </TableHeaderColumn>
+                <TableHeaderColumn
+                  isKey
+                  dataField="phoneNumber"
+                  dataSort
+                ></TableHeaderColumn>
+              </BootstrapTable>
+
+              <br />
+        <div className="row">
+          <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
+
+            {"  Showing " }  {PageSizeComp} { " Results"}
+          </div>
+          <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
+            {paging}
+          </div>
+        </div>
+            </div>
+          </div>
+          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3"></div>
+        </div>
+      </div>
+    );
+  } else {
+    Tabledisplay = (
+      <div style={classes.linearprogress}>
+        <Spinner type="grow" color="dark" />
+      </div>
+    );
+  }
+
 
   async function Dellistapi() {
-    await DeletePhoneBookDataById(idofEdit).then(() => {
-      success();
-    }).catch(error => {
+    await DeletePhoneBookDataById(idofEdit)
+      .then(() => {
+        success();
+      })
+      .catch(error => {
         errort();
       });
     Handlerowclose();
@@ -386,11 +385,11 @@ if (pgin) {
   }
 
   let [menushow, setMenushow] = useState(false);
-  function HandlerowSelect  (row) {
+  function HandlerowSelect(row) {
     menuDiv = "";
     idofEdit = row.phoneBookItemId;
     return setMenushow((menushow = true));
-  };
+  }
   let Handlerowclose = (data, meta) => {
     return setMenushow((menushow = false));
   };
@@ -427,7 +426,7 @@ if (pgin) {
     <div>
       <div className="row header">
         <div className="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5">
-        {menuDiv}
+          {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
           <h3 className="heading">Phone Book</h3>

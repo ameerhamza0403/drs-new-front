@@ -17,7 +17,7 @@ function ApiwithidResourceGroup(Id) {
   }
 
 //-------- GetAPi
-export function GetListingForResourceGroup(pg, pgsize) {
+export function GetListingForResourceGroup(pg,pgsize) {
     return axios.get(ApiPagingResourceGroup(pg,pgsize),
              {headers: {
                  //"Authorization": authIt,

@@ -17,7 +17,7 @@ import SpecialHourlyRate from "./specialrate";
 import AlwaysAssits from "./alwaysassist";
 import {
   PostListingForAddEdit,
-  GetListingForAddEdit
+  GetListingpgForResource
 } from "..//shared/addedit";
 import { GetListingForcurrency } from "..//shared/currency";
 import { GetListingForResourceGroup } from "..//..//resources/shared/resourcegroup";
@@ -200,12 +200,12 @@ let AddeditAdd = props => {
   }, [count]);
 
   async function GetGroupResource() {
-    let { data: resvalue } = await GetListingForResourceGroup();
+    let { data: resvalue } = await GetListingForResourceGroup(0,0);
     setResvalue(resvalue);
   }
 
   async function GetList() {
-    let { data: listvalue } = await GetListingForAddEdit();
+    let { data: listvalue } = await GetListingpgForResource(0,0);
     setListvalue(listvalue);
   }
 
