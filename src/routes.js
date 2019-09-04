@@ -111,6 +111,8 @@ const ExpenseCategoryListing = React.lazy(() => import('./components/myaccount/a
 const RoleListing = React.lazy(() => import('./components/myaccount/admin/webusers/role/listing'));
 const UserListing = React.lazy(() => import('./components/myaccount/admin/webusers/adduser/listing'));
 
+const EditAccount = React.lazy(() => import('./components/myaccount/admin/account/accounts/edit/main'));
+
 
 const TestListing = React.lazy(() => import('./components/myaccount/admin/test/test/listing'));
 
@@ -240,6 +242,8 @@ const routes = [
 
   //Account
   { path: '/admin/account/accounts', exact: true, name: 'Account Settings', component:  AccountListing },
+  { path: '/admin/account/accounts/edit', exact: true, name: 'Account Settings', component:  EditAccount },  
+
 
 
   { path: '/admin/test/test', exact: true, name: 'Test', component:  TestListing },
