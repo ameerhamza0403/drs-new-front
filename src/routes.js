@@ -103,6 +103,8 @@ const SalesOpportunityStage = React.lazy(() => import('./components/myaccount/ad
 //Stock
 const ProductCategoryListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/productcategory/listing'));
 const ManageMakesnModelListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/managemakesnmodel/listing'));
+const ManageMakesnModelListingForStockTest = React.lazy(() => import('./components/myaccount/admin/stocknequipment/stockitem/listing'));
+const LocationListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/location/listing'));
 
 
 //Form
@@ -113,8 +115,11 @@ const ExpenseCategoryListing = React.lazy(() => import('./components/myaccount/a
 const RoleListing = React.lazy(() => import('./components/myaccount/admin/webusers/role/listing'));
 const UserListing = React.lazy(() => import('./components/myaccount/admin/webusers/adduser/listing'));
 
+//Account
 const EditAccount = React.lazy(() => import('./components/myaccount/admin/account/accounts/edit/main'));
-
+const TemplateKeywordListing = React.lazy(() => import('./components/myaccount/admin/account/templatekeywords/listing'));
+const TemplateUsageListing = React.lazy(() => import('./components/myaccount/admin/account/templateusage/listing'));
+const TemplateUsageTypeListing = React.lazy(() => import('./components/myaccount/admin/account/templateusagetype/listing'));
 
 const TestListing = React.lazy(() => import('./components/myaccount/admin/test/test/listing'));
 
@@ -233,6 +238,8 @@ const routes = [
   //Stock
   { path: '/admin/stocknequipment/productcategory', exact: true, name: 'Product Categories', component:  ProductCategoryListing },
   { path: '/admin/stocknequipment/managemakesnmodel', exact: true, name: 'Manege Makes & Models', component:  ManageMakesnModelListing },
+  { path: '/admin/stocknequipment/stockitem', exact: true, name: 'Stock Item', component:  ManageMakesnModelListingForStockTest },
+  { path: '/admin/stocknequipment/location', exact: true, name: 'Location', component:  LocationListing },
 
 
   //Form
@@ -246,8 +253,9 @@ const routes = [
   //Account
   { path: '/admin/account/accounts', exact: true, name: 'Account Settings', component:  AccountListing },
   { path: '/admin/account/accounts/edit', exact: true, name: 'Account Settings', component:  EditAccount },  
-
-
+  { path: '/admin/account/templatekeywords', exact: true, name: 'Template Keywords', component:  TemplateKeywordListing },  
+  { path: '/admin/account/templateusage', exact: true, name: 'Template Usage', component:  TemplateUsageListing },  
+  { path: '/admin/account/templateusagetype', exact: true, name: 'Template Usage Type', component:  TemplateUsageTypeListing },  
 
   { path: '/admin/test/test', exact: true, name: 'Test', component:  TestListing },
 

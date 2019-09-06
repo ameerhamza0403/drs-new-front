@@ -497,6 +497,16 @@ export default {
           icon: "fa fa-bank"
         },
         {
+          name: "Location",
+          url: "/admin/stocknequipment/location",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Stock Item",
+          url: "/admin/stocknequipment/stockitem",
+          icon: "fa fa-bank"
+        },
+        {
           name: "Product Categories",
           url: "/admin/stocknequipment/productcategory",
           icon: "fa fa-bank"
@@ -560,6 +570,21 @@ export default {
         {
           name: "Account Settings",
           url: "/admin/account/accounts/edit",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Template Keywords",
+          url: "/admin/account/templatekeywords",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Template Usage",
+          url: "/admin/account/templateusage",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Template Usage Type",
+          url: "/admin/account/templateusagetype",
           icon: "fa fa-bank"
         },
 
