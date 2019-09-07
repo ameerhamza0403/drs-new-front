@@ -10,6 +10,8 @@ import AddButton from "./add";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../../../scss/override/listing.scss";
+import { Spinner } from "reactstrap";
+
 
 let idofEdit = 0;
 let menuDiv = "";
@@ -24,7 +26,8 @@ let TotalPages = 2;
 const classes = {
   linearprogress: {
     // backgroundColor: '#EE7647',
-    backgroundColor: "rgb(243, 153, 117)"
+    // backgroundColor: "rgb(243, 153, 117)"
+    marginLeft: "50%"
   },
   header: {
     backgroundColor: "#EE7647",
@@ -49,6 +52,9 @@ const classes = {
   }
 };
 
+
+let countforpagination = 0;
+
 let ContactsGroupListingTable = () => {
   let [Atlist, setAtlist] = useState([
     {
@@ -57,6 +63,7 @@ let ContactsGroupListingTable = () => {
     }
   ]);
   let [paginate, setPaginate] = useState();
+  let [totalcount, setTotalCount] = useState();
 
 
   const columns = [

@@ -1,0 +1,497 @@
+$color_1: #333;
+$color_2: #007eff;
+$color_3: #aaa;
+$color_4: #999;
+$color_5: #D0021B;
+$color_6: #666;
+$color_7: #ccc;
+$color_8: #0071e6;
+$font_family_1: inherit;
+$background_color_1: #ee7647;
+$background_color_2: #fff;
+$background_color_3: #f5faff;
+$background_color_4: rgba(0,126,255,.04);
+$background_color_5: #ebf5ff;
+$background_color_6: rgba(0,126,255,.08);
+$background_color_7: #d8eafd;
+$background_color_8: rgba(0,113,230,.08);
+$background_color_9: #c2e0ff;
+$background_color_10: rgba(0,126,255,.24);
+$background_color_11: #fcfcfc;
+$border_color_1: #b3b3b3 #ccc #d9d9d9;
+$border_color_2: transparent transparent #999;
+$border_color_3: #007eff;
+$border_color_4: #d9d9d9 #ccc #b3b3b3;
+$border_color_5: #999 transparent transparent;
+$border_top_color_1: #666;
+$border_top_color_2: #e6e6e6;
+$border_right_color_1: #333;
+
+.Select {
+	position: relative;
+	box-sizing: border-box;
+	input {
+		&::-webkit-contacts-auto-fill-button {
+			display: none !important;
+		}
+		&::-webkit-credentials-auto-fill-button {
+			display: none !important;
+		}
+		&::-ms-clear {
+			display: none !important;
+		}
+		&::-ms-reveal {
+			display: none !important;
+		}
+		box-sizing: border-box;
+	}
+	div {
+		box-sizing: border-box;
+	}
+	span {
+		box-sizing: border-box;
+	}
+	.Select-arrow-zone {
+		&:hover {
+			>.Select-arrow {
+				border-top-color: $border_top_color_1;
+			}
+		}
+	}
+	.Select-aria-only {
+		position: absolute;
+		display: inline-block;
+		height: 1px;
+		width: 1px;
+		margin: -1px;
+		clip: rect(0,0,0,0);
+		overflow: hidden;
+		float: left;
+	}
+}
+.Select.is-disabled {
+	.Select-arrow-zone {
+		cursor: default;
+		pointer-events: none;
+		opacity: .35;
+	}
+	>.Select-control {
+		background-color: $background_color_1;
+		&:hover {
+			box-shadow: none;
+		}
+	}
+}
+.Select.is-open {
+	>.Select-control {
+		border-bottom-right-radius: 0;
+		border-bottom-left-radius: 0;
+		background: #fff;
+		border-color: $border_color_1;
+		.Select-arrow {
+			top: -2px;
+			border-color: $border_color_2;
+			border-width: 0 5px 5px;
+		}
+	}
+	.Select-arrow {
+		border-top-color: $border_top_color_1;
+	}
+}
+.Select.is-searchable.is-open {
+	>.Select-control {
+		cursor: text;
+	}
+}
+.Select.is-searchable.is-focused {
+	&:not(.is-open) {
+		>.Select-control {
+			cursor: text;
+		}
+	}
+}
+.Select.is-focused {
+	>.Select-control {
+		background: #fff;
+	}
+	&:not(.is-open) {
+		>.Select-control {
+			border-color: $border_color_3;
+			box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 0 3px rgba(0,126,255,.1);
+			background: #fff;
+		}
+	}
+}
+.Select.has-value.is-clearable.Select--single {
+	>.Select-control {
+		.Select-value {
+			padding-right: 42px;
+		}
+	}
+}
+.Select.has-value.Select--single {
+	>.Select-control {
+		.Select-value {
+			.Select-value-label {
+				color: $color_1;
+			}
+			a.Select-value-label {
+				cursor: pointer;
+				text-decoration: none;
+				&:focus {
+					color: $color_2;
+					outline: 0;
+					text-decoration: underline;
+					background: #fff;
+				}
+				&:hover {
+					color: $color_2;
+					outline: 0;
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+}
+.Select.has-value.is-pseudo-focused.Select--single {
+	>.Select-control {
+		.Select-value {
+			.Select-value-label {
+				color: $color_1;
+			}
+			a.Select-value-label {
+				cursor: pointer;
+				text-decoration: none;
+				&:focus {
+					color: $color_2;
+					outline: 0;
+					text-decoration: underline;
+					background: #fff;
+				}
+				&:hover {
+					color: $color_2;
+					outline: 0;
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+}
+.Select.has-value.is-pseudo-focused {
+	.Select-input {
+		opacity: 0;
+	}
+}
+.Select.Select--rtl {
+	direction: rtl;
+	text-align: right;
+}
+.Select-control {
+	background-color: $background_color_2;
+	border-color: $border_color_4;
+	border-radius: 0px;
+	border: 1px solid #ccc;
+	color: $color_1;
+	cursor: default;
+	display: table;
+	border-spacing: 0;
+	border-collapse: separate;
+	height: 36px;
+	outline: 0;
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+
+}
+.Select--single {
+	>.Select-control {
+		.Select-value {
+			bottom: 0;
+			color: $color_3;
+			left: 0;
+			line-height: 34px;
+			padding-left: 10px;
+			padding-right: 10px;
+			position: absolute;
+			right: 0;
+			top: 0;
+			max-width: 100%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
+}
+.Select-placeholder {
+	bottom: 0;
+	color: $color_3;
+	left: 0;
+	line-height: 34px;
+	padding-left: 10px;
+	padding-right: 10px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.Select-input {
+	height: 34px;
+	padding-left: 10px;
+	padding-right: 10px;
+	vertical-align: middle;
+	>input {
+		width: 100%;
+		background: none transparent;
+		border: 0 none;
+		box-shadow: none;
+		cursor: default;
+		display: inline-block;
+		font-family: $font_family_1;
+		font-size: inherit;
+		margin: 0;
+		outline: 0;
+		line-height: 17px;
+		padding: 8px 0 12px;
+		-webkit-appearance: none;
+	}
+}
+.is-focused {
+	.Select-input {
+		>input {
+			cursor: text;
+		}
+	}
+}
+.has-value.is-pseudo-focused {
+	.Select-input {
+		opacity: 0;
+	}
+}
+.Select-loading-zone {
+	cursor: pointer;
+	display: table-cell;
+	position: relative;
+	text-align: center;
+	vertical-align: middle;
+	width: 16px;
+}
+.Select-loading {
+	-webkit-animation: Select-animation-spin .4s infinite linear;
+	animation: Select-animation-spin .4s infinite linear;
+	width: 16px;
+	height: 16px;
+	box-sizing: border-box;
+	border-radius: 50%;
+	border: 2px solid #ccc;
+	border-right-color: $border_right_color_1;
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+}
+.Select-clear-zone {
+	-webkit-animation: Select-animation-fadeIn .2s;
+	animation: Select-animation-fadeIn .2s;
+	color: $color_4;
+	cursor: pointer;
+	display: table-cell;
+	position: relative;
+	text-align: center;
+	vertical-align: middle;
+	width: 17px;
+	&:hover {
+		color: $color_5;
+	}
+}
+.Select-clear {
+	display: inline-block;
+	font-size: 18px;
+	line-height: 1;
+}
+.Select--multi {
+	.Select-clear-zone {
+		width: 17px;
+	}
+	.Select-multi-value-wrapper {
+		display: inline-block;
+	}
+	.Select-input {
+		vertical-align: middle;
+		margin-left: 10px;
+		padding: 0;
+	}
+	.Select-value {
+		background-color: $background_color_5;
+		background-color: $background_color_6;
+		border-radius: 0px;
+		border: 1px solid #c2e0ff;
+		border: 1px solid rgba(0,126,255,.24);
+		color: $color_2;
+		display: inline-block;
+		font-size: .9em;
+		line-height: 1.4;
+		margin-left: 5px;
+		margin-top: 5px;
+		vertical-align: top;
+	}
+	.Select-value-icon {
+		display: inline-block;
+		vertical-align: middle;
+		cursor: pointer;
+		border-bottom-left-radius: 2px;
+		border-top-left-radius: 2px;
+		border-right: 1px solid #c2e0ff;
+		border-right: 1px solid rgba(0,126,255,.24);
+		padding: 1px 5px 3px;
+		&:focus {
+			background-color: $background_color_7;
+			background-color: $background_color_8;
+			color: $color_8;
+		}
+		&:hover {
+			background-color: $background_color_7;
+			background-color: $background_color_8;
+			color: $color_8;
+		}
+		&:active {
+			background-color: $background_color_9;
+			background-color: $background_color_10;
+		}
+	}
+	.Select-value-label {
+		display: inline-block;
+		vertical-align: middle;
+		border-bottom-right-radius: 2px;
+		border-top-right-radius: 2px;
+		cursor: default;
+		padding: 2px 5px;
+	}
+	a.Select-value-label {
+		color: $color_2;
+		cursor: pointer;
+		text-decoration: none;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+.Select-arrow-zone {
+	cursor: pointer;
+	display: table-cell;
+	position: relative;
+	text-align: center;
+	vertical-align: middle;
+	width: 25px;
+	padding-right: 5px;
+}
+.Select--rtl {
+	.Select-arrow-zone {
+		padding-right: 0;
+		padding-left: 5px;
+	}
+}
+.Select-arrow {
+	border-color: $border_color_5;
+	border-style: solid;
+	border-width: 5px 5px 2.5px;
+	display: inline-block;
+	height: 0;
+	width: 0;
+	position: relative;
+}
+.Select-menu-outer {
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px;
+	background-color: $background_color_2;
+	border: 1px solid #ccc;
+	border-top-color: $border_top_color_2;
+	box-shadow: 0 1px 0 rgba(0,0,0,.06);
+	box-sizing: border-box;
+	margin-top: -1px;
+	max-height: 200px;
+	position: absolute;
+	left: 0;
+	top: 100%;
+	width: 100%;
+	z-index: 1;
+	-webkit-overflow-scrolling: touch;
+}
+.Select-menu {
+	max-height: 198px;
+	overflow-y: auto;
+}
+.Select-option {
+	box-sizing: border-box;
+	background-color: $background_color_2;
+	color: $color_6;
+	cursor: pointer;
+	display: block;
+	padding: 8px 10px;
+	&:last-child {
+		border-bottom-right-radius: 4px;
+		border-bottom-left-radius: 4px;
+	}
+}
+.Select-option.is-selected {
+	background-color: $background_color_3;
+	background-color: $background_color_4;
+	color: $color_1;
+}
+.Select-option.is-focused {
+	background-color: $background_color_5;
+	background-color: $background_color_6;
+	color: $color_1;
+}
+.Select-option.is-disabled {
+	color: $color_7;
+	cursor: default;
+}
+.Select-noresults {
+	box-sizing: border-box;
+	color: $color_4;
+	cursor: default;
+	display: block;
+	padding: 8px 10px;
+}
+.Select--multi.Select--rtl {
+	.Select-input {
+		margin-left: 0;
+		margin-right: 10px;
+	}
+	.Select-value {
+		margin-left: 0;
+		margin-right: 5px;
+	}
+	.Select-value-icon {
+		border-right: none;
+		border-left: 1px solid #c2e0ff;
+		border-left: 1px solid rgba(0,126,255,.24);
+	}
+}
+.Select--multi.has-value {
+	.Select-input {
+		margin-left: 5px;
+	}
+}
+.Select--multi.is-disabled {
+	.Select-value {
+		background-color: $background_color_11;
+		border: 1px solid #e3e3e3;
+		color: $color_1;
+	}
+	.Select-value-icon {
+		cursor: not-allowed;
+		border-right: 1px solid #e3e3e3;
+		&:active {
+			background-color: $background_color_11;
+		}
+		&:focus {
+			background-color: $background_color_11;
+		}
+		&:hover {
+			background-color: $background_color_11;
+		}
+	}
+}

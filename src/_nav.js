@@ -492,13 +492,28 @@ export default {
       icon: "fa fa-bank",
       children: [
         {
-          name: "Manage Makes & Models",
-          url: "/admin/stocknequipment/managemakesnmodel",
+          name: "Manage Models",
+          url: "/admin/stocknequipment/model",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Make",
+          url: "/admin/stocknequipment/make",
           icon: "fa fa-bank"
         },
         {
           name: "Product Categories",
           url: "/admin/stocknequipment/productcategory",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Vendor Group",
+          url: "/admin/stocknequipment/Vendorgroup",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Payment Terms",
+          url: "/admin/stocknequipment/paymentterm",
           icon: "fa fa-bank"
         },
       ]
@@ -560,6 +575,11 @@ export default {
         {
           name: "Account Settings",
           url: "/admin/account/accounts/edit",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Template",
+          url: "/admin/account/template",
           icon: "fa fa-bank"
         },
 

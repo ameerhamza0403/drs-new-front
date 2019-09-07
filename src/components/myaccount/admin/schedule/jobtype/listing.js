@@ -299,8 +299,8 @@ let JobTypeListing = () => {
           version="4"
           striped
           hover
-          pagination
-          search
+          // pagination
+          // search
           options={options}
         >
           <TableHeaderColumn dataField="name" dataSort>

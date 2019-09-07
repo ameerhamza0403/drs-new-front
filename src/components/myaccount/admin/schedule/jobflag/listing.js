@@ -143,39 +143,8 @@ const options = {
   // onSizePerPageList: sizePerPageListChange
 };
 
-  let Tabledisplay = (
-    <div style={classes.linearprogress}>
-      <Spinner type="grow" color="dark" />
-    </div>
-  );
-  let [Tabledistatus, settabledistatus] = useState(false);
-  if (Tabledistatus) {
-    Tabledisplay = (
-      <div>
-        <MUIDataTable
-          title={"Actions & Filters"}
-          data={Atlist}
-          columns={columns}
-          options={options}
-        />
-        <br />
-        <div className="row">
-          <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
-            {"  Showing "} {PageSizeComp} {" Results"}
-          </div>
-          <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
-            {paging}
-          </div>
-        </div>
-      </div>
-    );
-  } else {
-    Tabledisplay = (
-      <div style={classes.linearprogress}>
-        <Spinner type="grow" color="dark" />
-      </div>
-    );
-  }
+
+
 
   //--- Pagination ------------------
 
@@ -291,8 +260,9 @@ const options = {
   // }
 
   let Tabledisplay = (
-    <LinearProgress style={classes.linearprogress} color="secondary" />
-  );
+<div style={classes.linearprogress}>
+      <Spinner type="grow" color="dark" />
+    </div>  );
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
@@ -302,8 +272,8 @@ const options = {
           version="4"
           striped
           hover
-          pagination
-          search
+          // pagination
+          // search
           options={options}
         >
           <TableHeaderColumn dataField="name" dataSort>
@@ -320,18 +290,20 @@ const options = {
         </BootstrapTable>
         <br />
         <div className="row">
-          <div className="col">
-            {PageSizeComp}
-            {"  Showing " + PageSize + " Rows Per Page"}
+          <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
+            {"  Showing " }  {PageSizeComp} { " Results"}
           </div>
-          <div className="col">{paging}</div>
+          <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
+            {paging}
+          </div>
         </div>
       </div>
     );
   } else {
     Tabledisplay = (
-      <LinearProgress style={classes.linearprogress} color="secondary" />
-    );
+<div style={classes.linearprogress}>
+      <Spinner type="grow" color="dark" />
+    </div>    );
   }
 
   let refreshfn = () => {

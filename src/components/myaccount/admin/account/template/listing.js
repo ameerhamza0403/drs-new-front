@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react";
-//import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
-import EditDepartmentCode from "./edit";
-import {
-  GetListingForDepartmentCode,
-  DeleteDepartmentCodeDataById
-} from "..//shared/departmentcode";
-import AddDepartmentCode from "./add";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import EditTemplate from "./edit";
+import { GetListingForTemplate, DeleteTemplateDataById } from "..//shared/template";
+import AddTemplate from "./add";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
@@ -21,7 +16,7 @@ let idofEdit = 0;
 let Page = 1;
 let PageSize = 10;
 let paging = "";
-let TotalPages = 3;
+let TotalPages = 2;
 
 const classes = {
   linearprogress: {
@@ -53,121 +48,77 @@ const classes = {
 };
 
 let countforpagination = 0;
-let DepartmentCodeListing = () => {
-  let [Atlist, setAtlist] = useState();
+
+let TemplateListing = () => {
+  let [Atlist, setAtlist] = useState([]);
   let [paginate, setPaginate] = useState();
   let [totalcount, setTotalCount] = useState();
 
-  //   const columns = [
-  //     {
-  //       name: "phoneBookItemId",
-  //       label: "ID",
-  //       options: {
-  //         filter: false,
-  //         sort: false,
-  //         display: false
-  //       }
-  //     },
-  //     {
-  //       name: "name",
-  //       label: "Name",
-  //       options: {
-  //         filter: true,
-  //         sort: true
-  //       }
-  //     },
-  //     {
-  //         name: "phoneNumber",
-  //         label: "Phone",
-  //         options: {
-  //             filter: true,
-  //             sort: true
-  //         }
-  //     },
-  //     {
-  //         name: "extensions",
-  //         label: "Extensions",
-  //         options: {
-  //             filter: true,
-  //             sort: true
-  //         }
-  //     },
-  //     {
-  //         name: "email",
-  //         label: "Email",
-  //         options: {
-  //             filter: true,
-  //             sort: true
-  //         }
-  //     },
-  //     {
-  //       name: "active",
-  //       label: "Status",
-  //       options: {
-  //         filter: false,
-  //         sort: false,
-  //         display: false
-  //       }
-  //     }
+  // const columns = [
   //   {
-  //     name: "action",
-  //     label: "Action",
+  //     name: "currencyId",
+  //     label: "ID",
   //     options: {
   //       filter: false,
   //       sort: false,
-  //       display: true
+  //       display: false
   //     }
-  // }
-  //   ];
+  //   },
+  //   {
+  //     name: "name",
+  //     label: "Currency Name",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   },
+  //   {
+  //     name: "code",
+  //     label: "Currency",
+  //     options: {
+  //       filter: true,
+  //       sort: true
+  //     }
+  //   },
+  //   {
+  //     name: "isActive",
+  //     label: "Status",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   }
+  // ];
 
-  //   const options = {
-  //     filterType: "multiselect",
-  //     onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-  //     customToolbar: () => console.log("rowData"),
-  //     rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-  //     selectableRows: "none",
-  //     viewColumns: true
+  // const options = {
+  //   filterType: "multiselect",
+  //   onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+  //   customToolbar: () => console.log("rowData"),
+  //   rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+  //   selectableRows: "none",
+  //   viewColumns: true,
+  //   responsive: 'scroll',
 
-  //     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
-  //   };
+  //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+  // };
 
   //-- React Data Table
   const options = {
     sortIndicator: true,
     // page: Page,
     hideSizePerPage: true,
-    // paginationSize: 5,
-    // hidePageListOnlyOnePage: false,
+    // paginationSize: PageSize,
+    hidePageListOnlyOnePage: true,
+    // sizePerPage: PageSize,
     // clearSearch: true,
     alwaysShowAllBtns: false,
     onRowClick: HandlerowSelect,
     withFirstAndLast: false
-
     // onPageChange: onPageChange,
-    // onSizePerPageList: sizePerPageListChange
+    // onSizePerPageList: sizePerPageListChange,
   };
-  useEffect(() => {
-    getlistapi();
-  }, []);
-
-  async function getlistapi() {
-    await GetListingForDepartmentCode(Page, PageSize).then(res => {
-      setAtlist((Atlist = res.data));
-      console.log(res.data);
-      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-    });
-    setTotalCount((totalcount = paginate.totalCount));
-    TotalPages = paginate.totalPages;
-    countforpagination = 0;
-    settabledistatus((Tabledistatus = false));
-    settabledistatus((Tabledistatus = true));
-  }
-
-  let Tabledisplay = (
-    <div style={classes.linearprogress}>
-      <Spinner type="grow" color="dark" />
-    </div>
-  );
 
   //--- Pagination ------------------
 
@@ -270,9 +221,20 @@ let DepartmentCodeListing = () => {
 
   //----- Finished Pagination---------
 
+  let Tabledisplay = (
+    <div style={classes.linearprogress}>
+      <Spinner type="grow" color="dark" />
+    </div>
+  );
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
+      // <MUIDataTable
+      //   title={"Actions & Filters"}
+      //   data={Atlist}
+      //   columns={columns}
+      //   options={options}
+      // />
       <div>
         <BootstrapTable
           data={Atlist}
@@ -283,11 +245,19 @@ let DepartmentCodeListing = () => {
           // search
           options={options}
         >
-          <TableHeaderColumn dataField="code" dataSort>
-            Code
+          <TableHeaderColumn
+            isKey={true}
+            hidden={true}
+            dataField="templateId"
+            dataSort
+          >
+            templateId
           </TableHeaderColumn>
-          <TableHeaderColumn isKey dataField="description" dataSort>
-            Description
+          <TableHeaderColumn dataField="name" dataSort>
+            Name
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="body" dataSort>
+          Body
           </TableHeaderColumn>
         </BootstrapTable>
         <br />
@@ -313,6 +283,23 @@ let DepartmentCodeListing = () => {
     getlistapi();
   };
 
+  useEffect(() => {
+    getlistapi();
+  }, []);
+
+  async function getlistapi() {
+    await GetListingForTemplate(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
+
+    setTotalCount((totalcount = paginate.totalCount));
+    TotalPages = paginate.totalPages;
+    countforpagination = 0;
+    settabledistatus((Tabledistatus = false));
+    settabledistatus((Tabledistatus = true));
+  }
+
   // Toast
 
   function errort() {
@@ -328,7 +315,7 @@ let DepartmentCodeListing = () => {
   }
 
   async function Dellistapi() {
-    await DeleteDepartmentCodeDataById(idofEdit)
+    await DeleteTemplateDataById(idofEdit)
       .then(() => {
         success();
       })
@@ -354,7 +341,7 @@ let DepartmentCodeListing = () => {
 
   if (Editstate) {
     EditshowModel = (
-      <EditDepartmentCode
+      <EditTemplate
         IDforAPI={idofEdit}
         refresh={refreshfn}
         cross={HandleCrossEditforlisting}
@@ -367,17 +354,17 @@ let DepartmentCodeListing = () => {
   let [menushow, setMenushow] = useState(false);
   function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = row.departmentCodeId;
+    idofEdit = row.makeId;
     return setMenushow((menushow = true));
   }
-  let Handlerowclose = (data, meta) => {
+  let Handlerowclose = row => {
     return setMenushow((menushow = false));
   };
   if (menushow) {
     menuDiv = (
       <ul className="tool">
         <li>
-          <AddDepartmentCode refresh={refreshfn} />
+          <AddTemplate refresh={refreshfn} />
         </li>
         <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -397,7 +384,7 @@ let DepartmentCodeListing = () => {
     menuDiv = (
       <ul className="tool">
         <li />
-        <AddDepartmentCode refresh={refreshfn} />
+        <AddTemplate refresh={refreshfn} />
       </ul>
     );
   }
@@ -409,7 +396,7 @@ let DepartmentCodeListing = () => {
           {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">Department CODE</h3>
+          <h3 className="heading">TEMPLATE</h3>
         </div>
       </div>
       <br />
@@ -419,4 +406,4 @@ let DepartmentCodeListing = () => {
   );
 };
 
-export default DepartmentCodeListing;
+export default TemplateListing;

@@ -11,9 +11,26 @@ function ApiwithidPersonflag(Id) {
     return `${apiurlPersonflag}/${Id}`;
   }
 
+  function ApiwithPgPersonflag(pg,pgsize) {
+    return `${apiurlPersonflag}/${pg}/${pgsize}`;
+  }
+
+//-------- GetAPi
+export function GetListingPgForPersonflag(pg,pgsize) {
+    return axios.get(ApiwithPgPersonflag(pg,pgsize),
+             {headers: {
+                 //"Authorization": authIt,
+                 //"accept": "application/json",
+                 //"Access-Control-Allow-Origin": "*",
+                 'Content-Type': 'application/json',
+                }}
+            )
+
+}
+
 //-------- GetAPi
 export function GetListingForPersonflag() {
-    return axios.get(apiurlPersonflag, 
+    return axios.get(apiurlPersonflag,
              {headers: {
                  //"Authorization": authIt,
                  //"accept": "application/json",
@@ -27,7 +44,7 @@ export function GetListingForPersonflag() {
 //---------Edit APi
 export function GetPersonflagDataById(id) {
     // console.log(id)
-    return axios.get(ApiwithidPersonflag(id), 
+    return axios.get(ApiwithidPersonflag(id),
              {headers: {
                  'Content-Type': 'application/json',
                 }}

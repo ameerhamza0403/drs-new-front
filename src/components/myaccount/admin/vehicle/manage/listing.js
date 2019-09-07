@@ -189,13 +189,7 @@ let VehicleManage = () => {
       setAtlist((Atlist = res.data));
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
-    // Atlist.map(
-    //   (e, i) =>
-    //     (
-    //     Atlist[i].trackingDeviceId =iconint(Atlist[i].trackingDeviceId),
-    //     Atlist[i].usedForJobs =icon(Atlist[i].usedForJobs)
-    //     )
-    // );
+
     setTotalCount((totalcount = paginate.totalCount));
     TotalPages = paginate.totalPages;
     countforpagination = 0;

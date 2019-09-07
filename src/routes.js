@@ -102,21 +102,22 @@ const SalesOpportunityStage = React.lazy(() => import('./components/myaccount/ad
 
 //Stock
 const ProductCategoryListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/productcategory/listing'));
-const ManageMakesnModelListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/managemakesnmodel/listing'));
+const ManageModelListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/model/listing'));
+const MakeListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/make/listing'));
+const VendorGroupListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/vendorgroup/listing'));
+const PaymentTermListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/paymentterm/listing'));
 
 
 //Form
 const TimesheetActivityListing = React.lazy(() => import('./components/myaccount/admin/forms/timesheetactivity/listing'));
 const ExpenseCategoryListing = React.lazy(() => import('./components/myaccount/admin/forms/expensecategory/listing'));
-
 //Web Users
 const RoleListing = React.lazy(() => import('./components/myaccount/admin/webusers/role/listing'));
 const UserListing = React.lazy(() => import('./components/myaccount/admin/webusers/adduser/listing'));
-
 const EditAccount = React.lazy(() => import('./components/myaccount/admin/account/accounts/edit/main'));
+const TemplateListing = React.lazy(() => import('./components/myaccount/admin/account/template/listing'));
 
-
-const TestListing = React.lazy(() => import('./components/myaccount/admin/test/test/listing'));
+// const TestListing = React.lazy(() => import('./components/myaccount/admin/test/test/listing'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -227,12 +228,15 @@ const routes = [
   { path: '/admin/finance/departmentcode', exact: true, name: 'Department Code', component:  DepartmentCodeListing },
 
   { path: '/admin/finance/nominalcode', exact: true, name: 'Nominal code', component:  NominalCodeListing },
-  { path: '/admin/finance/salesopportunitystage', exact: true, name: 'Sales Opportunity Stages', component:  SalesOpportunityStage },
-  { path: '/admin/finance/salesopportunityflag', exact: true, name: 'Sales Opportunity Flags', component:  SalesOpportunityFlag },
+  { path: '/admin/finance/sale', exact: true, name: 'Sales Opportunity Stages', component:  SalesOpportunityStage },
+  { path: '/admin/finance/saleflag', exact: true, name: 'Sales Opportunity Flags', component:  SalesOpportunityFlag },
 
   //Stock
   { path: '/admin/stocknequipment/productcategory', exact: true, name: 'Product Categories', component:  ProductCategoryListing },
-  { path: '/admin/stocknequipment/managemakesnmodel', exact: true, name: 'Manege Makes & Models', component:  ManageMakesnModelListing },
+  { path: '/admin/stocknequipment/model', exact: true, name: 'Manage Models', component:  ManageModelListing },
+  { path: '/admin/stocknequipment/make', exact: true, name: 'Make', component:  MakeListing },
+  { path: '/admin/stocknequipment/Vendorgroup', exact: true, name: 'Vendor Group', component:  VendorGroupListing },
+  { path: '/admin/stocknequipment/paymentterm', exact: true, name: 'Payment Term', component:  PaymentTermListing },
 
 
   //Form
@@ -245,11 +249,12 @@ const routes = [
 
   //Account
   { path: '/admin/account/accounts', exact: true, name: 'Account Settings', component:  AccountListing },
-  { path: '/admin/account/accounts/edit', exact: true, name: 'Account Settings', component:  EditAccount },  
+  { path: '/admin/account/accounts/edit', exact: true, name: 'Account Settings', component:  EditAccount },
+  { path: '/admin/account/template', exact: true, name: 'Template', component:  TemplateListing },
 
 
 
-  { path: '/admin/test/test', exact: true, name: 'Test', component:  TestListing },
+  // { path: '/admin/test/test', exact: true, name: 'Test', component:  TestListing },
 
 ];
 export default routes;

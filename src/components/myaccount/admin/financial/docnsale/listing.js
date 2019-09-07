@@ -11,12 +11,15 @@ import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 // import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import {
-  GetAllListingForFinancialDocumentnSale,
+  GetListingForFinancialDocumentnSale,
   DeleteFinancialDocumentnSaleDataById
 } from "../shared/docnsale";
 import DocnSaleAuto from "./autoref";
 import NotestoClient from "./notes/notes";
 import Adddoc from "./add";
+import { Spinner } from "reactstrap";
+import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -30,7 +33,8 @@ let TotalPages = 2;
 const classes = {
   linearprogress: {
     // backgroundColor: '#EE7647',
-    backgroundColor: "rgb(243, 153, 117)"
+    // backgroundColor: "rgb(243, 153, 117)"
+    marginLeft: "50%"
   },
   header: {
     backgroundColor: "#EE7647",
@@ -55,6 +59,8 @@ const classes = {
   }
 };
 
+let countforpagination = 0;
+
 let FinanceDocListing = () => {
   let [Atlist, setAtlist] = useState([
     {
@@ -69,6 +75,7 @@ let FinanceDocListing = () => {
     }
   ]);
   let [paginate, setPaginate] = useState();
+  let [totalcount, setTotalCount] = useState();
 
   //-- React Data Table
   const options = {
@@ -163,9 +170,14 @@ let FinanceDocListing = () => {
   // };
 
   let Tabledisplay = (
-    <LinearProgress style={classes.linearprogress} color="secondary" />
+    <div style={classes.linearprogress}>
+      <Spinner type="grow" color="dark" />
+    </div>
   );
   let [Tabledistatus, settabledistatus] = useState(false);
+
+  //--- Pagination ------------------
+
   function handlePageSize(event) {
     PageSize = event.target.value;
     refreshfn();
@@ -173,11 +185,97 @@ let FinanceDocListing = () => {
 
   let PageSizeComp = (
     <select onChange={handlePageSize} value={PageSize}>
-      <option selected />
       <option value={10}>10</option>
       <option value={20}>20</option>
     </select>
   );
+
+  let [pgin, setPgin] = useState(true);
+
+  function handlepagin() {
+    setPgin(false);
+    // setTimeout(() => setPgin(true), 10);
+    refreshfn();
+    setPgin(true);
+  }
+
+  if (pgin) {
+    paging = (
+      <Pagination>
+        <PaginationItem>
+          <PaginationLink
+            previous
+            disabled={!(Page > 1) ? true : false}
+            tag="button"
+            onClick={() => {
+              if (Page > 1) {
+                if (countforpagination === 0) {
+                  Page = Page - 1;
+                  countforpagination = 1;
+                  handlepagin();
+                }
+              }
+            }}
+          />
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            hidden={Page === 1 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page - 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          >
+            {Page - 1}
+          </PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem active>
+          <PaginationLink tag="button">{Page}</PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            hidden={Page === TotalPages || totalcount < 11 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page + 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          >
+            {Page + 1}
+          </PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink
+            next
+            disabled={Page === TotalPages || totalcount < 11 ? true : false}
+            tag="button"
+            onClick={() => {
+              if (countforpagination === 0) {
+                Page = Page + 1;
+                countforpagination = 1;
+                handlepagin();
+              }
+            }}
+          />
+        </PaginationItem>
+      </Pagination>
+    );
+  } else {
+    paging = "";
+  }
+
+  //----- Finished Pagination---------
 
   if (Tabledistatus) {
     Tabledisplay = (
@@ -206,11 +304,21 @@ let FinanceDocListing = () => {
           </TableHeaderColumn>
         </BootstrapTable>
         <br />
+        <div className="row">
+          <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
+            {"  Showing "} {PageSizeComp} {" Results"}
+          </div>
+          <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
+            {paging}
+          </div>
+        </div>
       </div>
     );
   } else {
     Tabledisplay = (
-      <LinearProgress style={classes.linearprogress} color="secondary" />
+      <div style={classes.linearprogress}>
+        <Spinner type="grow" color="dark" />
+      </div>
     );
   }
   let refreshfn = () => {
@@ -223,15 +331,14 @@ let FinanceDocListing = () => {
   }, []);
 
   async function getlistapi() {
-    await GetAllListingForFinancialDocumentnSale(Page, PageSize).then(res => {
+    await GetListingForFinancialDocumentnSale(Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
-      // setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
-    // Atlist.map((e,i)=>
-    //   Atlist[i].action=<i className="icon-options icons font-2xl d-block mt-4" ></i>
-
-    //                 )
-    // TotalPages = paginate.totalPages;
+    setTotalCount((totalcount = paginate.totalCount));
+    TotalPages = paginate.totalPages;
+    countforpagination = 0;
+    settabledistatus((Tabledistatus = false));
     settabledistatus((Tabledistatus = true));
   }
 
