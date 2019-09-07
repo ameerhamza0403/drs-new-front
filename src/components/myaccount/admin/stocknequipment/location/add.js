@@ -68,11 +68,11 @@ let AddLocation = props => {
             isActive: true
         }
         ]);
-    
+
         useEffect(() => {
         getaccounts();
         }, []);
-    
+
         async function getaccounts() {
         const { data: accountdata } = await GetListingForAccount();
         console.log(accountdata);
@@ -88,19 +88,24 @@ let AddLocation = props => {
     setSubmitting(false);
   }
 
-  
+
   const validationSchema = function(values) {
     return Yup.object().shape({
-    // name: Yup.string()
-    // //.min(4, `Name has to be at least 4 characters`)
-    // .required("Name is requierd"),
-    // title: Yup.string()
-    // .required("Title is requierd"),
-    // subgroup: Yup.string()
-    // .required("SubGroup is requierd"),
-    // mainGroup: Yup.string()
-    // .required("MainGroup is requierd"),
-
+    name: Yup.string()
+    //.min(4, `Name has to be at least 4 characters`)
+    .required("Name is requierd"),
+    faxNo: Yup.string()
+    .required("Fax Number is requierd"),
+    locationAddress: Yup.string()
+    .required("Address is requierd"),
+    phoneNo: Yup.string()
+    .required("Phone is requierd"),
+    type: Yup.string()
+    .required("Type is requierd"),
+    city: Yup.string()
+    .required("City is requierd"),
+    locationId: Yup.string()
+    .required("ID is requierd"),
      });
   };
 
@@ -128,18 +133,13 @@ let AddLocation = props => {
 
   const initialValues = {
     //LocationId:0,
-    locationName: "",
-    locationAddress :"",
-    type :"",
-    faxNumber :"",
-    city :"",
-    phoneNumber :"",
+
     isActive: false
   };
 
-  
 
-  
+
+
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -164,12 +164,12 @@ let AddLocation = props => {
     validateForm(errors);
   }
 
- 
+
 
   let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
-    
+
     return setModal((modal = !modal));
   };
 
@@ -214,7 +214,7 @@ let AddLocation = props => {
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="accountId">Account</Label>
                           </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-2">
                             <Input
                               type="select"
                               name="accountId"
@@ -226,7 +226,7 @@ let AddLocation = props => {
                             //   autoFocus={true}
                             //   required
                               onChange={handleChange}
-                              onBlur={handleBlur}
+                              // onBlur={handleBlur}
                               value={values.accountId}
 
                             >
@@ -237,7 +237,7 @@ let AddLocation = props => {
                                     </option>
                                   ))}
                             </Input>
-                            <FormFeedback>{errors.accountId}</FormFeedback>
+                            {/* <FormFeedback>{errors.accountId}</FormFeedback> */}
 
                           </div>
                         </div>
@@ -245,22 +245,45 @@ let AddLocation = props => {
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="name">Location Name</Label>
                           </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-2">
                             <Input
                                 id="name"
                                 placeholder="Enter Location Name"
                                 type="text"
-                                value={values.locationName}
+                                value={values.name}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 name="name"
                                 autoComplete="given-name"
-                                valid={!errors.locationName}
-                                invalid={touched.locationName && !!errors.locationName}
+                                valid={!errors.name}
+                                invalid={touched.name && !!errors.name}
                                 autoFocus={true}
                                 required
                             />
-                            <FormFeedback> {errors.locationName}</FormFeedback>
+                            <FormFeedback> {errors.name}</FormFeedback>
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="locationId">Location ID</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-2">
+                            <Input
+                                id="locationId"
+                                placeholder=""
+                                type="text"
+                                value={values.locationId}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                name="locationId"
+                                autoComplete="given-name"
+                                valid={!errors.locationId}
+                                invalid={touched.locationId && !!errors.locationId}
+                                autoFocus={true}
+                                required
+                            />
+                            <FormFeedback> {errors.locationId}</FormFeedback>
                           </div>
                         </div>
 
@@ -268,7 +291,7 @@ let AddLocation = props => {
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="locationAddress">Location Address</Label>
                           </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-2">
                             <Input
                                 id="locationAddress"
                                 placeholder="Enter Location Address"
@@ -289,47 +312,47 @@ let AddLocation = props => {
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="phoneNumber">Phone Number</Label>
+                            <Label for="phoneNo">Phone Number</Label>
                           </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-2">
                             <Input
-                                id="phoneNumber"
+                                id="phoneNo"
                                 placeholder="Enter Phone Number"
                                 type="text"
-                                value={values.phoneNumber}
+                                value={values.phoneNo}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                name="phoneNumber"
+                                name="phoneNo"
                                 autoComplete="given-name"
-                                valid={!errors.phoneNumber}
-                                invalid={touched.phoneNumber && !!errors.phoneNumber}
+                                valid={!errors.phoneNo}
+                                invalid={touched.phoneNo && !!errors.phoneNo}
                                 autoFocus={true}
                                 required
                             />
-                            <FormFeedback> {errors.phoneNumber}</FormFeedback>
+                            <FormFeedback> {errors.phoneNo}</FormFeedback>
                           </div>
                         </div>
 
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="faxNumber">Fax Number</Label>
+                            <Label for="faxNo">Fax Number</Label>
                           </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-2">
                             <Input
-                                id="faxNumber"
+                                id="faxNo"
                                 placeholder="Enter Fax Number"
                                 type="text"
-                                value={values.faxNumber}
+                                value={values.faxNo}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                name="faxNumber"
+                                name="faxNo"
                                 autoComplete="given-name"
-                                valid={!errors.faxNumber}
-                                invalid={touched.faxNumber && !!errors.faxNumber}
+                                valid={!errors.faxNo}
+                                invalid={touched.faxNo && !!errors.faxNo}
                                 autoFocus={true}
                                 required
                             />
-                            <FormFeedback> {errors.faxNumber}</FormFeedback>
+                            <FormFeedback> {errors.faxNo}</FormFeedback>
                           </div>
                         </div>
 
@@ -337,10 +360,10 @@ let AddLocation = props => {
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="type">Location Type</Label>
                           </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-2">
                             <Input
                                 id="type"
-                                placeholder="Enter Fax Number"
+                                placeholder="Enter Location Type"
                                 type="text"
                                 value={values.type}
                                 onChange={handleChange}
@@ -360,7 +383,7 @@ let AddLocation = props => {
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="city">City</Label>
                           </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-2">
                             <Input
                                 id="city"
                                 placeholder="Enter City"
@@ -369,7 +392,7 @@ let AddLocation = props => {
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 name="city"
-                                autoComplete="given-name"
+                                // autoComplete="given-name"
                                 valid={!errors.city}
                                 invalid={touched.city && !!errors.city}
                                 autoFocus={true}
@@ -379,13 +402,13 @@ let AddLocation = props => {
                           </div>
                         </div>
 
-                        
+
                         <div className="row">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <Label for="isActive"></Label>
                           </div>
-                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-3">
-                            
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9 mb-2">
+
                             <input
                               name="isActive"
                               id="isActive"
@@ -405,8 +428,8 @@ let AddLocation = props => {
                             </label>
                           </div>
                         </div>
-                        
-                        
+
+
                       </FormGroup>
                       <FormGroup>
                         <ModalFooter>

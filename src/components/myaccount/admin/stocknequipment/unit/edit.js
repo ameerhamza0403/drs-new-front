@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import { GetVendorGroupDataById, PutVendorGroupDataById } from "..//shared/vendorgroup";
+import { GetUnitDataById, PutUnitDataById } from "..//shared/unit";
 import {
   Button,
   Card,
@@ -38,7 +38,7 @@ const classes = {
   }
 };
 
-let VendorGroupEdit = props => {
+let EditUnit = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
 
@@ -65,7 +65,7 @@ let VendorGroupEdit = props => {
 
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PutVendorGroupDataById(props.IDforAPI, values).then(res => success(res.data.message)).catch(error=>errort());
+    await PutUnitDataById(props.IDforAPI, values).then(res => success(res.data.message)).catch(error=>errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);
@@ -74,8 +74,11 @@ let VendorGroupEdit = props => {
   const validationSchema = function(values) {
     return Yup.object().shape({
       name: Yup.string()
-        .min(2, `Vendor Group Name has to be at least 2 characters`)
-        .required(" Vendor Group is required"),
+        .min(2, `Make Name has to be at least 2 characters`)
+        .required(" Name is required"),
+        code: Yup.string()
+        .min(2, `Code Name has to be at least 2 characters`)
+        .required(" Code is required"),
     });
   };
 
@@ -139,7 +142,7 @@ let VendorGroupEdit = props => {
   }, []);
 
   async function getlistapi() {
-    const { data: initialValues } = await GetVendorGroupDataById(props.IDforAPI);
+    const { data: initialValues } = await GetUnitDataById(props.IDforAPI);
     setInitialValues(initialValues);
     setModal(true);
   }
@@ -151,7 +154,7 @@ let VendorGroupEdit = props => {
         toggle={handleOpen}
         className={"modal-primary " + props.className}
       >
-        <ModalHeader toggle={handleOpen}>Vendor Group</ModalHeader>
+        <ModalHeader toggle={handleOpen}>Unit</ModalHeader>
         <ModalBody>
           <div className="container">
             <Formik
@@ -178,14 +181,14 @@ let VendorGroupEdit = props => {
                       <FormGroup>
                         <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Vendor Group</Label>
+                            <Label for="name">Unit</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
                               type="text"
                               name="name"
                               id="name"
-                              placeholder="i.e. Toshiba"
+                              placeholder=""
                               autoComplete="given-name"
                               valid={!errors.name}
                               invalid={touched.name && !!errors.name}
@@ -196,6 +199,29 @@ let VendorGroupEdit = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
+                          </div>
+                        </div>
+
+                        <div className="row mb-2">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="code">Code</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                            <Input
+                              type="text"
+                              name="code"
+                              id="code"
+                              placeholder=""
+                              autoComplete="given-name"
+                              valid={!errors.code}
+                              invalid={touched.code && !!errors.code}
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.code}
+                            />
+                            <FormFeedback>{errors.code}</FormFeedback>
                           </div>
                         </div>
 
@@ -258,4 +284,4 @@ let VendorGroupEdit = props => {
   );
 };
 
-export default VendorGroupEdit;
+export default EditUnit;

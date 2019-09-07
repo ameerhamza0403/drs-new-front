@@ -149,7 +149,7 @@ const options = {
     getlistapi();
   }, []);
 
-  
+
 
   async function getlistapi() {
     await GetListingForExpenseCategory(Page, PageSize).then(res => {
@@ -176,13 +176,6 @@ const options = {
     </select>
   );
 
-  const cellEditProp = {
-    mode: 'click', // 'dbclick' for trigger by double-click
-    afterSaveCell(oldValue, newValue, row, column, done) {
-      console.log(oldValue,"jsjksdbj", newValue,"ddkjdn","kjsdkhjksd", row,"hdisidjis", column)
-      PutExpenseCategoryDataById(idofEdit, oldValue).then(()=>info()).catch(error=>errort());
-    }
-  }
 
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
@@ -193,10 +186,9 @@ const options = {
           version="4"
           striped
           hover
-          pagination
-          search
+          // pagination
+          // search
           options={options}
-          cellEdit={cellEditProp}
         >
           <TableHeaderColumn dataField="group" dataSort>
             Group
@@ -213,8 +205,8 @@ const options = {
           <TableHeaderColumn dataField="isActive" hidden={true} isKey={true} dataSort>
             Name
           </TableHeaderColumn>
-          
-         
+
+
         </BootstrapTable>
         <br />
         <div className="row">
@@ -236,7 +228,7 @@ const options = {
     getlistapi();
   };
 
- 
+
  // Toast
 
  function errort() {
@@ -246,14 +238,10 @@ const options = {
   });
 
 }
-function info() {
-  return toast.info("Cell Updated... ", {
-    position: toast.POSITION.BOTTOM_RIGHT
-  });
-}
+
 
 function success() {
-  return toast.success2("Update cell successfully... ", {
+  return toast.success("Deleted Succesfully... ", {
     position: toast.POSITION.BOTTOM_RIGHT
   });
 }

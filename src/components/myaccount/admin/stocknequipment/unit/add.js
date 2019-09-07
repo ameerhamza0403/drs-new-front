@@ -1,5 +1,5 @@
-import React, { Component, useEffect, useState } from "react";
-import { GetVendorGroupDataById, PutVendorGroupDataById } from "..//shared/vendorgroup";
+import React, { Component, useState, useEffect } from "react";
+import { PostListingForUnit } from "../shared/unit";
 import {
   Button,
   Card,
@@ -38,34 +38,33 @@ const classes = {
   }
 };
 
-let VendorGroupEdit = props => {
+let AddUnit = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
+  //Tost
 
-    //Toast
-
-    function errort() {
-      // add type: 'error' to options
-      return toast.error('Failed with Error...', {
+  function errort() {
+    // add type: 'error' to options
+    return toast.error("Failed with Error...", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+  function success(response) {
+    if (response == "Exception Error") {
+      return toast.error('Failed with Error "' + response + '"', {
         position: toast.POSITION.BOTTOM_RIGHT
       });
-
+    } else {
+      return toast.success(response, {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
     }
-    function success(response) {
-      if (response == "Exception Error") {
-        return toast.error('Failed with Error "' + response + '"', {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
-      } else {
-        return toast.success(response, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
-      }
-    }
-
+  }
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PutVendorGroupDataById(props.IDforAPI, values).then(res => success(res.data.message)).catch(error=>errort());
+    await PostListingForUnit(values)
+      .then(res => success(res.data.message))
+      .catch(error => errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);
@@ -74,8 +73,11 @@ let VendorGroupEdit = props => {
   const validationSchema = function(values) {
     return Yup.object().shape({
       name: Yup.string()
-        .min(2, `Vendor Group Name has to be at least 2 characters`)
-        .required(" Vendor Group is required"),
+        .min(2, `Name has to be at least 2 characters`)
+        .required("Name is required"),
+        code: Yup.string()
+        .min(2, `Code has to be at least 2 characters`)
+        .required("Code is required"),
     });
   };
 
@@ -101,10 +103,10 @@ let VendorGroupEdit = props => {
     }, {});
   };
 
-  const [initialValues, setInitialValues] = useState({
+  const initialValues = {
     name: "",
     isActive: true
-  });
+  };
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -128,30 +130,25 @@ let VendorGroupEdit = props => {
     });
     validateForm(errors);
   }
+
   let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
-    return setModal((modal = false)), setTimeout(() => props.cross(), 200);
+    return setModal((modal = !modal));
   };
-
-  useEffect(() => {
-    getlistapi();
-  }, []);
-
-  async function getlistapi() {
-    const { data: initialValues } = await GetVendorGroupDataById(props.IDforAPI);
-    setInitialValues(initialValues);
-    setModal(true);
-  }
 
   return (
     <div>
+      <div onClick={handleOpen} style={classes.plusbutton}>
+        <i className="fa fa-plus-circle fa-2x" />
+      </div>
+
       <Modal
         isOpen={modal}
         toggle={handleOpen}
         className={"modal-primary " + props.className}
       >
-        <ModalHeader toggle={handleOpen}>Vendor Group</ModalHeader>
+        <ModalHeader toggle={handleOpen}>Unit</ModalHeader>
         <ModalBody>
           <div className="container">
             <Formik
@@ -178,14 +175,14 @@ let VendorGroupEdit = props => {
                       <FormGroup>
                         <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Vendor Group</Label>
+                            <Label for="name">Unit</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
                               type="text"
                               name="name"
                               id="name"
-                              placeholder="i.e. Toshiba"
+                              placeholder=""
                               autoComplete="given-name"
                               valid={!errors.name}
                               invalid={touched.name && !!errors.name}
@@ -196,6 +193,29 @@ let VendorGroupEdit = props => {
                               value={values.name}
                             />
                             <FormFeedback>{errors.name}</FormFeedback>
+                          </div>
+                        </div>
+
+                        <div className="row mb-2">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="code">Code</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                            <Input
+                              type="text"
+                              name="code"
+                              id="code"
+                              placeholder=""
+                              autoComplete="given-name"
+                              valid={!errors.code}
+                              invalid={touched.code && !!errors.code}
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.code}
+                            />
+                            <FormFeedback>{errors.code}</FormFeedback>
                           </div>
                         </div>
 
@@ -258,4 +278,4 @@ let VendorGroupEdit = props => {
   );
 };
 
-export default VendorGroupEdit;
+export default AddUnit;

@@ -106,9 +106,15 @@ const ManageModelListing = React.lazy(() => import('./components/myaccount/admin
 const MakeListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/make/listing'));
 const VendorGroupListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/vendorgroup/listing'));
 const PaymentTermListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/paymentterm/listing'));
-const ManageMakesnModelListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/managemakesnmodel/listing'));
+// const ManageMakesnModelListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/managemakesnmode/listing'));
 const ManageMakesnModelListingForStockTest = React.lazy(() => import('./components/myaccount/admin/stocknequipment/stockitem/listing'));
 const LocationListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/location/listing'));
+const BusinessPartnerListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/businesspartner/listing'));
+const StorageLocationListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/storagelocation/listing'));
+const PurchasegroupListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/purchasegroup/listing'));
+const UnitListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/unit/listing'));
+const WarehouseListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/warehouse/listing'));
+
 
 
 //Form
@@ -247,9 +253,15 @@ const routes = [
   { path: '/admin/stocknequipment/make', exact: true, name: 'Make', component:  MakeListing },
   { path: '/admin/stocknequipment/Vendorgroup', exact: true, name: 'Vendor Group', component:  VendorGroupListing },
   { path: '/admin/stocknequipment/paymentterm', exact: true, name: 'Payment Term', component:  PaymentTermListing },
-  { path: '/admin/stocknequipment/managemakesnmodel', exact: true, name: 'Manege Makes & Models', component:  ManageMakesnModelListing },
+  // { path: '/admin/stocknequipment/managemakesnmodel', exact: true, name: 'Manege Makes & Models', component:  ManageMakesnModelListing },
   { path: '/admin/stocknequipment/stockitem', exact: true, name: 'Stock Item', component:  ManageMakesnModelListingForStockTest },
   { path: '/admin/stocknequipment/location', exact: true, name: 'Location', component:  LocationListing },
+  { path: '/admin/stocknequipment/supplier', exact: true, name: 'Supplier', component:  BusinessPartnerListing },
+  { path: '/admin/stocknequipment/storage', exact: true, name: 'Storage Location', component:  StorageLocationListing },
+  { path: '/admin/stocknequipment/purchase', exact: true, name: 'Purchase Group', component:  PurchasegroupListing },
+  { path: '/admin/stocknequipment/unit', exact: true, name: 'Unit', component:  UnitListing },
+  { path: '/admin/stocknequipment/warehouse', exact: true, name: 'WareHouse', component:  WarehouseListing },
+
 
 
   //Form

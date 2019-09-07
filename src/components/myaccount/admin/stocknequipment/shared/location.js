@@ -3,7 +3,7 @@ import axios from 'axios';
 
 
 
-/* *************************Contacts Group*********************** */
+/* *************************Location*********************** */
 let apiurlLocation= apiUrl + '/masterdata/Locations';
 // let apiurlAbsenceType= 'https://reqres.in/api/users/2';
 
@@ -15,7 +15,7 @@ function ApiwithidLocation(Id) {
     return `${apiurlLocation}/${Pg}/${PgSize}`;
   }
 
-//-------- GetAPi 
+//-------- GetAPi
 export function GetListingForLocation(pg,pgsize) {
     return axios.get(ApiwithbyPgLocation(pg,pgsize),
              {headers: {

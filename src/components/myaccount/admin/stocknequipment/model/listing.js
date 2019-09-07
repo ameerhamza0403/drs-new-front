@@ -343,7 +343,7 @@ const options = {
 
 
 function success() {
-  return toast.success2("Update cell successfully... ", {
+  return toast.success("Deleted Succesfully... ", {
     position: toast.POSITION.BOTTOM_RIGHT
   });
 }

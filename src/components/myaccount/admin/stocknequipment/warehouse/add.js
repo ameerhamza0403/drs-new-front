@@ -1,5 +1,6 @@
-import React, { Component, useEffect, useState } from "react";
-import { GetVendorGroupDataById, PutVendorGroupDataById } from "..//shared/vendorgroup";
+import React, { Component, useState, useEffect } from "react";
+import { PostListingForWareHouse } from "../shared/warehouse";
+import { GetListingForStorageLocation } from '../shared/storagelocation';
 import {
   Button,
   Card,
@@ -38,34 +39,43 @@ const classes = {
   }
 };
 
-let VendorGroupEdit = props => {
+let AddStorageLocation = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
+  //Tost
 
-    //Toast
+  useEffect(()=>{
+    getlistapi();
+  },[]);
 
-    function errort() {
-      // add type: 'error' to options
-      return toast.error('Failed with Error...', {
+  let [location, setLocation] = useState([]);
+  async function getlistapi(){
+    const {data: location} = await GetListingForStorageLocation(0,0);
+    setLocation(location);
+  }
+
+  function errort() {
+    // add type: 'error' to options
+    return toast.error("Failed with Error...", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+  function success(response) {
+    if (response == "Exception Error") {
+      return toast.error('Failed with Error "' + response + '"', {
         position: toast.POSITION.BOTTOM_RIGHT
       });
-
+    } else {
+      return toast.success(response, {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
     }
-    function success(response) {
-      if (response == "Exception Error") {
-        return toast.error('Failed with Error "' + response + '"', {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
-      } else {
-        return toast.success(response, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
-      }
-    }
-
+  }
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PutVendorGroupDataById(props.IDforAPI, values).then(res => success(res.data.message)).catch(error=>errort());
+    await PostListingForWareHouse(values)
+      .then(res => success(res.data.message))
+      .catch(error => errort());
     handleOpen();
     props.refresh();
     setSubmitting(false);
@@ -74,8 +84,13 @@ let VendorGroupEdit = props => {
   const validationSchema = function(values) {
     return Yup.object().shape({
       name: Yup.string()
-        .min(2, `Vendor Group Name has to be at least 2 characters`)
-        .required(" Vendor Group is required"),
+        .required("Storage Location is required"),
+        storageLocationId: Yup.string()
+        .required("Location is required"),
+        warehouseCode: Yup.string()
+        .required("Code is required"),
+        storageType: Yup.string()
+        .required("Type is required"),
     });
   };
 
@@ -101,10 +116,10 @@ let VendorGroupEdit = props => {
     }, {});
   };
 
-  const [initialValues, setInitialValues] = useState({
-    name: "",
+  let initialValues = {
+    // name: "",
     isActive: true
-  });
+  };
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -128,30 +143,25 @@ let VendorGroupEdit = props => {
     });
     validateForm(errors);
   }
+
   let [modal, setModal] = useState(false);
 
   let handleOpen = () => {
-    return setModal((modal = false)), setTimeout(() => props.cross(), 200);
+    return setModal((modal = !modal));
   };
-
-  useEffect(() => {
-    getlistapi();
-  }, []);
-
-  async function getlistapi() {
-    const { data: initialValues } = await GetVendorGroupDataById(props.IDforAPI);
-    setInitialValues(initialValues);
-    setModal(true);
-  }
 
   return (
     <div>
+      <div onClick={handleOpen} style={classes.plusbutton}>
+        <i className="fa fa-plus-circle fa-2x" />
+      </div>
+
       <Modal
         isOpen={modal}
         toggle={handleOpen}
         className={"modal-primary " + props.className}
       >
-        <ModalHeader toggle={handleOpen}>Vendor Group</ModalHeader>
+        <ModalHeader toggle={handleOpen}>Warehouse</ModalHeader>
         <ModalBody>
           <div className="container">
             <Formik
@@ -178,15 +188,15 @@ let VendorGroupEdit = props => {
                       <FormGroup>
                         <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <Label for="name">Vendor Group</Label>
+                            <Label for="name">WareHouse Name</Label>
                           </div>
                           <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
                             <Input
                               type="text"
                               name="name"
                               id="name"
-                              placeholder="i.e. Toshiba"
-                              autoComplete="given-name"
+                              placeholder=""
+                              autoComplete="off"
                               valid={!errors.name}
                               invalid={touched.name && !!errors.name}
                               autoFocus={true}
@@ -198,6 +208,84 @@ let VendorGroupEdit = props => {
                             <FormFeedback>{errors.name}</FormFeedback>
                           </div>
                         </div>
+
+                        <div className="row mb-2">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="warehouseCode">Warehouse Code</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                            <Input
+                              type="text"
+                              name="warehouseCode"
+                              id="warehouseCode"
+                              placeholder=""
+                              autoComplete="off"
+                              valid={!errors.warehouseCode}
+                              invalid={touched.warehouseCode && !!errors.warehouseCode}
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.warehouseCode}
+                            />
+                            <FormFeedback>{errors.warehouseCode}</FormFeedback>
+                          </div>
+                        </div>
+
+                        <div className="row mb-2">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="storageType">Storage Type</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                            <Input
+                              type="select"
+                              name="storageType"
+                              id="storageType"
+                              placeholder=""
+                              autoComplete="off"
+                              valid={!errors.storageType}
+                              invalid={touched.storageType && !!errors.storageType}
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.storageType}
+                            >
+                              <option selected />
+                              <option value={'Location'}>{'Location'}</option>
+                              <option value={'Vehicle'}>{'Vehicle'}</option>
+                            </Input>
+                            <FormFeedback>{errors.storageType}</FormFeedback>
+                          </div>
+                        </div>
+
+
+                        <div className="row mb-2">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="storageLocationId">Storage Location</Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                            <Input
+                              type="select"
+                              name="storageLocationId"
+                              id="storageLocationId"
+                              placeholder=""
+                              autoComplete="off"
+                              valid={!errors.storageLocationId}
+                              invalid={touched.storageLocationId && !!errors.storageLocationId}
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.storageLocationId}
+                            >
+                              <option selected />
+                              {location.map(e=><option value={e.storageLocationId}>{e.name}</option>)}
+                            </Input>
+                            <FormFeedback>{errors.storageLocationId}</FormFeedback>
+                          </div>
+                        </div>
+
 
                         <div className="row mb-2">
                           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
@@ -258,4 +346,4 @@ let VendorGroupEdit = props => {
   );
 };
 
-export default VendorGroupEdit;
+export default AddStorageLocation;

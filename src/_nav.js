@@ -512,6 +512,11 @@ export default {
           icon: "fa fa-bank"
         },
         {
+          name: "Supplier",
+          url: "/admin/stocknequipment/supplier",
+          icon: "fa fa-bank"
+        },
+        {
           name: "Product Categories",
           url: "/admin/stocknequipment/productcategory",
           icon: "fa fa-bank"
@@ -524,6 +529,26 @@ export default {
         {
           name: "Payment Terms",
           url: "/admin/stocknequipment/paymentterm",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Storage Location",
+          url: "/admin/stocknequipment/storage",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Purchase Group",
+          url: "/admin/stocknequipment/purchase",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Unit",
+          url: "/admin/stocknequipment/unit",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "WareHouse",
+          url: "/admin/stocknequipment/warehouse",
           icon: "fa fa-bank"
         },
       ]

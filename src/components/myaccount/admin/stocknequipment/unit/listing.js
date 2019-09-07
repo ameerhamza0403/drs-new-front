@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
-//import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
-import EditLocation from "./edit";
-import {
-  GetListingForLocation,
-  DeleteLocationDataById
-} from "../shared/location";
-import AddLocation from "./add";
-import { Spinner } from "reactstrap";
+import EditUnit from "./edit";
+import { GetListingForUnit, DeleteUnitDataById } from "..//shared/unit";
+import AddUnit from "./add";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
-import "react-bootstrap-table/dist/react-bootstrap-table-all.min.css";
+import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-
+import { Spinner } from "reactstrap";
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -21,7 +16,7 @@ let idofEdit = 0;
 let Page = 1;
 let PageSize = 10;
 let paging = "";
-let TotalPages = 3;
+let TotalPages = 2;
 
 const classes = {
   linearprogress: {
@@ -52,133 +47,82 @@ const classes = {
   }
 };
 
-
 let countforpagination = 0;
 
-  let LocationListing = () => {
-  let [Atlist, setAtlist] = useState();
+let UnitListing = () => {
+  let [Atlist, setAtlist] = useState([]);
   let [paginate, setPaginate] = useState();
   let [totalcount, setTotalCount] = useState();
 
+  // const columns = [
+  //   {
+  //     name: "currencyId",
+  //     label: "ID",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   },
+  //   {
+  //     name: "name",
+  //     label: "Currency Name",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   },
+  //   {
+  //     name: "code",
+  //     label: "Currency",
+  //     options: {
+  //       filter: true,
+  //       sort: true
+  //     }
+  //   },
+  //   {
+  //     name: "isActive",
+  //     label: "Status",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   }
+  // ];
 
-//   const columns = [
-//     {
-//       name: "phoneBookItemId",
-//       label: "ID",
-//       options: {
-//         filter: false,
-//         sort: false,
-//         display: false
-//       }
-//     },
-//     {
-//       name: "name",
-//       label: "Name",
-//       options: {
-//         filter: true,
-//         sort: true
-//       }
-//     },
-//     {
-//         name: "phoneNumber",
-//         label: "Phone",
-//         options: {
-//             filter: true,
-//             sort: true
-//         }
-//     },
-//     {
-//         name: "extensions",
-//         label: "Extensions",
-//         options: {
-//             filter: true,
-//             sort: true
-//         }
-//     },
-//     {
-//         name: "email",
-//         label: "Email",
-//         options: {
-//             filter: true,
-//             sort: true
-//         }
-//     },
-//     {
-//       name: "active",
-//       label: "Status",
-//       options: {
-//         filter: false,
-//         sort: false,
-//         display: false
-//       }
-//     }
-    //   {
-    //     name: "action",
-    //     label: "Action",
-    //     options: {
-    //       filter: false,
-    //       sort: false,
-    //       display: true
-    //     }
-    // }
-//   ];
+  // const options = {
+  //   filterType: "multiselect",
+  //   onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+  //   customToolbar: () => console.log("rowData"),
+  //   rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+  //   selectableRows: "none",
+  //   viewColumns: true,
+  //   responsive: 'scroll',
 
-//   const options = {
-//     filterType: "multiselect",
-//     onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-//     customToolbar: () => console.log("rowData"),
-//     rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-//     selectableRows: "none",
-//     viewColumns: true
+  //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+  // };
 
-//     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
-//   };
-
-
-//-- React Data Table
-const options = {
+  //-- React Data Table
+  const options = {
     sortIndicator: true,
     // page: Page,
     hideSizePerPage: true,
-    // paginationSize: 5,
-    // hidePageListOnlyOnePage: false,
+    // paginationSize: PageSize,
+    hidePageListOnlyOnePage: true,
+    // sizePerPage: PageSize,
     // clearSearch: true,
     alwaysShowAllBtns: false,
     onRowClick: HandlerowSelect,
-    withFirstAndLast: false,
-
+    withFirstAndLast: false
     // onPageChange: onPageChange,
-    // onSizePerPageList: sizePerPageListChange
+    // onSizePerPageList: sizePerPageListChange,
   };
-  useEffect(() => {
-    getlistapi();
-  }, []);
 
+  //--- Pagination ------------------
 
-
-  async function getlistapi() {
-    await GetListingForLocation(Page, PageSize).then(res => {
-      setAtlist((Atlist = res.data));
-      console.log(res.data);
-      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-    });
-    setTotalCount((totalcount = paginate.totalCount));
-    TotalPages = paginate.totalPages;
-    countforpagination = 0;
-    settabledistatus((Tabledistatus = false));
-    settabledistatus((Tabledistatus = true));
-  }
-
-  let Tabledisplay = (
-    <div style={classes.linearprogress}>
-      <Spinner type="grow" color="dark" />
-    </div>
-  );
-
-
-   //--- Pagination ------------------
-
-   function handlePageSize(event) {
+  function handlePageSize(event) {
     PageSize = event.target.value;
     refreshfn();
   }
@@ -277,11 +221,21 @@ const options = {
 
   //----- Finished Pagination---------
 
-
+  let Tabledisplay = (
+    <div style={classes.linearprogress}>
+      <Spinner type="grow" color="dark" />
+    </div>
+  );
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
-        <div>
+      // <MUIDataTable
+      //   title={"Actions & Filters"}
+      //   data={Atlist}
+      //   columns={columns}
+      //   options={options}
+      // />
+      <div>
         <BootstrapTable
           data={Atlist}
           version="4"
@@ -291,25 +245,20 @@ const options = {
           // search
           options={options}
         >
+          <TableHeaderColumn
+            isKey={true}
+            hidden={true}
+            dataField="unitId"
+            dataSort
+          >
+            UnitId
+          </TableHeaderColumn>
           <TableHeaderColumn dataField="name" dataSort>
-            Location Name
+            Name
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="locationAddress" dataSort>
-            Location Address
+          <TableHeaderColumn dataField="code" dataSort>
+          Code
           </TableHeaderColumn>
-
-          <TableHeaderColumn dataField="city" dataSort>
-            Location City
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="phoneNo" dataSort>
-            Mobile
-          </TableHeaderColumn>
-
-          <TableHeaderColumn isKey hidden dataField="isActive" dataSort>
-            isActive
-          </TableHeaderColumn>
-
-
         </BootstrapTable>
         <br />
         <div className="row">
@@ -325,8 +274,8 @@ const options = {
   } else {
     Tabledisplay = (
       <div style={classes.linearprogress}>
-      <Spinner type="grow" color="dark" />
-    </div>
+        <Spinner type="grow" color="dark" />
+      </div>
     );
   }
   let refreshfn = () => {
@@ -334,27 +283,43 @@ const options = {
     getlistapi();
   };
 
+  useEffect(() => {
+    getlistapi();
+  }, []);
 
- // Toast
+  async function getlistapi() {
+    await GetListingForUnit(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
 
- function errort() {
-  // add type: 'error' to options
-  return toast.error('Failed with Error...', {
-    position: toast.POSITION.BOTTOM_RIGHT
-  });
+    setTotalCount((totalcount = paginate.totalCount));
+    TotalPages = paginate.totalPages;
+    countforpagination = 0;
+    settabledistatus((Tabledistatus = false));
+    settabledistatus((Tabledistatus = true));
+  }
 
-}
-function success() {
-  return toast.success("Deleted Successfully... ", {
-    position: toast.POSITION.BOTTOM_RIGHT
-  });
-}
+  // Toast
 
+  function errort() {
+    // add type: 'error' to options
+    return toast.error("Failed with Error...", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+  function success() {
+    return toast.success("Deleted Successfully... ", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
 
   async function Dellistapi() {
-    await DeleteLocationDataById(idofEdit).then(() => {
-      success();
-    }).catch(error => {
+    await DeleteUnitDataById(idofEdit)
+      .then(() => {
+        success();
+      })
+      .catch(error => {
         errort();
       });
     Handlerowclose();
@@ -376,7 +341,7 @@ function success() {
 
   if (Editstate) {
     EditshowModel = (
-      <EditLocation
+      <EditUnit
         IDforAPI={idofEdit}
         refresh={refreshfn}
         cross={HandleCrossEditforlisting}
@@ -387,21 +352,19 @@ function success() {
   }
 
   let [menushow, setMenushow] = useState(false);
-  function HandlerowSelect  (row) {
+  function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = row.locationId;
-    console.log(idofEdit)
+    idofEdit = row.unitId;
     return setMenushow((menushow = true));
-
-  };
-  let Handlerowclose = (data, meta) => {
+  }
+  let Handlerowclose = row => {
     return setMenushow((menushow = false));
   };
   if (menushow) {
     menuDiv = (
       <ul className="tool">
         <li>
-          <AddLocation refresh={refreshfn} />
+          <AddUnit refresh={refreshfn} />
         </li>
         <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -421,7 +384,7 @@ function success() {
     menuDiv = (
       <ul className="tool">
         <li />
-        <AddLocation refresh={refreshfn} />
+        <AddUnit refresh={refreshfn} />
       </ul>
     );
   }
@@ -430,10 +393,10 @@ function success() {
     <div>
       <div className="row header">
         <div className="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5">
-        {menuDiv}
+          {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">LOCATION</h3>
+          <h3 className="heading">UNIT</h3>
         </div>
       </div>
       <br />
@@ -443,4 +406,4 @@ function success() {
   );
 };
 
-export default LocationListing;
+export default UnitListing;

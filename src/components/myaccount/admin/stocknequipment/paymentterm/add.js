@@ -73,7 +73,7 @@ let AddPaymentTerm = props => {
   const validationSchema = function(values) {
     return Yup.object().shape({
       name: Yup.string()
-        .min(2, `Payment Term name has to be at least 2 characters`)
+        // .min(2, `Payment Term name has to be at least 2 characters`)
         .required("Payment Term is required"),
     });
   };
@@ -101,7 +101,6 @@ let AddPaymentTerm = props => {
   };
 
   const initialValues = {
-    name: "",
     isActive: true
   };
 

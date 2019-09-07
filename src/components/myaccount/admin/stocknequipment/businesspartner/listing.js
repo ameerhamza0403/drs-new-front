@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
 //import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
-import EditLocation from "./edit";
+import EditManageMakesnModel from "./edit";
 import {
-  GetListingForLocation,
-  DeleteLocationDataById
-} from "../shared/location";
-import AddLocation from "./add";
+  GetListingForbusinessPartner,
+  DeletebusinessPartnerDataById
+} from "..//shared/businesspartner";
+import AddBusinessPartner from "./add";
 import { Spinner } from "reactstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
-import "react-bootstrap-table/dist/react-bootstrap-table-all.min.css";
+import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -52,91 +51,88 @@ const classes = {
   }
 };
 
-
 let countforpagination = 0;
 
-  let LocationListing = () => {
+let BusinessPartnerListing = () => {
   let [Atlist, setAtlist] = useState();
   let [paginate, setPaginate] = useState();
   let [totalcount, setTotalCount] = useState();
 
+  //   const columns = [
+  //     {
+  //       name: "phoneBookItemId",
+  //       label: "ID",
+  //       options: {
+  //         filter: false,
+  //         sort: false,
+  //         display: false
+  //       }
+  //     },
+  //     {
+  //       name: "name",
+  //       label: "Name",
+  //       options: {
+  //         filter: true,
+  //         sort: true
+  //       }
+  //     },
+  //     {
+  //         name: "phoneNumber",
+  //         label: "Phone",
+  //         options: {
+  //             filter: true,
+  //             sort: true
+  //         }
+  //     },
+  //     {
+  //         name: "extensions",
+  //         label: "Extensions",
+  //         options: {
+  //             filter: true,
+  //             sort: true
+  //         }
+  //     },
+  //     {
+  //         name: "email",
+  //         label: "Email",
+  //         options: {
+  //             filter: true,
+  //             sort: true
+  //         }
+  //     },
+  //     {
+  //       name: "active",
+  //       label: "Status",
+  //       options: {
+  //         filter: false,
+  //         sort: false,
+  //         display: false
+  //       }
+  //     }
+  //   {
+  //     name: "action",
+  //     label: "Action",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: true
+  //     }
+  // }
+  //   ];
 
-//   const columns = [
-//     {
-//       name: "phoneBookItemId",
-//       label: "ID",
-//       options: {
-//         filter: false,
-//         sort: false,
-//         display: false
-//       }
-//     },
-//     {
-//       name: "name",
-//       label: "Name",
-//       options: {
-//         filter: true,
-//         sort: true
-//       }
-//     },
-//     {
-//         name: "phoneNumber",
-//         label: "Phone",
-//         options: {
-//             filter: true,
-//             sort: true
-//         }
-//     },
-//     {
-//         name: "extensions",
-//         label: "Extensions",
-//         options: {
-//             filter: true,
-//             sort: true
-//         }
-//     },
-//     {
-//         name: "email",
-//         label: "Email",
-//         options: {
-//             filter: true,
-//             sort: true
-//         }
-//     },
-//     {
-//       name: "active",
-//       label: "Status",
-//       options: {
-//         filter: false,
-//         sort: false,
-//         display: false
-//       }
-//     }
-    //   {
-    //     name: "action",
-    //     label: "Action",
-    //     options: {
-    //       filter: false,
-    //       sort: false,
-    //       display: true
-    //     }
-    // }
-//   ];
+  //   const options = {
+  //     filterType: "multiselect",
+  //     onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+  //     customToolbar: () => console.log("rowData"),
+  //     rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+  //     selectableRows: "none",
+  //     viewColumns: true
 
-//   const options = {
-//     filterType: "multiselect",
-//     onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-//     customToolbar: () => console.log("rowData"),
-//     rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-//     selectableRows: "none",
-//     viewColumns: true
+  //     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+  //   };
 
-//     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
-//   };
-
-
-//-- React Data Table
-const options = {
+  //-- React Data Table
+  const options = {
     sortIndicator: true,
     // page: Page,
     hideSizePerPage: true,
@@ -145,7 +141,7 @@ const options = {
     // clearSearch: true,
     alwaysShowAllBtns: false,
     onRowClick: HandlerowSelect,
-    withFirstAndLast: false,
+    withFirstAndLast: false
 
     // onPageChange: onPageChange,
     // onSizePerPageList: sizePerPageListChange
@@ -154,14 +150,13 @@ const options = {
     getlistapi();
   }, []);
 
-
-
   async function getlistapi() {
-    await GetListingForLocation(Page, PageSize).then(res => {
+    await GetListingForbusinessPartner(Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
       console.log(res.data);
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
+
     setTotalCount((totalcount = paginate.totalCount));
     TotalPages = paginate.totalPages;
     countforpagination = 0;
@@ -175,10 +170,9 @@ const options = {
     </div>
   );
 
+  //--- Pagination ------------------
 
-   //--- Pagination ------------------
-
-   function handlePageSize(event) {
+  function handlePageSize(event) {
     PageSize = event.target.value;
     refreshfn();
   }
@@ -277,11 +271,10 @@ const options = {
 
   //----- Finished Pagination---------
 
-
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
-        <div>
+      <div>
         <BootstrapTable
           data={Atlist}
           version="4"
@@ -290,26 +283,28 @@ const options = {
           // pagination
           // search
           options={options}
+          // cellEdit={cellEditProp}
         >
+          <TableHeaderColumn dataField="businessPartnerCode" dataSort>
+            Supplier Code
+          </TableHeaderColumn>
           <TableHeaderColumn dataField="name" dataSort>
-            Location Name
+            Supplier
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="locationAddress" dataSort>
-            Location Address
+          <TableHeaderColumn dataField="vendorGroupName" dataSort>
+            Vendor Group
           </TableHeaderColumn>
-
-          <TableHeaderColumn dataField="city" dataSort>
-            Location City
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="phoneNo" dataSort>
+          <TableHeaderColumn dataField="mobile" dataSort>
             Mobile
           </TableHeaderColumn>
-
-          <TableHeaderColumn isKey hidden dataField="isActive" dataSort>
-            isActive
+          <TableHeaderColumn
+            dataField="businessPartnerId"
+            hidden={true}
+            isKey={true}
+            dataSort
+          >
+            BusinessPartnerId
           </TableHeaderColumn>
-
-
         </BootstrapTable>
         <br />
         <div className="row">
@@ -325,8 +320,8 @@ const options = {
   } else {
     Tabledisplay = (
       <div style={classes.linearprogress}>
-      <Spinner type="grow" color="dark" />
-    </div>
+        <Spinner type="grow" color="dark" />
+      </div>
     );
   }
   let refreshfn = () => {
@@ -334,27 +329,28 @@ const options = {
     getlistapi();
   };
 
+  // Toast
 
- // Toast
+  function errort() {
+    // add type: 'error' to options
+    return toast.error("Failed with Error...", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
 
- function errort() {
-  // add type: 'error' to options
-  return toast.error('Failed with Error...', {
-    position: toast.POSITION.BOTTOM_RIGHT
-  });
 
-}
-function success() {
-  return toast.success("Deleted Successfully... ", {
-    position: toast.POSITION.BOTTOM_RIGHT
-  });
-}
-
+  function success() {
+    return toast.success("Deleted Succesfully... ", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
 
   async function Dellistapi() {
-    await DeleteLocationDataById(idofEdit).then(() => {
-      success();
-    }).catch(error => {
+    await DeletebusinessPartnerDataById(idofEdit)
+      .then(() => {
+        success();
+      })
+      .catch(error => {
         errort();
       });
     Handlerowclose();
@@ -376,7 +372,7 @@ function success() {
 
   if (Editstate) {
     EditshowModel = (
-      <EditLocation
+      <EditManageMakesnModel
         IDforAPI={idofEdit}
         refresh={refreshfn}
         cross={HandleCrossEditforlisting}
@@ -387,13 +383,11 @@ function success() {
   }
 
   let [menushow, setMenushow] = useState(false);
-  function HandlerowSelect  (row) {
+  function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = row.locationId;
-    console.log(idofEdit)
+    idofEdit = row.businessPartnerId;
     return setMenushow((menushow = true));
-
-  };
+  }
   let Handlerowclose = (data, meta) => {
     return setMenushow((menushow = false));
   };
@@ -401,7 +395,7 @@ function success() {
     menuDiv = (
       <ul className="tool">
         <li>
-          <AddLocation refresh={refreshfn} />
+          <AddBusinessPartner refresh={refreshfn} />
         </li>
         <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -421,26 +415,26 @@ function success() {
     menuDiv = (
       <ul className="tool">
         <li />
-        <AddLocation refresh={refreshfn} />
+        <AddBusinessPartner refresh={refreshfn} />
       </ul>
     );
   }
-
   return (
     <div>
       <div className="row header">
         <div className="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5">
-        {menuDiv}
+          {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">LOCATION</h3>
+          <h3 className="heading">SUPPLIER</h3>
         </div>
       </div>
       <br />
       {EditshowModel}
+
       {Tabledisplay}
     </div>
   );
 };
 
-export default LocationListing;
+export default BusinessPartnerListing;
