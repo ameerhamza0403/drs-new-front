@@ -106,6 +106,9 @@ const ManageModelListing = React.lazy(() => import('./components/myaccount/admin
 const MakeListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/make/listing'));
 const VendorGroupListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/vendorgroup/listing'));
 const PaymentTermListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/paymentterm/listing'));
+const ManageMakesnModelListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/managemakesnmodel/listing'));
+const ManageMakesnModelListingForStockTest = React.lazy(() => import('./components/myaccount/admin/stocknequipment/stockitem/listing'));
+const LocationListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/location/listing'));
 
 
 //Form
@@ -118,6 +121,13 @@ const EditAccount = React.lazy(() => import('./components/myaccount/admin/accoun
 const TemplateListing = React.lazy(() => import('./components/myaccount/admin/account/template/listing'));
 
 // const TestListing = React.lazy(() => import('./components/myaccount/admin/test/test/listing'));
+
+//Account
+const TemplateKeywordListing = React.lazy(() => import('./components/myaccount/admin/account/templatekeywords/listing'));
+const TemplateUsageListing = React.lazy(() => import('./components/myaccount/admin/account/templateusage/listing'));
+const TemplateUsageTypeListing = React.lazy(() => import('./components/myaccount/admin/account/templateusagetype/listing'));
+
+const TestListing = React.lazy(() => import('./components/myaccount/admin/test/test/listing'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -237,6 +247,9 @@ const routes = [
   { path: '/admin/stocknequipment/make', exact: true, name: 'Make', component:  MakeListing },
   { path: '/admin/stocknequipment/Vendorgroup', exact: true, name: 'Vendor Group', component:  VendorGroupListing },
   { path: '/admin/stocknequipment/paymentterm', exact: true, name: 'Payment Term', component:  PaymentTermListing },
+  { path: '/admin/stocknequipment/managemakesnmodel', exact: true, name: 'Manege Makes & Models', component:  ManageMakesnModelListing },
+  { path: '/admin/stocknequipment/stockitem', exact: true, name: 'Stock Item', component:  ManageMakesnModelListingForStockTest },
+  { path: '/admin/stocknequipment/location', exact: true, name: 'Location', component:  LocationListing },
 
 
   //Form
@@ -249,10 +262,11 @@ const routes = [
 
   //Account
   { path: '/admin/account/accounts', exact: true, name: 'Account Settings', component:  AccountListing },
-  { path: '/admin/account/accounts/edit', exact: true, name: 'Account Settings', component:  EditAccount },
   { path: '/admin/account/template', exact: true, name: 'Template', component:  TemplateListing },
-
-
+  { path: '/admin/account/accounts/edit', exact: true, name: 'Account Settings', component:  EditAccount },
+  { path: '/admin/account/templatekeywords', exact: true, name: 'Template Keywords', component:  TemplateKeywordListing },
+  { path: '/admin/account/templateusage', exact: true, name: 'Template Usage', component:  TemplateUsageListing },
+  { path: '/admin/account/templateusagetype', exact: true, name: 'Template Usage Type', component:  TemplateUsageTypeListing },
 
   // { path: '/admin/test/test', exact: true, name: 'Test', component:  TestListing },
 

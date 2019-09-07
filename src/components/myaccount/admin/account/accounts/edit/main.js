@@ -2,6 +2,7 @@ import { GetAccountDataById, PutAccountDataById } from "../../shared/accounts";
 import { GetListingForAccountSetting } from '../../shared/accountsetting'
 import React, { Component, useState, useEffect } from "react";
 import AddAccountSetting from '../../accountsetting/add'
+import * as _ from 'lodash';
 import {
   Button,
   Card,
@@ -30,6 +31,7 @@ let menuDiv = "";
 let EditshowModel = "";
 let selectedFile = [];
 let nameoffile = "";
+let settingsarray =[];
 
 
 const classes = {
@@ -47,6 +49,12 @@ const classes = {
     // marginTop: '10px',
     // marginLeft: '5px',
   },
+  moduleName:{
+    color: "#EE7647",
+  },
+  input:{
+    width:"60px",
+  }
   
 
 };
@@ -136,7 +144,6 @@ let EditAccount = props => {
     });
     validateForm(errors);
   }
-
   let [filen, setFilen] = useState(false);
   let handleFileSelect = event => {
     setFilen(false);
@@ -164,6 +171,8 @@ let EditAccount = props => {
   useEffect(() => {
     getlistapi();
   }, []);
+  let [settingsarraystate, setSettingsarray ] =useState();
+
   let [initialValues, setInitialValues] = useState({
     
   });
@@ -173,10 +182,32 @@ let EditAccount = props => {
     const { data: initialValues } = await GetAccountDataById();
     setInitialValues(initialValues)
     //setShowForm(true);
-
+    
     const { data: accountsettingdata } = await GetListingForAccountSetting();
     setaccountsettingdata(accountsettingdata)
     console.log(accountsettingdata);
+    accountsettingdata.map((e,i) =>{
+      let name = e.module;
+      //console.log(settingsarray[name] , e.module)
+     if(settingsarray[name] !== undefined && settingsarray[name][0].module === e.module ){
+       
+      settingsarray[name].push(e)
+      console.log("1")
+     } 
+     else
+     {
+       settingsarray[name] = [];
+       settingsarray[name].push(e);
+       settingsarraystate = settingsarray;
+       console.log("2")
+     }
+  
+    })
+    setSettingsarray(settingsarray);
+    ;
+    console.log(settingsarray)
+    console.log(settingsarraystate)
+
     setShowForm(true);
   }
 
@@ -435,60 +466,70 @@ let EditAccount = props => {
           <Col lg="12">
           <Form onSubmit={handleSubmit} noValidate name="simpleForm">
               <FormGroup>
-              <h2>Jobs on device</h2>
-              
-              {accountsettingdata.map(e => (
-                    <div className="container">
-
-                      <div className="row">
-                        <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                        <Label for="name">{e.name}</Label>
-                        </div>
-                        
-                        <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                        {(e.type==="Yes/No")?
-                          <div >
-                          <Input type="radio"
-                            name={e.type}
-                            id={e.type}
-                            value="Yes/No"
-                            defaultChecked={(e.value==="Yes")?true:false}
-                            onChange={handleChange}/>&nbsp;Yes &nbsp;&nbsp;
-                          <Input type="radio"
-                            name={e.type}
-                            id={e.type}
-                            value="Yes/No"
-                            defaultChecked={(e.value==="No")?true:false}
-                            onChange={handleChange}/>&nbsp;No &nbsp;&nbsp;
-
-                        </div>: (e.type==="text")?
-                       <Input
-                          type="text"
-                          name="type"
-                          id="type"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          value={e.type}
-                          //value={e.type}
-                        />:(e.type==="select")?
-                          <Input
-                              type="select"
-                              name="defaultJobCard"
-                              id="defaultJobCard"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              defaultChecked={e.type}
-                            ><option>{e.type}</option></Input>:""
-                        }
-                        
-                        </div>
-                      </div>
+              {/* <h2>Jobs on device</h2> */}
+              {Object.keys(settingsarray).map(function(keyName, keyIndex) {
+                return <div className="container mb-5">{
+                (settingsarray[keyName].map((e,i) => (
+               (i===0)?
+               <div className="row mb-3 ml-1" style={classes.moduleName}>
+                 <h3 className="">
+                    {e.module}
+                  </h3>
+                </div>:
+               
+                  <div className="row mb-1">
+                    <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                    <Label for="name">{e.name}</Label>
                     </div>
-                      
+                    
+                    <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                    {(e.type === "Yes/No")?
+                      <div >
+                      &nbsp;<input type="radio"
+                        name={`radio${keyIndex}${i}`}
+                        id={`radio${keyIndex}${i}`}
+                        value="Yes/No"
+                        defaultChecked={(e.value==="Yes")?true:false}
+                        onChange={handleChange}/>&nbsp;<label for={`radio${keyIndex}${i}`}>Yes</label>
+                      &nbsp;<input type="radio"
+                        name={`radio${keyIndex}${i}`}
+                        id={`radio${keyIndex}${i}`}
+                        value="Yes/No"
+                        defaultChecked={(e.value==="No")?true:false}
+                        onChange={handleChange}/>&nbsp;<label for={`radio${keyIndex}${i}`}>No</label>
 
-                      
-
-                ))}
+                    </div>: (e.type==="text")?
+                    <Input 
+                      style={classes.input}
+                      type="text"
+                      name="type"
+                      id="type"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={e.value}
+                      //value={e.type}
+                    />:(e.type==="select")?
+                      <Input
+                          type="select"
+                          name="defaultJobCard"
+                          id="defaultJobCard"
+                          onChange={handleChange}
+                          //onBlur={handleBlur}
+                          defaultChecked={e.type}
+                        ><option>{e.type}</option></Input>:""
+                    }
+                    
+                    </div>
+                    
+                  </div>
+                  
+                )))}
+                <hr />
+                </div>
+                  
+               
+              })}
+          
               
               </FormGroup>
               </Form>
