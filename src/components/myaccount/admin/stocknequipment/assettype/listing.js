@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
-//import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
-import EditStockItem from "./edit";
-import {
-  GetListingForStockItem,
-  DeleteStockItemDataById
-} from "..//shared/stockitem";
-import AddStockItem from "./add";
-import { Spinner } from "reactstrap";
+import EditAssetType from "./edit";
+import { GetListingForAssetType, DeleteAssetTypeDataById } from "..//shared/assettype";
+import AddAssetType from "./add";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { Spinner } from "reactstrap";
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -20,8 +16,7 @@ let idofEdit = 0;
 let Page = 1;
 let PageSize = 10;
 let paging = "";
-let TotalPages = 3;
-let screencontent = "";
+let TotalPages = 2;
 
 const classes = {
   linearprogress: {
@@ -49,136 +44,81 @@ const classes = {
     cursor: "pointer",
     float: "left",
     marginLeft: "70%"
-  },
-  plusbutton: {
-    color: "white",
-    borderRadius: "50px",
-    width: "10px",
-    cursor: "pointer",
-    float: "left"
-    // marginTop: '10px',
-    // marginLeft: '5px',
   }
 };
 
 let countforpagination = 0;
 
-let ManageStockItems = () => {
-  let [Atlist, setAtlist] = useState();
+let AssetTypeListing = () => {
+  let [Atlist, setAtlist] = useState([]);
   let [paginate, setPaginate] = useState();
   let [totalcount, setTotalCount] = useState();
 
-  //   const columns = [
-  //     {
-  //       name: "phoneBookItemId",
-  //       label: "ID",
-  //       options: {
-  //         filter: false,
-  //         sort: false,
-  //         display: false
-  //       }
-  //     },
-  //     {
-  //       name: "name",
-  //       label: "Name",
-  //       options: {
-  //         filter: true,
-  //         sort: true
-  //       }
-  //     },
-  //     {
-  //         name: "phoneNumber",
-  //         label: "Phone",
-  //         options: {
-  //             filter: true,
-  //             sort: true
-  //         }
-  //     },
-  //     {
-  //         name: "extensions",
-  //         label: "Extensions",
-  //         options: {
-  //             filter: true,
-  //             sort: true
-  //         }
-  //     },
-  //     {
-  //         name: "email",
-  //         label: "Email",
-  //         options: {
-  //             filter: true,
-  //             sort: true
-  //         }
-  //     },
-  //     {
-  //       name: "active",
-  //       label: "Status",
-  //       options: {
-  //         filter: false,
-  //         sort: false,
-  //         display: false
-  //       }
-  //     }
+  // const columns = [
   //   {
-  //     name: "action",
-  //     label: "Action",
+  //     name: "currencyId",
+  //     label: "ID",
   //     options: {
   //       filter: false,
   //       sort: false,
-  //       display: true
+  //       display: false
   //     }
-  // }
-  //   ];
+  //   },
+  //   {
+  //     name: "name",
+  //     label: "Currency Name",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   },
+  //   {
+  //     name: "code",
+  //     label: "Currency",
+  //     options: {
+  //       filter: true,
+  //       sort: true
+  //     }
+  //   },
+  //   {
+  //     name: "isActive",
+  //     label: "Status",
+  //     options: {
+  //       filter: false,
+  //       sort: false,
+  //       display: false
+  //     }
+  //   }
+  // ];
 
-  //   const options = {
-  //     filterType: "multiselect",
-  //     onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
-  //     customToolbar: () => console.log("rowData"),
-  //     rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
-  //     selectableRows: "none",
-  //     viewColumns: true
+  // const options = {
+  //   filterType: "multiselect",
+  //   onRowClick: (rowData, rowMeta) => HandlerowSelect(rowData, rowMeta),
+  //   customToolbar: () => console.log("rowData"),
+  //   rowsPerPageOptions: [2, 5, 10, 15, 20, 100],
+  //   selectableRows: "none",
+  //   viewColumns: true,
+  //   responsive: 'scroll',
 
-  //     // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
-  //   };
+  //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
+  // };
 
   //-- React Data Table
   const options = {
     sortIndicator: true,
     // page: Page,
     hideSizePerPage: true,
-    // paginationSize: 5,
-    // hidePageListOnlyOnePage: false,
+    // paginationSize: PageSize,
+    hidePageListOnlyOnePage: true,
+    // sizePerPage: PageSize,
     // clearSearch: true,
     alwaysShowAllBtns: false,
     onRowClick: HandlerowSelect,
     withFirstAndLast: false
-
     // onPageChange: onPageChange,
-    // onSizePerPageList: sizePerPageListChange
+    // onSizePerPageList: sizePerPageListChange,
   };
-  useEffect(() => {
-    getlistapi();
-  }, []);
-
-  async function getlistapi() {
-    await GetListingForStockItem(Page, PageSize).then(res => {
-      setAtlist((Atlist = res.data));
-      console.log(res.data);
-      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-    });
-
-    setTotalCount((totalcount = paginate.totalCount));
-    TotalPages = paginate.totalPages;
-    countforpagination = 0;
-    settabledistatus((Tabledistatus = false));
-    settabledistatus((Tabledistatus = true));
-  }
-
-  let Tabledisplay = (
-    <div style={classes.linearprogress}>
-      <Spinner type="grow" color="dark" />
-    </div>
-  );
 
   //--- Pagination ------------------
 
@@ -281,9 +221,20 @@ let ManageStockItems = () => {
 
   //----- Finished Pagination---------
 
+  let Tabledisplay = (
+    <div style={classes.linearprogress}>
+      <Spinner type="grow" color="dark" />
+    </div>
+  );
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
+      // <MUIDataTable
+      //   title={"Actions & Filters"}
+      //   data={Atlist}
+      //   columns={columns}
+      //   options={options}
+      // />
       <div>
         <BootstrapTable
           data={Atlist}
@@ -293,37 +244,17 @@ let ManageStockItems = () => {
           // pagination
           // search
           options={options}
-          // cellEdit={cellEditProp}
         >
-          <TableHeaderColumn dataField="name" dataSort>
-            Name
-          </TableHeaderColumn>
-
-          <TableHeaderColumn dataField="makeName" dataSort>
-            Make Name
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="modelName" dataSort>
-            Model Name
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="unitPrice" dataSort>
-            Unit Price
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="costPrice" dataSort>
-            Cost Price
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="barCode" dataSort>
-            Bar Code
-          </TableHeaderColumn>
-          {/* <TableHeaderColumn dataField="notes" dataSort>
-            Notes
-          </TableHeaderColumn> */}
           <TableHeaderColumn
-            dataField="isActive"
-            hidden={true}
             isKey={true}
+            hidden={true}
+            dataField="customerAssetTypeId"
             dataSort
           >
-            isActive
+            customerAssetTypeId
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="name" dataSort>
+            Name
           </TableHeaderColumn>
         </BootstrapTable>
         <br />
@@ -344,45 +275,27 @@ let ManageStockItems = () => {
       </div>
     );
   }
-
-  let [screen, setScreen] = useState(1);
-
-  function ChangeScreen(val) {
-    setScreen(val);
-    if (val === 1) {
-      refreshfn();
-    }
-  }
-  switch (screen) {
-    case 1:
-      screencontent = <div>{Tabledisplay}</div>;
-      // }
-      break;
-    case 2:
-      screencontent = (
-        <AddStockItem
-          backmain={ChangeScreen}
-          success={success}
-          error={errort}
-        />
-      );
-      break;
-    case 3:
-      screencontent = (
-        <EditStockItem
-          backmain={ChangeScreen}
-          success={success}
-          error={errort}
-          IDforAPI={idofEdit}
-        />
-      );
-      break;
-  }
-
   let refreshfn = () => {
     settabledistatus((Tabledistatus = false));
     getlistapi();
   };
+
+  useEffect(() => {
+    getlistapi();
+  }, []);
+
+  async function getlistapi() {
+    await GetListingForAssetType(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
+
+    setTotalCount((totalcount = paginate.totalCount));
+    TotalPages = paginate.totalPages;
+    countforpagination = 0;
+    settabledistatus((Tabledistatus = false));
+    settabledistatus((Tabledistatus = true));
+  }
 
   // Toast
 
@@ -392,15 +305,14 @@ let ManageStockItems = () => {
       position: toast.POSITION.BOTTOM_RIGHT
     });
   }
-
   function success() {
-    return toast.success("Succesfull... ", {
+    return toast.success("Deleted Successfully... ", {
       position: toast.POSITION.BOTTOM_RIGHT
     });
   }
 
   async function Dellistapi() {
-    await DeleteStockItemDataById(idofEdit)
+    await DeleteAssetTypeDataById(idofEdit)
       .then(() => {
         success();
       })
@@ -411,38 +323,47 @@ let ManageStockItems = () => {
     refreshfn();
   }
 
+  let [Editstate, setEditstate] = React.useState(false);
+  let HandleEditforlisting = () => {
+    return (
+      setEditstate((Editstate = !Editstate)),
+      Handlerowclose()
+      // handleMenuClose()
+    );
+  };
 
+  let HandleCrossEditforlisting = () => {
+    return setEditstate((Editstate = false));
+  };
 
-
+  if (Editstate) {
+    EditshowModel = (
+      <EditAssetType
+        IDforAPI={idofEdit}
+        refresh={refreshfn}
+        cross={HandleCrossEditforlisting}
+      />
+    );
+  } else {
+    EditshowModel = "";
+  }
 
   let [menushow, setMenushow] = useState(false);
   function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = row.itemId;
+    idofEdit = row.customerAssetTypeId;
     return setMenushow((menushow = true));
   }
-  let Handlerowclose = (data, meta) => {
+  let Handlerowclose = row => {
     return setMenushow((menushow = false));
   };
   if (menushow) {
     menuDiv = (
       <ul className="tool">
         <li>
-          <i
-            className="fa fa-plus-circle fa-2x"
-            style={classes.plusbutton}
-            title={"Add New"}
-            onClick={() => {
-              setScreen(2);
-            }}
-          />
-          {/* <AddStockItem refresh={refreshfn} /> */}
+          <AddAssetType refresh={refreshfn} />
         </li>
-        <li
-        title={"Add New"}
-            onClick={() => {
-              setScreen(3);
-            }}>
+        <li onClick={HandleEditforlisting}>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <i className="fa fa-pencil-square fa-2x" />
         </li>
@@ -460,15 +381,7 @@ let ManageStockItems = () => {
     menuDiv = (
       <ul className="tool">
         <li />
-        <i
-          className="fa fa-plus-circle fa-2x"
-          style={classes.plusbutton}
-          title={"Add New"}
-          onClick={() => {
-            setScreen(2);
-          }}
-        />
-        {/* <AddStockItem refresh={refreshfn} /> */}
+        <AddAssetType refresh={refreshfn} />
       </ul>
     );
   }
@@ -480,13 +393,14 @@ let ManageStockItems = () => {
           {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">STOCK ITEMS</h3>
+          <h3 className="heading">ASSET TYPE</h3>
         </div>
       </div>
       <br />
-      {screencontent}
+      {EditshowModel}
+      {Tabledisplay}
     </div>
   );
 };
 
-export default ManageStockItems;
+export default AssetTypeListing;

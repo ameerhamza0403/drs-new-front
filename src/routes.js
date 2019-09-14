@@ -107,14 +107,15 @@ const MakeListing = React.lazy(() => import('./components/myaccount/admin/stockn
 const VendorGroupListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/vendorgroup/listing'));
 const PaymentTermListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/paymentterm/listing'));
 // const ManageMakesnModelListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/managemakesnmode/listing'));
-const ManageMakesnModelListingForStockTest = React.lazy(() => import('./components/myaccount/admin/stocknequipment/stockitem/listing'));
+const ManageStockItems = React.lazy(() => import('./components/myaccount/admin/stocknequipment/stockitem/listing'));
 const LocationListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/location/listing'));
 const BusinessPartnerListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/businesspartner/listing'));
 const StorageLocationListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/storagelocation/listing'));
 const PurchasegroupListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/purchasegroup/listing'));
 const UnitListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/unit/listing'));
 const WarehouseListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/warehouse/listing'));
-
+const CustomerAssetsListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/customerasset/listing'));
+const AssetTypeListing = React.lazy(() => import('./components/myaccount/admin/stocknequipment/assettype/listing'));
 
 
 //Form
@@ -254,15 +255,15 @@ const routes = [
   { path: '/admin/stocknequipment/Vendorgroup', exact: true, name: 'Vendor Group', component:  VendorGroupListing },
   { path: '/admin/stocknequipment/paymentterm', exact: true, name: 'Payment Term', component:  PaymentTermListing },
   // { path: '/admin/stocknequipment/managemakesnmodel', exact: true, name: 'Manege Makes & Models', component:  ManageMakesnModelListing },
-  { path: '/admin/stocknequipment/stockitem', exact: true, name: 'Stock Item', component:  ManageMakesnModelListingForStockTest },
+  { path: '/admin/stocknequipment/stockitem', exact: true, name: 'Stock Item', component:  ManageStockItems },
   { path: '/admin/stocknequipment/location', exact: true, name: 'Location', component:  LocationListing },
   { path: '/admin/stocknequipment/supplier', exact: true, name: 'Supplier', component:  BusinessPartnerListing },
   { path: '/admin/stocknequipment/storage', exact: true, name: 'Storage Location', component:  StorageLocationListing },
   { path: '/admin/stocknequipment/purchase', exact: true, name: 'Purchase Group', component:  PurchasegroupListing },
   { path: '/admin/stocknequipment/unit', exact: true, name: 'Unit', component:  UnitListing },
   { path: '/admin/stocknequipment/warehouse', exact: true, name: 'WareHouse', component:  WarehouseListing },
-
-
+  { path: '/admin/stocknequipment/customerassets', exact: true, name: 'Customer Assets', component:  CustomerAssetsListing },
+  { path: '/admin/stocknequipment/asset-type', exact: true, name: 'Asset Type', component:  AssetTypeListing },
 
   //Form
   { path: '/admin/forms/timesheetactivity', exact: true, name: 'Timesheet Activities', component:  TimesheetActivityListing },

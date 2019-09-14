@@ -3,21 +3,21 @@ import axios from 'axios';
 
 
 
-/* *************************StockItem*********************** */
-let apiurlStockItem= apiUrl + '/masterdata/Items';
+/* *************************AssetType*********************** */
+let apiurlAssetType= apiUrl + '/masterdata/CustomerAssetTypes';
 // let apiurlAbsenceType= 'https://reqres.in/api/users/2';
 
-function ApiwithidStockItem(Id) {
-    return `${apiurlStockItem}/${Id}`;
+function ApiwithidAssetType(Id) {
+    return `${apiurlAssetType}/${Id}`;
   }
 
-  function ApiwithbyPgStockItem(Pg,PgSize) {
-    return `${apiurlStockItem}/${Pg}/${PgSize}`;
+  function ApiwithbyPgAssetType(Pg,PgSize) {
+    return `${apiurlAssetType}/${Pg}/${PgSize}`;
   }
 
 //-------- GetAPi
-export function GetListingForStockItem(pg,pgsize) {
-    return axios.get(ApiwithbyPgStockItem(pg,pgsize),
+export function GetListingForAssetType(pg,pgsize) {
+    return axios.get(ApiwithbyPgAssetType(pg,pgsize),
              {headers: {
                  //"Authorization": authIt,
                  //"accept": "application/json",
@@ -30,9 +30,9 @@ export function GetListingForStockItem(pg,pgsize) {
 }
 
 //---------Edit APi
-export function GetStockItemDataById(id) {
+export function GetAssetTypeDataById(id) {
     // console.log(id)
-    return axios.get(ApiwithidStockItem(id),
+    return axios.get(ApiwithidAssetType(id),
              {headers: {
                  'Content-Type': 'application/json',
                 }}
@@ -40,23 +40,23 @@ export function GetStockItemDataById(id) {
 
 }
 
-export function PutStockItemDataById(id,body) {
+export function PutAssetTypeDataById(id,body) {
     // console.log(id)
-    return axios.put(ApiwithidStockItem(id),body)
+    return axios.put(ApiwithidAssetType(id),body)
 
 }
 
 //------- Delete-API
 
-export function DeleteStockItemDataById(id) {
+export function DeleteAssetTypeDataById(id) {
     // console.log(id)
-    return axios.delete(ApiwithidStockItem(id))
+    return axios.delete(ApiwithidAssetType(id))
 
 }
 
 //----------Save-Post-API
-export function PostListingForStockItem(body) {
-    return axios.post(apiurlStockItem,body)
+export function PostListingForAssetType(body) {
+    return axios.post(apiurlAssetType,body)
 
 }
 

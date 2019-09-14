@@ -512,6 +512,16 @@ export default {
           icon: "fa fa-bank"
         },
         {
+          name: "Customer Assets",
+          url: "/admin/stocknequipment/customerassets",
+          icon: "fa fa-bank"
+        },
+        {
+          name: "Assets Type",
+          url: "/admin/stocknequipment/asset-type",
+          icon: "fa fa-bank"
+        },
+        {
           name: "Supplier",
           url: "/admin/stocknequipment/supplier",
           icon: "fa fa-bank"

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 //import MUIDataTable from "mui-datatables";
 import "../../../../../scss/override/listing.scss";
-import EditStockItem from "./edit";
+import EditCustomerAssets from "./edit";
 import {
-  GetListingForStockItem,
-  DeleteStockItemDataById
-} from "..//shared/stockitem";
-import AddStockItem from "./add";
+  GetListingForCustomerAsset,
+  DeleteCustomerAssetDataById
+} from "..//shared/customerasset";
+import AddCustomerAssets from "./add";
 import { Spinner } from "reactstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -63,7 +63,7 @@ const classes = {
 
 let countforpagination = 0;
 
-let ManageStockItems = () => {
+let CustomerAssetsListing = () => {
   let [Atlist, setAtlist] = useState();
   let [paginate, setPaginate] = useState();
   let [totalcount, setTotalCount] = useState();
@@ -161,11 +161,25 @@ let ManageStockItems = () => {
   }, []);
 
   async function getlistapi() {
-    await GetListingForStockItem(Page, PageSize).then(res => {
+    await GetListingForCustomerAsset(Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
       console.log(res.data);
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
+
+    Atlist.map(e=>{
+      if(!(e.installDate===null)){
+        e.installDate =
+        e.installDate.substr(0, e.installDate.length - 9)
+
+      }
+      if(!(e.warrantyExpiry===null)){
+        e.warrantyExpiry =
+        e.warrantyExpiry.substr(0, e.warrantyExpiry.length - 9)
+
+      }
+    })
+
 
     setTotalCount((totalcount = paginate.totalCount));
     TotalPages = paginate.totalPages;
@@ -298,21 +312,29 @@ let ManageStockItems = () => {
           <TableHeaderColumn dataField="name" dataSort>
             Name
           </TableHeaderColumn>
-
-          <TableHeaderColumn dataField="makeName" dataSort>
-            Make Name
+          <TableHeaderColumn dataField="customerAssetCode" dataSort>
+            Code
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="customerAssetTypeName" dataSort>
+            Asset Type
           </TableHeaderColumn>
           <TableHeaderColumn dataField="modelName" dataSort>
-            Model Name
+            Model
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="unitPrice" dataSort>
-            Unit Price
+          <TableHeaderColumn dataField="makeName" dataSort>
+            Make
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="costPrice" dataSort>
-            Cost Price
+          <TableHeaderColumn dataField="serialNumber" dataSort>
+          Serial Number
           </TableHeaderColumn>
           <TableHeaderColumn dataField="barCode" dataSort>
             Bar Code
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="installDate" dataSort>
+          Install Date
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="warrantyExpiry" dataSort>
+          Expiry Date
           </TableHeaderColumn>
           {/* <TableHeaderColumn dataField="notes" dataSort>
             Notes
@@ -360,7 +382,7 @@ let ManageStockItems = () => {
       break;
     case 2:
       screencontent = (
-        <AddStockItem
+        <AddCustomerAssets
           backmain={ChangeScreen}
           success={success}
           error={errort}
@@ -369,7 +391,7 @@ let ManageStockItems = () => {
       break;
     case 3:
       screencontent = (
-        <EditStockItem
+        <EditCustomerAssets
           backmain={ChangeScreen}
           success={success}
           error={errort}
@@ -400,7 +422,7 @@ let ManageStockItems = () => {
   }
 
   async function Dellistapi() {
-    await DeleteStockItemDataById(idofEdit)
+    await DeleteCustomerAssetDataById(idofEdit)
       .then(() => {
         success();
       })
@@ -418,7 +440,7 @@ let ManageStockItems = () => {
   let [menushow, setMenushow] = useState(false);
   function HandlerowSelect(row) {
     menuDiv = "";
-    idofEdit = row.itemId;
+    idofEdit = row.customerAssetId;
     return setMenushow((menushow = true));
   }
   let Handlerowclose = (data, meta) => {
@@ -436,7 +458,7 @@ let ManageStockItems = () => {
               setScreen(2);
             }}
           />
-          {/* <AddStockItem refresh={refreshfn} /> */}
+          {/* <AddCustomerAssets refresh={refreshfn} /> */}
         </li>
         <li
         title={"Add New"}
@@ -468,7 +490,7 @@ let ManageStockItems = () => {
             setScreen(2);
           }}
         />
-        {/* <AddStockItem refresh={refreshfn} /> */}
+        {/* <AddCustomerAssets refresh={refreshfn} /> */}
       </ul>
     );
   }
@@ -480,7 +502,7 @@ let ManageStockItems = () => {
           {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">STOCK ITEMS</h3>
+          <h3 className="heading">CUSTOMER ASSETS</h3>
         </div>
       </div>
       <br />
@@ -489,4 +511,4 @@ let ManageStockItems = () => {
   );
 };
 
-export default ManageStockItems;
+export default CustomerAssetsListing;

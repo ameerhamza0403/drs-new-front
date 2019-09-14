@@ -1,16 +1,8 @@
 import React, { Component, useState, useEffect } from "react";
-// import { PostListingForModel } from "../shared/model";
-import { GetListingForProductCategory } from "../shared/productcategory";
-import { GetListingForNominalCode } from "../../financial/shared/nominalcode";
-import { GetListingForDepartmentCode } from "../../financial/shared/departmentcode";
-import { GetListingForWorkSheet } from "../../schedule/shared/worksheet";
-// import {GetListingForMake} from '../shared/make';
-// import {PostListingForFileUpload} from '..';
-import Tabs from 'react-bootstrap/Tabs';
-import Tab from 'react-bootstrap/Tab';
-import Select from "react-select";
-import "react-select/dist/react-select.min.css";
-//import "../../../../../scss/override/select.scss";
+import {
+  PostListingForStockItem,
+  PostListingForFileUpload
+} from "..//shared/stockitem";
 import {
   Button,
   Card,
@@ -29,14 +21,17 @@ import {
 } from "reactstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import TextField from "@material-ui/core/TextField";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import ContactsListing from '../stockitem/contacts';
-import MovementListing from '../stockitem/movements';
-import NotesListing from '../stockitem/notes';
-import PartsListing from '../stockitem/parts';
-import JobsListing from '../stockitem/jobs';
+import { GetListingForModel } from "../shared/model";
+import { GetListingForbusinessPartner } from "../shared/businesspartner";
+import { GetListingForStorageLocation } from "../shared/storagelocation";
+import { GetListingForcurrency } from "../../resources/shared/currency";
+import { GetListingForTaxCode } from "../../financial/shared/vatcode";
+import { GetListingForUnit } from "../shared/unit";
+import { DropzoneArea } from "material-ui-dropzone";
+import { GetModelDataById } from "../shared/model";
+import Select from "react-select";
+import "react-select/dist/react-select.min.css";
+import "../../../../../scss/override/select.scss";
 
 const classes = {
   button: {
@@ -53,161 +48,58 @@ const classes = {
     // marginTop: '10px',
     // marginLeft: '5px',
   },
-  
+  notes: {
+    marginLeft: "45px"
+  },
+  makeshow: {
+    color: "#bbbfbe",
+    fontWeight: "bold",
+    fontStyle: "italic"
+  },
+  validate: {
+    width: "100%",
+    marginTop: "0.25rem",
+    fontSize: "80%",
+    color: "#dc3545"
+  }
 };
 
-let options = [{}];
-let workOKvalue = [];
-let workNotOKvalue = [];
-let nameoffile=[{}];
-let selectedFile=[];
-let details = "";
-
-let AddModel = props => {
+let options = [];
+let AddStockItem = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
-  //Tost
-
-  function errort() {
-    // add type: 'error' to options
-    return toast.error("Failed with Error...", {
-      position: toast.POSITION.BOTTOM_RIGHT
-    });
-  }
-  function success() {
-    return toast.success("Saved Successfully... ", {
-      position: toast.POSITION.BOTTOM_RIGHT
-    });
-  }
-
-  let [pCategory, setPCategory] = useState([
-    {
-      productCategoryId: 0,
-      name: ""
-    }
-  ]);
-
-  let [nCode, setNCode] = useState([
-    {
-      nominalCodeId: 0,
-      code: ""
-    }
-  ]);
-
-  let [dCode, setDCode] = useState([
-    {
-      departmentCodeId: 0,
-      code: ""
-    }
-  ]);
-
-  let [worksheet, setWorksheet] = useState([
-    {
-      worksheetId: 0,
-      name: ""
-    }
-  ]);
-
-  let [make, setMake] = useState([
-    {
-      makeId: 0,
-      name: ""
-    }
-  ]);
-
-  useEffect(() => {
-    getinitiallist();
-    options = [];
-    selectedFile=[];
-    nameoffile=[];
-  }, []);
-
-  async function getinitiallist() {
-
-    const { data: pCategory } = await GetListingForProductCategory(0, 0);
-    setPCategory(pCategory);
-
-    const { data: nCode } = await GetListingForNominalCode(0, 0);
-    setNCode(nCode);
-
-    const { data: dCode } = await GetListingForDepartmentCode(0, 0);
-    setDCode(dCode);
-
-    const { data: worksheet } = await GetListingForWorkSheet(0, 0);
-    setWorksheet(worksheet);
-
-    // const { data: make } = await GetListingForMake(0, 0);
-    // setMake(make);
-
-    //Multi Select Code
-
-    worksheet.map((e, i) => {
-      var obj = {};
-      obj["label"] = e.name;
-      obj["value"] = e.name;
-      if (i === 0) {
-        options[0] = obj;
-      } else {
-        options.push(obj);
-      }
-    });
-  }
-  function saveChanges(value) {
-    value.map((e, i) => {
-      workOKvalue[i] = e.value;
-    });
-  }
-    function saveChangesNot(value) {
-      value.map((e, i) => {
-        workNotOKvalue[i] = e.value;
-      });
-    }
-
-
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    if(!(workOKvalue===[])){
-      values.worksheetsOk=JSON.stringify(workOKvalue);
+    if (!(files === [])) {
+      files.map(async e => {
+        let formdata = new FormData();
+        formdata.append(e.name, e);
+        await PostListingForFileUpload(formdata);
+      });
+
+      await PostListingForStockItem(values)
+        .then(res => props.success())
+        .catch(error => props.error());
+      props.backmain(1);
+      setSubmitting(false);
+    } else {
+      await PostListingForStockItem(values)
+        .then(res => props.success())
+        .catch(error => props.error());
+      props.backmain(1);
+      setSubmitting(false);
     }
-    if(!(workNotOKvalue===[])){
-      values.worksheetsNotOk=JSON.stringify(workNotOKvalue);
-    }
-
-    selectedFile.map(async (e,i)=>{
-      let formdata = new FormData();
-      formdata.append(e.name,e);
-      var obj = {};
-      pCategory.map(n=>{
-        if(n.productCategoryId===parseInt(values.productCategoryId)){
-          obj["type"] = n.name;
-          console.log(n.name)
-        }
-      })
-      obj["name"] = e.name;
-      if(values.attachments===[]){
-        values.attachments[0]=obj;
-      }
-      else{
-        values.attachments.push(obj)
-      }
-    //   await PostListingForFileUpload(formdata);
-    })
-
-
-
-    // await PostListingForModel(values)
-    //   .then(() => success())
-    //   .catch(error => errort());
-    handleOpen();
-    props.refresh();
-    setSubmitting(false);
   }
 
   const validationSchema = function(values) {
     return Yup.object().shape({
-      productCategoryId: Yup.string().required("Category is requierd"),
-      makeId: Yup.string().required("Make is requierd"),
-      modelNumber: Yup.string().required("ModelNumber is requierd"),
-      name: Yup.string().required("Make is requierd")
+      name: Yup.string().required("Name is required"),
+      unitId: Yup.string().required("Unit is required"),
+      itemCode: Yup.string().required("Item Code is required"),
+      modelId: Yup.string().required("Model is required"),
+      currencyCode: Yup.string().required("Currency is required"),
+      notes: Yup.string().required("Note is required"),
+      barCode: Yup.string().required("Bar Code is required"),
+      businessPartnerId: Yup.string().required("Supplier is required")
     });
   };
 
@@ -233,49 +125,79 @@ let AddModel = props => {
     }, {});
   };
 
-  const [initialValues, setInitialValues] = useState({
-    // productCategoryId: 0,
-    // name: "",
-    // makeId: 0,
-    // makeName: "",
-    // nominalCodeId: 0,
-    // departmentCodeId: 0,
-    // modelNumber: "",
-    // consumable: true,
-    // size: 0,
-    // weight: 0,
-    // worksheetsOk: "",
-    // worksheetsNotOk: "",
-    // batchNumber: "",
-    // stockCode: "",
-    // sellingPrice: 0,
-    // notes: "",
-    // isActive: true,
-    attachments: []
-  });
+  useEffect(() => {
+    getlistapi();
+  }, []);
 
-  let [filen, setFilen] = useState(false);
+  let [model, setModel] = useState([]);
+  let [supplier, setSupplier] = useState([]);
+  let [storage, setStorage] = useState([]);
+  let [unit, setUnit] = useState([]);
+  let [currency, setCurrency] = useState([]);
+  let [tax, setTax] = useState([]);
+  let [files, setFiles] = useState([]);
+  let [makeshow, setMakeShow] = useState(true);
+  let [productCat, setProductCat] = useState("-");
+  let [make, setMake] = useState("-");
+  let [datamodel, setdataModel] = useState();
 
-  let handleFileSelect = event => {
-    setFilen(false);
-    if(selectedFile===[]){
-      selectedFile[0]=event.target.files[0]
-    }
-    else{
-      selectedFile.push(event.target.files[0])
-    }
-     console.log(selectedFile)
-     setTimeout(() => {
-      setFilen(true);
-     }, 1000);
+  async function getlistapi() {
+    const { data: model } = await GetListingForModel(0, 0);
+    setModel(model);
+
+    const { data: supplier } = await GetListingForbusinessPartner(0, 0);
+    setSupplier(supplier);
+
+    const { data: storage } = await GetListingForStorageLocation(0, 0);
+    setStorage(storage);
+
+    const { data: unit } = await GetListingForUnit(0, 0);
+    setUnit(unit);
+
+    const { data: currency } = await GetListingForcurrency(0, 0);
+    setCurrency(currency);
+
+    const { data: tax } = await GetListingForTaxCode(0, 0);
+    setTax(tax);
+
+    //Multi Select Code
+
+    supplier.map((e, i) => {
+      var obj = {};
+      obj["label"] = e.name;
+      obj["value"] = e.businessPartnerId;
+      if (i === 0) {
+        options[0] = obj;
+      } else {
+        options.push(obj);
+      }
+    });
+  }
+  const initialValues = {
+    name: "",
+    isActive: true
   };
 
-  if (filen) {
-    nameoffile = selectedFile;
-  } else {
-    nameoffile = [{}];
+  async function handlemake(event) {
+    if (!makeshow) {
+      setMakeShow(true);
+    }
+    const { data: datamodel } = await GetModelDataById(event.target.value);
+    setdataModel(datamodel);
+    setProductCat(datamodel.productCategoryName);
+    setMake(datamodel.makeName);
+    setMakeShow(false);
   }
 
+  function handleChangefile(files) {
+    setFiles((files = files));
+  }
+
+  // function saveChanges(value) {
+  //   value.map((e, i) => {
+  //     workOKvalue[i] = e.value;
+  //   });
+  // }
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -300,635 +222,486 @@ let AddModel = props => {
     validateForm(errors);
   }
 
-  details =(<Formik
-    initialValues={initialValues}
-    validate={validate(validationSchema)}
-    onSubmit={onSubmit}
-    render={({
-    values,
-    errors,
-    touched,
-    status,
-    dirty,
-    handleChange,
-    handleBlur,
-    handleSubmit,
-    isSubmitting,
-    isValid,
-    handleReset,
-    setTouched
-    }) => (
-    <Row>
-        <Col lg="12">
-        <Form onSubmit={handleSubmit} noValidate name="simpleForm">
-            <FormGroup>
-            <div className="row mb-2">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="group">Product Category</Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                <Input
-                    type="select"
-                    name="productCategoryId"
-                    id="productCategoryId"
-                    placeholder="e.g. Accommodation, Travel etc..."
-                    autoComplete="given-name"
-                    valid={!errors.productCategoryId}
-                    invalid={
-                    touched.productCategoryId &&
-                    !!errors.productCategoryId
-                    }
-                    autoFocus={true}
-                    required
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.productCategoryId}
-                >
-                    <option selected></option>
-                    {pCategory.map(e => (
-                    <option value={e.productCategoryId}>
-                        {e.name}
-                    </option>
-                    ))}
-                </Input>
-                <FormFeedback>
-                    {errors.productCategoryId}
-                </FormFeedback>
-                </div>
-            </div>
-
-            <div className="row mb-2">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="nominalCodeId">Nominal Code</Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Input
-                    type="select"
-                    name="nominalCodeId"
-                    id="nominalCodeId"
-                    // placeholder=""
-                    // autoComplete="given-name"
-                    // valid={!errors.nominalCodeId}
-                    // invalid={touched.nominalCodeId && !!errors.nominalCodeId}
-                    // autoFocus={true}
-                    // required
-                    onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.nominalCodeId}
-                >
-                    <option selected></option>
-                    {nCode.map(e => (
-                    <option value={e.nominalCodeId}>
-                        {e.code}
-                    </option>
-                    ))}
-                </Input>
-                {/* <FormFeedback>{errors.nominalCodeId}</FormFeedback> */}
-                </div>
-
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="departmentCodeId">
-                    Department Code
-                </Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Input
-                    type="select"
-                    name="departmentCodeId"
-                    id="departmentCodeId"
-                    // placeholder=""
-                    // autoComplete="given-name"
-                    // valid={!errors.departmentCodeId}
-                    // invalid={touched.departmentCodeId && !!errors.departmentCodeId}
-                    // autoFocus={true}
-                    // required
-                    onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.departmentCodeId}
-                >
-                    <option selected></option>
-                    {dCode.map(e => (
-                    <option value={e.departmentCodeId}>
-                        {e.code}
-                    </option>
-                    ))}
-                </Input>
-                {/* <FormFeedback>{errors.departmentCodeId}</FormFeedback> */}
-                </div>
-            </div>
-
-            <div className="row mb-2">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="makeId">Make</Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                <Input
-                    type="select"
-                    name="makeId"
-                    id="makeId"
-                    placeholder="e.g. Taxi, train, Fuel etc..."
-                    autoComplete="given-name"
-                    valid={!errors.makeId}
-                    invalid={touched.makeId && !!errors.makeId}
-                    autoFocus={true}
-                    required
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.makeId}
-                >
-                    <option selected></option>
-                    {make.map(e => (
-                    <option value={e.makeId}>
-                        {e.name}
-                    </option>
-                    ))}
-                    </Input>
-                <FormFeedback>{errors.makeName}</FormFeedback>
-                </div>
-            </div>
-
-            <div className="row mb-2">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="name">Model</Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                <Input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder="e.g. Taxi, train, Fuel etc..."
-                    autoComplete="given-name"
-                    valid={!errors.name}
-                    invalid={touched.name && !!errors.name}
-                    autoFocus={true}
-                    required
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.name}
-                />
-                <FormFeedback>{errors.name}</FormFeedback>
-                </div>
-            </div>
-
-            <div className="row mb-2">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="modelNumber">Model Number</Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                <Input
-                    type="text"
-                    name="modelNumber"
-                    id="modelNumber"
-                    placeholder="e.g. Taxi, train, Fuel etc..."
-                    autoComplete="given-name"
-                    valid={!errors.modelNumber}
-                    invalid={
-                    touched.modelNumber && !!errors.modelNumber
-                    }
-                    autoFocus={true}
-                    required
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.modelNumber}
-                />
-                <FormFeedback>{errors.modelNumber}</FormFeedback>
-                </div>
-            </div>
-
-            <div className="row mb-2">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="consumable">Consumable</Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                <input
-                    name="consumable"
-                    id="consumable"
-                    // valid={!errors.consumable}
-                    // invalid={touched.consumable && !!errors.consumable}
-                    onClick={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.consumable}
-                    defaultChecked={initialValues.consumable}
-                    type="checkbox"
-                />
-                &nbsp;&nbsp;&nbsp;
-                <label
-                    className="form-check-label"
-                    for="defaultCheck1"
-                >
-                    Consumable
-                </label>
-                </div>
-            </div>
-
-            <div className="row mb-2">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                <div className="row">
-                    <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                    <Label for="size">Size (m3)</Label>
-                    </div>
-                    <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                    <Input
-                        type="number"
-                        name="size"
-                        id="size"
-                        // placeholder="e.g. Taxi, train, Fuel etc..."
-                        // autoComplete="given-name"
-                        // valid={!errors.size}
-                        // invalid={
-                        //   touched.size && !!errors.size
-                        // }
-                        // autoFocus={true}
-                        // required
-                        onChange={handleChange}
-                        // onBlur={handleBlur}
-                        value={values.size}
-                    />
-                    {/* <FormFeedback>
-                        {errors.size}
-                    </FormFeedback> */}
-                    </div>
-                </div>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                <div className="row">
-                    <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                    <Label for="modelNumber">Weight (kg)</Label>
-                    </div>
-                    <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                    <Input
-                        type="number"
-                        name="weight"
-                        id="weight"
-                        // placeholder="e.g. 0"
-                        // autoComplete="given-name"
-                        // valid={!errors.weight}
-                        // invalid={
-                        //   touched.weight && !!errors.weight
-                        // }
-                        // autoFocus={true}
-                        // required
-                        onChange={handleChange}
-                        // onBlur={handleBlur}
-                        value={values.weight}
-                    />
-                    {/* <FormFeedback>
-                        {errors.weight}
-                    </FormFeedback> */}
-                    </div>
-                </div>
-                </div>
-            </div>
-
-            <div className="row mb-2">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="worksheetsOk">
-                    Worksheet to fill if movement OK
-                </Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                <Select
-                    name="form-field-name2"
-                    value={workOKvalue}
-                    options={options}
-                    onChange={saveChanges}
-                    multi
-                />
-                </div>
-            </div>
-
-            <div className="row mb-2">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="worksheetsNotOk">
-                    Worksheet to fill if movement Not OK
-                </Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                <Select
-                    name="form-field-name2"
-                    value={workNotOKvalue}
-                    options={options}
-                    onChange={saveChangesNot}
-                    multi
-                />
-                </div>
-            </div>
-
-            <div className="row mb-2">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="batchNumber">Batch Number</Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                <Input
-                    type="text"
-                    name="batchNumber"
-                    id="batchNumber"
-                    // placeholder=""
-                    // autoComplete="given-name"
-                    // valid={!errors.batchNumber}
-                    // invalid={
-                    //   touched.batchNumber && !!errors.batchNumber
-                    // }
-                    // autoFocus={true}
-                    // required
-                    onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.batchNumber}
-                />
-                {/* <FormFeedback>{errors.batchNumber}</FormFeedback> */}
-                </div>
-            </div>
-
-            <div className="row mb-2">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="stockCode">Stock Code</Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                <Input
-                    type="text"
-                    name="stockCode"
-                    id="stockCode"
-                    // placeholder=""
-                    // autoComplete="given-name"
-                    // valid={!errors.stockCode}
-                    // invalid={touched.stockCode && !!errors.stockCode}
-                    // autoFocus={true}
-                    // required
-                    onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.stockCode}
-                />
-                {/* <FormFeedback>{errors.stockCode}</FormFeedback> */}
-                </div>
-            </div>
-
-            <div className="row mb-2">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="sellingPrice">Selling price</Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                <Input
-                    type="number"
-                    name="sellingPrice"
-                    id="sellingPrice"
-                    // placeholder=""
-                    // autoComplete="given-name"
-                    // valid={!errors.sellingPrice}
-                    // invalid={
-                    //   touched.sellingPrice && !!errors.sellingPrice
-                    // }
-                    // autoFocus={true}
-                    // required
-                    onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.sellingPrice}
-                />
-                {/* <FormFeedback>{errors.sellingPrice}</FormFeedback> */}
-                </div>
-
-                <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                {/* <Input
-                    type="select"
-                    name="currency"
-                    id="currency"
-                    // placeholder=""
-                    // autoComplete="given-name"
-                    // valid={!errors.currency}
-                    // invalid={touched.currency && !!errors.currency}
-                    // autoFocus={true}
-                    // required
-                    onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.currency}
-                >
-                    <option value="AED">AED</option>
-                    <option value="AED">AUD</option>
-                    <option value="AED">BGN</option>
-                    <option value="AED">CAD</option>
-                    <option value="AED">CHF</option>
-                    <option value="AED">CZK</option>
-                    <option value="AED">DKK</option>
-                    <option value="AED">EUR</option>
-                    <option value="AED">GBP</option>
-                    <option value="AED">HUF</option>
-                    <option value="AED">ILS</option>
-                    <option value="AED">LTL</option>
-                    <option value="AED">LVL</option>
-                    <option value="AED">MXN</option>
-                    <option value="AED">NOK</option>
-                    <option value="AED">PLN</option>
-                    <option value="AED">RON</option>
-                    <option value="AED">RUB</option>
-                    <option value="AED">SEK</option>
-                    <option value="AED">USD</option>
-                    <option value="AED">ZAR</option>
-                </Input> */}
-                </div>
-
-                {/* <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                <Label for="vatCode">VAT Code</Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Input
-                    type="select"
-                    name="vatCode"
-                    id="vatCode"
-                    // placeholder=""
-                    // autoComplete="given-name"
-                    // valid={!errors.vatCode}
-                    // invalid={touched.vatCode && !!errors.vatCode}
-                    // autoFocus={true}
-                    // required
-                    onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.vatCode}
-                >
-                    <option value="T1">T1</option>
-                    <option value="T2">T2</option>
-                    <option value="T3">T3</option>
-                    <option value="T4">T4</option>
-                    <option value="T5">T5</option>
-                    <option value="T6">T6</option>
-                    <option value="T7">T7</option>
-                    <option value="T8">T8</option>
-                    <option value="T9">T9</option>
-                    <option value="T10">T10</option>
-                    <option value="T11">T11</option>
-                    <option value="T12">T12</option>
-                    <option value="T0">T0</option>
-                </Input>
-                </div>*/}
-            </div>
-
-            <div className="row mb-2">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="notes">Notes</Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                <Input
-                    type="textarea"
-                    name="notes"
-                    id="notes"
-                    // placeholder=" "
-                    // autoComplete="given-name"
-                    // valid={!errors.notes}
-                    // invalid={touched.notes && !!errors.notes}
-                    // autoFocus={true}
-                    // required
-                    onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.notes}
-                />
-                </div>
-            </div>
-
-            <div className="row mb-2">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="attachments">Attachments</Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                <Input
-                    type="file"
-                    name="attachments"
-                    id="attachments"
-                    // placeholder="i.e. "
-                    // autoComplete="given-name"
-                    // valid={!errors.reference}
-                    // invalid={touched.reference && !!errors.reference}
-                    // autoFocus={true}
-                    // required
-                    onChange={handleFileSelect}
-                    // onChange={handleChange}
-                    // onBlur={handleBlur}
-                    // value={values.attachments}
-                />
-                <Label for="name">
-                    Choose A File to Attach
-                </Label>
-
-                {nameoffile.map((e,i) => (
-                    <p>
-                    {nameoffile[i].name}
-                    </p>
-                ))}
-                {/* <FormFeedback>{errors.reference}</FormFeedback> */}
-                </div>
-            </div>
-
-            <div className="row">
-                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <Label for="sharing"></Label>
-                </div>
-                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                <input
-                    name="active"
-                    id="active"
-                    valid={!errors.active}
-                    invalid={touched.active && !!errors.active}
-                    onClick={handleChange}
-                    onBlur={handleBlur}
-                    value={values.active}
-                    type="checkbox"
-                />
-                &nbsp;&nbsp;&nbsp;
-                <label
-                    className="form-check-label"
-                    for="defaultCheck1"
-                >
-                    Active
-                </label>
-                </div>
-            </div>
-            </FormGroup>
-            <FormGroup>
-            <ModalFooter>
-                <Button
-                type="submit"
-                color="primary"
-                className="mr-1"
-                style={classes.button}
-                disabled={isSubmitting || !isValid}
-                >
-                {isSubmitting ? "Wait..." : "Submit"}
-                </Button>
-
-                <Button
-                color="secondary"
-                onClick={handleOpen}
-                style={classes.button}
-                >
-                Cancel
-                </Button>
-            </ModalFooter>
-            </FormGroup>
-        </Form>
-        </Col>
-    </Row>
-    )}
-/>)
-
-  const Handlechange = name => event => {
-    setInitialValues(...initialValues, ([name] = event.target.value));
-  };
-
-  let [modal, setModal] = useState(false);
-
-  let handleOpen = () => {
-    return setModal((modal = !modal));
-  };
-
-  let changeColor = (e) =>{
-      console.log("nhkshdkjhskdfhsjkdhkas")
-  }
-  
-
   return (
     <div>
-      <div onClick={handleOpen} style={classes.plusbutton}>
-        <i className="fa fa-plus-circle fa-2x"></i>
-      </div>
+      <Card>
+        <CardBody>
+          <Formik
+            initialValues={initialValues}
+            validate={validate(validationSchema)}
+            onSubmit={onSubmit}
+            render={({
+              values,
+              errors,
+              touched,
+              status,
+              dirty,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+              isValid,
+              handleReset,
+              setTouched
+            }) => (
+              <Row>
+                <Col lg="12">
+                  <Form onSubmit={handleSubmit} noValidate name="simpleForm">
+                    <FormGroup>
+                      <div className="row mb-2">
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="modelId">Model</Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <Input
+                                type="select"
+                                name="modelId"
+                                id="modelId"
+                                // placeholder="i.e. Skip"
+                                autoComplete="given-name"
+                                valid={!errors.modelId}
+                                invalid={touched.modelId && !!errors.modelId}
+                                autoFocus={true}
+                                required
+                                onChange={e => {
+                                  handleChange(e);
+                                  handlemake(e);
+                                }}
+                                onBlur={handleBlur}
+                                value={values.modelId}
+                              >
+                                <option selected></option>
+                                {model.map(e => (
+                                  <option value={e.modelId}>{e.name}</option>
+                                ))}
+                              </Input>
+                              <FormFeedback>{errors.modelId}</FormFeedback>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="businessPartnerId">Supplier</Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <Select
+                                name="businessPartnerId"
+                                id="businessPartnerId"
+                                options={options}
+                                valid={!errors.businessPartnerId}
+                                invalid={
+                                  touched.businessPartnerId &&
+                                  !!errors.businessPartnerId
+                                }
+                                autoFocus={true}
+                                required
+                                onChange={e => {
+                                  if (!(e === null)) {
+                                    values.businessPartnerId = e.value;
+                                  } else {
+                                    values.businessPartnerId = null;
+                                  }
+                                  handleBlur();
+                                }}
+                                onBlur={handleBlur}
+                                value={values.businessPartnerId}
+                                multi={false}
+                              />
+                              <p style={classes.validate}>
+                                {errors.businessPartnerId
+                                  ? "Supplier is Required"
+                                  : ""}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
-      <Modal
-        isOpen={modal}
-        toggle={handleOpen}
-        className={"modal-primary " + props.className}
-        size="lg"
-      >
-        <ModalHeader toggle={handleOpen}>
-          <h3 className="font-weight:bold;">Manage Model</h3>
-          
-        </ModalHeader>
-        <ModalBody
-            style={{ "max-height": "calc(100vh - 150px)", "overflow-y": "auto" }}
-        >
-            <Tabs defaultActiveKey="detail" transition={false} id="noanim-tab-example" className={classes.myclass}>
-                <Tab eventKey="detail" title="Detailt">
-                {details}
-                </Tab>
-                <Tab eventKey="parts" title="Parts" onSelect={(event) => changeColor(event)}>
-                    <PartsListing />
-                </Tab>
-                <Tab eventKey="jobs" title="Jobs" >
-                    <JobsListing />
-                </Tab>
-                <Tab eventKey="movement" title="Movement">
-                    <MovementListing />
-                </Tab>
-                <Tab eventKey="notes" title="Notes" >
-                    <NotesListing />
-                </Tab>
-                <Tab eventKey="contacts" title="Contacts">
-                    <ContactsListing />
-                </Tab>
-                
-            </Tabs>
-            <div className="container">
-            
-            </div>
-        </ModalBody>
-      </Modal>
+                      <div
+                        className="row mb-2"
+                        hidden={makeshow ? true : false}
+                        style={classes.makeshow}
+                      >
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label>Make</Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              {make}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label>Product Category</Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              {productCat}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row mb-2">
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="name">Item Name</Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <Input
+                                type="text"
+                                name="name"
+                                id="name"
+                                placeholder=""
+                                autoComplete="given-name"
+                                valid={!errors.name}
+                                invalid={touched.name && !!errors.name}
+                                autoFocus={true}
+                                required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.name}
+                              />
+                              <FormFeedback>{errors.name}</FormFeedback>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="storageLocationId">
+                                Storage Location
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <Input
+                                type="select"
+                                name="storageLocationId"
+                                id="storageLocationId"
+                                // placeholder="i.e. Skip"
+                                // autoComplete="given-storageLocationId"
+                                // valid={!errors.storageLocationId}
+                                // invalid={
+                                //   touched.storageLocationId &&
+                                //   !!errors.storageLocationId
+                                // }
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                // onBlur={handleBlur}
+                                value={values.storageLocationId}
+                              >
+                                <option selected></option>
+                                {storage.map(e => (
+                                  <option value={e.storageLocationId}>
+                                    {e.name}
+                                  </option>
+                                ))}
+                              </Input>
+                              {/* <FormFeedback>
+                                {errors.storageLocationId}
+                              </FormFeedback> */}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row mb-2">
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="itemCode">Item Code</Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <Input
+                                type="text"
+                                name="itemCode"
+                                id="itemCode"
+                                // placeholder="i.e. Skip"
+                                autoComplete="given-name"
+                                valid={!errors.itemCode}
+                                invalid={touched.itemCode && !!errors.itemCode}
+                                autoFocus={true}
+                                required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.itemCode}
+                              />
+                              <FormFeedback>{errors.itemCode}</FormFeedback>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="barCode">Bar Code</Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <Input
+                                type="text"
+                                name="barCode"
+                                id="barCode"
+                                // placeholder="i.e. Skip"
+                                autoComplete="given-name"
+                                valid={!errors.barCode}
+                                invalid={touched.barCode && !!errors.barCode}
+                                autoFocus={true}
+                                required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.barCode}
+                              />
+                              <FormFeedback>{errors.barCode}</FormFeedback>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row mb-2">
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="unitPrice">Unit Price</Label>
+                            </div>
+                            <div className="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                              <Input
+                                type="number"
+                                name="unitPrice"
+                                id="unitPrice"
+                                // placeholder="i.e. Skip"
+                                // autoComplete="given-name"
+                                // valid={!errors.unitPrice}
+                                // invalid={
+                                //   touched.unitPrice && !!errors.unitPrice
+                                // }
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                // onBlur={handleBlur}
+                                value={values.unitPrice}
+                              />
+                              {/* <FormFeedback>{errors.unitPrice}</FormFeedback> */}
+                            </div>
+                            <div className="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-2">
+                              <Label for="unitId">Unit</Label>
+                            </div>
+                            <div className="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                              <Input
+                                type="select"
+                                name="unitId"
+                                id="unitId"
+                                // placeholder="i.e. Skip"
+                                // autoComplete="given-name"
+                                valid={!errors.unitId}
+                                invalid={touched.unitId && !!errors.unitId}
+                                autoFocus={true}
+                                required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.unitId}
+                              >
+                                <option selected></option>
+                                {unit.map(e => (
+                                  <option value={e.unitId}>{e.name}</option>
+                                ))}
+                              </Input>
+                              <FormFeedback>{errors.unitId}</FormFeedback>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="costPrice">Cost Price</Label>
+                            </div>
+                            <div className="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                              <Input
+                                type="number"
+                                name="costPrice"
+                                id="costPrice"
+                                // placeholder="i.e. Skip"
+                                // autoComplete="given-name"
+                                // valid={!errors.costPrice}
+                                // invalid={
+                                //   touched.costPrice && !!errors.costPrice
+                                // }
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                // onBlur={handleBlur}
+                                value={values.costPrice}
+                              />
+                              {/* <FormFeedback>{errors.costPrice}</FormFeedback> */}
+                            </div>
+                            <div className="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-2">
+                              <Label for="currencyCode">Curreny</Label>
+                            </div>
+                            <div className="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                              <Input
+                                type="select"
+                                name="currencyCode"
+                                id="currencyCode"
+                                // placeholder="i.e. Skip"
+                                autoComplete="given-name"
+                                valid={!errors.currencyCode}
+                                invalid={
+                                  touched.currencyCode && !!errors.currencyCode
+                                }
+                                autoFocus={true}
+                                required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.currencyCode}
+                              >
+                                <option selected></option>
+                                {currency.map(e => (
+                                  <option value={e.code}>{e.code}</option>
+                                ))}
+                              </Input>
+                              <FormFeedback>{errors.currencyCode}</FormFeedback>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row mb-2">
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="isTaxLiable">Taxable</Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              &nbsp; &nbsp; &nbsp;{" "}
+                              <Input
+                                type="checkbox"
+                                name="isTaxLiable"
+                                id="isTaxLiable"
+                                // placeholder="i.e. Skip"
+                                // autoComplete="given-name"
+                                // valid={!errors.notes}
+                                // invalid={touched.notes && !!errors.notes}
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                // onBlur={handleBlur}
+                                value={values.isTaxLiable}
+                              />
+                              <Label for="isTaxLiable">Taxable</Label>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="taxCodeId">Tax Code</Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <Input
+                                type="select"
+                                name="taxCodeId"
+                                id="taxCodeId"
+                                // placeholder="i.e. Skip"
+                                // autoComplete="given-name"
+                                // valid={!errors.taxCodeId}
+                                // invalid={
+                                //   touched.taxCodeId && !!errors.taxCodeId
+                                // }
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                // onBlur={handleBlur}
+                                value={values.taxCodeId}
+                              >
+                                <option selected></option>
+                                {tax.map(e => (
+                                  <option value={e.taxCodeId}>{e.code}</option>
+                                ))}
+                              </Input>
+                              {/* <FormFeedback>{errors.taxCodeId}</FormFeedback> */}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row mb-2">
+                        <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                          <div className="row">
+                            <div className="col-2 col-sm-2 col-md-1 col-lg-1 col-xl-1">
+                              <Label for="notes">Notes</Label>
+                            </div>
+                            <div
+                              className="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10"
+                              style={classes.notes}
+                            >
+                              <Input
+                                type="textarea"
+                                name="notes"
+                                id="notes"
+                                // placeholder="i.e. Skip"
+                                autoComplete="given-name"
+                                valid={!errors.notes}
+                                invalid={touched.notes && !!errors.notes}
+                                autoFocus={true}
+                                required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.notes}
+                              />
+                              <FormFeedback>{errors.taxCodeId}</FormFeedback>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </FormGroup>
+                    <div className="container">
+                      <DropzoneArea
+                        onChange={handleChangefile}
+                        acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
+                        showPreviews={false}
+                        maxFileSize={5000000}
+                      />
+                    </div>
+                    <br />
+                    <div className="row">
+                      <div className="col-2 col-sm-2 col-md-4 col-lg-9 col-xl-10"></div>
+                      <div className="col-8 col-sm-8 col-md-6 col-lg-3 col-xl-2">
+                        <FormGroup>
+                          <Button
+                            type="submit"
+                            color="primary"
+                            className="mr-1"
+                            style={classes.button}
+                            disabled={isSubmitting || !isValid}
+                          >
+                            {isSubmitting ? "Wait..." : "Submit"}
+                          </Button>
+
+                          <Button
+                            color="secondary"
+                            onClick={() => props.backmain(1)}
+                            style={classes.button}
+                          >
+                            Cancel
+                          </Button>
+                        </FormGroup>
+                      </div>
+                    </div>
+                  </Form>
+                </Col>
+              </Row>
+            )}
+          />
+        </CardBody>
+      </Card>
     </div>
   );
 };
 
-export default AddModel;
+export default AddStockItem;
