@@ -80,8 +80,20 @@ export default {
   children: [
 {
   name: 'Contacts',
-  url: '/crm/contact',
+  url: '/system/crm/contact',
   icon: 'fa fa-user',
+  children :[
+    {
+      name: 'Contact',
+      url: '/system/crm/contacts',
+      icon: 'fa fa-user',
+    },
+    {
+      name: 'Person',
+      url: '/system/crm/contact-person',
+      icon: 'fa fa-user',
+    },
+  ],
 },
 {
   name: 'Notes',

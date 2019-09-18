@@ -136,6 +136,13 @@ const TemplateUsageTypeListing = React.lazy(() => import('./components/myaccount
 
 const TestListing = React.lazy(() => import('./components/myaccount/admin/test/test/listing'));
 
+
+// ****************************SYSTEM CRM*****************************/
+const CrmContactsListing = React.lazy(() => import('./components/system/crm/contacts/listing'));
+const CrmContactPersonListing = React.lazy(() => import('./components/system/crm/contactperson/main'));
+
+
+
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -282,6 +289,14 @@ const routes = [
   { path: '/admin/account/templateusagetype', exact: true, name: 'Template Usage Type', component:  TemplateUsageTypeListing },
 
   // { path: '/admin/test/test', exact: true, name: 'Test', component:  TestListing },
+
+
+  //**********************************CRM SYSTEM************** */
+
+  { path: '/system/crm/contacts', exact: true, name: 'Contacts', component:  CrmContactsListing },
+  { path: '/system/crm/contact-person', exact: true, name: 'Contact Person', component:  CrmContactPersonListing },
+
+
 
 ];
 export default routes;
