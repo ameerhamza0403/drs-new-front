@@ -1,7 +1,6 @@
 {
   "apiUrl3": "http://3.19.70.207:5000/api/drs",
   "apiUrl": "http://192.3.213.101:5000/api/drs",
-  "apiUrl2": "http://3.15.157.143:5000/api/drs",
-  "accountId":8
+  "apiUrl2": "http://localhost:51530/api/drs",
+  "accountId": 8
 }
-
