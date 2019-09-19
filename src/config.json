@@ -3,6 +3,6 @@
   "apiUrl": "http://192.3.213.101:5000/api/drs",
   "apiUrl2": "http://3.15.157.143:5000/api/drs",
   "accountId":8,
-  "mapApiKey": "AIzaSyDBGni4dQ_SMtuCZ5Pt8aTETF8eV-O5ZMY"
+  "mapApiKey": "AIzaSyDBGni4dQ_SMtuCZ5Pt8aTETF8eV-O5ZMY",
+  "apiUrl4": "http://localhost:51530/api/drs"
 }
-
