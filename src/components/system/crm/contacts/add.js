@@ -6,6 +6,7 @@ import {
 } from "..//shared/contacts";
 import { GetCrmContactGroup } from "../shared/contactgroup";
 import ListingContactPerson from '../contactperson/listing';
+import ContactMap from './map';
 import {
   Button,
   Card,
@@ -779,7 +780,9 @@ let AddCrmContacts = props => {
 
                               {/* ************************************************ */}
                             </div>
-                            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"></div>
+                            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                              <ContactMap />
+                            </div>
                           </div>
                         </Tab>
 
