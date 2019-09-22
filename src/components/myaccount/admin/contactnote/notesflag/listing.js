@@ -136,7 +136,6 @@ let NotesFlagListingTable = () => {
   let [c, setc] = useState();
 
   let colorinit = (cell, row) => {
-    console.log(c);
     let colorvalue = <div className="ColorCodesl" style={ColorStyleFn(cell)} />;
 
     return colorvalue;

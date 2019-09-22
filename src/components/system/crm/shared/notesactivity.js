@@ -1,21 +1,21 @@
 import { apiUrl } from '../../../../config.json'
 import axios from "axios";
 
-/* *************************Crm Notes*********************** */
-let apiurlCrmNotes = apiUrl + "/crm/Notes";
+/* *************************Crm NotesActivity*********************** */
+let apiurlCrmNotesActivity = apiUrl + "/crm/Activities";
 // let apiurlAbsenceType= 'https://reqres.in/api/users/2';
 
-function ApiwithidCrmNotes(Id) {
-  return `${apiurlCrmNotes}/${Id}`;
+function ApiwithidCrmNotesActivity(Id) {
+  return `${apiurlCrmNotesActivity}/${Id}`;
 }
 
-function ApiwithbyPgCrmNotes(Pg, PgSize) {
-  return `${apiurlCrmNotes}/${Pg}/${PgSize}`;
+function ApiwithbyPgCrmNotesActivity(Pg, PgSize) {
+  return `${apiurlCrmNotesActivity}/${Pg}/${PgSize}`;
 }
 
 //-------- GetAPi
-export function GetCrmNotes(pg, pgsize) {
-  return axios.get(ApiwithbyPgCrmNotes(pg, pgsize), {
+export function GetCrmNotesActivity(pg, pgsize) {
+  return axios.get(ApiwithbyPgCrmNotesActivity(pg, pgsize), {
     headers: {
       //"Authorization": authIt,
       //"accept": "application/json",
@@ -27,30 +27,30 @@ export function GetCrmNotes(pg, pgsize) {
 }
 
 //---------Edit APi
-export function GetCrmNotesById(id) {
+export function GetCrmNotesActivityById(id) {
   // console.log(id)
-  return axios.get(ApiwithidCrmNotes(id), {
+  return axios.get(ApiwithidCrmNotesActivity(id), {
     headers: {
       "Content-Type": "application/json"
     }
   });
 }
 
-export function PutCrmNotes(id, body) {
+export function PutCrmNotesActivity(id, body) {
   // console.log(id)
-  return axios.put(ApiwithidCrmNotes(id), body);
+  return axios.put(ApiwithidCrmNotesActivity(id), body);
 }
 
 //------- Delete-API
 
-export function DeleteCrmNotes(id) {
+export function DeleteCrmNotesActivity(id) {
   // console.log(id)
-  return axios.delete(ApiwithidCrmNotes(id));
+  return axios.delete(ApiwithidCrmNotesActivity(id));
 }
 
 //----------Save-Post-API
-export function PostCrmNotes(body) {
-  return axios.post(apiurlCrmNotes, body);
+export function PostCrmNotesActivity(body) {
+  return axios.post(apiurlCrmNotesActivity, body);
 }
 
 //----------Upload File

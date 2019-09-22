@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 //import MUIDataTable from "mui-datatables";
 import "../../../../scss/override/listing.scss";
 import EditNotes from "./edit";
-import { GetCrmNotes, DeleteCrmNotes } from "..//shared/notes";
-import AddNotes from "./add";
+import {
+  GetCrmNotesActivity,
+  DeleteCrmNotesActivity
+} from "..//shared/notesactivity";
+import AddNotesActivity from "./add";
 import { Spinner } from "reactstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -66,7 +69,7 @@ const classes = {
 
 let countforpagination = 0;
 
-let ListingNotes = props => {
+let ListingNoteActivty = props => {
   let [AtlistVal, setAtlistVal] = useState();
   let [paginate, setPaginate] = useState();
   let [totalcount, setTotalCount] = useState();
@@ -94,7 +97,7 @@ let ListingNotes = props => {
 
   async function getlistapi() {
     if (props.callid) {
-      await GetCrmNotes(props.idofcontact).then(res => {
+      await GetCrmNotesActivity(props.idofcontact).then(res => {
         setAtlistVal((AtlistVal = res.data));
         console.log(res.data);
         setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
@@ -113,7 +116,7 @@ let ListingNotes = props => {
       settabledistatus((Tabledistatus = true));
       setMenucon(props.Showhead);
     } else {
-      await GetCrmNotes(Page, PageSize).then(res => {
+      await GetCrmNotesActivity(Page, PageSize).then(res => {
         setAtlistVal((AtlistVal = res.data));
         console.log(res.data);
         setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
@@ -255,23 +258,20 @@ let ListingNotes = props => {
           options={options}
           // cellEdit={cellEditProp}
         >
-          <TableHeaderColumn dataField="noteType" dataSort>
-            Type
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="notes" dataSort>
-            Notes
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="reference" dataSort>
-            Reference
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="noteOwner" dataSort>
-            Note Owner
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="status" dataSort>
-            Status
-          </TableHeaderColumn>
           <TableHeaderColumn dataField="dueDate" dataSort dataFormat={datefn}>
             Due Date
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="activityTypeName" dataSort>
+            Activity Type
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="user" dataSort>
+            Web User
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="comment" dataSort>
+            Comment
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="progress" dataSort>
+            Progress
           </TableHeaderColumn>
           <TableHeaderColumn
             dataField="isActive"
@@ -282,9 +282,9 @@ let ListingNotes = props => {
             isActive
           </TableHeaderColumn>
           <TableHeaderColumn
-            dataField="noteId"
+            dataField="activityId"
             dataSort={false}
-            width={props.Showhead ? "6%" : ""}
+            width={(props.Showhead)?'6%':''}
             dataFormat={handleaction}
           ></TableHeaderColumn>
         </BootstrapTable>
@@ -307,6 +307,15 @@ let ListingNotes = props => {
     );
   }
 
+  function datefn(cell){
+    if (!((cell === null)||(cell === undefined))) {
+      return cell.substr(0, cell.length - 9);
+  }
+  else{
+    return ' - '
+  }
+}
+
   function handleaction(cell) {
     return (
       <div>
@@ -327,13 +336,6 @@ let ListingNotes = props => {
     );
   }
 
-  function datefn(cell) {
-    if (!(cell === null || cell === undefined)) {
-      return cell.substr(0, cell.length - 9);
-    } else {
-      return " - ";
-    }
-  }
   let [screen, setScreen] = useState(1);
 
   function ChangeScreen(val) {
@@ -349,7 +351,11 @@ let ListingNotes = props => {
       break;
     case 2:
       screencontent = (
-        <AddNotes backmain={ChangeScreen} success={success} error={errort} noteType={props.noteType}/>
+        <AddNotesActivity
+          backmain={ChangeScreen}
+          success={success}
+          error={errort}
+        />
       );
       break;
     case 3:
@@ -359,7 +365,6 @@ let ListingNotes = props => {
           success={success}
           error={errort}
           IDforAPI={idofEdit}
-          assetType={props.assetType}
         />
       );
       break;
@@ -386,7 +391,7 @@ let ListingNotes = props => {
   }
 
   async function Dellistapi(id) {
-    await DeleteCrmNotes(id)
+    await DeleteCrmNotesActivity(id)
       .then(() => {
         success();
       })
@@ -434,7 +439,7 @@ let ListingNotes = props => {
           setScreen(2);
         }}
       />
-      {/* <AddNotes refresh={refreshfn} /> */}
+      {/* <AddNotesActivity refresh={refreshfn} /> */}
     </ul>
   );
 
@@ -445,7 +450,7 @@ let ListingNotes = props => {
           {menuDiv}
         </div>
         <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">NOTES</h3>
+          <h3 className="heading">ACTIVITIES</h3>
         </div>
       </div>
     );
@@ -465,4 +470,4 @@ let ListingNotes = props => {
   );
 };
 
-export default ListingNotes;
+export default ListingNoteActivty;

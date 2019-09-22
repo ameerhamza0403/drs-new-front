@@ -106,6 +106,16 @@ export default {
               name: "Notes",
               url: "/system/crm/notes",
               icon: "fa fa-sticky-note-o"
+            },
+            {
+              name: "Activity Type",
+              url: "/system/crm/activity-type",
+              icon: "fa fa-sticky-note-o"
+            },
+            {
+              name: "Activities",
+              url: "/system/crm/note-activity",
+              icon: "fa fa-sticky-note-o"
             }
           ]
         },

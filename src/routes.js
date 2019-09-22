@@ -141,6 +141,9 @@ const TestListing = React.lazy(() => import('./components/myaccount/admin/test/t
 const CrmContactsListing = React.lazy(() => import('./components/system/crm/contacts/listing'));
 const CrmContactPersonListing = React.lazy(() => import('./components/system/crm/contactperson/main'));
 const CrmNotesListing = React.lazy(() => import('./components/system/crm/notes/main'));
+const ActivityTypeListing = React.lazy(() => import('./components/myaccount/admin/contactnote/activitytype/listing'));
+const CrmNotesActivity = React.lazy(() => import('./components/system/crm/noteactivity/main'));
+
 
 
 
@@ -297,6 +300,8 @@ const routes = [
   { path: '/system/crm/contacts', exact: true, name: 'Contacts', component:  CrmContactsListing },
   { path: '/system/crm/contact-person', exact: true, name: 'Contact Person', component:  CrmContactPersonListing },
   { path: '/system/crm/notes', exact: true, name: 'Notes', component:  CrmNotesListing },
+  { path: '/system/crm/activity-type', exact: true, name: 'Activity Type', component:  ActivityTypeListing },
+  { path: '/system/crm/note-activity', exact: true, name: 'Activities', component:  CrmNotesActivity },
 
 
 

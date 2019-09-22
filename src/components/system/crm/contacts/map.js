@@ -4,24 +4,9 @@ import './autosuggest.css';
 import {SuggestLocation} from '../shared/map';
 
 let ContactMap = () => {
-  const languages = [
-    {
-      name: "C",
-      year: 1972
-    },
-    {
-      name: "Elm",
-      year: 2012
-    },
-    {
-      name: "Eilm",
-      year: 2012
-    },
-    {
-      name: "Elmi",
-      year: 2012
-    }
-  ];
+
+  let [dataofPlaces, setdataofPlaces]= useState([]);
+  let AutoSuggestionData = [];
 
   // Teach Autosuggest how to calculate suggestions for any given input value.
   const getSuggestions = value => {
@@ -30,7 +15,7 @@ let ContactMap = () => {
 
     return inputLength === 0
       ? []
-      : languages.filter(
+      : AutoSuggestionData.filter(
           lang => lang.name.toLowerCase().slice(0, inputLength) === inputValue
         );
   };
@@ -54,7 +39,7 @@ let ContactMap = () => {
   function onChange(event, { newValue }) {
     setValue(newValue);
     if(value.length>1){
-
+      getlistapi(value);
     }
   }
 
@@ -79,8 +64,11 @@ let ContactMap = () => {
 
   // --------- API Call
 
-  function getlistapi(){
-
+  async function getlistapi(text){
+    const {data: dataofPlaces}= await SuggestLocation(text);
+    setdataofPlaces(dataofPlaces);
+    // AutoSuggestionData=dataofPlaces;
+    console.log(dataofPlaces)
   }
 
   return (
