@@ -5,6 +5,7 @@ import {
 } from "..//shared/notesactivity";
 import { GetListingForActivityType } from "../../../myaccount/admin/contactnote/shared/activitytype";
 import { GetCrmNotes } from "../shared/notes";
+import '../../../../scss/customstyles/tabs.css';
 import {
   Button,
   Card,
@@ -73,12 +74,15 @@ let EditNotes = props => {
     values.progress = progress;
     values.dueDate = `${values.dueDate}T${values.dueDatemodified}`;
     delete values.dueDatemodified;
+    values.completionDate = `${values.completionDate}T${values.completionDatemodified}`;
+    delete values.completionDatemodified;
+    values.activityDate = `${values.activityDate}T${values.activityDatemodified}`;
+    delete values.activityDatemodified;
     await PutCrmNotesActivity(props.IDforAPI, values)
       .then(res => props.success())
       .catch(error => props.error());
     props.backmain(1);
     setSubmitting(false);
-    handleOpen();
   }
 
   const validationSchema = function(values) {
@@ -143,6 +147,24 @@ let EditNotes = props => {
       initialValues.dueDate.length - 9
     );
 
+    initialValues.completionDatemodified = initialValues.completionDate.substr(
+      11,
+      initialValues.completionDate.length - 4
+    );
+    initialValues.completionDate = initialValues.completionDate.substr(
+      0,
+      initialValues.completionDate.length - 9
+    );
+
+    initialValues.activityDatemodified = initialValues.activityDate.substr(
+      11,
+      initialValues.activityDate.length - 4
+    );
+    initialValues.activityDate = initialValues.activityDate.substr(
+      0,
+      initialValues.activityDate.length - 9
+    );
+
     settabledistatus(true);
   }
 
@@ -191,211 +213,462 @@ let EditNotes = props => {
     return `${value}%`;
   }
 
-  let [modal, setModal] = useState(true);
 
-  let handleOpen = () => {
-    if (modal === true) {
-      setTimeout(() => {
-        props.backmain(1);
-      }, 300);
-    }
-    return setModal((modal = !modal));
-  };
 
   if (Tabledistatus) {
     Tabledisplay = (
       <div>
-        <Modal
-          isOpen={modal}
-          toggle={handleOpen}
-          className={"modal-primary " + props.className}
-          size="md"
-        >
-          <ModalHeader toggle={handleOpen}>Activity</ModalHeader>
-          <ModalBody>
-            <div className="container">
-              <Formik
-                initialValues={initialValues}
-                validate={validate(validationSchema)}
-                onSubmit={onSubmit}
-                render={({
-                  values,
-                  errors,
-                  touched,
-                  status,
-                  dirty,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  isSubmitting,
-                  isValid,
-                  handleReset,
-                  setTouched
-                }) => (
-                  <Row>
-                    <Col lg="12">
-                      <Form
-                        onSubmit={handleSubmit}
-                        noValidate
-                        name="simpleForm"
-                      >
-                        <FormGroup>
-                          <div className="row mb-1">
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                              <Label for="user" style={classes.label}>
-                                Web User
-                              </Label>
-                            </div>
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                              <Input
-                                type="text"
-                                name="user"
-                                id="user"
-                                placeholder=""
-                                autoComplete={false}
-                                valid={!errors.user}
-                                invalid={touched.user && !!errors.user}
-                                autoFocus={true}
-                                required
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.user}
-                              ></Input>
-                              <FormFeedback>{errors.user}</FormFeedback>
-                            </div>
+      <Card>
+        <CardBody>
+          <div className="container">
+            <Formik
+              initialValues={initialValues}
+              validate={validate(validationSchema)}
+              onSubmit={onSubmit}
+              render={({
+                values,
+                errors,
+                touched,
+                status,
+                dirty,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                isValid,
+                handleReset,
+                setTouched
+              }) => (
+                <Row>
+                  <Col lg="12">
+                    <Form onSubmit={handleSubmit} noValidate name="simpleForm">
+                      <FormGroup>
+                        <div className="row mb-1">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="user" style={classes.label}>
+                              Web User
+                            </Label>
                           </div>
-
-                          <div className="row mb-1">
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                              <Label for="activityTypeId" style={classes.label}>
-                                Activity Type
-                              </Label>
-                            </div>
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                              <Input
-                                type="select"
-                                name="activityTypeId"
-                                id="activityTypeId"
-                                placeholder=""
-                                autoComplete={false}
-                                valid={!errors.activityTypeId}
-                                invalid={
-                                  touched.activityTypeId &&
-                                  !!errors.activityTypeId
-                                }
-                                autoFocus={true}
-                                required
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.activityTypeId}
-                              >
-                                <option selected></option>
-                                {activitytype.map(e => (
-                                  <option value={e.activityTypeId}>
-                                    {e.name}
-                                  </option>
-                                ))}
-                              </Input>
-                              <FormFeedback>{errors.user}</FormFeedback>
-                            </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <Input
+                              type="text"
+                              name="user"
+                              id="user"
+                              placeholder=""
+                              autoComplete={false}
+                              valid={!errors.user}
+                              invalid={touched.user && !!errors.user}
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.user}
+                            ></Input>
+                            <FormFeedback>{errors.user}</FormFeedback>
                           </div>
+                        </div>
 
-                          <div className="row mb-1">
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                              <Label for="dueDate" style={classes.label}>
-                                Due Date
-                              </Label>
-                            </div>
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                              <Input
-                                type="date"
-                                name="dueDate"
-                                id="dueDate"
-                                // placeholder=""
-                                autoComplete={false}
-                                valid={!errors.dueDate}
-                                invalid={touched.dueDate && !!errors.dueDate}
-                                autoFocus={true}
-                                required
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.dueDate}
-                              />
-                              <FormFeedback>{errors.dueDate}</FormFeedback>
-                            </div>
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                              <Input
-                                type="time"
-                                name="dueDatemodified"
-                                id="dueDatemodified"
-                                // placeholder=""
-                                // autoComplete={false}
-                                // valid={!errors.dueDate}
-                                // invalid={touched.dueDate && !!errors.dueDate}
-                                // autoFocus={true}
-                                // required
-                                defaultValue={values.dueDatemodified}
-                                onChange={e => {
-                                  values.dueDatemodified = e.target.value;
-                                }}
-                                onBlur={handleBlur}
-                                // value={values.dueDate}
-                              />
-                              {/* <FormFeedback>{errors.dueDate}</FormFeedback> */}
-                            </div>
+                        <div className="row mb-1">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="activityTypeId" style={classes.label}>
+                              Activity Type
+                            </Label>
                           </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <Input
+                              type="select"
+                              name="activityTypeId"
+                              id="activityTypeId"
+                              placeholder=""
+                              autoComplete={false}
+                              valid={!errors.activityTypeId}
+                              invalid={
+                                touched.activityTypeId &&
+                                !!errors.activityTypeId
+                              }
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.activityTypeId}
+                            >
+                              <option selected></option>
+                              {activitytype.map(e => (
+                                <option value={e.activityTypeId}>
+                                  {e.name}
+                                </option>
+                              ))}
+                            </Input>
+                            <FormFeedback>{errors.user}</FormFeedback>
+                          </div>
+                        </div>
 
-                          <div className="row mb-1">
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                              <Label for="comment" style={classes.label}>
-                                Comment
-                              </Label>
-                            </div>
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                              <Input
-                                type="textarea"
-                                name="comment"
-                                id="comment"
-                                placeholder=""
-                                autoComplete={false}
-                                // valid={!errors.comment}
-                                // invalid={
-                                //   touched.comment &&
-                                //   !!errors.comment
-                                // }
-                                // autoFocus={true}
-                                // required
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.comment}
-                              />
-                              {/* <FormFeedback>
+                        <div className="row mb-1">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="dueDate" style={classes.label}>
+                              Due Date
+                            </Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Input
+                              type="date"
+                              name="dueDate"
+                              id="dueDate"
+                              // placeholder=""
+                              autoComplete={false}
+                              valid={!errors.dueDate}
+                              invalid={touched.dueDate && !!errors.dueDate}
+                              autoFocus={true}
+                              required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.dueDate}
+                            />
+                            <FormFeedback>{errors.dueDate}</FormFeedback>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Input
+                              type="time"
+                              name="dueDatemodified"
+                              id="dueDatemodified"
+                              // placeholder=""
+                              // autoComplete={false}
+                              // valid={!errors.dueDate}
+                              // invalid={touched.dueDate && !!errors.dueDate}
+                              // autoFocus={true}
+                              // required
+                              onChange={e => {
+                                values.dueDatemodified = `${values.dueDate}T${e.target.value}`;
+                              }}
+                              onBlur={handleBlur}
+                              // value={values.dueDate}
+                            />
+                            {/* <FormFeedback>{errors.dueDate}</FormFeedback> */}
+                          </div>
+                        </div>
+
+                        <div className="row mb-1">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="completionDate" style={classes.label}>
+                              Completion Date
+                            </Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Input
+                              type="date"
+                              name="completionDate"
+                              id="completionDate"
+                              // placeholder=""
+                              // autoComplete={false}
+                              // valid={!errors.completionDate}
+                              // invalid={touched.completionDate && !!errors.completionDate}
+                              // autoFocus={true}
+                              // required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.completionDate}
+                            />
+                            {/* <FormFeedback>{errors.completionDate}</FormFeedback> */}
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Input
+                              type="time"
+                              name="completionDatemodified"
+                              id="completionDatemodified"
+                              // placeholder=""
+                              // autoComplete={false}
+                              // valid={!errors.completionDatemodified}
+                              // invalid={touched.completionDatemodified && !!errors.completionDatemodified}
+                              // autoFocus={true}
+                              // required
+                              onChange={e => {
+                                values.completionDatemodified = `${values.completionDate}T${e.target.value}`;
+                              }}
+                              onBlur={handleBlur}
+                              // value={values.completionDatemodified}
+                            />
+                            {/* <FormFeedback>{errors.completionDatemodified}</FormFeedback> */}
+                          </div>
+                        </div>
+
+                        <div className="row mb-1">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="activityDate" style={classes.label}>
+                              Activity Date
+                            </Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Input
+                              type="date"
+                              name="activityDate"
+                              id="activityDate"
+                              // placeholder=""
+                              // autoComplete={false}
+                              // valid={!errors.activityDate}
+                              // invalid={touched.activityDate && !!errors.activityDate}
+                              // autoFocus={true}
+                              // required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.activityDate}
+                            />
+                            {/* <FormFeedback>{errors.activityDate}</FormFeedback> */}
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Input
+                              type="time"
+                              name="activityDatemodified"
+                              id="activityDatemodified"
+                              // placeholder=""
+                              // autoComplete={false}
+                              // valid={!errors.activityDatemodified}
+                              // invalid={touched.activityDatemodified && !!errors.activityDatemodified}
+                              // autoFocus={true}
+                              // required
+                              onChange={e => {
+                                values.activityDatemodified = `${values.activityDate}T${e.target.value}`;
+                              }}
+                              onBlur={handleBlur}
+                              // value={values.activityDate}
+                            />
+                            {/* <FormFeedback>{errors.activityDate}</FormFeedback> */}
+                          </div>
+                        </div>
+
+                        <div className="row mb-1">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="subject" style={classes.label}>
+                              Subject*
+                            </Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <Input
+                              type="text"
+                              name="subject"
+                              id="subject"
+                              placeholder=""
+                              autoComplete={false}
+                              // valid={!errors.subject}
+                              // invalid={
+                              //   touched.subject &&
+                              //   !!errors.subject
+                              // }
+                              // autoFocus={true}
+                              // required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.subject}
+                            />
+                            {/* <FormFeedback>{errors.subject}</FormFeedback> */}
+                          </div>
+                        </div>
+
+                        <div className="row mb-1">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="comment" style={classes.label}>
+                              Comment
+                            </Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <Input
+                              type="textarea"
+                              name="comment"
+                              id="comment"
+                              placeholder=""
+                              autoComplete={false}
+                              // valid={!errors.comment}
+                              // invalid={
+                              //   touched.comment &&
+                              //   !!errors.comment
+                              // }
+                              // autoFocus={true}
+                              // required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.comment}
+                            />
+                            {/* <FormFeedback>
                                         {errors.comment}
                                       </FormFeedback> */}
-                            </div>
                           </div>
+                        </div>
 
-                          <div className="row mb-1">
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                              <Label for="user" style={classes.label}>
-                                Progress
-                              </Label>
-                            </div>
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                              <Slider
-                                defaultValue={values.progress}
-                                getAriaValueText={valuetext}
-                                aria-labelledby="discrete-slider-always"
-                                step={1}
-                                marks={marks}
-                                valueLabelDisplay="on"
-                              />
-                            </div>
+                        <div className="row mb-1">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="callWith" style={classes.label}>
+                            Call With
+                            </Label>
                           </div>
-                        </FormGroup>
-                        <br />
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <Input
+                              type="text"
+                              name="callWith"
+                              id="callWith"
+                              placeholder=""
+                              autoComplete={false}
+                              // valid={!errors.callWith}
+                              // invalid={
+                              //   touched.callWith &&
+                              //   !!errors.callWith
+                              // }
+                              // autoFocus={true}
+                              // required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.callWith}
+                            />
+                            {/* <FormFeedback>{errors.callWith}</FormFeedback> */}
+                          </div>
+                        </div>
 
-                        <ModalFooter>
+                        <div className="row mb-1">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="primaryEmail" style={classes.label}>
+                            Primary Email
+                            </Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <Input
+                              type="text"
+                              name="primaryEmail"
+                              id="primaryEmail"
+                              placeholder=""
+                              autoComplete={false}
+                              // valid={!errors.primaryEmail}
+                              // invalid={
+                              //   touched.primaryEmail &&
+                              //   !!errors.primaryEmail
+                              // }
+                              // autoFocus={true}
+                              // required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.primaryEmail}
+                            />
+                            {/* <FormFeedback>{errors.primaryEmail}</FormFeedback> */}
+                          </div>
+                        </div>
+
+                        <div className="row mb-1">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="callDirection" style={classes.label}>
+                            Call Direction
+                            </Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <Input
+                              type="select"
+                              name="callDirection"
+                              id="callDirection"
+                              placeholder=""
+                              autoComplete={false}
+                              // valid={!errors.callDirection}
+                              // invalid={
+                              //   touched.callDirection &&
+                              //   !!errors.callDirection
+                              // }
+                              // autoFocus={true}
+                              // required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.callDirection}
+                              >
+                              <option selected />
+                              <option value={'outgoing'}>{'outgoing'}</option>
+                              <option value={'incoming'}>{'incoming'}</option>
+                            </Input>
+                            {/* <FormFeedback>{errors.callDirection}</FormFeedback> */}
+                          </div>
+                        </div>
+
+                        <div className="row mb-1">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="status" style={classes.label}>
+                            Status
+                            </Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <Input
+                              type="select"
+                              name="status"
+                              id="status"
+                              placeholder=""
+                              autoComplete={false}
+                              // valid={!errors.status}
+                              // invalid={
+                              //   touched.status &&
+                              //   !!errors.status
+                              // }
+                              // autoFocus={true}
+                              // required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.status}
+                            >
+                              <option selected />
+                              <option value='Open'>{'Open'}</option>
+                              <option value='Completed'>{'Completed'}</option>
+                              <option value='Cancelled'>{'Cancelled'}</option>
+                            </Input>
+                            {/* <FormFeedback>{errors.status}</FormFeedback> */}
+                          </div>
+                        </div>
+
+                        <div className="row mb-1">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="priority" style={classes.label}>
+                            Priority
+                            </Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <Input
+                              type="select"
+                              name="priority"
+                              id="priority"
+                              placeholder=""
+                              autoComplete={false}
+                              // valid={!errors.priority}
+                              // invalid={
+                              //   touched.priority &&
+                              //   !!errors.priority
+                              // }
+                              // autoFocus={true}
+                              // required
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.priority}
+                            >
+                              <option selected />
+                              <option value='Normal'>{'Normal'}</option>
+                              <option value='High'>{'High'}</option>
+                            </Input>
+                            {/* <FormFeedback>{errors.status}</FormFeedback> */}
+                          </div>
+                        </div>
+
+                        <div className="row mb-1">
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <Label for="user" style={classes.label}>
+                              Progress
+                            </Label>
+                          </div>
+                          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <Slider
+                              defaultValue={initialValues.progress}
+                              getAriaValueText={valuetext}
+                              aria-labelledby="discrete-slider-always"
+                              step={1}
+                              marks={marks}
+                              valueLabelDisplay="on"
+                            />
+                          </div>
+                        </div>
+                      </FormGroup>
+                      <br />
+
+                      <div className="row">
+                        <div className="col-2 col-sm-2 col-md-4 col-lg-9 col-xl-10"></div>
+                        <div className="col-8 col-sm-8 col-md-6 col-lg-3 col-xl-2">
                           <FormGroup>
                             <Button
                               type="submit"
@@ -409,27 +682,23 @@ let EditNotes = props => {
 
                             <Button
                               color="secondary"
-                              onClick={() => {
-                                handleOpen();
-                                setTimeout(() => {
-                                  props.backmain(1);
-                                }, 100);
-                              }}
+                              onClick={() => props.backmain(1)}
                               style={classes.button}
                             >
                               Cancel
                             </Button>
                           </FormGroup>
-                        </ModalFooter>
-                      </Form>
-                    </Col>
-                  </Row>
-                )}
-              />
-            </div>
-          </ModalBody>
-        </Modal>
-      </div>
+                        </div>
+                      </div>
+                    </Form>
+                  </Col>
+                </Row>
+              )}
+            />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
     );
   } else {
     Tabledisplay = (

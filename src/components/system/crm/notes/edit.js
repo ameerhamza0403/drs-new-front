@@ -3,6 +3,7 @@ import { GetCrmNotesById, PutCrmNotes, PostFileUpload } from "..//shared/notes";
 import ListingNotes from "./listing";
 import ListingNoteActivty from "../noteactivity/listing";
 import { GetCrmContacts } from "../shared/contacts";
+import "../../../../scss/customstyles/tabs.css";
 import {
   Button,
   Card,
@@ -69,7 +70,7 @@ let EditNotes = props => {
     delete values.dueDatemodified;
     values.completionDatemodified = `${values.completionDate}T${values.completionDatemodified}`;
     delete values.completionDatemodified;
-    await PutCrmNotes(props.IDforAPI,values)
+    await PutCrmNotes(props.IDforAPI, values)
       .then(res => props.success())
       .catch(error => props.error());
     setSubmitting(false);
@@ -236,653 +237,706 @@ let EditNotes = props => {
       <div>
         <Card>
           <CardBody>
-            <Formik
-              initialValues={initialValues}
-              validate={validate(validationSchema)}
-              onSubmit={onSubmit}
-              render={({
-                values,
-                errors,
-                touched,
-                status,
-                dirty,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-                isValid,
-                handleReset,
-                setTouched
-              }) => (
-                <Row>
-                  <Col lg="12">
-                    <Form onSubmit={handleSubmit} noValidate name="simpleForm">
-                      <FormGroup>
-                        <Tabs
-                          defaultActiveKey="general"
-                          transition={false}
-                          id="noanim-tab-example"
-                          className={classes.myclass}
+            <Tabs
+              defaultActiveKey="general"
+              transition={false}
+              id="noanim-tab-example"
+              className={classes.myclass}
+            >
+              <Tab
+                eventKey="general"
+                disabled={false}
+                title="Notes"
+                // onSelect={event => changeColor(event)}
+              >
+                <Formik
+                  initialValues={initialValues}
+                  validate={validate(validationSchema)}
+                  onSubmit={onSubmit}
+                  render={({
+                    values,
+                    errors,
+                    touched,
+                    status,
+                    dirty,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    isValid,
+                    handleReset,
+                    setTouched
+                  }) => (
+                    <Row>
+                      <Col lg="12">
+                        <Form
+                          onSubmit={handleSubmit}
+                          noValidate
+                          name="simpleForm"
                         >
-                          <Tab
-                            eventKey="general"
-                            disabled={false}
-                            title="General"
-                            // onSelect={event => changeColor(event)}
-                          >
-                            <div className="row">
-                              <div className="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
-                                <div
-                                  className="row mb-1"
-                                  hidden={
-                                    props.noteType === "contact" ? false : true
-                                  }
-                                >
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label
-                                      for="contactId"
-                                      style={classes.label}
+                          <FormGroup>
+                            <Tabs
+                              defaultActiveKey="general"
+                              transition={false}
+                              id="noanim-tab-example"
+                              className={classes.myclass}
+                            >
+                              <Tab
+                                eventKey="general"
+                                disabled={false}
+                                title="General"
+                                // onSelect={event => changeColor(event)}
+                              >
+                                <div className="row">
+                                  <div className="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                                    <div
+                                      className="row mb-1"
+                                      hidden={
+                                        props.noteType === "contact"
+                                          ? false
+                                          : true
+                                      }
                                     >
-                                      Contact
-                                    </Label>
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <Input
-                                      type="select"
-                                      name="contactId"
-                                      id="contactId"
-                                      placeholder=""
-                                      autoComplete={false}
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.contactId}
-                                    >
-                                      <option selected></option>
-                                      {Parentcontact.map(e => (
-                                        <option value={e.contactId}>
-                                          {e.name}
-                                        </option>
-                                      ))}
-                                    </Input>
-                                  </div>
-                                </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="contactId"
+                                          style={classes.label}
+                                        >
+                                          Contact
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <Input
+                                          type="select"
+                                          name="contactId"
+                                          id="contactId"
+                                          placeholder=""
+                                          autoComplete={false}
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.contactId}
+                                          disabled={true}
+                                        >
+                                          <option selected></option>
+                                          {Parentcontact.map(e => (
+                                            <option value={e.contactId}>
+                                              {e.name}
+                                            </option>
+                                          ))}
+                                        </Input>
+                                      </div>
+                                    </div>
 
-                                <div
-                                  className="row mb-1"
-                                  hidden={
-                                    props.noteType === "item" ? false : true
-                                  }
-                                >
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label for="itemId" style={classes.label}>
-                                      Stock Item
-                                    </Label>
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <Input
-                                      type="select"
-                                      name="itemId"
-                                      id="itemId"
-                                      placeholder=""
-                                      autoComplete={false}
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.itemId}
+                                    <div
+                                      className="row mb-1"
+                                      hidden={
+                                        props.noteType === "item" ? false : true
+                                      }
                                     >
-                                      <option selected></option>
-                                      {stockitem.map(e => (
-                                        <option value={e.itemId}>
-                                          {e.name}
-                                        </option>
-                                      ))}
-                                    </Input>
-                                  </div>
-                                </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="itemId"
+                                          style={classes.label}
+                                        >
+                                          Stock Item
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <Input
+                                          type="select"
+                                          name="itemId"
+                                          id="itemId"
+                                          placeholder=""
+                                          autoComplete={false}
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.itemId}
+                                          disabled={true}
+                                        >
+                                          <option selected></option>
+                                          {stockitem.map(e => (
+                                            <option value={e.itemId}>
+                                              {e.name}
+                                            </option>
+                                          ))}
+                                        </Input>
+                                      </div>
+                                    </div>
 
-                                <div
-                                  className="row mb-1"
-                                  hidden={
-                                    props.noteType === "customerasset"
-                                      ? false
-                                      : true
-                                  }
-                                >
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label
-                                      for="contactId"
-                                      style={classes.label}
+                                    <div
+                                      className="row mb-1"
+                                      hidden={
+                                        props.noteType === "customerasset"
+                                          ? false
+                                          : true
+                                      }
                                     >
-                                      Customer Asset
-                                    </Label>
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <Input
-                                      type="select"
-                                      name="customerAssetId"
-                                      id="customerAssetId"
-                                      placeholder=""
-                                      autoComplete={false}
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.customerAssetId}
-                                    >
-                                      <option selected></option>
-                                      {asset.map(e => (
-                                        <option value={e.customerAssetId}>
-                                          {e.name}
-                                        </option>
-                                      ))}
-                                    </Input>
-                                  </div>
-                                </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="contactId"
+                                          style={classes.label}
+                                        >
+                                          Customer Asset
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <Input
+                                          type="select"
+                                          name="customerAssetId"
+                                          id="customerAssetId"
+                                          placeholder=""
+                                          autoComplete={false}
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.customerAssetId}
+                                          disabled={true}
+                                        >
+                                          <option selected></option>
+                                          {asset.map(e => (
+                                            <option value={e.customerAssetId}>
+                                              {e.name}
+                                            </option>
+                                          ))}
+                                        </Input>
+                                      </div>
+                                    </div>
 
-                                <div
-                                  className="row mb-1"
-                                  hidden={
-                                    props.noteType === "resource" ? false : true
-                                  }
-                                >
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label
-                                      for="resourceId"
-                                      style={classes.label}
+                                    <div
+                                      className="row mb-1"
+                                      hidden={
+                                        props.noteType === "resource"
+                                          ? false
+                                          : true
+                                      }
                                     >
-                                      Resource
-                                    </Label>
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <Input
-                                      type="select"
-                                      name="resourceId"
-                                      id="resourceId"
-                                      placeholder=""
-                                      autoComplete={false}
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.resourceId}
-                                    >
-                                      <option selected></option>
-                                      {resource.map(e => (
-                                        <option value={e.resourceId}>
-                                          {e.name}
-                                        </option>
-                                      ))}
-                                    </Input>
-                                  </div>
-                                </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="resourceId"
+                                          style={classes.label}
+                                        >
+                                          Resource
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <Input
+                                          type="select"
+                                          name="resourceId"
+                                          id="resourceId"
+                                          placeholder=""
+                                          autoComplete={false}
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.resourceId}
+                                          disabled={true}
+                                        >
+                                          <option selected></option>
+                                          {resource.map(e => (
+                                            <option value={e.resourceId}>
+                                              {e.name}
+                                            </option>
+                                          ))}
+                                        </Input>
+                                      </div>
+                                    </div>
 
-                                <div
-                                  className="row mb-1"
-                                  hidden={
-                                    props.noteType === "vehicle" ? false : true
-                                  }
-                                >
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label
-                                      for="vehicleId"
-                                      style={classes.label}
+                                    <div
+                                      className="row mb-1"
+                                      hidden={
+                                        props.noteType === "vehicle"
+                                          ? false
+                                          : true
+                                      }
                                     >
-                                      Vehicle
-                                    </Label>
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <Input
-                                      type="select"
-                                      name="vehicleId"
-                                      id="vehicleId"
-                                      placeholder=""
-                                      autoComplete={false}
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.vehicleId}
-                                    >
-                                      <option selected></option>
-                                      {vehicle.map(e => (
-                                        <option value={e.vehicleId}>
-                                          {e.name}
-                                        </option>
-                                      ))}
-                                    </Input>
-                                  </div>
-                                </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="vehicleId"
+                                          style={classes.label}
+                                        >
+                                          Vehicle
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <Input
+                                          type="select"
+                                          name="vehicleId"
+                                          id="vehicleId"
+                                          placeholder=""
+                                          autoComplete={false}
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.vehicleId}
+                                          disabled={true}
+                                        >
+                                          <option selected></option>
+                                          {vehicle.map(e => (
+                                            <option value={e.vehicleId}>
+                                              {e.name}
+                                            </option>
+                                          ))}
+                                        </Input>
+                                      </div>
+                                    </div>
 
-                                <div
-                                  className="row mb-1"
-                                  hidden={
-                                    props.noteType === "notes" ? false : true
-                                  }
-                                >
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label
-                                      for="parentNoteId"
-                                      style={classes.label}
+                                    <div
+                                      className="row mb-1"
+                                      hidden={
+                                        props.noteType === "notes"
+                                          ? false
+                                          : true
+                                      }
                                     >
-                                      Note
-                                    </Label>
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <Input
-                                      type="select"
-                                      name="parentNoteId"
-                                      id="parentNoteId"
-                                      placeholder=""
-                                      autoComplete={false}
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.parentNoteId}
-                                    >
-                                      <option selected></option>
-                                      {note.map(e => (
-                                        <option value={e.parentNoteId}>
-                                          {e.note}
-                                        </option>
-                                      ))}
-                                    </Input>
-                                  </div>
-                                </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="parentNoteId"
+                                          style={classes.label}
+                                        >
+                                          Note
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <Input
+                                          type="select"
+                                          name="parentNoteId"
+                                          id="parentNoteId"
+                                          placeholder=""
+                                          autoComplete={false}
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.parentNoteId}
+                                          disabled={true}
+                                        >
+                                          <option selected></option>
+                                          {note.map(e => (
+                                            <option value={e.parentNoteId}>
+                                              {e.notes}
+                                            </option>
+                                          ))}
+                                        </Input>
+                                      </div>
+                                    </div>
 
-                                <div
-                                  className="row mb-1"
-                                  hidden={
-                                    props.noteType === "person" ? false : true
-                                  }
-                                >
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label
-                                      for="contactPersonId"
-                                      style={classes.label}
+                                    <div
+                                      className="row mb-1"
+                                      hidden={
+                                        props.noteType === "person"
+                                          ? false
+                                          : true
+                                      }
                                     >
-                                      Contact Person
-                                    </Label>
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <Input
-                                      type="select"
-                                      name="contactPersonId"
-                                      id="contactPersonId"
-                                      placeholder=""
-                                      autoComplete={false}
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.contactPersonId}
-                                    >
-                                      <option selected></option>
-                                      {person.map(e => (
-                                        <option value={e.contactPersonId}>
-                                          {e.firstName}
-                                        </option>
-                                      ))}
-                                    </Input>
-                                  </div>
-                                </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="contactPersonId"
+                                          style={classes.label}
+                                        >
+                                          Contact Person
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <Input
+                                          type="select"
+                                          name="contactPersonId"
+                                          id="contactPersonId"
+                                          placeholder=""
+                                          autoComplete={false}
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.contactPersonId}
+                                          disabled={true}
+                                        >
+                                          <option selected></option>
+                                          {person.map(e => (
+                                            <option value={e.contactPersonId}>
+                                              {e.firstName}
+                                            </option>
+                                          ))}
+                                        </Input>
+                                      </div>
+                                    </div>
 
-                                <div className="row mb-1">
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label
-                                      for="reference"
-                                      style={classes.label}
-                                    >
-                                      Reference
-                                    </Label>
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <Input
-                                      type="text"
-                                      name="reference"
-                                      id="reference"
-                                      placeholder=""
-                                      autoComplete={false}
-                                      // valid={!errors.reference}
-                                      // invalid={
-                                      //   touched.reference &&
-                                      //   !!errors.reference
-                                      // }
-                                      // autoFocus={true}
-                                      // required
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.reference}
-                                    />
-                                    {/* <FormFeedback>
+                                    <div className="row mb-1">
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="reference"
+                                          style={classes.label}
+                                        >
+                                          Reference
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <Input
+                                          type="text"
+                                          name="reference"
+                                          id="reference"
+                                          placeholder=""
+                                          autoComplete={false}
+                                          // valid={!errors.reference}
+                                          // invalid={
+                                          //   touched.reference &&
+                                          //   !!errors.reference
+                                          // }
+                                          // autoFocus={true}
+                                          // required
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.reference}
+                                        />
+                                        {/* <FormFeedback>
                                         {errors.reference}
                                       </FormFeedback> */}
-                                  </div>
-                                </div>
+                                      </div>
+                                    </div>
 
-                                <div className="row mb-1">
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label
-                                      for="noteTypeId"
-                                      style={classes.label}
-                                    >
-                                      Type
-                                    </Label>
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <Input
-                                      type="select"
-                                      name="noteTypeId"
-                                      id="noteTypeId"
-                                      placeholder=""
-                                      autoComplete={false}
-                                      // valid={!errors.noteTypeId}
-                                      // invalid={
-                                      //   touched.noteTypeId &&
-                                      //   !!errors.noteTypeId
-                                      // }
-                                      // autoFocus={true}
-                                      // required
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.noteTypeId}
-                                    >
-                                      <option selected></option>
-                                      {notetype.map(e => (
-                                        <option value={e.noteTypeId}>
-                                          {e.name}
-                                        </option>
-                                      ))}
-                                    </Input>
-                                    {/* <FormFeedback>
+                                    <div className="row mb-1">
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="noteTypeId"
+                                          style={classes.label}
+                                        >
+                                          Type
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <Input
+                                          type="select"
+                                          name="noteTypeId"
+                                          id="noteTypeId"
+                                          placeholder=""
+                                          autoComplete={false}
+                                          // valid={!errors.noteTypeId}
+                                          // invalid={
+                                          //   touched.noteTypeId &&
+                                          //   !!errors.noteTypeId
+                                          // }
+                                          // autoFocus={true}
+                                          // required
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.noteTypeId}
+                                        >
+                                          <option selected></option>
+                                          {notetype.map(e => (
+                                            <option value={e.noteTypeId}>
+                                              {e.name}
+                                            </option>
+                                          ))}
+                                        </Input>
+                                        {/* <FormFeedback>
                                         {errors.noteTypeId}
                                       </FormFeedback> */}
-                                  </div>
-                                </div>
+                                      </div>
+                                    </div>
 
-                                <div className="row mb-1">
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label for="status" style={classes.label}>
-                                      Status
-                                    </Label>
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <Input
-                                      type="select"
-                                      name="status"
-                                      id="status"
-                                      placeholder=""
-                                      autoComplete={false}
-                                      // valid={!errors.status}
-                                      // invalid={
-                                      //   touched.status &&
-                                      //   !!errors.status
-                                      // }
-                                      // autoFocus={true}
-                                      // required
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.status}
-                                    >
-                                      <option selected />
-                                      <option value="Open">{"Open"}</option>
-                                      <option value="Completed">
-                                        {"Completed"}
-                                      </option>
-                                      <option value="Cancelled">
-                                        {"Cancelled"}
-                                      </option>
-                                    </Input>
-                                    {/* <FormFeedback>
+                                    <div className="row mb-1">
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="status"
+                                          style={classes.label}
+                                        >
+                                          Status
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <Input
+                                          type="select"
+                                          name="status"
+                                          id="status"
+                                          placeholder=""
+                                          autoComplete={false}
+                                          // valid={!errors.status}
+                                          // invalid={
+                                          //   touched.status &&
+                                          //   !!errors.status
+                                          // }
+                                          // autoFocus={true}
+                                          // required
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.status}
+                                        >
+                                          <option selected />
+                                          <option value="Open">{"Open"}</option>
+                                          <option value="Completed">
+                                            {"Completed"}
+                                          </option>
+                                          <option value="Cancelled">
+                                            {"Cancelled"}
+                                          </option>
+                                        </Input>
+                                        {/* <FormFeedback>
                                         {errors.email}
                                       </FormFeedback> */}
-                                  </div>
-                                </div>
+                                      </div>
+                                    </div>
 
-                                <div className="row mb-1">
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label for="notes" style={classes.label}>
-                                      Notes
-                                    </Label>
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <Input
-                                      type="textarea"
-                                      name="notes"
-                                      id="notes"
-                                      placeholder=""
-                                      autoComplete={false}
-                                      // valid={!errors.notes}
-                                      // invalid={
-                                      //   touched.notes &&
-                                      //   !!errors.notes
-                                      // }
-                                      // autoFocus={true}
-                                      // required
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.notes}
-                                    />
-                                    {/* <FormFeedback>
+                                    <div className="row mb-1">
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="notes"
+                                          style={classes.label}
+                                        >
+                                          Notes
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <Input
+                                          type="textarea"
+                                          name="notes"
+                                          id="notes"
+                                          placeholder=""
+                                          autoComplete={false}
+                                          // valid={!errors.notes}
+                                          // invalid={
+                                          //   touched.notes &&
+                                          //   !!errors.notes
+                                          // }
+                                          // autoFocus={true}
+                                          // required
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.notes}
+                                        />
+                                        {/* <FormFeedback>
                                         {errors.notes}
                                       </FormFeedback> */}
-                                  </div>
-                                </div>
+                                      </div>
+                                    </div>
 
-                                <div className="row mb-1">
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label
-                                      for="noteOwner"
-                                      style={classes.label}
-                                    >
-                                      Notes Owner
-                                    </Label>
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <Input
-                                      type="text"
-                                      name="noteOwner"
-                                      id="noteOwner"
-                                      placeholder=""
-                                      autoComplete={false}
-                                      // valid={!errors.noteOwner}
-                                      // invalid={
-                                      //   touched.noteOwner &&
-                                      //   !!errors.noteOwner
-                                      // }
-                                      // autoFocus={true}
-                                      // required
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.noteOwner}
-                                    />
-                                    {/* <FormFeedback>
+                                    <div className="row mb-1">
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="noteOwner"
+                                          style={classes.label}
+                                        >
+                                          Notes Owner
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <Input
+                                          type="text"
+                                          name="noteOwner"
+                                          id="noteOwner"
+                                          placeholder=""
+                                          autoComplete={false}
+                                          // valid={!errors.noteOwner}
+                                          // invalid={
+                                          //   touched.noteOwner &&
+                                          //   !!errors.noteOwner
+                                          // }
+                                          // autoFocus={true}
+                                          // required
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.noteOwner}
+                                        />
+                                        {/* <FormFeedback>
                                         {errors.noteOwner}
                                       </FormFeedback> */}
-                                  </div>
-                                </div>
+                                      </div>
+                                    </div>
 
-                                <div className="row mb-1">
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label for="subject" style={classes.label}>
-                                      Subject
-                                    </Label>
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <Input
-                                      type="text"
-                                      name="subject"
-                                      id="subject"
-                                      placeholder=""
-                                      autoComplete={false}
-                                      // valid={!errors.subject}
-                                      // invalid={
-                                      //   touched.subject &&
-                                      //   !!errors.subject
-                                      // }
-                                      // autoFocus={true}
-                                      // required
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.subject}
-                                    />
-                                    {/* <FormFeedback>
+                                    <div className="row mb-1">
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="subject"
+                                          style={classes.label}
+                                        >
+                                          Subject
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <Input
+                                          type="text"
+                                          name="subject"
+                                          id="subject"
+                                          placeholder=""
+                                          autoComplete={false}
+                                          // valid={!errors.subject}
+                                          // invalid={
+                                          //   touched.subject &&
+                                          //   !!errors.subject
+                                          // }
+                                          // autoFocus={true}
+                                          // required
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.subject}
+                                        />
+                                        {/* <FormFeedback>
                                         {errors.subject}
                                       </FormFeedback> */}
-                                  </div>
-                                </div>
+                                      </div>
+                                    </div>
 
-                                <div className="row mb-1">
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label for="dueDate" style={classes.label}>
-                                      Due Date
-                                    </Label>
+                                    <div className="row mb-1">
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="dueDate"
+                                          style={classes.label}
+                                        >
+                                          Due Date
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                                        <Input
+                                          type="date"
+                                          name="dueDate"
+                                          id="dueDate"
+                                          // placeholder=""
+                                          autoComplete={false}
+                                          // valid={!errors.dueDate}
+                                          // invalid={
+                                          //   touched.dueDate && !!errors.dueDate
+                                          // }
+                                          // autoFocus={true}
+                                          // required
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.dueDate}
+                                        />
+                                        {/* <FormFeedback>{errors.dueDate}</FormFeedback> */}
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Input
+                                          type="time"
+                                          name="dueDatemodified"
+                                          id="dueDatemodified"
+                                          // placeholder=""
+                                          // autoComplete={false}
+                                          // valid={!errors.dueDate}
+                                          // invalid={touched.dueDate && !!errors.dueDate}
+                                          // autoFocus={true}
+                                          // required
+                                          defaultValue={values.dueDatemodified}
+                                          onChange={e => {
+                                            values.dueDatemodified =
+                                              e.target.value;
+                                          }}
+                                          onBlur={handleBlur}
+                                          // value={values.dueDate}
+                                        />
+                                        {/* <FormFeedback>{errors.dueDate}</FormFeedback> */}
+                                      </div>
+                                    </div>
+                                    <div className="row mb-1">
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Label
+                                          for="completionDate"
+                                          style={classes.label}
+                                        >
+                                          Completion Date
+                                        </Label>
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                                        <Input
+                                          type="date"
+                                          name="completionDate"
+                                          id="completionDate"
+                                          // placeholder=""
+                                          autoComplete={false}
+                                          // valid={!errors.completionDate}
+                                          // invalid={
+                                          //   touched.completionDate && !!errors.completionDate
+                                          // }
+                                          // autoFocus={true}
+                                          // required
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.completionDate}
+                                        />
+                                        {/* <FormFeedback>{errors.completionDate}</FormFeedback> */}
+                                      </div>
+                                      <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <Input
+                                          type="time"
+                                          name="completionDatemodified"
+                                          id="completionDatemodified"
+                                          // placeholder=""
+                                          // autoComplete={false}
+                                          // valid={!errors.dueDate}
+                                          // invalid={touched.dueDate && !!errors.dueDate}
+                                          // autoFocus={true}
+                                          // required
+                                          defaultValue={
+                                            values.completionDatemodified
+                                          }
+                                          onChange={e => {
+                                            values.completionDatemodified =
+                                              e.target.value;
+                                          }}
+                                          onBlur={handleBlur}
+                                          // value={values.completionDatemodified}
+                                        />
+                                        {/* <FormFeedback>{errors.completionDatemodified}</FormFeedback> */}
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div className="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                                    <Input
-                                      type="date"
-                                      name="dueDate"
-                                      id="dueDate"
-                                      // placeholder=""
-                                      autoComplete={false}
-                                      // valid={!errors.dueDate}
-                                      // invalid={
-                                      //   touched.dueDate && !!errors.dueDate
-                                      // }
-                                      // autoFocus={true}
-                                      // required
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.dueDate}
-                                    />
-                                    {/* <FormFeedback>{errors.dueDate}</FormFeedback> */}
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Input
-                                      type="time"
-                                      name="dueDatemodified"
-                                      id="dueDatemodified"
-                                      // placeholder=""
-                                      // autoComplete={false}
-                                      // valid={!errors.dueDate}
-                                      // invalid={touched.dueDate && !!errors.dueDate}
-                                      // autoFocus={true}
-                                      // required
-                                      defaultValue={values.dueDatemodified}
-                                      onChange={e => {
-                                        values.dueDatemodified = e.target.value;
-                                      }}
-                                      onBlur={handleBlur}
-                                      // value={values.dueDate}
-                                    />
-                                    {/* <FormFeedback>{errors.dueDate}</FormFeedback> */}
-                                  </div>
-                                </div>
-                                <div className="row mb-1">
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Label
-                                      for="completionDate"
-                                      style={classes.label}
-                                    >
-                                      Completion Date
-                                    </Label>
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                                    <Input
-                                      type="date"
-                                      name="completionDate"
-                                      id="completionDate"
-                                      // placeholder=""
-                                      autoComplete={false}
-                                      // valid={!errors.completionDate}
-                                      // invalid={
-                                      //   touched.completionDate && !!errors.completionDate
-                                      // }
-                                      // autoFocus={true}
-                                      // required
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.completionDate}
-                                    />
-                                    {/* <FormFeedback>{errors.completionDate}</FormFeedback> */}
-                                  </div>
-                                  <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                    <Input
-                                      type="time"
-                                      name="completionDatemodified"
-                                      id="completionDatemodified"
-                                      // placeholder=""
-                                      // autoComplete={false}
-                                      // valid={!errors.dueDate}
-                                      // invalid={touched.dueDate && !!errors.dueDate}
-                                      // autoFocus={true}
-                                      // required
-                                      defaultValue={
-                                        values.completionDatemodified
-                                      }
-                                      onChange={e => {
-                                        values.completionDatemodified =
-                                          e.target.value;
-                                      }}
-                                      onBlur={handleBlur}
-                                      // value={values.completionDatemodified}
-                                    />
-                                    {/* <FormFeedback>{errors.completionDatemodified}</FormFeedback> */}
-                                  </div>
-                                </div>
-                              </div>
 
-                              {/* ************************************** */}
-                              <div className="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4"></div>
-                            </div>
-                          </Tab>
-                          <Tab
-                            eventKey="activity"
-                            disabled={false}
-                            title="Activity"
-                            // onSelect={event => changeColor(event)}
-                          >
-                            <ListingNoteActivty
-                              Showhead={false}
-                              ShowFoot={true}
-                              callid={true}
-                              idofcontact={props.IDforAPI}
-                            />
-                          </Tab>
-                          <Tab
-                            eventKey="parentnotes"
-                            disabled={false}
-                            title="Notes"
-                            // onSelect={event => changeColor(event)}
-                          >
-                            <ListingNotes
-                              Showhead={false}
-                              ShowFoot={true}
-                              callid={true}
-                              idofcontact={props.IDforAPI}
-                            />
-                          </Tab>
-                        </Tabs>
-                      </FormGroup>
-                      <br />
-                      <div className="row">
-                        <div className="col-2 col-sm-2 col-md-4 col-lg-9 col-xl-10"></div>
-                        <div className="col-8 col-sm-8 col-md-6 col-lg-3 col-xl-2">
-                          <FormGroup>
-                            <Button
-                              type="submit"
-                              color="primary"
-                              className="mr-1"
-                              style={classes.button}
-                              disabled={isSubmitting || !isValid}
-                            >
-                              {isSubmitting ? "Wait..." : "Submit"}
-                            </Button>
-
-                            <Button
-                              color="secondary"
-                              onClick={() => props.backmain(1)}
-                              style={classes.button}
-                            >
-                              Cancel
-                            </Button>
+                                  {/* ************************************** */}
+                                  <div className="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4"></div>
+                                </div>
+                              </Tab>
+                            </Tabs>
                           </FormGroup>
-                        </div>
-                      </div>
-                    </Form>
-                  </Col>
-                </Row>
-              )}
-            />
+                          <br />
+                          <div className="row">
+                            <div className="col-2 col-sm-2 col-md-4 col-lg-9 col-xl-10"></div>
+                            <div className="col-8 col-sm-8 col-md-6 col-lg-3 col-xl-2">
+                              <FormGroup>
+                                <Button
+                                  type="submit"
+                                  color="primary"
+                                  className="mr-1"
+                                  style={classes.button}
+                                  disabled={isSubmitting || !isValid}
+                                >
+                                  {isSubmitting ? "Wait..." : "Submit"}
+                                </Button>
+
+                                <Button
+                                  color="secondary"
+                                  onClick={() => props.backmain(1)}
+                                  style={classes.button}
+                                >
+                                  Cancel
+                                </Button>
+                              </FormGroup>
+                            </div>
+                          </div>
+                        </Form>
+                      </Col>
+                    </Row>
+                  )}
+                />
+              </Tab>
+              <Tab
+                eventKey="activity"
+                disabled={false}
+                title="Activity"
+                // onSelect={event => changeColor(event)}
+              >
+                <ListingNoteActivty
+                  Showhead={false}
+                  ShowFoot={true}
+                  callid={true}
+                  idofParent={props.IDforAPI}
+                  ActivityType={"notes"}
+                />
+              </Tab>
+              <Tab
+                eventKey="parentnotes"
+                disabled={false}
+                title="Notes"
+                // onSelect={event => changeColor(event)}
+              >
+                <ListingNotes
+                  Showhead={false}
+                  ShowFoot={true}
+                  callid={true}
+                  idofParent={props.IDforAPI}
+                  noteType={"notes"}
+                />
+              </Tab>
+            </Tabs>
           </CardBody>
         </Card>
       </div>

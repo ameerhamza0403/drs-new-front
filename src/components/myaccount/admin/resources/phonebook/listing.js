@@ -305,6 +305,7 @@ let PhoneBookListing = () => {
           <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
             <div>
               <BootstrapTable
+          headerStyle={ { background: '#DDDDDD', maxHeight:'40px', } }
                 data={Atlist}
                 version="4"
                 striped

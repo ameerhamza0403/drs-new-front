@@ -148,7 +148,7 @@ const options = {
     getlistapi();
   }, []);
 
-  
+
 
   async function getlistapi() {
     await GetListingForAccount(Page, PageSize).then(res => {
@@ -180,6 +180,7 @@ const options = {
     Tabledisplay = (
         <div>
         <BootstrapTable
+          headerStyle={ { background: '#DDDDDD', maxHeight:'40px', } }
           data={Atlist}
           version="4"
           striped
@@ -198,8 +199,8 @@ const options = {
           <TableHeaderColumn isKey dataField="isActive" dataSort>
             isActive
           </TableHeaderColumn>
-          
-         
+
+
         </BootstrapTable>
         <br />
         <div className="row">
@@ -221,7 +222,7 @@ const options = {
     getlistapi();
   };
 
- 
+
  // Toast
 
  function errort() {

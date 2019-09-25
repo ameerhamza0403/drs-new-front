@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 //import MUIDataTable from "mui-datatables";
-import "../../../../scss/override/listing.scss";
+// import "../../../../scss/override/listing.scss";
+import "../../../../scss/override/navlisting.scss";
 import EditCrmContactPerson from "./edit";
 import {
   GetCrmContactPerson,
+  GetCrmPersonByContact,
   DeleteCrmContactPerson
 } from "..//shared/contactperson";
 import AddCrmContactPerson from "./add";
@@ -13,6 +15,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { withRouter } from "react-router-dom";
+
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -58,10 +62,11 @@ const classes = {
   },
   plusbutton: {
     color: "white",
-    borderRadius: "50px",
-    width: "10px",
+    // borderRadius: "50px",
+    // width: "10px",
     cursor: "pointer",
-    float: "left"
+    // float: "left",
+    textAlign: 'center'
     // marginTop: '10px',
     // marginLeft: '5px',
   }
@@ -84,7 +89,7 @@ let ListingContactPerson = props => {
     // paginationSize: 5,
     // hidePageListOnlyOnePage: false,
     // clearSearch: true,
-    alwaysShowAllBtns: false,
+    alwaysShowAllbtns: false,
     // onRowClick: HandlerowSelect,
     withFirstAndLast: false
 
@@ -99,22 +104,13 @@ let ListingContactPerson = props => {
 
   async function getlistapi() {
     if (props.callid) {
-      console.log(props.idofcontact)
-      await GetCrmContactPerson(props.idofcontact).then(res => {
+      console.log(props.idofParent)
+      await GetCrmPersonByContact(props.idofParent).then(res => {
         setAtlistVal((AtlistVal = res.data));
         console.log(res.data);
-        setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
       });
 
-      // AtlistVal.map(e => {
-      //   if (!(e.installDate === null)) {
-      //     e.installDate = e.installDate.substr(0, e.installDate.length - 9);
-      //   }
-      // });
 
-      setTotalCount((totalcount = paginate.totalCount));
-      TotalPages = paginate.totalPages;
-      countforpagination = 0;
       settabledistatus((Tabledistatus = false));
       settabledistatus((Tabledistatus = true));
       setMenucon(props.Showhead);
@@ -252,10 +248,12 @@ let ListingContactPerson = props => {
     Tabledisplay = (
       <div>
         <BootstrapTable
+          headerStyle={ { background: '#DDDDDD', maxHeight:'40px', } }
           data={AtlistVal}
           version="4"
           striped
           hover
+
           // pagination
           // search
           options={options}
@@ -293,14 +291,14 @@ let ListingContactPerson = props => {
           ></TableHeaderColumn>
         </BootstrapTable>
         <br />
-        <div className="row">
+        {/* <div className="row">
           <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
             {"  Showing "} {PageSizeComp} {" Results"}
           </div>
           <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
             {paging}
           </div>
-        </div>
+        </div> */}
       </div>
     );
   } else {
@@ -350,6 +348,8 @@ let ListingContactPerson = props => {
           backmain={ChangeScreen}
           success={success}
           error={errort}
+          check={props.callid}
+          idforparent={props.idofParent}
         />
       );
       break;
@@ -360,6 +360,7 @@ let ListingContactPerson = props => {
           success={success}
           error={errort}
           IDforAPI={idofEdit}
+
         />
       );
       break;
@@ -417,8 +418,7 @@ let ListingContactPerson = props => {
     footcont = "";
   }
   menuDiv = (
-    <ul className="tool">
-      <li />
+      <li>
       <i
         className="fa fa-plus-circle fa-2x"
         style={classes.plusbutton}
@@ -428,18 +428,29 @@ let ListingContactPerson = props => {
         }}
       />
       {/* <AddCrmContactPerson refresh={refreshfn} /> */}
-    </ul>
+      </li>
+
   );
 
   if (menucon) {
     menucont = (
-      <div className="row header">
-        <div className="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5">
+      <div className="row align-items-center justify-content-between headbtn">
+        <div className="headbtn-icons col-md-12 col-lg-2">
           {menuDiv}
         </div>
-        <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
-          <h3 className="heading">CONTACT PERSON</h3>
+        <div className='headbtn-links col-md-12 col-lg-10'>
+          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Contacts</div>
+          <div className='btn btn-active' >Person</div>
+          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Notes</div>
+          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Activities</div>
+          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Activity Type</div>
+          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Sale Oppurtunity</div>
+          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Mail</div>
         </div>
+        {/* <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
+          <h3 className="heading">CONTACT PERSON</h3>
+        </div> */}
+
       </div>
     );
   } else {
@@ -459,4 +470,4 @@ let ListingContactPerson = props => {
   );
 };
 
-export default ListingContactPerson;
+export default withRouter(ListingContactPerson);

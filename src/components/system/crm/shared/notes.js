@@ -26,6 +26,71 @@ export function GetCrmNotes(pg, pgsize) {
   });
 }
 
+//---------Get APi by Contact ID
+
+let apitogetbycontactid = apiUrl + "/crm/Notes/contacts";
+function Apigetnotesbycontact(Id) {
+  return `${apitogetbycontactid}/${Id}`;
+}
+
+export function GetCrmNotesByContact(id) {
+  // console.log(id)
+  return axios.get(Apigetnotesbycontact(id), {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+}
+
+// --------- Get Note by Parent Note
+
+let urlnotebyparentnote= apiUrl + '/crm/Notes/notes';
+function ApiNoteByParentNote(Id) {
+  return `${urlnotebyparentnote}/${Id}`;
+}
+
+export function GetNoteByParentNoteApi(id) {
+  // console.log(id)
+  return axios.get(ApiNoteByParentNote(id), {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+}
+
+// --------- Get Note by Parent Note
+
+let urlactivitiesbynote= apiUrl + '/crm/Activities/notes';
+function ApiActivitiesbyNote(Id) {
+  return `${urlactivitiesbynote}/${Id}`;
+}
+
+export function GetActivitiesByNoteApi(id) {
+  // console.log(id)
+  return axios.get(ApiActivitiesbyNote(id), {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+}
+
+// --------- Get Note by Parent Note
+
+let urlnotebyperson= apiUrl + '/crm/Notes/contactpersons';
+function ApinotebyPerson(Id) {
+  return `${urlnotebyperson}/${Id}`;
+}
+
+export function GetNoteByPersonId(id) {
+  // console.log(id)
+  return axios.get(ApinotebyPerson(id), {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+}
+
+
 //---------Edit APi
 export function GetCrmNotesById(id) {
   // console.log(id)
@@ -68,3 +133,4 @@ export function PostFileUpload(body) {
     }
   });
 }
+

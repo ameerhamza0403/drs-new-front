@@ -77,47 +77,34 @@ export default {
     },
     {
       name: "CRM",
-      url: "/crm",
+      url: "/system/crm",
       icon: "fa fa-users",
       children: [
         {
-          name: "Contacts",
-          url: "/system/crm/contact",
-          icon: "fa fa-user",
-          children: [
-            {
-              name: "Contact",
-              url: "/system/crm/contacts",
-              icon: "fa fa-user"
-            },
-            {
-              name: "Person",
-              url: "/system/crm/contact-person",
-              icon: "fa fa-user"
-            }
-          ]
+          name: "Contact",
+          url: "/system/crm/contacts",
+          icon: "fa fa-user"
         },
         {
+          name: "Person",
+          url: "/system/crm/contact-person",
+          icon: "fa fa-user"
+        },
+
+        {
           name: "Notes",
-          url: "/crm/note",
-          icon: "fa fa-sticky-note-o",
-          children: [
-            {
-              name: "Notes",
-              url: "/system/crm/notes",
-              icon: "fa fa-sticky-note-o"
-            },
-            {
-              name: "Activity Type",
-              url: "/system/crm/activity-type",
-              icon: "fa fa-sticky-note-o"
-            },
-            {
-              name: "Activities",
-              url: "/system/crm/note-activity",
-              icon: "fa fa-sticky-note-o"
-            }
-          ]
+          url: "/system/crm/notes",
+          icon: "fa fa-sticky-note-o"
+        },
+        {
+          name: "Activity Type",
+          url: "/system/crm/activity-type",
+          icon: "fa fa-sticky-note-o"
+        },
+        {
+          name: "Activities",
+          url: "/system/crm/note-activity",
+          icon: "fa fa-sticky-note-o"
         },
 
         {

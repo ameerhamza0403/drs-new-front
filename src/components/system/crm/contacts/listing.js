@@ -220,6 +220,7 @@ let CrmContactsListing = () => {
     Tabledisplay = (
       <div>
         <BootstrapTable
+          headerStyle={ { background: '#DDDDDD', maxHeight:'40px', } }
           data={Atlist}
           version="4"
           striped
@@ -327,6 +328,7 @@ let CrmContactsListing = () => {
           success={success}
           error={errort}
           IDforAPI={idofEdit}
+
         />
       );
       break;

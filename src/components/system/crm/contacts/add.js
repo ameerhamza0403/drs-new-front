@@ -5,8 +5,10 @@ import {
   GetCrmContacts
 } from "..//shared/contacts";
 import { GetCrmContactGroup } from "../shared/contactgroup";
-import ListingContactPerson from '../contactperson/listing';
-import ContactMap from './map';
+import ListingContactPerson from "../contactperson/listing";
+import ContactMap from "./map";
+import ListingNotes from '../notes/listing';
+import '../../../../scss/customstyles/tabs.css';
 import {
   Button,
   Card,
@@ -140,7 +142,7 @@ let AddCrmContacts = props => {
     // });
   }
 
-  const initialValues = {
+  let initialValues = {
     name: "",
     isActive: true
   };
@@ -818,6 +820,20 @@ let AddCrmContacts = props => {
                             ShowFoot={true}
                             callid={true}
                             idofcontact={props.IDforAPI}
+                          />
+                        </Tab>
+                        <Tab
+                          eventKey="notes"
+                          title="Notes"
+                          disabled
+
+                          // onSelect={event => changeColor(event)}
+                        >
+                          <ListingNotes
+                            Showhead={false}
+                            ShowFoot={true}
+                            callid={true}
+                            idofParent={props.IDforAPI}
                           />
                         </Tab>
                       </Tabs>

@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 //import MUIDataTable from "mui-datatables";
 import "../../../../scss/override/listing.scss";
 import EditNotes from "./edit";
-import { GetCrmNotes, DeleteCrmNotes } from "..//shared/notes";
+import {
+  GetCrmNotes,
+  DeleteCrmNotes,
+  GetCrmNotesByContact,
+  GetNoteByParentNoteApi,
+  GetActivitiesByNoteApi,
+  GetNoteByPersonId
+} from "..//shared/notes";
 import AddNotes from "./add";
 import { Spinner } from "reactstrap";
 import { toast } from "react-toastify";
@@ -94,24 +101,86 @@ let ListingNotes = props => {
 
   async function getlistapi() {
     if (props.callid) {
-      await GetCrmNotes(props.idofcontact).then(res => {
-        setAtlistVal((AtlistVal = res.data));
-        console.log(res.data);
-        setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-      });
+      if (props.noteType === "contact") {
+        await GetCrmNotesByContact(props.idofParent).then(res => {
+          setAtlistVal((AtlistVal = res.data));
+          console.log('contact');
+        });
+        settabledistatus((Tabledistatus = false));
+        settabledistatus((Tabledistatus = true));
+        setMenucon(props.Showhead);
+      }
+      else if (props.noteType === "person") {
+        await GetNoteByPersonId(props.idofParent).then(res => {
+          setAtlistVal((AtlistVal = res.data));
+          console.log('person');
+        });
+        settabledistatus((Tabledistatus = false));
+        settabledistatus((Tabledistatus = true));
+        setMenucon(props.Showhead);
+      }
+      else if (props.noteType === "notes") {
+        await GetNoteByParentNoteApi(props.idofParent).then(res => {
+          setAtlistVal((AtlistVal = res.data));
+          console.log('notes');
+          console.log(AtlistVal)
+          console.log(props.idofParent)
+        });
+        settabledistatus((Tabledistatus = false));
+        settabledistatus((Tabledistatus = true));
+        setMenucon(props.Showhead);
+      }
+      // else if (props.noteType === "activities") {
+      //   await GetActivitiesByNoteApi(props.idofParent).then(res => {
+      //     setAtlistVal((AtlistVal = res.data));
+      //     console.log('activities');
+      //     console.log(AtlistVal)
+      //     console.log(props.idofParent)
+      //   });
+      //   settabledistatus((Tabledistatus = false));
+      //   settabledistatus((Tabledistatus = true));
+      //   setMenucon(props.Showhead);
+      // }
+      else if (props.noteType === "vehicle") {
+        await GetCrmNotesByContact(props.idofParent).then(res => {
+          setAtlistVal((AtlistVal = res.data));
+          console.log('vehicle');
+        });
+        settabledistatus((Tabledistatus = false));
+        settabledistatus((Tabledistatus = true));
+        setMenucon(props.Showhead);
+      }
 
-      // AtlistVal.map(e => {
-      //   if (!(e.installDate === null)) {
-      //     e.installDate = e.installDate.substr(0, e.installDate.length - 9);
-      //   }
-      // });
+      else if (props.noteType === "resource") {
+        await GetCrmNotesByContact(props.idofParent).then(res => {
+          setAtlistVal((AtlistVal = res.data));
+          console.log('resource');
+        });
+        settabledistatus((Tabledistatus = false));
+        settabledistatus((Tabledistatus = true));
+        setMenucon(props.Showhead);
+      }
 
-      setTotalCount((totalcount = paginate.totalCount));
-      TotalPages = paginate.totalPages;
-      countforpagination = 0;
-      settabledistatus((Tabledistatus = false));
-      settabledistatus((Tabledistatus = true));
-      setMenucon(props.Showhead);
+      else if (props.noteType === "customerasset") {
+        await GetCrmNotesByContact(props.idofParent).then(res => {
+          setAtlistVal((AtlistVal = res.data));
+          console.log('customerasset');
+        });
+        settabledistatus((Tabledistatus = false));
+        settabledistatus((Tabledistatus = true));
+        setMenucon(props.Showhead);
+      }
+
+      else if (props.noteType === "item") {
+        await GetCrmNotesByContact(props.idofParent).then(res => {
+          setAtlistVal((AtlistVal = res.data));
+          console.log('item');
+        });
+        settabledistatus((Tabledistatus = false));
+        settabledistatus((Tabledistatus = true));
+        setMenucon(props.Showhead);
+      }
+
     } else {
       await GetCrmNotes(Page, PageSize).then(res => {
         setAtlistVal((AtlistVal = res.data));
@@ -246,6 +315,7 @@ let ListingNotes = props => {
     Tabledisplay = (
       <div>
         <BootstrapTable
+          headerStyle={{ background: "#DDDDDD", maxHeight: "40px" }}
           data={AtlistVal}
           version="4"
           striped
@@ -289,14 +359,14 @@ let ListingNotes = props => {
           ></TableHeaderColumn>
         </BootstrapTable>
         <br />
-        <div className="row">
+        {/* <div className="row">
           <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
             {"  Showing "} {PageSizeComp} {" Results"}
           </div>
           <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
             {paging}
           </div>
-        </div>
+        </div> */}
       </div>
     );
   } else {
@@ -349,7 +419,14 @@ let ListingNotes = props => {
       break;
     case 2:
       screencontent = (
-        <AddNotes backmain={ChangeScreen} success={success} error={errort} noteType={props.noteType}/>
+        <AddNotes
+          backmain={ChangeScreen}
+          success={success}
+          error={errort}
+          noteType={props.noteType}
+          check={props.callid}
+          idforparent={props.idofParent}
+        />
       );
       break;
     case 3:
@@ -359,7 +436,7 @@ let ListingNotes = props => {
           success={success}
           error={errort}
           IDforAPI={idofEdit}
-          assetType={props.assetType}
+          noteType={props.noteType}
         />
       );
       break;

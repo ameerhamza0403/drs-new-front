@@ -157,7 +157,7 @@ let CoditionTemplateAdd = (props) => {
 
   //   // onRowsSelect: (currentRowsSelected, allRowsSelected) => console.log(currentRowsSelected, ' : ', allRowsSelected ),
   // };
- 
+
 
   let Tabledisplay = (
     <LinearProgress style={classes.linearprogress} color="secondary" />
@@ -189,6 +189,7 @@ let CoditionTemplateAdd = (props) => {
       <div>
         <br />
         <BootstrapTable
+          headerStyle={ { background: '#DDDDDD', maxHeight:'40px', } }
           data={Atlist}
           version="4"
           striped
@@ -207,7 +208,7 @@ let CoditionTemplateAdd = (props) => {
           <TableHeaderColumn dataField="expression" dataSort>
             Expression
           </TableHeaderColumn>
-          
+
         </BootstrapTable>
         <br />
         {/* <div className="row">
@@ -239,7 +240,7 @@ let CoditionTemplateAdd = (props) => {
       setAtlist((Atlist = res.data));
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
-    
+
     TotalPages = paginate.totalPages;
     settabledistatus((Tabledistatus = true));
   }
@@ -555,11 +556,11 @@ let CoditionTemplateAdd = (props) => {
   function HandlerowSelect(row) {
     menuDiv = "";
     idofEdit = row.count;
-    
+
     Atlist.map((e,i)=>{ if(e.count===idofEdit){
       Atlist.splice(idofEdit, 1);
     }});
-    
+
     settabledistatus(false);
     setTimeout(() => {
       refreshfn()

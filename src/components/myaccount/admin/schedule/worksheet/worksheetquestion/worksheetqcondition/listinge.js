@@ -156,7 +156,7 @@ const options = {
       setAtlist((Atlist = res.data));
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
-    
+
     TotalPages = paginate.totalPages;
     settabledistatus((Tabledistatus = true));
   }
@@ -177,6 +177,7 @@ const options = {
     Tabledisplay = (
         <div>
         <BootstrapTable
+          headerStyle={ { background: '#DDDDDD', maxHeight:'40px', } }
           data={Atlist}
           version="4"
           striped
@@ -195,7 +196,7 @@ const options = {
           <TableHeaderColumn dataField="expression" dataSort>
             Expression
           </TableHeaderColumn>
-          
+
         </BootstrapTable>
         <br />
         <div className="row">

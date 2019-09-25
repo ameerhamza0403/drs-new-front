@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import {GetActivitiesByNoteApi} from '../shared/notes';
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -96,25 +97,27 @@ let ListingNoteActivty = props => {
   }, []);
 
   async function getlistapi() {
+    console.log(props.idofParent)
     if (props.callid) {
-      await GetCrmNotesActivity(props.idofcontact).then(res => {
-        setAtlistVal((AtlistVal = res.data));
-        console.log(res.data);
-        setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-      });
+      if(props.ActivityType==='notes'){
+        await GetActivitiesByNoteApi(props.idofParent).then(res => {
+          setAtlistVal((AtlistVal = res.data));
+          console.log(res.data);
+        });
+        settabledistatus((Tabledistatus = false));
+        settabledistatus((Tabledistatus = true));
+        setMenucon(props.Showhead);
+      }
+      else if(props.ActivityType==='resource'){
+        await GetCrmNotesActivity(props.idofParent).then(res => {
+          setAtlistVal((AtlistVal = res.data));
+          console.log(res.data);
+        });
+        settabledistatus((Tabledistatus = false));
+        settabledistatus((Tabledistatus = true));
+        setMenucon(props.Showhead);
+      }
 
-      // AtlistVal.map(e => {
-      //   if (!(e.installDate === null)) {
-      //     e.installDate = e.installDate.substr(0, e.installDate.length - 9);
-      //   }
-      // });
-
-      setTotalCount((totalcount = paginate.totalCount));
-      TotalPages = paginate.totalPages;
-      countforpagination = 0;
-      settabledistatus((Tabledistatus = false));
-      settabledistatus((Tabledistatus = true));
-      setMenucon(props.Showhead);
     } else {
       await GetCrmNotesActivity(Page, PageSize).then(res => {
         setAtlistVal((AtlistVal = res.data));
@@ -249,6 +252,7 @@ let ListingNoteActivty = props => {
     Tabledisplay = (
       <div>
         <BootstrapTable
+          headerStyle={ { background: '#DDDDDD', maxHeight:'40px', } }
           data={AtlistVal}
           version="4"
           striped
@@ -355,6 +359,8 @@ let ListingNoteActivty = props => {
           backmain={ChangeScreen}
           success={success}
           error={errort}
+          ActivityType={props.ActivityType}
+          idofParent={props.idofParent}
         />
       );
       break;

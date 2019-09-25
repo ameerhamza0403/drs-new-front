@@ -21,6 +21,7 @@ let CrmNotesListing = () => {
           customerasset
           item
           contact
+          activities
       */}
     </div>
   );

@@ -46,7 +46,8 @@ class DataTable extends Component {
             </div>
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={this.table} version="4" striped hover pagination search options={this.options}>
+            <BootstrapTable
+          headerStyle={ { background: '#DDDDDD', maxHeight:'40px', } } data={this.table} version="4" striped hover pagination search options={this.options}>
               <TableHeaderColumn dataField="name" dataSort dataFormat={this.nameFormat} >Name</TableHeaderColumn>
               <TableHeaderColumn isKey dataField="email">Email</TableHeaderColumn>
               <TableHeaderColumn dataField="age" dataSort>Age</TableHeaderColumn>

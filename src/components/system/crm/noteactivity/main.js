@@ -4,7 +4,10 @@ import ListingNoteActivty from "./listing";
 let CrmNotesActivity = () => {
   return (
     <div>
-      <ListingNoteActivty Showhead={true} callid={false} idofentity={undefined} ShowFoot={false}/>
+      <ListingNoteActivty Showhead={true} callid={false} idofentity={undefined} ShowFoot={false} ActivityType={'acitivities'}/>
+      {/* ******************* */}
+      {/* ActivityType */}
+      {/* acitivities, resource, notes */}
     </div>
   );
 };

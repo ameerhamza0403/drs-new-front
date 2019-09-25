@@ -163,7 +163,7 @@ const options = {
     getlistapi();
   }, []);
 
-  
+
   let [colorarr, setcolorarr]= useState();
   let [c,setc]=useState();
   async function getlistapi() {
@@ -178,20 +178,20 @@ const options = {
       console.log(Atlist)
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
-    
 
-    
+
+
     TotalPages = paginate.totalPages;
-    
 
-    
+
+
     settabledistatus((Tabledistatus = false));
     settabledistatus((Tabledistatus = true));
   }
 
   let colorinit=(cell,row)=>{
     let colorvalue =  <div className="ColorCodesl" style={ColorStyleFn(cell)} />
-    
+
     return colorvalue;
   }
 
@@ -211,6 +211,7 @@ const options = {
     Tabledisplay = (
         <div>
         <BootstrapTable
+          headerStyle={ { background: '#DDDDDD', maxHeight:'40px', } }
           data={Atlist}
           version="4"
           striped
@@ -228,8 +229,8 @@ const options = {
           <TableHeaderColumn dataField="isActive" hidden={true} isKey={true} dataSort>
             Name
           </TableHeaderColumn>
-          
-         
+
+
         </BootstrapTable>
         <br />
         <div className="row">
@@ -251,7 +252,7 @@ const options = {
     getlistapi();
   };
 
- 
+
  // Toast
 
  function errort() {

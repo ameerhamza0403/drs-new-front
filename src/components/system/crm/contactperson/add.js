@@ -1,6 +1,7 @@
 import React, { Component, useState, useEffect } from "react";
 import { PostFileUpload, PostCrmContactPerson } from "..//shared/contactperson";
 import { GetCrmContacts } from "../shared/contacts";
+import "../../../../scss/customstyles/tabs.css";
 import {
   Button,
   Card,
@@ -25,9 +26,14 @@ import { DropzoneArea } from "material-ui-dropzone";
 import Select from "react-select";
 import "react-select/dist/react-select.min.css";
 import "../../../../scss/override/select.scss";
-import { Divider } from "@material-ui/core";
+import { Spinner } from "reactstrap";
 
 const classes = {
+  linearprogress: {
+    // backgroundColor: '#EE7647',
+    // backgroundColor: "rgb(243, 153, 117)"
+    marginLeft: "50%"
+  },
   button: {
     color: "white",
     backgroundColor: "#EE7647",
@@ -72,7 +78,7 @@ let AddCrmContactPerson = props => {
 
   const validationSchema = function(values) {
     return Yup.object().shape({
-      // name: Yup.string().required("Name is required"),
+      // firstName: Yup.string().required("Name is required"),
       contactId: Yup.string().required("Contact is required")
     });
   };
@@ -100,6 +106,8 @@ let AddCrmContactPerson = props => {
   };
 
   useEffect(() => {
+    settabledistatus((Tabledistatus = false));
+
     getlistapi();
   }, []);
 
@@ -107,9 +115,25 @@ let AddCrmContactPerson = props => {
 
   let [Parentcontact, setParentContact] = useState([]);
 
+  let initialValues={
+      name: "",
+      isActive: true,
+      receiveDocs: false,
+      receiveEmails: false,
+      anonymised: false,
+      contactId: (props.check)?props.idforparent:0,
+    };
+
   async function getlistapi() {
     const { data: Parentcontact } = await GetCrmContacts(0, 0);
     setParentContact(Parentcontact);
+
+    // if (props.check) {
+    //   initialValues.contactId = props.idforparent;
+    // }
+    console.log(initialValues)
+
+    settabledistatus((Tabledistatus = true));
 
     //Multi Select Code  asset type
     // assettype.map((e, i) => {
@@ -123,14 +147,6 @@ let AddCrmContactPerson = props => {
     //   }
     // });
   }
-
-  const initialValues = {
-    name: "",
-    isActive: true,
-    receiveDocs: false,
-    receiveEmails: false,
-    anonymised: false
-  };
 
   function handleChangefile(files) {
     setFiles((files = files));
@@ -159,553 +175,550 @@ let AddCrmContactPerson = props => {
     validateForm(errors);
   }
 
+  let Tabledisplay = (
+    <div style={classes.linearprogress}>
+      <Spinner type="grow" color="dark" />
+    </div>
+  );
+
+  let [Tabledistatus, settabledistatus] = useState(false);
+  if (Tabledistatus) {
+    Tabledisplay = (
+      <Formik
+        initialValues={initialValues}
+        validate={validate(validationSchema)}
+        onSubmit={onSubmit}
+        render={({
+          values,
+          errors,
+          touched,
+          status,
+          dirty,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+          isValid,
+          handleReset,
+          setTouched
+        }) => (
+          <Row>
+            <Col lg="12">
+              <Form onSubmit={handleSubmit} noValidate name="simpleForm">
+                <FormGroup>
+                  <Tabs
+                    defaultActiveKey="general"
+                    transition={false}
+                    id="noanim-tab-example"
+                    className={classes.myclass}
+                  >
+                    <Tab
+                      eventKey="general"
+                      title="General"
+
+                      // onSelect={event => changeColor(event)}
+                    >
+                      <div className="row mb-1">
+                        <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
+                              <Label for="title" style={classes.label}>
+                                Title
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-1 col-xl-1">
+                              <Input
+                                type="text"
+                                name="title"
+                                id="title"
+                                placeholder=""
+                                autoComplete={false}
+                                // valid={!errors.title}
+                                // invalid={touched.title && !!errors.title}
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.title}
+                              />
+                              {/* <FormFeedback>{errors.title}</FormFeedback> */}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row mb-1">
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                              <Label for="firstName" style={classes.label}>
+                                First Name
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <Input
+                                type="text"
+                                name="firstName"
+                                id="firstName"
+                                placeholder=""
+                                autoComplete={false}
+                                // valid={!errors.firstName}
+                                // invalid={touched.firstName && !!errors.firstName}
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.firstName}
+                              />
+                              {/* <FormFeedback>{errors.firstName}</FormFeedback> */}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="lastName" style={classes.label}>
+                                Last Name
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
+                              <Input
+                                type="text"
+                                name="lastName"
+                                id="lastName"
+                                placeholder=""
+                                autoComplete={false}
+                                // valid={!errors.lastName}
+                                // invalid={touched.lastName && !!errors.lastName}
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.lastName}
+                              />
+                              {/* <FormFeedback>{errors.lastName}</FormFeedback> */}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row mb-1">
+                        <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
+                              <Label for="contactId" style={classes.label}>
+                                Contact
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
+                              <Input
+                                type="select"
+                                name="contactId"
+                                id="contactId"
+                                valid={!errors.contactId}
+                                invalid={
+                                  touched.contactId && !!errors.contactId
+                                }
+                                // autoFocus={true}
+                                required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.contactId}
+
+                              >
+                                <option selected disabled={(props.check)?true:false}></option>
+                                {Parentcontact.map(e => (
+                                  <option value={e.contactId} disabled={(props.check)?true:false}>{e.name}</option>
+                                ))}
+                              </Input>
+                              <FormFeedback>
+                                {errors.contactId}
+                              </FormFeedback>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row mb-1">
+                        <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
+                              <Label for="email" style={classes.label}>
+                                Email
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
+                              <Input
+                                type="text"
+                                name="email"
+                                id="email"
+                                placeholder=""
+                                autoComplete={false}
+                                // valid={!errors.email}
+                                // invalid={
+                                //   touched.email &&
+                                //   !!errors.email
+                                // }
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.email}
+                              />
+                              {/* <FormFeedback>
+                                  {errors.email}
+                                </FormFeedback> */}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row mb-1">
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                              <Label for="mobilePhone" style={classes.label}>
+                                Mobile Phone
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <Input
+                                type="text"
+                                name="mobilePhone"
+                                id="mobilePhone"
+                                // placeholder=""
+                                // autoComplete={false}
+                                // valid={!errors.mobilePhone}
+                                // invalid={touched.mobilePhone && !!errors.mobilePhone}
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.mobilePhone}
+                              />
+                              {/* <FormFeedback>{errors.mobilePhone}</FormFeedback> */}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                              <Label for="landline" style={classes.label}>
+                                Landline
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <Input
+                                type="text"
+                                name="landline"
+                                id="landline"
+                                placeholder=""
+                                autoComplete={false}
+                                // valid={!errors.landline}
+                                // invalid={touched.landline && !!errors.landline}
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.landline}
+                              />
+                              {/* <FormFeedback>{errors.landline}</FormFeedback> */}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row mb-1">
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                              <Label for="extentsion" style={classes.label}>
+                                Extentsion
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <Input
+                                type="text"
+                                name="extentsion"
+                                id="extentsion"
+                                placeholder=""
+                                autoComplete={false}
+                                // valid={!errors.extentsion}
+                                // invalid={touched.extentsion && !!errors.extentsion}
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.extentsion}
+                              />
+                              {/* <FormFeedback>{errors.extentsion}</FormFeedback> */}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="department" style={classes.label}>
+                                Department
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
+                              <Input
+                                type="text"
+                                name="department"
+                                id="department"
+                                placeholder=""
+                                autoComplete={false}
+                                // valid={!errors.department}
+                                // invalid={touched.department && !!errors.department}
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.department}
+                              />
+                              {/* <FormFeedback>{errors.department}</FormFeedback> */}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row mb-1">
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                              <Label for="position" style={classes.label}>
+                                Position
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <Input
+                                type="text"
+                                name="position"
+                                id="position"
+                                placeholder=""
+                                autoComplete={false}
+                                // valid={!errors.position}
+                                // invalid={touched.position && !!errors.position}
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.position}
+                              />
+                              {/* <FormFeedback>{errors.position}</FormFeedback> */}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="receiveEmails" style={classes.label}>
+                                Receive Emails
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
+                              <FormGroup check className="radio inline">
+                                <Input
+                                  className="form-check-input"
+                                  type="radio"
+                                  id="receiveEmails"
+                                  name="receiveEmails"
+                                  value={true}
+                                  onClick={e => (values.receiveEmails = true)}
+                                />
+                                <Label
+                                  check
+                                  className="form-check-label"
+                                  htmlFor="Yes"
+                                >
+                                  Yes
+                                </Label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <Input
+                                  className="form-check-input"
+                                  type="radio"
+                                  id="receiveEmails"
+                                  name="receiveEmails"
+                                  value={false}
+                                  onClick={e => (values.receiveEmails = false)}
+                                  defaultChecked
+                                />
+                                <Label
+                                  check
+                                  className="form-check-label"
+                                  htmlFor="No"
+                                >
+                                  No
+                                </Label>
+                              </FormGroup>
+                              {/* <FormFeedback>{errors.receiveEmails}</FormFeedback> */}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row mb-1">
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                              <Label for="receiveDocs" style={classes.label}>
+                                Receive Docs
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <FormGroup check className="radio inline">
+                                <Input
+                                  className="form-check-input"
+                                  type="radio"
+                                  id="receiveDocs"
+                                  name="receiveDocs"
+                                  value={true}
+                                  onClick={e => (values.receiveDocs = true)}
+                                />
+                                <Label
+                                  check
+                                  className="form-check-label"
+                                  htmlFor="Yes"
+                                >
+                                  Yes
+                                </Label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <Input
+                                  className="form-check-input"
+                                  type="radio"
+                                  id="receiveDocs"
+                                  name="receiveDocs"
+                                  value={false}
+                                  onClick={e => (values.receiveDocs = false)}
+                                  defaultChecked
+                                />
+                                <Label
+                                  check
+                                  className="form-check-label"
+                                  htmlFor="No"
+                                >
+                                  No
+                                </Label>
+                              </FormGroup>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                              <Label for="anonymised" style={classes.label}>
+                                Anonymise
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
+                              <FormGroup check className="radio inline">
+                                <Input
+                                  className="form-check-input"
+                                  type="radio"
+                                  id="anonymised"
+                                  name="anonymised"
+                                  value={true}
+                                  onClick={e => (values.anonymised = true)}
+                                />
+                                <Label
+                                  check
+                                  className="form-check-label"
+                                  htmlFor="Yes"
+                                >
+                                  Yes
+                                </Label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <Input
+                                  className="form-check-input"
+                                  type="radio"
+                                  id="anonymised"
+                                  name="anonymised"
+                                  value={false}
+                                  onClick={() => (values.anonymised = false)}
+                                  defaultChecked
+                                />
+                                <Label
+                                  check
+                                  className="form-check-label"
+                                  htmlFor="No"
+                                >
+                                  No
+                                </Label>
+                              </FormGroup>
+                              {/* <FormFeedback>{errors.receiveEmails}</FormFeedback> */}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Tab>
+
+                    <Tab
+                      eventKey="attachment"
+                      disabled={false}
+                      title="Attachments"
+                      // onSelect={event => changeColor(event)}
+                    >
+                      <div className="container">
+                        <DropzoneArea
+                          onChange={handleChangefile}
+                          acceptedFiles={[
+                            "image/jpeg",
+                            "image/png",
+                            "image/bmp",
+                            "application/pdf"
+                          ]}
+                          showPreviews={false}
+                          maxFileSize={5000000}
+                          filesLimit={1}
+                        />
+                      </div>
+                    </Tab>
+                  </Tabs>
+                </FormGroup>
+                <br />
+                <div className="row">
+                  <div className="col-2 col-sm-2 col-md-4 col-lg-9 col-xl-10"></div>
+                  <div className="col-8 col-sm-8 col-md-6 col-lg-3 col-xl-2">
+                    <FormGroup>
+                      <Button
+                        type="submit"
+                        color="primary"
+                        className="mr-1"
+                        style={classes.button}
+                        disabled={isSubmitting || !isValid}
+                      >
+                        {isSubmitting ? "Wait..." : "Submit"}
+                      </Button>
+
+                      <Button
+                        color="secondary"
+                        onClick={() => props.backmain(1)}
+                        style={classes.button}
+                      >
+                        Cancel
+                      </Button>
+                    </FormGroup>
+                  </div>
+                </div>
+              </Form>
+            </Col>
+          </Row>
+        )}
+      />
+    );
+  } else {
+    Tabledisplay = (
+      <div style={classes.linearprogress}>
+        <Spinner type="grow" color="dark" />
+      </div>
+    );
+  }
+
   return (
     <div>
       <Card>
-        <CardBody>
-          <Formik
-            initialValues={initialValues}
-            validate={validate(validationSchema)}
-            onSubmit={onSubmit}
-            render={({
-              values,
-              errors,
-              touched,
-              status,
-              dirty,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-              isValid,
-              handleReset,
-              setTouched
-            }) => (
-              <Row>
-                <Col lg="12">
-                  <Form onSubmit={handleSubmit} noValidate name="simpleForm">
-                    <FormGroup>
-                      <Tabs
-                        defaultActiveKey="general"
-                        transition={false}
-                        id="noanim-tab-example"
-                        className={classes.myclass}
-                      >
-                        <Tab
-                          eventKey="general"
-                          title="General"
-
-                          // onSelect={event => changeColor(event)}
-                        >
-                          <div className="row mb-1">
-                            <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                              <div className="row">
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                                  <Label for="title" style={classes.label}>
-                                    Title
-                                  </Label>
-                                </div>
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-1 col-xl-1">
-                                  <Input
-                                    type="text"
-                                    name="title"
-                                    id="title"
-                                    placeholder=""
-                                    autoComplete={false}
-                                    // valid={!errors.title}
-                                    // invalid={touched.title && !!errors.title}
-                                    // autoFocus={true}
-                                    // required
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.title}
-                                  />
-                                  {/* <FormFeedback>{errors.title}</FormFeedback> */}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="row mb-1">
-                            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                              <div className="row">
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                                  <Label for="firstName" style={classes.label}>
-                                    First Name
-                                  </Label>
-                                </div>
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                                  <Input
-                                    type="text"
-                                    name="firstName"
-                                    id="firstName"
-                                    placeholder=""
-                                    autoComplete={false}
-                                    // valid={!errors.firstName}
-                                    // invalid={touched.firstName && !!errors.firstName}
-                                    // autoFocus={true}
-                                    // required
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.firstName}
-                                  />
-                                  {/* <FormFeedback>{errors.firstName}</FormFeedback> */}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                              <div className="row">
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                  <Label for="lastName" style={classes.label}>
-                                    Last Name
-                                  </Label>
-                                </div>
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                                  <Input
-                                    type="text"
-                                    name="lastName"
-                                    id="lastName"
-                                    placeholder=""
-                                    autoComplete={false}
-                                    // valid={!errors.lastName}
-                                    // invalid={touched.lastName && !!errors.lastName}
-                                    // autoFocus={true}
-                                    // required
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.lastName}
-                                  />
-                                  {/* <FormFeedback>{errors.lastName}</FormFeedback> */}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="row mb-1">
-                            <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                              <div className="row">
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                                  <Label for="contactId" style={classes.label}>
-                                    Contact
-                                  </Label>
-                                </div>
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
-                                  <Input
-                                    type="select"
-                                    name="contactId"
-                                    id="contactId"
-                                    placeholder=""
-                                    autoComplete={false}
-                                    valid={!errors.contactId}
-                                    invalid={
-                                      touched.contactId && !!errors.contactId
-                                    }
-                                    autoFocus={true}
-                                    required
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.contactId}
-                                  >
-                                    <option selected></option>
-                                    {Parentcontact.map(e => (
-                                      <option value={e.contactId}>
-                                        {e.name}
-                                      </option>
-                                    ))}
-                                  </Input>
-                                  <FormFeedback>
-                                    {errors.parentContactId}
-                                  </FormFeedback>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="row mb-1">
-                            <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                              <div className="row">
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                                  <Label for="email" style={classes.label}>
-                                    Email
-                                  </Label>
-                                </div>
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
-                                  <Input
-                                    type="text"
-                                    name="email"
-                                    id="email"
-                                    placeholder=""
-                                    autoComplete={false}
-                                    // valid={!errors.email}
-                                    // invalid={
-                                    //   touched.email &&
-                                    //   !!errors.email
-                                    // }
-                                    // autoFocus={true}
-                                    // required
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.email}
-                                  />
-                                  {/* <FormFeedback>
-                                        {errors.email}
-                                      </FormFeedback> */}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="row mb-1">
-                            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                              <div className="row">
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                                  <Label
-                                    for="mobilePhone"
-                                    style={classes.label}
-                                  >
-                                    Mobile Phone
-                                  </Label>
-                                </div>
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                                  <Input
-                                    type="text"
-                                    name="mobilePhone"
-                                    id="mobilePhone"
-                                    // placeholder=""
-                                    // autoComplete={false}
-                                    // valid={!errors.mobilePhone}
-                                    // invalid={touched.mobilePhone && !!errors.mobilePhone}
-                                    // autoFocus={true}
-                                    // required
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.mobilePhone}
-                                  />
-                                  {/* <FormFeedback>{errors.mobilePhone}</FormFeedback> */}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                              <div className="row">
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                                  <Label for="landline" style={classes.label}>
-                                    Landline
-                                  </Label>
-                                </div>
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                                  <Input
-                                    type="text"
-                                    name="landline"
-                                    id="landline"
-                                    placeholder=""
-                                    autoComplete={false}
-                                    // valid={!errors.landline}
-                                    // invalid={touched.landline && !!errors.landline}
-                                    // autoFocus={true}
-                                    // required
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.landline}
-                                  />
-                                  {/* <FormFeedback>{errors.landline}</FormFeedback> */}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="row mb-1">
-                            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                              <div className="row">
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                                  <Label for="extentsion" style={classes.label}>
-                                    Extentsion
-                                  </Label>
-                                </div>
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                                  <Input
-                                    type="text"
-                                    name="extentsion"
-                                    id="extentsion"
-                                    placeholder=""
-                                    autoComplete={false}
-                                    // valid={!errors.extentsion}
-                                    // invalid={touched.extentsion && !!errors.extentsion}
-                                    // autoFocus={true}
-                                    // required
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.extentsion}
-                                  />
-                                  {/* <FormFeedback>{errors.extentsion}</FormFeedback> */}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                              <div className="row">
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                  <Label for="department" style={classes.label}>
-                                    Department
-                                  </Label>
-                                </div>
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                                  <Input
-                                    type="text"
-                                    name="department"
-                                    id="department"
-                                    placeholder=""
-                                    autoComplete={false}
-                                    // valid={!errors.department}
-                                    // invalid={touched.department && !!errors.department}
-                                    // autoFocus={true}
-                                    // required
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.department}
-                                  />
-                                  {/* <FormFeedback>{errors.department}</FormFeedback> */}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="row mb-1">
-                            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                              <div className="row">
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                                  <Label for="position" style={classes.label}>
-                                    Position
-                                  </Label>
-                                </div>
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                                  <Input
-                                    type="text"
-                                    name="position"
-                                    id="position"
-                                    placeholder=""
-                                    autoComplete={false}
-                                    // valid={!errors.position}
-                                    // invalid={touched.position && !!errors.position}
-                                    // autoFocus={true}
-                                    // required
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.position}
-                                  />
-                                  {/* <FormFeedback>{errors.position}</FormFeedback> */}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                              <div className="row">
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                  <Label
-                                    for="receiveEmails"
-                                    style={classes.label}
-                                  >
-                                    Receive Emails
-                                  </Label>
-                                </div>
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                                  <FormGroup check className="radio inline">
-                                    <Input
-                                      className="form-check-input"
-                                      type="radio"
-                                      id="receiveEmails"
-                                      name="receiveEmails"
-                                      value={true}
-                                      onClick={e =>
-                                        (values.receiveEmails = true)
-                                      }
-                                    />
-                                    <Label
-                                      check
-                                      className="form-check-label"
-                                      htmlFor="Yes"
-                                    >
-                                      Yes
-                                    </Label>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <Input
-                                      className="form-check-input"
-                                      type="radio"
-                                      id="receiveEmails"
-                                      name="receiveEmails"
-                                      value={false}
-                                      onClick={e =>
-                                        (values.receiveEmails = false)
-                                      }
-                                      defaultChecked
-                                    />
-                                    <Label
-                                      check
-                                      className="form-check-label"
-                                      htmlFor="No"
-                                    >
-                                      No
-                                    </Label>
-                                  </FormGroup>
-                                  {/* <FormFeedback>{errors.receiveEmails}</FormFeedback> */}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="row mb-1">
-                            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                              <div className="row">
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                                  <Label
-                                    for="receiveDocs"
-                                    style={classes.label}
-                                  >
-                                    Receive Docs
-                                  </Label>
-                                </div>
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                                  <FormGroup check className="radio inline">
-                                    <Input
-                                      className="form-check-input"
-                                      type="radio"
-                                      id="receiveDocs"
-                                      name="receiveDocs"
-                                      value={true}
-                                      onClick={e => (values.receiveDocs = true)}
-                                    />
-                                    <Label
-                                      check
-                                      className="form-check-label"
-                                      htmlFor="Yes"
-                                    >
-                                      Yes
-                                    </Label>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <Input
-                                      className="form-check-input"
-                                      type="radio"
-                                      id="receiveDocs"
-                                      name="receiveDocs"
-                                      value={false}
-                                      onClick={e =>
-                                        (values.receiveDocs = false)
-                                      }
-                                      defaultChecked
-                                    />
-                                    <Label
-                                      check
-                                      className="form-check-label"
-                                      htmlFor="No"
-                                    >
-                                      No
-                                    </Label>
-                                  </FormGroup>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                              <div className="row">
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                  <Label for="anonymised" style={classes.label}>
-                                    Anonymise
-                                  </Label>
-                                </div>
-                                <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                                  <FormGroup check className="radio inline">
-                                    <Input
-                                      className="form-check-input"
-                                      type="radio"
-                                      id="anonymised"
-                                      name="anonymised"
-                                      value={true}
-                                      onClick={e => (values.anonymised = true)}
-                                    />
-                                    <Label
-                                      check
-                                      className="form-check-label"
-                                      htmlFor="Yes"
-                                    >
-                                      Yes
-                                    </Label>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <Input
-                                      className="form-check-input"
-                                      type="radio"
-                                      id="anonymised"
-                                      name="anonymised"
-                                      value={false}
-                                      onClick={() =>
-                                        (values.anonymised = false)
-                                      }
-                                      defaultChecked
-                                    />
-                                    <Label
-                                      check
-                                      className="form-check-label"
-                                      htmlFor="No"
-                                    >
-                                      No
-                                    </Label>
-                                  </FormGroup>
-                                  {/* <FormFeedback>{errors.receiveEmails}</FormFeedback> */}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </Tab>
-
-                        <Tab
-                          eventKey="attachment"
-                          disabled={false}
-                          title="Attachments"
-                          // onSelect={event => changeColor(event)}
-                        >
-                          <div className="container">
-                            <DropzoneArea
-                              onChange={handleChangefile}
-                              acceptedFiles={[
-                                "image/jpeg",
-                                "image/png",
-                                "image/bmp",
-                                "application/pdf"
-                              ]}
-                              showPreviews={false}
-                              maxFileSize={5000000}
-                              filesLimit={1}
-                            />
-                          </div>
-                        </Tab>
-                      </Tabs>
-                    </FormGroup>
-                    <br />
-                    <div className="row">
-                      <div className="col-2 col-sm-2 col-md-4 col-lg-9 col-xl-10"></div>
-                      <div className="col-8 col-sm-8 col-md-6 col-lg-3 col-xl-2">
-                        <FormGroup>
-                          <Button
-                            type="submit"
-                            color="primary"
-                            className="mr-1"
-                            style={classes.button}
-                            disabled={isSubmitting || !isValid}
-                          >
-                            {isSubmitting ? "Wait..." : "Submit"}
-                          </Button>
-
-                          <Button
-                            color="secondary"
-                            onClick={() => props.backmain(1)}
-                            style={classes.button}
-                          >
-                            Cancel
-                          </Button>
-                        </FormGroup>
-                      </div>
-                    </div>
-                  </Form>
-                </Col>
-              </Row>
-            )}
-          />
-        </CardBody>
+        <CardBody>{Tabledisplay}</CardBody>
       </Card>
     </div>
   );

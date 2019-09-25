@@ -246,6 +246,7 @@ let TrackingDeviceListing = () => {
         options={options}
       /> */}
         <BootstrapTable
+          headerStyle={ { background: '#DDDDDD', maxHeight:'40px', } }
           data={Atlist}
           version="4"
           striped

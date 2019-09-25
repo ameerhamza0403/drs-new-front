@@ -6,7 +6,8 @@ import {
   GetCrmContacts
 } from "..//shared/contacts";
 import { GetCrmContactGroup } from "../shared/contactgroup";
-import ListingContactPerson from '../contactperson/listing';
+import ListingContactPerson from "../contactperson/listing";
+import ListingNotes from "../notes/listing";
 import {
   Button,
   Card,
@@ -29,6 +30,7 @@ import Select from "react-select";
 import "react-select/dist/react-select.min.css";
 import "../../../../scss/override/select.scss";
 import { Spinner } from "reactstrap";
+import "../../../../scss/customstyles/tabs.css";
 
 const classes = {
   linearprogress: {
@@ -95,9 +97,6 @@ let EditCrmContacts = props => {
       props.backmain(1);
       setSubmitting(false);
     }
-
-
-
   }
 
   const validationSchema = function(values) {
@@ -182,7 +181,7 @@ let EditCrmContacts = props => {
     settabledistatus(true);
   }
 
-  let [files,setFiles] = useState();
+  let [files, setFiles] = useState();
   function handleChangefile(files) {
     setFiles((files = files));
   }
@@ -219,682 +218,744 @@ let EditCrmContacts = props => {
     Tabledisplay = (
       <Card>
         <CardBody>
-          <Formik
-            initialValues={initialValues}
-            validate={validate(validationSchema)}
-            onSubmit={onSubmit}
-            render={({
-              values,
-              errors,
-              touched,
-              status,
-              dirty,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-              isValid,
-              handleReset,
-              setTouched
-            }) => (
-              <Row>
-                <Col lg="12">
-                  <Form onSubmit={handleSubmit} noValidate name="simpleForm">
-                    <FormGroup>
-                      <Tabs
-                        defaultActiveKey="general"
-                        transition={false}
-                        id="noanim-tab-example"
-                        className={classes.myclass}
+          <Tabs
+            defaultActiveKey="general"
+            transition={false}
+            id="noanim-tab-example1"
+            className={classes.myclass}
+          >
+            <Tab
+              eventKey="general"
+              title="Contacts"
+
+              // onSelect={event => changeColor(event)}
+            >
+              <Formik
+                initialValues={initialValues}
+                validate={validate(validationSchema)}
+                onSubmit={onSubmit}
+                render={({
+                  values,
+                  errors,
+                  touched,
+                  status,
+                  dirty,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                  isValid,
+                  handleReset,
+                  setTouched
+                }) => (
+                  <Row>
+                    <Col lg="12">
+                      <Form
+                        onSubmit={handleSubmit}
+                        noValidate
+                        name="simpleForm"
                       >
-                        <Tab
-                          eventKey="general"
-                          title="General"
+                        <FormGroup>
+                          <Tabs
+                            defaultActiveKey="general"
+                            transition={false}
+                            id="noanim-tab-example"
+                            className={classes.myclass}
+                          >
+                            <Tab
+                              eventKey="general"
+                              title="General"
 
-                          // onSelect={event => changeColor(event)}
-                        >
-                          <div className="row">
-                            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                              <div className="row mb-1">
-                                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                                      <Label for="name" style={classes.label}>
-                                        Contact Name
-                                      </Label>
-                                    </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
-                                      <Input
-                                        type="text"
-                                        name="name"
-                                        id="name"
-                                        placeholder=""
-                                        autoComplete={false}
-                                        valid={!errors.name}
-                                        invalid={touched.name && !!errors.name}
-                                        autoFocus={true}
-                                        required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.name}
-                                      />
-                                      <FormFeedback>{errors.name}</FormFeedback>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="row mb-1">
+                              // onSelect={event => changeColor(event)}
+                            >
+                              <div className="row">
                                 <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                                      <Label
-                                        for="groupId"
-                                        style={classes.label}
-                                      >
-                                        Group
-                                      </Label>
-                                    </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                                      <Input
-                                        type="select"
-                                        name="groupId"
-                                        id="groupId"
-                                        placeholder=""
-                                        autoComplete={false}
-                                        valid={!errors.groupId}
-                                        invalid={
-                                          touched.groupId && !!errors.groupId
-                                        }
-                                        autoFocus={true}
-                                        required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.groupId}
-                                      >
-                                        <option selected></option>
-
-                                        {Contactgroup.map(e => (
-                                          <option value={e.contactGroupId}>
-                                            {e.name}
-                                          </option>
-                                        ))}
-                                      </Input>
-                                      <FormFeedback>
-                                        {errors.groupId}
-                                      </FormFeedback>
+                                  <div className="row mb-1">
+                                    <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
+                                          <Label
+                                            for="name"
+                                            style={classes.label}
+                                          >
+                                            Contact Name
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
+                                          <Input
+                                            type="text"
+                                            name="name"
+                                            id="name"
+                                            placeholder=""
+                                            autoComplete={false}
+                                            valid={!errors.name}
+                                            invalid={
+                                              touched.name && !!errors.name
+                                            }
+                                            autoFocus={true}
+                                            required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.name}
+                                          />
+                                          <FormFeedback>
+                                            {errors.name}
+                                          </FormFeedback>
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                                <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                                      <Label
-                                        for="parentAssetId"
-                                        style={classes.label}
-                                      >
-                                        Reference
-                                      </Label>
+
+                                  <div className="row mb-1">
+                                    <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                          <Label
+                                            for="groupId"
+                                            style={classes.label}
+                                          >
+                                            Group
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                                          <Input
+                                            type="select"
+                                            name="groupId"
+                                            id="groupId"
+                                            placeholder=""
+                                            autoComplete={false}
+                                            valid={!errors.groupId}
+                                            invalid={
+                                              touched.groupId &&
+                                              !!errors.groupId
+                                            }
+                                            autoFocus={true}
+                                            required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.groupId}
+                                          >
+                                            <option selected></option>
+
+                                            {Contactgroup.map(e => (
+                                              <option value={e.contactGroupId}>
+                                                {e.name}
+                                              </option>
+                                            ))}
+                                          </Input>
+                                          <FormFeedback>
+                                            {errors.groupId}
+                                          </FormFeedback>
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                                      <Input
-                                        type="text"
-                                        name="reference"
-                                        id="reference"
-                                        // placeholder=""
-                                        // autoComplete={false}
-                                        // valid={!errors.reference}
-                                        // invalid={touched.reference && !!errors.reference}
-                                        // autoFocus={true}
-                                        // required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.reference}
-                                      />
-                                      {/* <FormFeedback>{errors.reference}</FormFeedback> */}
+                                    <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                          <Label
+                                            for="parentAssetId"
+                                            style={classes.label}
+                                          >
+                                            Reference
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                                          <Input
+                                            type="text"
+                                            name="reference"
+                                            id="reference"
+                                            // placeholder=""
+                                            // autoComplete={false}
+                                            // valid={!errors.reference}
+                                            // invalid={touched.reference && !!errors.reference}
+                                            // autoFocus={true}
+                                            // required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.reference}
+                                          />
+                                          {/* <FormFeedback>{errors.reference}</FormFeedback> */}
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </div>
 
-                              <div className="row mb-1">
-                                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                                      <Label
-                                        for="parentContactId"
-                                        style={classes.label}
-                                      >
-                                        Parent Contact
-                                      </Label>
-                                    </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
-                                      <Input
-                                        type="select"
-                                        name="parentContactId"
-                                        id="parentContactId"
-                                        placeholder=""
-                                        autoComplete={false}
-                                        // valid={!errors.parentContactId}
-                                        // invalid={
-                                        //   touched.parentContactId &&
-                                        //   !!errors.parentContactId
-                                        // }
-                                        // autoFocus={true}
-                                        // required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.parentContactId}
-                                      >
-                                        <option selected></option>
-                                        {Parentcontact.map(e => (
-                                          <option value={e.contactId}>
-                                            {e.name}
-                                          </option>
-                                        ))}
-                                      </Input>
-                                      {/* <FormFeedback>
+                                  <div className="row mb-1">
+                                    <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
+                                          <Label
+                                            for="parentContactId"
+                                            style={classes.label}
+                                          >
+                                            Parent Contact
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
+                                          <Input
+                                            type="select"
+                                            name="parentContactId"
+                                            id="parentContactId"
+                                            placeholder=""
+                                            autoComplete={false}
+                                            // valid={!errors.parentContactId}
+                                            // invalid={
+                                            //   touched.parentContactId &&
+                                            //   !!errors.parentContactId
+                                            // }
+                                            // autoFocus={true}
+                                            // required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.parentContactId}
+                                          >
+                                            <option selected></option>
+                                            {Parentcontact.map(e => (
+                                              <option value={e.contactId}>
+                                                {e.name}
+                                              </option>
+                                            ))}
+                                          </Input>
+                                          {/* <FormFeedback>
                                         {errors.parentContactId}
                                       </FormFeedback> */}
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </div>
 
-                              <div className="row mb-1">
-                                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                                      <Label
-                                        for="contactAddress"
-                                        style={classes.label}
-                                      >
-                                        Contact Address
-                                      </Label>
-                                    </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
-                                      <Input
-                                        type="text"
-                                        name="contactAddress"
-                                        id="contactAddress"
-                                        placeholder=""
-                                        autoComplete={false}
-                                        // valid={!errors.contactAddress}
-                                        // invalid={
-                                        //   touched.contactAddress &&
-                                        //   !!errors.contactAddress
-                                        // }
-                                        // autoFocus={true}
-                                        // required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.contactAddress}
-                                      />
-                                      {/* <FormFeedback>
+                                  <div className="row mb-1">
+                                    <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
+                                          <Label
+                                            for="contactAddress"
+                                            style={classes.label}
+                                          >
+                                            Contact Address
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
+                                          <Input
+                                            type="text"
+                                            name="contactAddress"
+                                            id="contactAddress"
+                                            placeholder=""
+                                            autoComplete={false}
+                                            // valid={!errors.contactAddress}
+                                            // invalid={
+                                            //   touched.contactAddress &&
+                                            //   !!errors.contactAddress
+                                            // }
+                                            // autoFocus={true}
+                                            // required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.contactAddress}
+                                          />
+                                          {/* <FormFeedback>
                                         {errors.contactAddress}
                                       </FormFeedback> */}
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </div>
 
-                              <div className="row mb-1">
-                                <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                                      <Label for="city" style={classes.label}>
-                                        City
-                                      </Label>
+                                  <div className="row mb-1">
+                                    <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                          <Label
+                                            for="city"
+                                            style={classes.label}
+                                          >
+                                            City
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                                          <Input
+                                            type="text"
+                                            name="city"
+                                            id="city"
+                                            // placeholder=""
+                                            // autoComplete={false}
+                                            // valid={!errors.city}
+                                            // invalid={touched.city && !!errors.city}
+                                            // autoFocus={true}
+                                            // required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.city}
+                                          />
+                                          {/* <FormFeedback>{errors.city}</FormFeedback> */}
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                                      <Input
-                                        type="text"
-                                        name="city"
-                                        id="city"
-                                        // placeholder=""
-                                        // autoComplete={false}
-                                        // valid={!errors.city}
-                                        // invalid={touched.city && !!errors.city}
-                                        // autoFocus={true}
-                                        // required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.city}
-                                      />
-                                      {/* <FormFeedback>{errors.city}</FormFeedback> */}
+                                    <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                          <Label
+                                            for="postcode"
+                                            style={classes.label}
+                                          >
+                                            PostCode
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                                          <Input
+                                            type="text"
+                                            name="postcode"
+                                            id="postcode"
+                                            placeholder=""
+                                            autoComplete={false}
+                                            // valid={!errors.postcode}
+                                            // invalid={touched.postcode && !!errors.postcode}
+                                            // autoFocus={true}
+                                            // required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.postcode}
+                                          />
+                                          {/* <FormFeedback>{errors.postcode}</FormFeedback> */}
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                                <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                                      <Label
-                                        for="postcode"
-                                        style={classes.label}
-                                      >
-                                        PostCode
-                                      </Label>
-                                    </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                                      <Input
-                                        type="text"
-                                        name="postcode"
-                                        id="postcode"
-                                        placeholder=""
-                                        autoComplete={false}
-                                        // valid={!errors.postcode}
-                                        // invalid={touched.postcode && !!errors.postcode}
-                                        // autoFocus={true}
-                                        // required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.postcode}
-                                      />
-                                      {/* <FormFeedback>{errors.postcode}</FormFeedback> */}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
 
-                              <div className="row mb-1">
-                                <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                                      <Label
-                                        for="country"
-                                        style={classes.label}
-                                      >
-                                        Country
-                                      </Label>
+                                  <div className="row mb-1">
+                                    <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                          <Label
+                                            for="country"
+                                            style={classes.label}
+                                          >
+                                            Country
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                                          <Input
+                                            type="text"
+                                            name="country"
+                                            id="country"
+                                            placeholder=""
+                                            autoComplete={false}
+                                            // valid={!errors.country}
+                                            // invalid={touched.country && !!errors.country}
+                                            // autoFocus={true}
+                                            // required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.country}
+                                          />
+                                          {/* <FormFeedback>{errors.country}</FormFeedback> */}
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                                      <Input
-                                        type="text"
-                                        name="country"
-                                        id="country"
-                                        placeholder=""
-                                        autoComplete={false}
-                                        // valid={!errors.country}
-                                        // invalid={touched.country && !!errors.country}
-                                        // autoFocus={true}
-                                        // required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.country}
-                                      />
-                                      {/* <FormFeedback>{errors.country}</FormFeedback> */}
+                                    <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                          <Label
+                                            for="radius"
+                                            style={classes.label}
+                                          >
+                                            Radius
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
+                                          <Input
+                                            type="text"
+                                            name="radius"
+                                            id="radius"
+                                            placeholder=""
+                                            autoComplete={false}
+                                            // valid={!errors.radius}
+                                            // invalid={touched.radius && !!errors.radius}
+                                            // autoFocus={true}
+                                            // required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.radius}
+                                          />
+                                          {/* <FormFeedback>{errors.radius}</FormFeedback> */}
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                                <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                      <Label for="radius" style={classes.label}>
-                                        Radius
-                                      </Label>
-                                    </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                                      <Input
-                                        type="text"
-                                        name="radius"
-                                        id="radius"
-                                        placeholder=""
-                                        autoComplete={false}
-                                        // valid={!errors.radius}
-                                        // invalid={touched.radius && !!errors.radius}
-                                        // autoFocus={true}
-                                        // required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.radius}
-                                      />
-                                      {/* <FormFeedback>{errors.radius}</FormFeedback> */}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
 
-                              <div className="row mb-1">
-                                <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                                      <Label
-                                        for="expiryDate"
-                                        style={classes.label}
-                                      >
-                                        Expiry Date
-                                      </Label>
+                                  <div className="row mb-1">
+                                    <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                          <Label
+                                            for="expiryDate"
+                                            style={classes.label}
+                                          >
+                                            Expiry Date
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                                          <Input
+                                            type="date"
+                                            name="expiryDate"
+                                            id="expiryDate"
+                                            placeholder=""
+                                            autoComplete={false}
+                                            // valid={!errors.expiryDate}
+                                            // invalid={touched.expiryDate && !!errors.expiryDate}
+                                            // autoFocus={true}
+                                            // required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.expiryDate}
+                                          />
+                                          {/* <FormFeedback>{errors.expiryDate}</FormFeedback> */}
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                                      <Input
-                                        type="date"
-                                        name="expiryDate"
-                                        id="expiryDate"
-                                        placeholder=""
-                                        autoComplete={false}
-                                        // valid={!errors.expiryDate}
-                                        // invalid={touched.expiryDate && !!errors.expiryDate}
-                                        // autoFocus={true}
-                                        // required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.expiryDate}
-                                      />
-                                      {/* <FormFeedback>{errors.expiryDate}</FormFeedback> */}
+                                    <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                          <Label
+                                            for="isFlagged"
+                                            style={classes.label}
+                                          >
+                                            Flagged
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
+                                          <FormGroup
+                                            check
+                                            className="radio inline"
+                                          >
+                                            <Input
+                                              className="form-check-input"
+                                              type="radio"
+                                              id="isFlagged"
+                                              name="isFlagged"
+                                              value={true}
+                                              onClick={handleChange}
+                                              defaultChecked={
+                                                initialValues.isFlagged
+                                                  ? true
+                                                  : false
+                                              }
+                                            />
+                                            <Label
+                                              check
+                                              className="form-check-label"
+                                              htmlFor="Yes"
+                                            >
+                                              Yes
+                                            </Label>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <Input
+                                              className="form-check-input"
+                                              type="radio"
+                                              id="isFlagged"
+                                              name="isFlagged"
+                                              value={false}
+                                              onClick={handleChange}
+                                              defaultChecked={
+                                                initialValues.isFlagged
+                                                  ? false
+                                                  : true
+                                              }
+                                            />
+                                            <Label
+                                              check
+                                              className="form-check-label"
+                                              htmlFor="No"
+                                            >
+                                              No
+                                            </Label>
+                                          </FormGroup>
+                                          {/* <FormFeedback>{errors.isFlagged}</FormFeedback> */}
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                                <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                      <Label
-                                        for="isFlagged"
-                                        style={classes.label}
-                                      >
-                                        Flagged
-                                      </Label>
-                                    </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                                      <FormGroup check className="radio inline">
-                                        <Input
-                                          className="form-check-input"
-                                          type="radio"
-                                          id="isFlagged"
-                                          name="isFlagged"
-                                          value={true}
-                                          onClick={handleChange}
-                                          defaultChecked={(initialValues.isFlagged)?true:false}
-                                        />
-                                        <Label
-                                          check
-                                          className="form-check-label"
-                                          htmlFor="Yes"
-                                        >
-                                          Yes
-                                        </Label>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <Input
-                                          className="form-check-input"
-                                          type="radio"
-                                          id="isFlagged"
-                                          name="isFlagged"
-                                          value={false}
-                                          onClick={handleChange}
-                                          defaultChecked={(initialValues.isFlagged)?false:true}
-                                        />
-                                        <Label
-                                          check
-                                          className="form-check-label"
-                                          htmlFor="No"
-                                        >
-                                          No
-                                        </Label>
-                                      </FormGroup>
-                                      {/* <FormFeedback>{errors.isFlagged}</FormFeedback> */}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
 
-                              <div className="row mb-1">
-                                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                                      <Label
-                                        for="flaggedReason"
-                                        style={classes.label}
-                                      >
-                                        Flagged Reason
-                                      </Label>
-                                    </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
-                                      <Input
-                                        type="textarea"
-                                        name="flaggedReason"
-                                        id="flaggedReason"
-                                        placeholder=""
-                                        autoComplete={false}
-                                        // valid={!errors.flaggedReason}
-                                        // invalid={touched.flaggedReason && !!errors.flaggedReason}
-                                        // autoFocus={true}
-                                        // required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.flaggedReason}
-                                      />
-                                      {/* <FormFeedback>{errors.flaggedReason}</FormFeedback> */}
+                                  <div className="row mb-1">
+                                    <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
+                                          <Label
+                                            for="flaggedReason"
+                                            style={classes.label}
+                                          >
+                                            Flagged Reason
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
+                                          <Input
+                                            type="textarea"
+                                            name="flaggedReason"
+                                            id="flaggedReason"
+                                            placeholder=""
+                                            autoComplete={false}
+                                            // valid={!errors.flaggedReason}
+                                            // invalid={touched.flaggedReason && !!errors.flaggedReason}
+                                            // autoFocus={true}
+                                            // required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.flaggedReason}
+                                          />
+                                          {/* <FormFeedback>{errors.flaggedReason}</FormFeedback> */}
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </div>
 
-                              <div className="row mb-1">
-                                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                                      <Label
-                                        for="extraInfo"
-                                        style={classes.label}
-                                      >
-                                        Extra Info
-                                      </Label>
-                                    </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
-                                      <Input
-                                        type="textarea"
-                                        name="extraInfo"
-                                        id="extraInfo"
-                                        placeholder=""
-                                        autoComplete={false}
-                                        // valid={!errors.extraInfo}
-                                        // invalid={touched.extraInfo && !!errors.extraInfo}
-                                        // autoFocus={true}
-                                        // required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.extraInfo}
-                                      />
-                                      {/* <FormFeedback>{errors.extraInfo}</FormFeedback> */}
+                                  <div className="row mb-1">
+                                    <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
+                                          <Label
+                                            for="extraInfo"
+                                            style={classes.label}
+                                          >
+                                            Extra Info
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
+                                          <Input
+                                            type="textarea"
+                                            name="extraInfo"
+                                            id="extraInfo"
+                                            placeholder=""
+                                            autoComplete={false}
+                                            // valid={!errors.extraInfo}
+                                            // invalid={touched.extraInfo && !!errors.extraInfo}
+                                            // autoFocus={true}
+                                            // required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.extraInfo}
+                                          />
+                                          {/* <FormFeedback>{errors.extraInfo}</FormFeedback> */}
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </div>
-                              <br />
-                              {/* <Divider />
+                                  <br />
+                                  {/* <Divider />
                               <p style={{ textAlign: "center" }}>
                                 Primary Person
                               </p> */}
 
-                              <div className="row mb-1">
-                                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                                      <Label for="phone" style={classes.label}>
-                                        Mobile Phone
-                                      </Label>
-                                    </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
-                                      <Input
-                                        type="text"
-                                        name="phone"
-                                        id="phone"
-                                        placeholder=""
-                                        autoComplete={false}
-                                        // valid={!errors.phone}
-                                        // invalid={touched.phone && !!errors.phone}
-                                        // autoFocus={true}
-                                        // required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.phone}
-                                      />
-                                      {/* <FormFeedback>{errors.phone}</FormFeedback> */}
+                                  <div className="row mb-1">
+                                    <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
+                                          <Label
+                                            for="phone"
+                                            style={classes.label}
+                                          >
+                                            Mobile Phone
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
+                                          <Input
+                                            type="text"
+                                            name="phone"
+                                            id="phone"
+                                            placeholder=""
+                                            autoComplete={false}
+                                            // valid={!errors.phone}
+                                            // invalid={touched.phone && !!errors.phone}
+                                            // autoFocus={true}
+                                            // required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.phone}
+                                          />
+                                          {/* <FormFeedback>{errors.phone}</FormFeedback> */}
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
+
+                                  <div className="row mb-1">
+                                    <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
+                                          <Label
+                                            for="email"
+                                            style={classes.label}
+                                          >
+                                            Email
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
+                                          <Input
+                                            type="email"
+                                            name="email"
+                                            id="email"
+                                            placeholder=""
+                                            autoComplete={false}
+                                            // valid={!errors.email}
+                                            // invalid={touched.email && !!errors.email}
+                                            // autoFocus={true}
+                                            // required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.email}
+                                          />
+                                          {/* <FormFeedback>{errors.email}</FormFeedback> */}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className="row mb-1">
+                                    <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                          <Label
+                                            for="birthday"
+                                            style={classes.label}
+                                          >
+                                            Birthdate
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                                          <Input
+                                            type="date"
+                                            name="birthday"
+                                            id="birthday"
+                                            placeholder=""
+                                            autoComplete={false}
+                                            // valid={!errors.birthday}
+                                            // invalid={touched.birthday && !!errors.birthday}
+                                            // autoFocus={true}
+                                            // required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.birthday}
+                                          />
+                                          {/* <FormFeedback>{errors.birthday}</FormFeedback> */}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                      <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                          <Label
+                                            for="website"
+                                            style={classes.label}
+                                          >
+                                            Website
+                                          </Label>
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
+                                          <Input
+                                            type="text"
+                                            name="website"
+                                            id="website"
+                                            placeholder=""
+                                            autoComplete={false}
+                                            // valid={!errors.website}
+                                            // invalid={touched.website && !!errors.website}
+                                            // autoFocus={true}
+                                            // required
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.website}
+                                          />
+                                          {/* <FormFeedback>{errors.website}</FormFeedback> */}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* ************************************************ */}
                                 </div>
+                                <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"></div>
                               </div>
+                            </Tab>
 
-                              <div className="row mb-1">
-                                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                                      <Label for="email" style={classes.label}>
-                                        Email
-                                      </Label>
-                                    </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
-                                      <Input
-                                        type="email"
-                                        name="email"
-                                        id="email"
-                                        placeholder=""
-                                        autoComplete={false}
-                                        // valid={!errors.email}
-                                        // invalid={touched.email && !!errors.email}
-                                        // autoFocus={true}
-                                        // required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.email}
-                                      />
-                                      {/* <FormFeedback>{errors.email}</FormFeedback> */}
-                                    </div>
-                                  </div>
-                                </div>
+                            <Tab
+                              eventKey="attachment"
+                              disabled={false}
+                              title="Attachments"
+                              // onSelect={event => changeColor(event)}
+                            >
+                              <div className="container">
+                                <DropzoneArea
+                                  onChange={handleChangefile}
+                                  acceptedFiles={[
+                                    "image/jpeg",
+                                    "image/png",
+                                    "image/bmp",
+                                    "application/pdf"
+                                  ]}
+                                  showPreviews={false}
+                                  maxFileSize={5000000}
+                                />
                               </div>
-
-                              <div className="row mb-1">
-                                <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                                      <Label
-                                        for="birthday"
-                                        style={classes.label}
-                                      >
-                                        Birthdate
-                                      </Label>
-                                    </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
-                                      <Input
-                                        type="date"
-                                        name="birthday"
-                                        id="birthday"
-                                        placeholder=""
-                                        autoComplete={false}
-                                        // valid={!errors.birthday}
-                                        // invalid={touched.birthday && !!errors.birthday}
-                                        // autoFocus={true}
-                                        // required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.birthday}
-                                      />
-                                      {/* <FormFeedback>{errors.birthday}</FormFeedback> */}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                  <div className="row">
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                                      <Label
-                                        for="website"
-                                        style={classes.label}
-                                      >
-                                        Website
-                                      </Label>
-                                    </div>
-                                    <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                                      <Input
-                                        type="text"
-                                        name="website"
-                                        id="website"
-                                        placeholder=""
-                                        autoComplete={false}
-                                        // valid={!errors.website}
-                                        // invalid={touched.website && !!errors.website}
-                                        // autoFocus={true}
-                                        // required
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.website}
-                                      />
-                                      {/* <FormFeedback>{errors.website}</FormFeedback> */}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              {/* ************************************************ */}
-                            </div>
-                            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"></div>
-                          </div>
-                        </Tab>
-
-                        <Tab
-                          eventKey="attachment"
-                          disabled={false}
-                          title="Attachments"
-                          // onSelect={event => changeColor(event)}
-                        >
-                          <div className="container">
-                            <DropzoneArea
-                              onChange={handleChangefile}
-                              acceptedFiles={[
-                                "image/jpeg",
-                                "image/png",
-                                "image/bmp",
-                                "application/pdf"
-                              ]}
-                              showPreviews={false}
-                              maxFileSize={5000000}
-                            />
-                          </div>
-                        </Tab>
-                        <Tab
-                          eventKey="person"
-                          title="Person"
-
-                          // onSelect={event => changeColor(event)}
-                        >
-                          <ListingContactPerson
-                            Showhead={false}
-                            ShowFoot={true}
-                            callid={true}
-                            idofcontact={props.IDforAPI}
-                          />
-                        </Tab>
-                      </Tabs>
-                    </FormGroup>
-                    <br />
-                    <div className="row">
-                      <div className="col-2 col-sm-2 col-md-4 col-lg-9 col-xl-10"></div>
-                      <div className="col-8 col-sm-8 col-md-6 col-lg-3 col-xl-2">
-                        <FormGroup>
-                          <Button
-                            type="submit"
-                            color="primary"
-                            className="mr-1"
-                            style={classes.button}
-                            disabled={isSubmitting || !isValid}
-                          >
-                            {isSubmitting ? "Wait..." : "Submit"}
-                          </Button>
-
-                          <Button
-                            color="secondary"
-                            onClick={() => props.backmain(1)}
-                            style={classes.button}
-                          >
-                            Cancel
-                          </Button>
+                            </Tab>
+                          </Tabs>
                         </FormGroup>
-                      </div>
-                    </div>
-                  </Form>
-                </Col>
-              </Row>
-            )}
-          />
+                        <br />
+                        <div className="row">
+                          <div className="col-2 col-sm-2 col-md-4 col-lg-9 col-xl-10"></div>
+                          <div className="col-8 col-sm-8 col-md-6 col-lg-3 col-xl-2">
+                            <FormGroup>
+                              <Button
+                                type="submit"
+                                color="primary"
+                                className="mr-1"
+                                style={classes.button}
+                                disabled={isSubmitting || !isValid}
+                              >
+                                {isSubmitting ? "Wait..." : "Submit"}
+                              </Button>
+
+                              <Button
+                                color="secondary"
+                                onClick={() => props.backmain(1)}
+                                style={classes.button}
+                              >
+                                Cancel
+                              </Button>
+                            </FormGroup>
+                          </div>
+                        </div>
+                      </Form>
+                    </Col>
+                  </Row>
+                )}
+              />
+            </Tab>
+            <Tab
+              eventKey="person"
+              title="Person"
+
+              // onSelect={event => changeColor(event)}
+            >
+              <ListingContactPerson
+                Showhead={false}
+                ShowFoot={true}
+                callid={true}
+                idofParent={props.IDforAPI}
+              />
+            </Tab>
+            <Tab
+              eventKey="notes"
+              title="Notes"
+              // onSelect={event => changeColor(event)}
+            >
+              <ListingNotes
+                Showhead={false}
+                ShowFoot={true}
+                callid={true}
+                idofParent={props.IDforAPI}
+                noteType={"contact"}
+              />
+            </Tab>
+          </Tabs>
         </CardBody>
       </Card>
     );

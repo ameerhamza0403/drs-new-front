@@ -198,6 +198,7 @@ let NotestoClient = (props) => {
       // />
       <div>
         <BootstrapTable
+          headerStyle={ { background: '#DDDDDD', maxHeight:'40px', } }
           data={arrforatlist}
           version="4"
           striped

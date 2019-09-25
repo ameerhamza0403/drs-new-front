@@ -306,6 +306,7 @@ let SalesOpportunityFlagListing = () => {
     Tabledisplay = (
       <div>
         <BootstrapTable
+          headerStyle={ { background: '#DDDDDD', maxHeight:'40px', } }
           data={Atlist}
           version="4"
           striped
