@@ -144,6 +144,11 @@ const CrmNotesListing = React.lazy(() => import('./components/system/crm/notes/m
 const ActivityTypeListing = React.lazy(() => import('./components/myaccount/admin/contactnote/activitytype/listing'));
 const CrmNotesActivity = React.lazy(() => import('./components/system/crm/noteactivity/main'));
 const CrmHome = React.lazy(() => import('./components/system/crm/crm'));
+const CrmLeadMain = React.lazy(() => import('./components/system/crm/lead/main'));
+const MarketingCompaignTypeListing = React.lazy(() => import('./components/system/crm/marketingcompaigntype/listing'));
+const CrmMarketingCampainMain = React.lazy(() => import('./components/system/crm/marketingcampaign/main'));
+const MarketingList = React.lazy(() => import('./components/system/crm/marketinglist/listing'));
+const MarkListMapListing = React.lazy(() => import('./components/system/crm/marketinglistmap/listing'));
 
 
 
@@ -304,6 +309,11 @@ const routes = [
   { path: '/system/crm/activity-type', exact: true, name: 'Activity Type', component:  ActivityTypeListing },
   { path: '/system/crm/note-activity', exact: true, name: 'Activities', component:  CrmNotesActivity },
   { path: '/system/crm', exact: true, name: 'CRM', component:  CrmHome },
+  { path: '/system/crm/leads', exact: true, name: 'Leads', component:  CrmLeadMain },
+  { path: '/system/crm/campaign-type', exact: true, name: 'Marketing Compaign Type', component:  MarketingCompaignTypeListing },
+  { path: '/system/crm/marketing-campaigns', exact: true, name: 'Marketing Compaigns', component:  CrmMarketingCampainMain },
+  { path: '/system/crm/marketing-list', exact: true, name: 'Marketing List', component:  MarketingList },
+  { path: '/system/crm/marketing-assign', exact: true, name: 'Assign Compaign To Marketing List', component:  MarkListMapListing },
 
 
 

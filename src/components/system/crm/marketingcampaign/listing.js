@@ -2,13 +2,9 @@ import React, { useState, useEffect } from "react";
 //import MUIDataTable from "mui-datatables";
 // import "../../../../scss/override/listing.scss";
 import "../../../../scss/override/navlisting.scss";
-import EditCrmContactPerson from "./edit";
-import {
-  GetCrmContactPerson,
-  GetCrmPersonByContact,
-  DeleteCrmContactPerson
-} from "..//shared/contactperson";
-import AddCrmContactPerson from "./add";
+import EditCrmMarketingCampaigns from "./edit";
+import { GetCrmMarkCampaign, DeleteCrmMarkCampaign } from "..//shared/marketingcampaign";
+import AddCrmMarketingCampaings from "./add";
 import { Spinner } from "reactstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,9 +13,7 @@ import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { withRouter } from "react-router-dom";
 
-
 let menuDiv = "";
-let EditshowModel = "";
 let idofEdit = 0;
 let Page = 1;
 let PageSize = 10;
@@ -66,7 +60,7 @@ const classes = {
     // width: "10px",
     cursor: "pointer",
     // float: "left",
-    textAlign: 'center'
+    textAlign: "center"
     // marginTop: '10px',
     // marginLeft: '5px',
   }
@@ -74,7 +68,7 @@ const classes = {
 
 let countforpagination = 0;
 let paginationundertable;
-let ListingContactPerson = props => {
+let CrmLeadListing = props => {
   let [AtlistVal, setAtlistVal] = useState();
   let [paginate, setPaginate] = useState();
   let [totalcount, setTotalCount] = useState();
@@ -97,25 +91,23 @@ let ListingContactPerson = props => {
     // onSizePerPageList: sizePerPageListChange
   };
 
-
   useEffect(() => {
     getlistapi();
   }, []);
 
   async function getlistapi() {
     if (props.callid) {
-      console.log(props.idofParent)
-      await GetCrmPersonByContact(props.idofParent).then(res => {
+      console.log(props.idofParent);
+      await GetCrmMarkCampaign(props.idofParent).then(res => {
         setAtlistVal((AtlistVal = res.data));
         console.log(res.data);
       });
-
 
       settabledistatus((Tabledistatus = false));
       settabledistatus((Tabledistatus = true));
       setMenucon(props.Showhead);
     } else {
-      await GetCrmContactPerson(Page, PageSize).then(res => {
+      await GetCrmMarkCampaign(Page, PageSize).then(res => {
         setAtlistVal((AtlistVal = res.data));
         console.log(res.data);
         setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
@@ -248,33 +240,43 @@ let ListingContactPerson = props => {
     Tabledisplay = (
       <div>
         <BootstrapTable
-          headerStyle={ { background: '#DDDDDD', maxHeight:'40px', } }
+          headerStyle={{ background: "#DDDDDD", maxHeight: "40px" }}
           data={AtlistVal}
           version="4"
           striped
           hover
-
           // pagination
           // search
           options={options}
           // cellEdit={cellEditProp}
         >
-          <TableHeaderColumn dataField="firstName" dataSort>
+          <TableHeaderColumn dataField="name" dataSort>
             Name
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="email" dataSort>
-            Email
+          <TableHeaderColumn dataField="marketingCampaignTypeName" dataSort>
+            Type
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="position" dataSort>
-            Position
+          <TableHeaderColumn dataField="objective" dataSort>
+            Objective
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="department" dataSort>
-            Department
+          <TableHeaderColumn dataField="status" dataSort>
+            Status
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="mobilePhone" dataSort>
-            Phone
+          <TableHeaderColumn dataField="expectedCost" dataSort>
+            Cost (Expected)
           </TableHeaderColumn>
-
+          <TableHeaderColumn dataField="expectedRevenue" dataSort>
+            Revenue (Expected)
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="assignedResourceName" dataSort>
+            Resource
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="startDate" dataSort>
+            Start
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="endDate" dataSort>
+            End
+          </TableHeaderColumn>
           <TableHeaderColumn
             dataField="isActive"
             hidden={true}
@@ -284,7 +286,7 @@ let ListingContactPerson = props => {
             isActive
           </TableHeaderColumn>
           <TableHeaderColumn
-            dataField="contactPersonId"
+            dataField="marketingCampaignId"
             dataSort={false}
             width="6%"
             dataFormat={handleaction}
@@ -302,19 +304,19 @@ let ListingContactPerson = props => {
     );
   }
 
-  if(props.paginate){
-  paginationundertable= (
-  <div className="row">
-  <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
-    {"  Showing "} {PageSizeComp} {" Results"}
-  </div>
-  <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
-    {paging}
-  </div>
-</div> );
-  }
-  else{
-    paginationundertable='';
+  if (props.paginate) {
+    paginationundertable = (
+      <div className="row">
+        <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
+          {"  Showing "} {PageSizeComp} {" Results"}
+        </div>
+        <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          {paging}
+        </div>
+      </div>
+    );
+  } else {
+    paginationundertable = "";
   }
 
   function handleaction(cell) {
@@ -352,7 +354,7 @@ let ListingContactPerson = props => {
       break;
     case 2:
       screencontent = (
-        <AddCrmContactPerson
+        <AddCrmMarketingCampaings
           backmain={ChangeScreen}
           success={success}
           error={errort}
@@ -363,12 +365,11 @@ let ListingContactPerson = props => {
       break;
     case 3:
       screencontent = (
-        <EditCrmContactPerson
+        <EditCrmMarketingCampaigns
           backmain={ChangeScreen}
           success={success}
           error={errort}
           IDforAPI={idofEdit}
-
         />
       );
       break;
@@ -395,7 +396,7 @@ let ListingContactPerson = props => {
   }
 
   async function Dellistapi(id) {
-    await DeleteCrmContactPerson(id)
+    await DeleteCrmMarkCampaign(id)
       .then(() => {
         success();
       })
@@ -413,20 +414,27 @@ let ListingContactPerson = props => {
 
   if (props.ShowFoot) {
     footcont = (
-     <div hidden={(screen===2)?true:false} className='col-12' style={{ 'textAlign': 'center'}}> <i
-        className="fa fa-plus fa-3x"
-        style={{'color': '#EE7647',}}
-        title={"Add New"}
-        onClick={() => {
-          setScreen(2);
-        }}
-      /></div>
+      <div
+        hidden={screen === 2 ? true : false}
+        className="col-12"
+        style={{ textAlign: "center" }}
+      >
+        {" "}
+        <i
+          className="fa fa-plus fa-3x"
+          style={{ color: "#EE7647" }}
+          title={"Add New"}
+          onClick={() => {
+            setScreen(2);
+          }}
+        />
+      </div>
     );
   } else {
     footcont = "";
   }
   menuDiv = (
-      <li>
+    <li>
       <i
         className="fa fa-plus-circle fa-2x"
         style={classes.plusbutton}
@@ -435,30 +443,75 @@ let ListingContactPerson = props => {
           setScreen(2);
         }}
       />
-      {/* <AddCrmContactPerson refresh={refreshfn} /> */}
-      </li>
-
+      {/* <AddCrmMarketingCampaings refresh={refreshfn} /> */}
+    </li>
   );
 
   if (menucon) {
     menucont = (
       <div className="row align-items-center justify-content-between headbtn">
-        <div className="headbtn-icons col-md-12 col-lg-2">
-          {menuDiv}
-        </div>
-        <div className='headbtn-links col-md-12 col-lg-10'>
-          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Contacts</div>
-          <div className='btn btn-active' >Person</div>
-          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Notes</div>
-          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Activities</div>
-          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Activity Type</div>
-          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Sale Oppurtunity</div>
-          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Mail</div>
+        <div className="headbtn-icons col-md-12 col-lg-2">{menuDiv}</div>
+        <div className="headbtn-links col-md-12 col-lg-10">
+          <div
+            className="btn"
+            onClick={() => {
+              props.history.push("contacts");
+            }}
+          >
+            Contacts
+          </div>
+          <div
+            className="btn"
+            onClick={() => {
+              props.history.push("contact-person");
+            }}
+          >
+            Person
+          </div>
+          <div
+            className="btn"
+            onClick={() => {
+              props.history.push("notes");
+            }}
+          >
+            Notes
+          </div>
+          <div
+            className="btn"
+            onClick={() => {
+              props.history.push("note-activity");
+            }}
+          >
+            Activities
+          </div>
+          <div
+            className="btn"
+            onClick={() => {
+              props.history.push("activity-type");
+            }}
+          >
+            Activity Type
+          </div>
+          <div
+            className="btn"
+            onClick={() => {
+              props.history.push("");
+            }}
+          >
+            Mail
+          </div>
+          <div
+            className="btn"
+            onClick={() => {
+              props.history.push("");
+            }}
+          >
+            Sale Oppurtunity
+          </div>
         </div>
         {/* <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
           <h3 className="heading">CONTACT PERSON</h3>
         </div> */}
-
       </div>
     );
   } else {
@@ -470,12 +523,11 @@ let ListingContactPerson = props => {
       <br />
       {screencontent}
       <br />
-      <div className='row'>{footcont}</div>
+      <div className="row">{footcont}</div>
       <br />
       <br />
-
     </div>
   );
 };
 
-export default withRouter(ListingContactPerson);
+export default withRouter(CrmLeadListing);

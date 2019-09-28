@@ -4,7 +4,7 @@ import ListingContactPerson from "./listing";
 let CrmContactPersonListing = () => {
   return (
     <div>
-      <ListingContactPerson Showhead={true} callid={false} idofcontact={undefined} ShowFoot={false}/>
+      <ListingContactPerson Showhead={true} callid={false} idofcontact={undefined} ShowFoot={false} paginate={true}/>
     </div>
   );
 };

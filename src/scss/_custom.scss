@@ -9,6 +9,11 @@
   border: none;
 }
 
+// navigation
+
+.sidebar .nav-link.active{
+  background-color: #EE7647;
+}
 
 
 // stylelint-disable selector-max-class, declaration-no-important, selector-max-compound-selectors, function-url-quotes, selector-max-combinators

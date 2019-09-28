@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from "react";
-//import MUIDataTable from "mui-datatables";
-// import "../../../../scss/override/listing.scss";
 import "../../../../scss/override/navlisting.scss";
-import EditCrmContactPerson from "./edit";
-import {
-  GetCrmContactPerson,
-  GetCrmPersonByContact,
-  DeleteCrmContactPerson
-} from "..//shared/contactperson";
-import AddCrmContactPerson from "./add";
-import { Spinner } from "reactstrap";
+import EditMarkType from "./edit";
+import { GetCrmMarkType, DeleteCrmMarkType } from "..//shared/marktype";
+import AddMarkMap from "./add";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
-import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
+import "react-bootstrap-table/dist/react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { Spinner } from "reactstrap";
 import { withRouter } from "react-router-dom";
-
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -24,10 +17,9 @@ let idofEdit = 0;
 let Page = 1;
 let PageSize = 10;
 let paging = "";
-let TotalPages = 3;
+let TotalPages = 2;
 let screencontent = "";
 let menucont = "";
-let footcont = "";
 
 const classes = {
   linearprogress: {
@@ -59,88 +51,31 @@ const classes = {
   action: {
     cursor: "pointer",
     marginRight: "0"
-  },
-  plusbutton: {
-    color: "white",
-    // borderRadius: "50px",
-    // width: "10px",
-    cursor: "pointer",
-    // float: "left",
-    textAlign: 'center'
-    // marginTop: '10px',
-    // marginLeft: '5px',
   }
 };
 
 let countforpagination = 0;
-let paginationundertable;
-let ListingContactPerson = props => {
-  let [AtlistVal, setAtlistVal] = useState();
+
+let MarkListMapListing = props => {
+  let [Atlist, setAtlist] = useState([]);
   let [paginate, setPaginate] = useState();
   let [totalcount, setTotalCount] = useState();
-  let [menucon, setMenucon] = useState(false);
-  let [callbyid, setCallbyid] = useState(false);
 
   //-- React Data Table
   const options = {
     sortIndicator: true,
     // page: Page,
     hideSizePerPage: true,
-    // paginationSize: 5,
-    // hidePageListOnlyOnePage: false,
+    // paginationSize: PageSize,
+    hidePageListOnlyOnePage: true,
+    // sizePerPage: PageSize,
     // clearSearch: true,
-    alwaysShowAllbtns: false,
+    alwaysShowAllBtns: false,
     // onRowClick: HandlerowSelect,
     withFirstAndLast: false
-
     // onPageChange: onPageChange,
-    // onSizePerPageList: sizePerPageListChange
+    // onSizePerPageList: sizePerPageListChange,
   };
-
-
-  useEffect(() => {
-    getlistapi();
-  }, []);
-
-  async function getlistapi() {
-    if (props.callid) {
-      console.log(props.idofParent)
-      await GetCrmPersonByContact(props.idofParent).then(res => {
-        setAtlistVal((AtlistVal = res.data));
-        console.log(res.data);
-      });
-
-
-      settabledistatus((Tabledistatus = false));
-      settabledistatus((Tabledistatus = true));
-      setMenucon(props.Showhead);
-    } else {
-      await GetCrmContactPerson(Page, PageSize).then(res => {
-        setAtlistVal((AtlistVal = res.data));
-        console.log(res.data);
-        setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-      });
-
-      // AtlistVal.map(e => {
-      //   if (!(e.installDate === null)) {
-      //     e.installDate = e.installDate.substr(0, e.installDate.length - 9);
-      //   }
-      // });
-
-      setTotalCount((totalcount = paginate.totalCount));
-      TotalPages = paginate.totalPages;
-      countforpagination = 0;
-      settabledistatus((Tabledistatus = false));
-      settabledistatus((Tabledistatus = true));
-      setMenucon(props.Showhead);
-    }
-  }
-
-  let Tabledisplay = (
-    <div style={classes.linearprogress}>
-      <Spinner type="grow" color="dark" />
-    </div>
-  );
 
   //--- Pagination ------------------
 
@@ -243,55 +178,55 @@ let ListingContactPerson = props => {
 
   //----- Finished Pagination---------
 
+  let Tabledisplay = (
+    <div style={classes.linearprogress}>
+      <Spinner type="grow" color="dark" />
+    </div>
+  );
   let [Tabledistatus, settabledistatus] = useState(false);
   if (Tabledistatus) {
     Tabledisplay = (
       <div>
         <BootstrapTable
-          headerStyle={ { background: '#DDDDDD', maxHeight:'40px', } }
-          data={AtlistVal}
+          headerStyle={{ background: "#DDDDDD", maxHeight: "40px" }}
+          data={Atlist}
           version="4"
           striped
           hover
-
           // pagination
           // search
           options={options}
-          // cellEdit={cellEditProp}
         >
-          <TableHeaderColumn dataField="firstName" dataSort>
-            Name
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="email" dataSort>
-            Email
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="position" dataSort>
-            Position
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="department" dataSort>
-            Department
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="mobilePhone" dataSort>
-            Phone
-          </TableHeaderColumn>
-
           <TableHeaderColumn
-            dataField="isActive"
-            hidden={true}
             isKey={true}
+            hidden={true}
+            dataField="marketingCampaignName"
             dataSort
           >
-            isActive
+            MarketingCampaignTypeId
           </TableHeaderColumn>
-          <TableHeaderColumn
-            dataField="contactPersonId"
+          <TableHeaderColumn dataField="marketingCampaignName" dataSort>
+            Campaign
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="marketingListName" dataSort>
+            Marketing List
+          </TableHeaderColumn>
+          {/* <TableHeaderColumn
+            dataField="marketingCampaignTypeId"
             dataSort={false}
             width="6%"
             dataFormat={handleaction}
-          ></TableHeaderColumn>
+          ></TableHeaderColumn> */}
         </BootstrapTable>
         <br />
-        {paginationundertable}
+        <div className="row">
+          <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
+            {"  Showing "} {PageSizeComp} {" Results"}
+          </div>
+          <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
+            {paging}
+          </div>
+        </div>
       </div>
     );
   } else {
@@ -301,20 +236,40 @@ let ListingContactPerson = props => {
       </div>
     );
   }
+  let refreshfn = () => {
+    settabledistatus((Tabledistatus = false));
+    getlistapi();
+  };
 
-  if(props.paginate){
-  paginationundertable= (
-  <div className="row">
-  <div className="col-6 col-sm-4 col-md-8 col-lg-9 col-xl-10">
-    {"  Showing "} {PageSizeComp} {" Results"}
-  </div>
-  <div className="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
-    {paging}
-  </div>
-</div> );
+  useEffect(() => {
+    getlistapi();
+  }, []);
+
+  async function getlistapi() {
+    await GetCrmMarkType(Page, PageSize).then(res => {
+      setAtlist((Atlist = res.data));
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
+
+    setTotalCount((totalcount = paginate.totalCount));
+    TotalPages = paginate.totalPages;
+    countforpagination = 0;
+    settabledistatus((Tabledistatus = false));
+    settabledistatus((Tabledistatus = true));
   }
-  else{
-    paginationundertable='';
+
+  // Toast
+
+  function errort() {
+    // add type: 'error' to options
+    return toast.error("Failed with Error...", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+  function success() {
+    return toast.success("Successfull... ", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
   }
 
   function handleaction(cell) {
@@ -352,50 +307,29 @@ let ListingContactPerson = props => {
       break;
     case 2:
       screencontent = (
-        <AddCrmContactPerson
+        <AddMarkMap
           backmain={ChangeScreen}
           success={success}
           error={errort}
-          check={props.callid}
-          idforparent={props.idofParent}
+          open={true}
         />
       );
       break;
     case 3:
       screencontent = (
-        <EditCrmContactPerson
+        <EditMarkType
           backmain={ChangeScreen}
           success={success}
           error={errort}
           IDforAPI={idofEdit}
-
+          open={true}
         />
       );
       break;
   }
 
-  let refreshfn = () => {
-    settabledistatus((Tabledistatus = false));
-    getlistapi();
-  };
-
-  // Toast
-
-  function errort() {
-    // add type: 'error' to options
-    return toast.error("Failed with Error...", {
-      position: toast.POSITION.BOTTOM_RIGHT
-    });
-  }
-
-  function success() {
-    return toast.success("Succesfull... ", {
-      position: toast.POSITION.BOTTOM_RIGHT
-    });
-  }
-
   async function Dellistapi(id) {
-    await DeleteCrmContactPerson(id)
+    await DeleteCrmMarkType(id)
       .then(() => {
         success();
       })
@@ -411,54 +345,90 @@ let ListingContactPerson = props => {
     return setScreen(3);
   }
 
-  if (props.ShowFoot) {
-    footcont = (
-     <div hidden={(screen===2)?true:false} className='col-12' style={{ 'textAlign': 'center'}}> <i
-        className="fa fa-plus fa-3x"
-        style={{'color': '#EE7647',}}
-        title={"Add New"}
-        onClick={() => {
-          setScreen(2);
-        }}
-      /></div>
-    );
-  } else {
-    footcont = "";
-  }
   menuDiv = (
-      <li>
+    <li>
       <i
         className="fa fa-plus-circle fa-2x"
-        style={classes.plusbutton}
+        style={{ color: "white", cursor: "pointer" }}
         title={"Add New"}
         onClick={() => {
           setScreen(2);
         }}
       />
-      {/* <AddCrmContactPerson refresh={refreshfn} /> */}
-      </li>
-
+      {/* <AddCrmLead refresh={refreshfn} /> */}
+    </li>
   );
-
+  let [menucon, setMenucon] = useState(true);
   if (menucon) {
     menucont = (
       <div className="row align-items-center justify-content-between headbtn">
-        <div className="headbtn-icons col-md-12 col-lg-2">
-          {menuDiv}
-        </div>
-        <div className='headbtn-links col-md-12 col-lg-10'>
-          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Contacts</div>
-          <div className='btn btn-active' >Person</div>
-          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Notes</div>
-          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Activities</div>
-          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Activity Type</div>
-          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Sale Oppurtunity</div>
-          <div className='btn' onClick={() => {  props.history.push("notes"); }}>Mail</div>
+        <div className="headbtn-icons col-md-12 col-lg-2">{menuDiv}</div>
+        <div className="headbtn-links col-md-12 col-lg-10">
+        <div
+            className="btn btn-active"
+          >
+            Assign Campaign
+          </div>
+          <div
+            className="btn"
+            onClick={() => {
+              props.history.push("contacts");
+            }}
+          >
+            Contacts
+          </div>
+          <div
+            className="btn"
+            onClick={() => {
+              props.history.push("contact-person");
+            }}
+          >
+            Person
+          </div>
+          <div
+            className="btn"
+            onClick={() => {
+              props.history.push("notes");
+            }}
+          >
+            Notes
+          </div>
+          <div
+            className="btn"
+            onClick={() => {
+              props.history.push("leads");
+            }}
+          >
+            Leads
+          </div>
+          <div
+            className="btn"
+            onClick={() => {
+              props.history.push("note-activity");
+            }}
+          >
+            Activities
+          </div>
+          <div
+            className="btn"
+            onClick={() => {
+              props.history.push("");
+            }}
+          >
+            Mail
+          </div>
+          <div
+            className="btn"
+            onClick={() => {
+              props.history.push("");
+            }}
+          >
+            Sale Oppurtunity
+          </div>
         </div>
         {/* <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
           <h3 className="heading">CONTACT PERSON</h3>
         </div> */}
-
       </div>
     );
   } else {
@@ -470,12 +440,8 @@ let ListingContactPerson = props => {
       <br />
       {screencontent}
       <br />
-      <div className='row'>{footcont}</div>
-      <br />
-      <br />
-
     </div>
   );
 };
 
-export default withRouter(ListingContactPerson);
+export default withRouter(MarkListMapListing);

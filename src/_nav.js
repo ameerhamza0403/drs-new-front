@@ -90,12 +90,36 @@ export default {
           url: "/system/crm/contact-person",
           icon: "fa fa-user"
         },
-
         {
           name: "Notes",
           url: "/system/crm/notes",
           icon: "fa fa-sticky-note-o"
         },
+        {
+          name: "Leads",
+          url: "/system/crm/leads",
+          icon: "fa fa-user"
+        },
+        {
+          name: "Marketing Campaigns",
+          url: "/system/crm/marketing-campaigns",
+          icon: "fa fa-user"
+        },
+        {
+          name: "Marketing Type",
+          url: "/system/crm/campaign-type",
+          icon: "fa fa-user"
+        },
+        {
+          name: "Marketing List",
+          url: "/system/crm/marketing-list",
+          icon: "fa fa-user"
+        },
+        // {
+        //   name: "Assign Compaign",
+        //   url: "/system/crm/marketing-assign",
+        //   icon: "fa fa-user"
+        // },
         {
           name: "Activity Type",
           url: "/system/crm/activity-type",

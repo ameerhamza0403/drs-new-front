@@ -6,9 +6,8 @@ import {
 } from "..//shared/contacts";
 import { GetCrmContactGroup } from "../shared/contactgroup";
 import ListingContactPerson from "../contactperson/listing";
-import ContactMap from "./map";
-import ListingNotes from '../notes/listing';
-import '../../../../scss/customstyles/tabs.css';
+import ListingNotes from "../notes/listing";
+import "../../../../scss/customstyles/tabs.css";
 import {
   Button,
   Card,
@@ -34,6 +33,7 @@ import Select from "react-select";
 import "react-select/dist/react-select.min.css";
 import "../../../../scss/override/select.scss";
 import { Divider } from "@material-ui/core";
+import GoogleMapForCrm from "./map/mapview/main";
 
 const classes = {
   button: {
@@ -53,6 +53,7 @@ const classes = {
   }
 };
 
+let formikdata = "";
 let AddCrmContacts = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
@@ -142,10 +143,10 @@ let AddCrmContacts = props => {
     // });
   }
 
-  let initialValues = {
+  let [initialValues, setinitialValues] = useState({
     name: "",
     isActive: true
-  };
+  });
 
   function handleChangefile(files) {
     setFiles((files = files));
@@ -174,11 +175,28 @@ let AddCrmContacts = props => {
     validateForm(errors);
   }
 
+  function updateadd(data) {
+    // setFormshow(false);
+    setinitialValues({
+      ...initialValues,
+      ["contactAddress"]: data.address,
+      ["name"]: data.name,
+      ["country"]: data.country,
+      ["city"]: data.city,
+      ["lat"]: data.lat,
+      ["lng"]: data.lng,
+      ["radius"]: data.radius
+    });
+    // setFormshow(true);
+    console.log(initialValues);
+  }
+
   return (
     <div>
       <Card>
         <CardBody>
           <Formik
+            enableReinitialize
             initialValues={initialValues}
             validate={validate(validationSchema)}
             onSubmit={onSubmit}
@@ -783,7 +801,9 @@ let AddCrmContacts = props => {
                               {/* ************************************************ */}
                             </div>
                             <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                              <ContactMap />
+                              {/* <div  className='container'> */}
+                              <GoogleMapForCrm updateadd={updateadd} />
+                              {/* </div> */}
                             </div>
                           </div>
                         </Tab>
