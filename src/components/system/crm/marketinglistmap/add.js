@@ -1,5 +1,9 @@
-import React, { Component, useState } from "react";
-import { PostCrmMarkType } from "../shared/marktype";
+import React, { Component, useState, useEffect } from "react";
+import { PostCrmAssign } from "../shared/marketinglistmap";
+import { GetCrmMarketingList } from "../shared/marketinglist";
+import { GetCrmMarkCampaign } from "../shared/marketingcampaign";
+import MultiSelect from "@khanacademy/react-multi-select";
+import "./select.css";
 import {
   Button,
   Card,
@@ -22,14 +26,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-let valofCod = "";
-
 const classes = {
   button: {
     color: "white",
     backgroundColor: "#EE7647",
     border: "none",
-    fontWeight: 'normal',
+    fontWeight: "normal"
   },
   plusbutton: {
     color: "white",
@@ -42,20 +44,54 @@ const classes = {
   }
 };
 
+let options = [];
+
 let AddMarkType = props => {
   let [initialValues, setInitialValues] = useState({
     isActive: true
   });
+
+  let [modelval, setmodelval] = useState([]);
+
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PostCrmMarkType(values)
-      .then(res => props.success(res.data.message))
-      .catch(error => props.errort());
-    handleOpen();
+    if (modelval[0] === undefined) {
+      errort("Please fill both fields...");
+      setSubmitting(false);
+    } else {
+      modelval.map(async (e, i) => {
+        let data = {
+          isActive: true,
+          marketingCampaignId: values.marketingCampaignId,
+          marketingListId: e
+        };
+        await PostCrmAssign(data)
+          .then(res => {
+            if (i === modelval.length-1) {
+              props.success();
+            }
+          })
+          .catch(error => props.error());
+      });
+      handleOpen();
+    }
+  }
+
+  // Toast
+
+  function errort(res) {
+    // add type: 'error' to options
+    return toast.error(res, {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
   }
 
   const validationSchema = function(values) {
     return Yup.object().shape({
-      name: Yup.string().required("Name is required")
+      // name: Yup.string().required("Name is required")
+      // marketingListId: Yup.string().required("Marketing List is required"),
+      marketingCampaignId: Yup.string().required(
+        "Marketing Campaign is required"
+      )
     });
   };
 
@@ -104,8 +140,6 @@ let AddMarkType = props => {
     validateForm(errors);
   }
 
-
-
   let [modal, setModal] = useState(props.open);
 
   let handleOpen = () => {
@@ -114,6 +148,32 @@ let AddMarkType = props => {
       props.backmain(1);
     }, 100);
   };
+
+  useEffect(() => {
+    getlistapi();
+  }, []);
+
+  let [marklist, setMarklist] = useState([]);
+  let [markCamp, setMarkCamp] = useState([]);
+
+  async function getlistapi() {
+    const { data: marklist } = await GetCrmMarketingList(0, 0);
+    setMarklist(marklist);
+
+    const { data: markCamp } = await GetCrmMarkCampaign(0, 0);
+    setMarkCamp(markCamp);
+
+    marklist.map((e, i) => {
+      var obj = {};
+      obj["label"] = e.name;
+      obj["value"] = e.marketingListId;
+      if (i === 0) {
+        options[0] = obj;
+      } else {
+        options.push(obj);
+      }
+    });
+  }
 
   return (
     <div>
@@ -149,26 +209,94 @@ let AddMarkType = props => {
                     <FormGroup>
                       <div className="row mb-1">
                         <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                          <Label for="name" style={classes.label}>
-                            Name
+                          <Label
+                            for="marketingCampaignId"
+                            style={classes.label}
+                          >
+                            Marketing Campaign
                           </Label>
                         </div>
                         <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                           <Input
                             type="select"
-                            name="name"
-                            id="name"
+                            name="marketingCampaignId"
+                            id="marketingCampaignId"
                             placeholder=""
                             autoComplete={false}
-                            valid={!errors.name}
-                            invalid={touched.name && !!errors.name}
+                            valid={!errors.marketingCampaignId}
+                            invalid={
+                              touched.marketingCampaignId &&
+                              !!errors.marketingCampaignId
+                            }
                             autoFocus={true}
                             required
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            value={values.name}
+                            value={values.marketingCampaignId}
+                          >
+                            <option selected />
+                            {markCamp.map(e => (
+                              <option value={e.marketingCampaignId}>
+                                {e.name}
+                              </option>
+                            ))}
+                          </Input>
+                          <FormFeedback>
+                            {errors.marketingCampaignId}
+                          </FormFeedback>
+                        </div>
+                      </div>
+
+                      <div className="row mb-1">
+                        <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                          <Label
+                            for="marketingCampaignId"
+                            style={classes.label}
+                          >
+                            Marketing List
+                          </Label>
+                        </div>
+                        <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                          {/* <Input
+                            type="select"
+                            name="marketingListId"
+                            id="marketingListId"
+                            placeholder=""
+                            autoComplete={false}
+                            valid={!errors.marketingListId}
+                            invalid={
+                              touched.marketingListId &&
+                              !!errors.marketingListId
+                            }
+                            autoFocus={true}
+                            required
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.marketingListId}
+                          >
+                            <option selected />
+                            {marklist.map(e => (
+                              <option value={e.marketingListId}>
+                                {e.name}
+                              </option>
+                            ))}
+                          </Input> */}
+                          <MultiSelect
+                            options={options}
+                            selected={modelval}
+                            onSelectedChanged={e => {
+                              setmodelval((modelval = e));
+                            }}
+                            overrideStrings={{
+                              selectSomeItems: "Select List...",
+                              allItemsAreSelected: "All Items are Selected",
+                              selectAll: "Select All",
+                              search: "Search"
+                            }}
                           />
-                          <FormFeedback>{errors.name}</FormFeedback>
+                          <FormFeedback>
+                            {errors.marketingCampaignId}
+                          </FormFeedback>
                         </div>
                       </div>
                     </FormGroup>

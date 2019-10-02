@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 //import MUIDataTable from "mui-datatables";
 // import "../../../../scss/override/listing.scss";
 import "../../../../scss/override/navlisting.scss";
-import EditCrmMarketingCampaigns from "./edit";
-import { GetCrmMarkCampaign, DeleteCrmMarkCampaign } from "..//shared/marketingcampaign";
-import AddCrmMarketingCampaings from "./add";
+import EditCrmMember from "./edit";
+import {
+  GetCrmMarkMemberList,
+  DeleteCrmMarkMemberList
+} from "..//shared/markmemberlist";
+import AddCrmMember from "./add";
 import { Spinner } from "reactstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -68,7 +71,7 @@ const classes = {
 
 let countforpagination = 0;
 let paginationundertable;
-let CrmLeadListing = props => {
+let CrmMarketingMemberListing = props => {
   let [AtlistVal, setAtlistVal] = useState();
   let [paginate, setPaginate] = useState();
   let [totalcount, setTotalCount] = useState();
@@ -96,36 +99,36 @@ let CrmLeadListing = props => {
   }, []);
 
   async function getlistapi() {
-    if (props.callid) {
-      console.log(props.idofParent);
-      await GetCrmMarkCampaign(props.idofParent).then(res => {
-        setAtlistVal((AtlistVal = res.data));
-        console.log(res.data);
-      });
+    // if (props.callid) {
+    //   console.log(props.idofParent);
+    //   await GetCrmMarkMemberList(props.idofParent).then(res => {
+    //     setAtlistVal((AtlistVal = res.data));
+    //     console.log(res.data);
+    //   });
 
-      settabledistatus((Tabledistatus = false));
-      settabledistatus((Tabledistatus = true));
-      setMenucon(props.Showhead);
-    } else {
-      await GetCrmMarkCampaign(Page, PageSize).then(res => {
-        setAtlistVal((AtlistVal = res.data));
-        console.log(res.data);
-        setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-      });
+    //   settabledistatus((Tabledistatus = false));
+    //   settabledistatus((Tabledistatus = true));
+    //   setMenucon(props.Showhead);
+    // } else {
+    await GetCrmMarkMemberList(Page, PageSize).then(res => {
+      setAtlistVal((AtlistVal = res.data));
+      console.log(res.data);
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
 
-      // AtlistVal.map(e => {
-      //   if (!(e.installDate === null)) {
-      //     e.installDate = e.installDate.substr(0, e.installDate.length - 9);
-      //   }
-      // });
+    // AtlistVal.map(e => {
+    //   if (!(e.installDate === null)) {
+    //     e.installDate = e.installDate.substr(0, e.installDate.length - 9);
+    //   }
+    // });
 
-      setTotalCount((totalcount = paginate.totalCount));
-      TotalPages = paginate.totalPages;
-      countforpagination = 0;
-      settabledistatus((Tabledistatus = false));
-      settabledistatus((Tabledistatus = true));
-      setMenucon(props.Showhead);
-    }
+    setTotalCount((totalcount = paginate.totalCount));
+    TotalPages = paginate.totalPages;
+    countforpagination = 0;
+    settabledistatus((Tabledistatus = false));
+    settabledistatus((Tabledistatus = true));
+    setMenucon(props.Showhead);
+    // }
   }
 
   let Tabledisplay = (
@@ -250,43 +253,32 @@ let CrmLeadListing = props => {
           options={options}
           // cellEdit={cellEditProp}
         >
-          <TableHeaderColumn dataField="name" dataSort>
+          <TableHeaderColumn dataField="fullName" dataSort>
             Name
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="marketingCampaignTypeName" dataSort>
-            Type
+          <TableHeaderColumn dataField="businessPhone" dataSort>
+            Business Phone
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="objective" dataSort>
-            Objective
+          <TableHeaderColumn dataField="marketingListName" dataSort>
+            Marketing List
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="status" dataSort>
-            Status
+          <TableHeaderColumn dataField="leadName" dataSort>
+            Lead
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="expectedCost" dataSort>
-            Cost (Expected)
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="expectedRevenue" dataSort>
-            Revenue (Expected)
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="assignedResourceName" dataSort>
-            Resource
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="startDate" dataSort>
-            Start
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="endDate" dataSort>
-            End
+          <TableHeaderColumn dataField="contactPersonName" dataSort>
+            Contact Person
           </TableHeaderColumn>
           <TableHeaderColumn
             dataField="isActive"
-            hidden={true}
+            hidden={false}
             isKey={true}
             dataSort
+            dataFormat={handletrue}
           >
             isActive
           </TableHeaderColumn>
           <TableHeaderColumn
-            dataField="marketingCampaignId"
+            dataField="marketingListMemberId"
             dataSort={false}
             width="6%"
             dataFormat={handleaction}
@@ -339,6 +331,28 @@ let CrmLeadListing = props => {
     );
   }
 
+  function handletrue(cell) {
+    if (cell) {
+      return (
+        <i
+          className="fa fa-thumbs-o-up"
+          style={classes.action}
+          title={"Edit"}
+          onClick={() => Editfn(cell)}
+        ></i>
+      );
+    } else {
+      return (
+        <i
+          className="fa fa-thumbs-o-down"
+          style={classes.action}
+          title={"Edit"}
+          onClick={() => Editfn(cell)}
+        ></i>
+      );
+    }
+  }
+
   let [screen, setScreen] = useState(1);
 
   function ChangeScreen(val) {
@@ -354,7 +368,7 @@ let CrmLeadListing = props => {
       break;
     case 2:
       screencontent = (
-        <AddCrmMarketingCampaings
+        <AddCrmMember
           backmain={ChangeScreen}
           success={success}
           error={errort}
@@ -365,7 +379,7 @@ let CrmLeadListing = props => {
       break;
     case 3:
       screencontent = (
-        <EditCrmMarketingCampaigns
+        <EditCrmMember
           backmain={ChangeScreen}
           success={success}
           error={errort}
@@ -396,7 +410,7 @@ let CrmLeadListing = props => {
   }
 
   async function Dellistapi(id) {
-    await DeleteCrmMarkCampaign(id)
+    await DeleteCrmMarkMemberList(id)
       .then(() => {
         success();
       })
@@ -443,7 +457,7 @@ let CrmLeadListing = props => {
           setScreen(2);
         }}
       />
-      {/* <AddCrmMarketingCampaings refresh={refreshfn} /> */}
+      {/* <AddCrmMember refresh={refreshfn} /> */}
     </li>
   );
 
@@ -508,8 +522,7 @@ let CrmLeadListing = props => {
           >
             Sale Oppurtunity
           </div>
-          <div className="btn btn-active">Marketing Campaigns</div>
-
+          <div className="btn btn-active">Mkt. List Members</div>
         </div>
         {/* <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
           <h3 className="heading">CONTACT PERSON</h3>
@@ -532,4 +545,4 @@ let CrmLeadListing = props => {
   );
 };
 
-export default withRouter(CrmLeadListing);
+export default withRouter(CrmMarketingMemberListing);

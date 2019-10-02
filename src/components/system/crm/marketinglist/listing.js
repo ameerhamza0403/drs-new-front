@@ -364,12 +364,6 @@ let MarketingList = props => {
       <div className="row align-items-center justify-content-between headbtn">
         <div className="headbtn-icons col-md-12 col-lg-2">{menuDiv}</div>
         <div className="headbtn-links col-md-12 col-lg-10">
-        <div
-            className="btn btn-active"
-
-          >
-            Marketing List
-          </div>
           <div
             className="btn"
             onClick={() => {
@@ -426,6 +420,7 @@ let MarketingList = props => {
           >
             Sale Oppurtunity
           </div>
+          <div className="btn btn-active">Marketing Lists</div>
         </div>
         {/* <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
           <h3 className="heading">CONTACT PERSON</h3>

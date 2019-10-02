@@ -47,7 +47,7 @@ const classes = {
   },
   label: {
     fontSize: "12px",
-    color: "#999"
+    // color: "#999"
   }
 };
 

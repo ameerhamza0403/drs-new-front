@@ -44,6 +44,20 @@ export function GetCrmPersonByContact(id) {
 }
 
 //---------Edit APi
+
+let urlforcontactname = apiUrl + '/crm/ContactPersons/single-contact-person';
+function ApiCrmpersonforcont(Id) {
+  return `${urlforcontactname}/${Id}`;
+}
+export function GetPersonCrmContactById(id) {
+  // console.log(id)
+  return axios.get(ApiCrmpersonforcont(id), {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+}
+
 export function GetCrmContactPersonById(id) {
   // console.log(id)
   return axios.get(ApiwithidCrmContactPerson(id), {

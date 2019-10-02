@@ -101,25 +101,32 @@ export default {
           icon: "fa fa-user"
         },
         {
-          name: "Marketing Campaigns",
-          url: "/system/crm/marketing-campaigns",
-          icon: "fa fa-user"
-        },
-        {
-          name: "Marketing Type",
+          name: "Campaign Types",
           url: "/system/crm/campaign-type",
           icon: "fa fa-user"
         },
         {
-          name: "Marketing List",
+          name: "Mkt. Campaigns",
+          url: "/system/crm/marketing-campaigns",
+          icon: "fa fa-user"
+        },
+
+        {
+          name: "Marketing Lists",
           url: "/system/crm/marketing-list",
           icon: "fa fa-user"
         },
-        // {
-        //   name: "Assign Compaign",
-        //   url: "/system/crm/marketing-assign",
-        //   icon: "fa fa-user"
-        // },
+        {
+          name: "Mkt. List Members",
+          url: "/system/crm/marketing-member",
+          icon: "fa fa-user"
+        },
+        {
+          name: "Mkt. Campaign Lists",
+          url: "/system/crm/marketing-assign",
+          icon: "fa fa-user"
+        },
+
         {
           name: "Activity Type",
           url: "/system/crm/activity-type",
@@ -132,8 +139,8 @@ export default {
         },
 
         {
-          name: "SALES",
-          url: "/crm/sale",
+          name: "Sales Opportunity",
+          url: "/system/crm/sales-opportunity",
           icon: "fa fa-gbp"
         },
         {

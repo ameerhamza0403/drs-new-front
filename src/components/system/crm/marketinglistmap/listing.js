@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../../../scss/override/navlisting.scss";
 import EditMarkType from "./edit";
-import { GetCrmMarkType, DeleteCrmMarkType } from "..//shared/marktype";
+import { GetCrmAssign, DeleteCrmAssign } from "..//shared/marketinglistmap";
 import AddMarkMap from "./add";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,6 +14,7 @@ import { withRouter } from "react-router-dom";
 let menuDiv = "";
 let EditshowModel = "";
 let idofEdit = 0;
+let idofEditt = 0;
 let Page = 1;
 let PageSize = 10;
 let paging = "";
@@ -211,12 +212,12 @@ let MarkListMapListing = props => {
           <TableHeaderColumn dataField="marketingListName" dataSort>
             Marketing List
           </TableHeaderColumn>
-          {/* <TableHeaderColumn
+          <TableHeaderColumn
             dataField="marketingCampaignTypeId"
             dataSort={false}
             width="6%"
             dataFormat={handleaction}
-          ></TableHeaderColumn> */}
+          ></TableHeaderColumn>
         </BootstrapTable>
         <br />
         <div className="row">
@@ -246,7 +247,7 @@ let MarkListMapListing = props => {
   }, []);
 
   async function getlistapi() {
-    await GetCrmMarkType(Page, PageSize).then(res => {
+    await GetCrmAssign(Page, PageSize).then(res => {
       setAtlist((Atlist = res.data));
       setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
     });
@@ -272,21 +273,21 @@ let MarkListMapListing = props => {
     });
   }
 
-  function handleaction(cell) {
+  function handleaction(cell, row) {
     return (
       <div>
-        <i
+        {/* <i
           className="fa fa-pencil-square-o"
           style={classes.action}
           title={"Edit"}
-          onClick={() => Editfn(cell)}
-        ></i>
+          onClick={() => Editfn(row)}
+        ></i> */}
         &nbsp; &nbsp;
         <i
           className="fa fa-close 1x"
           style={classes.action}
           title={"Delete"}
-          onClick={() => Dellistapi(cell)}
+          onClick={() => Dellistapi(row)}
         ></i>
       </div>
     );
@@ -321,15 +322,16 @@ let MarkListMapListing = props => {
           backmain={ChangeScreen}
           success={success}
           error={errort}
-          IDforAPI={idofEdit}
+          IdforList={idofEdit}
+          IdforCamp={idofEditt}
           open={true}
         />
       );
       break;
   }
 
-  async function Dellistapi(id) {
-    await DeleteCrmMarkType(id)
+  async function Dellistapi(row) {
+    await DeleteCrmAssign(row.marketingCampaignId, row.marketingListId)
       .then(() => {
         success();
       })
@@ -340,8 +342,9 @@ let MarkListMapListing = props => {
     refreshfn();
   }
 
-  function Editfn(cell) {
-    idofEdit = cell;
+  function Editfn(row) {
+    idofEdit = row.marketingListId;
+    idofEditt = row.marketingCampaignId;
     return setScreen(3);
   }
 
@@ -364,11 +367,6 @@ let MarkListMapListing = props => {
       <div className="row align-items-center justify-content-between headbtn">
         <div className="headbtn-icons col-md-12 col-lg-2">{menuDiv}</div>
         <div className="headbtn-links col-md-12 col-lg-10">
-        <div
-            className="btn btn-active"
-          >
-            Assign Campaign
-          </div>
           <div
             className="btn"
             onClick={() => {
@@ -425,6 +423,7 @@ let MarkListMapListing = props => {
           >
             Sale Oppurtunity
           </div>
+          <div className="btn btn-active">Marketing Campaign Lists</div>
         </div>
         {/* <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
           <h3 className="heading">CONTACT PERSON</h3>

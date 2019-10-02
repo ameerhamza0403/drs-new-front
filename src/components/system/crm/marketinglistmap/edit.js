@@ -1,5 +1,7 @@
 import React, { Component, useState, useEffect } from "react";
-import { PutCrmMarkType, GetCrmMarkTypeById } from "../shared/marktype";
+import { PutCrmAssign, GetCrmAssignById } from "../shared/marketinglistmap";
+import { GetCrmMarkCampaign } from "../shared/marketingcampaign";
+import { GetCrmMarketingList } from "../shared/marketinglist";
 import {
   Button,
   Card,
@@ -29,7 +31,7 @@ const classes = {
     color: "white",
     backgroundColor: "#EE7647",
     border: "none",
-    fontWeight: 'normal',
+    fontWeight: "normal"
   },
   plusbutton: {
     color: "white",
@@ -46,8 +48,11 @@ let EditMarkType = props => {
   let [initialValues, setInitialValues] = useState({
     isActive: true
   });
+
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    await PutCrmMarkType(props.IDforAPI,values)
+    delete values.marketingCampaignName;
+    delete values.marketingListName;
+    await PutCrmAssign(props.IdforCamp,props.IdforList,values)
       .then(res => props.success())
       .catch(error => props.error());
     handleOpen();
@@ -55,7 +60,11 @@ let EditMarkType = props => {
 
   const validationSchema = function(values) {
     return Yup.object().shape({
-      name: Yup.string().required("Name is required")
+      // name: Yup.string().required("Name is required")
+      marketingListId: Yup.string().required("Marketing List is required"),
+      marketingCampaignId: Yup.string().required(
+        "Marketing Campaign is required"
+      )
     });
   };
 
@@ -104,8 +113,6 @@ let EditMarkType = props => {
     validateForm(errors);
   }
 
-
-
   let [modal, setModal] = useState(props.open);
 
   let handleOpen = () => {
@@ -119,9 +126,21 @@ let EditMarkType = props => {
     getlistapi();
   }, []);
 
+  let [marklist, setMarklist] = useState([]);
+  let [markCamp, setMarkCamp] = useState([]);
+
   async function getlistapi() {
-    const { data: initialValues } = await GetCrmMarkTypeById(props.IDforAPI);
+    const { data: initialValues } = await GetCrmAssignById(
+      props.IdforCamp,
+      props.IdforList
+    );
     setInitialValues(initialValues);
+
+    const { data: marklist } = await GetCrmMarketingList(0, 0);
+    setMarklist(marklist);
+
+    const { data: markCamp } = await GetCrmMarkCampaign(0, 0);
+    setMarkCamp(markCamp);
   }
 
   return (
@@ -158,26 +177,81 @@ let EditMarkType = props => {
                     <FormGroup>
                       <div className="row mb-1">
                         <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                          <Label for="name" style={classes.label}>
-                            Name
+                          <Label
+                            for="marketingCampaignId"
+                            style={classes.label}
+                          >
+                            Marketing Campaign
                           </Label>
                         </div>
                         <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                           <Input
-                            type="text"
-                            name="name"
-                            id="name"
+                            type="select"
+                            name="marketingCampaignId"
+                            id="marketingCampaignId"
                             placeholder=""
                             autoComplete={false}
-                            valid={!errors.name}
-                            invalid={touched.name && !!errors.name}
+                            valid={!errors.marketingCampaignId}
+                            invalid={
+                              touched.marketingCampaignId &&
+                              !!errors.marketingCampaignId
+                            }
                             autoFocus={true}
                             required
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            value={values.name}
-                          />
-                          <FormFeedback>{errors.name}</FormFeedback>
+                            value={values.marketingCampaignId}
+                          >
+                            <option selected />
+                            {markCamp.map(e => (
+                              <option value={e.marketingCampaignId}>
+                                {e.name}
+                              </option>
+                            ))}
+                          </Input>
+                          <FormFeedback>
+                            {errors.marketingCampaignId}
+                          </FormFeedback>
+                        </div>
+                      </div>
+
+                      <div className="row mb-1">
+                        <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                          <Label
+                            for="marketingCampaignId"
+                            style={classes.label}
+                          >
+                            Marketing List
+                          </Label>
+                        </div>
+                        <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                          <Input
+                            type="select"
+                            name="marketingListId"
+                            id="marketingListId"
+                            placeholder=""
+                            autoComplete={false}
+                            valid={!errors.marketingListId}
+                            invalid={
+                              touched.marketingListId &&
+                              !!errors.marketingListId
+                            }
+                            autoFocus={true}
+                            required
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.marketingListId}
+                          >
+                            <option selected />
+                            {marklist.map(e => (
+                              <option value={e.marketingListId}>
+                                {e.name}
+                              </option>
+                            ))}
+                          </Input>
+                          <FormFeedback>
+                            {errors.marketingCampaignId}
+                          </FormFeedback>
                         </div>
                       </div>
                     </FormGroup>

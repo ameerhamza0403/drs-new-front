@@ -2,18 +2,20 @@ import React, { useState, useEffect } from "react";
 //import MUIDataTable from "mui-datatables";
 // import "../../../../scss/override/listing.scss";
 import "../../../../scss/override/navlisting.scss";
-import EditCrmMarketingCampaigns from "./edit";
-import { GetCrmMarkCampaign, DeleteCrmMarkCampaign } from "..//shared/marketingcampaign";
-import AddCrmMarketingCampaings from "./add";
-import { Spinner } from "reactstrap";
+import EditCrmContactPerson from "./edit";
+import { GetCrmSalesOpp, DeleteCrmSalesOpp } from "../shared/salesopp";
+import AddCrmContactPerson from "./add";
+import { Spinner, Collapse, Fade, Card, CardBody, Button } from "reactstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { withRouter } from "react-router-dom";
+import Filters from './filters';
 
 let menuDiv = "";
+let EditshowModel = "";
 let idofEdit = 0;
 let Page = 1;
 let PageSize = 10;
@@ -68,7 +70,8 @@ const classes = {
 
 let countforpagination = 0;
 let paginationundertable;
-let CrmLeadListing = props => {
+let filtercont = "";
+let ListingSales = props => {
   let [AtlistVal, setAtlistVal] = useState();
   let [paginate, setPaginate] = useState();
   let [totalcount, setTotalCount] = useState();
@@ -96,36 +99,36 @@ let CrmLeadListing = props => {
   }, []);
 
   async function getlistapi() {
-    if (props.callid) {
-      console.log(props.idofParent);
-      await GetCrmMarkCampaign(props.idofParent).then(res => {
-        setAtlistVal((AtlistVal = res.data));
-        console.log(res.data);
-      });
+    // if (props.callid) {
+    //   console.log(props.idofParent)
+    //   await GetCrmPersonByContact(props.idofParent).then(res => {
+    //     setAtlistVal((AtlistVal = res.data));
+    //     console.log(res.data);
+    //   });
 
-      settabledistatus((Tabledistatus = false));
-      settabledistatus((Tabledistatus = true));
-      setMenucon(props.Showhead);
-    } else {
-      await GetCrmMarkCampaign(Page, PageSize).then(res => {
-        setAtlistVal((AtlistVal = res.data));
-        console.log(res.data);
-        setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
-      });
+    //   settabledistatus((Tabledistatus = false));
+    //   settabledistatus((Tabledistatus = true));
+    //   setMenucon(props.Showhead);
+    // } else {
+    await GetCrmSalesOpp(Page, PageSize).then(res => {
+      setAtlistVal((AtlistVal = res.data));
+      console.log(res.data);
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
 
-      // AtlistVal.map(e => {
-      //   if (!(e.installDate === null)) {
-      //     e.installDate = e.installDate.substr(0, e.installDate.length - 9);
-      //   }
-      // });
+    // AtlistVal.map(e => {
+    //   if (!(e.installDate === null)) {
+    //     e.installDate = e.installDate.substr(0, e.installDate.length - 9);
+    //   }
+    // });
 
-      setTotalCount((totalcount = paginate.totalCount));
-      TotalPages = paginate.totalPages;
-      countforpagination = 0;
-      settabledistatus((Tabledistatus = false));
-      settabledistatus((Tabledistatus = true));
-      setMenucon(props.Showhead);
-    }
+    setTotalCount((totalcount = paginate.totalCount));
+    TotalPages = paginate.totalPages;
+    countforpagination = 0;
+    settabledistatus((Tabledistatus = false));
+    settabledistatus((Tabledistatus = true));
+    setMenucon(props.Showhead);
+    // }
   }
 
   let Tabledisplay = (
@@ -239,6 +242,8 @@ let CrmLeadListing = props => {
   if (Tabledistatus) {
     Tabledisplay = (
       <div>
+        {filtercont}
+        <br />
         <BootstrapTable
           headerStyle={{ background: "#DDDDDD", maxHeight: "40px" }}
           data={AtlistVal}
@@ -250,43 +255,38 @@ let CrmLeadListing = props => {
           options={options}
           // cellEdit={cellEditProp}
         >
-          <TableHeaderColumn dataField="name" dataSort>
-            Name
+          <TableHeaderColumn dataField="reference" dataSort>
+            Reference
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="marketingCampaignTypeName" dataSort>
-            Type
+          <TableHeaderColumn dataField="contactName" dataSort>
+            Contact
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="objective" dataSort>
-            Objective
+          <TableHeaderColumn dataField="topic" dataSort>
+            Topic
           </TableHeaderColumn>
           <TableHeaderColumn dataField="status" dataSort>
             Status
           </TableHeaderColumn>
-          <TableHeaderColumn dataField="expectedCost" dataSort>
-            Cost (Expected)
+          <TableHeaderColumn dataField="salesOpportunityStageName" dataSort>
+            Stage
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="user" dataSort>
+            User
           </TableHeaderColumn>
           <TableHeaderColumn dataField="expectedRevenue" dataSort>
-            Revenue (Expected)
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="assignedResourceName" dataSort>
-            Resource
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="startDate" dataSort>
-            Start
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="endDate" dataSort>
-            End
+            Expected Revenue
           </TableHeaderColumn>
           <TableHeaderColumn
             dataField="isActive"
             hidden={true}
             isKey={true}
             dataSort
+            dataFormat={handletrue}
           >
             isActive
           </TableHeaderColumn>
           <TableHeaderColumn
-            dataField="marketingCampaignId"
+            dataField="salesOpportunityId"
             dataSort={false}
             width="6%"
             dataFormat={handleaction}
@@ -319,6 +319,28 @@ let CrmLeadListing = props => {
     paginationundertable = "";
   }
 
+  function handletrue(cell) {
+    if (cell) {
+      return (
+        <i
+          className="fa fa-thumbs-o-up"
+          style={classes.action}
+          title={"Edit"}
+          onClick={() => Editfn(cell)}
+        ></i>
+      );
+    } else {
+      return (
+        <i
+          className="fa fa-thumbs-o-down"
+          style={classes.action}
+          title={"Edit"}
+          onClick={() => Editfn(cell)}
+        ></i>
+      );
+    }
+  }
+
   function handleaction(cell) {
     return (
       <div>
@@ -339,6 +361,15 @@ let CrmLeadListing = props => {
     );
   }
 
+  // ------***********-----Filters------***********-------
+
+
+  if (props.showfilter) {
+    filtercont = <Filters />;
+  } else {
+    filtercont = "";
+  }
+
   let [screen, setScreen] = useState(1);
 
   function ChangeScreen(val) {
@@ -354,7 +385,7 @@ let CrmLeadListing = props => {
       break;
     case 2:
       screencontent = (
-        <AddCrmMarketingCampaings
+        <AddCrmContactPerson
           backmain={ChangeScreen}
           success={success}
           error={errort}
@@ -365,7 +396,7 @@ let CrmLeadListing = props => {
       break;
     case 3:
       screencontent = (
-        <EditCrmMarketingCampaigns
+        <EditCrmContactPerson
           backmain={ChangeScreen}
           success={success}
           error={errort}
@@ -396,7 +427,7 @@ let CrmLeadListing = props => {
   }
 
   async function Dellistapi(id) {
-    await DeleteCrmMarkCampaign(id)
+    await DeleteCrmSalesOpp(id)
       .then(() => {
         success();
       })
@@ -443,7 +474,7 @@ let CrmLeadListing = props => {
           setScreen(2);
         }}
       />
-      {/* <AddCrmMarketingCampaings refresh={refreshfn} /> */}
+      {/* <AddCrmContactPerson refresh={refreshfn} /> */}
     </li>
   );
 
@@ -492,24 +523,15 @@ let CrmLeadListing = props => {
           >
             Activity Type
           </div>
+          <div className="btn btn-active">Sale Oppurtunity</div>
           <div
             className="btn"
             onClick={() => {
-              props.history.push("");
+              props.history.push("notes");
             }}
           >
             Mail
           </div>
-          <div
-            className="btn"
-            onClick={() => {
-              props.history.push("");
-            }}
-          >
-            Sale Oppurtunity
-          </div>
-          <div className="btn btn-active">Marketing Campaigns</div>
-
         </div>
         {/* <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
           <h3 className="heading">CONTACT PERSON</h3>
@@ -532,4 +554,4 @@ let CrmLeadListing = props => {
   );
 };
 
-export default withRouter(CrmLeadListing);
+export default withRouter(ListingSales);

@@ -417,6 +417,7 @@ let MarketingCompaignTypeListing = props => {
           >
             Sale Oppurtunity
           </div>
+          <div className="btn btn-active">Campaign Types</div>
         </div>
         {/* <div className="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
           <h3 className="heading">CONTACT PERSON</h3>

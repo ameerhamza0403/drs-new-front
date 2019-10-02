@@ -149,6 +149,8 @@ const MarketingCompaignTypeListing = React.lazy(() => import('./components/syste
 const CrmMarketingCampainMain = React.lazy(() => import('./components/system/crm/marketingcampaign/main'));
 const MarketingList = React.lazy(() => import('./components/system/crm/marketinglist/listing'));
 const MarkListMapListing = React.lazy(() => import('./components/system/crm/marketinglistmap/listing'));
+const CrmMarketingMemberList = React.lazy(() => import('./components/system/crm/marketingmemberlist/main'));
+const CrmSalesListing = React.lazy(() => import('./components/system/crm/sales/main'));
 
 
 
@@ -314,6 +316,8 @@ const routes = [
   { path: '/system/crm/marketing-campaigns', exact: true, name: 'Marketing Compaigns', component:  CrmMarketingCampainMain },
   { path: '/system/crm/marketing-list', exact: true, name: 'Marketing List', component:  MarketingList },
   { path: '/system/crm/marketing-assign', exact: true, name: 'Assign Compaign To Marketing List', component:  MarkListMapListing },
+  { path: '/system/crm/marketing-member', exact: true, name: 'Marketing List Member', component:  CrmMarketingMemberList },
+  { path: '/system/crm/sales-opportunity', exact: true, name: 'Sales Opportunity', component:  CrmSalesListing },
 
 
 
