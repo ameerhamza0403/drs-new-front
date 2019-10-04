@@ -11,6 +11,7 @@ let CrmSalesListing = () => {
         ShowFoot={false}
         saleType={""}
         showfilter={true}
+        paginate={true}
       />
       {/* ******* Props ************ */}
       {/*

@@ -34,6 +34,7 @@ import { GetCrmLead } from "../shared/lead";
 import { GetListingForcurrency } from "../../../myaccount/admin/resources/shared/currency";
 import { GetListingForSalesOpportunityStage } from "../../../myaccount/admin/financial/shared/salesopportunitystage";
 import { GetListingForSaleProb } from "../../../myaccount/admin/financial/shared/saleprobiltiy";
+import { GetListingForLocation } from "../../../myaccount/admin/stocknequipment/shared/location";
 import { GetCrmMarkCampaign } from "../shared/marketingcampaign";
 import { GetListingForNote } from "../../../myaccount/admin/contactnote/shared/notetype";
 import { Spinner } from "reactstrap";
@@ -68,10 +69,12 @@ let AddSales = props => {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
   async function onSubmit(values, { setSubmitting, setErrors }) {
-    values.dueDate = values.dueDatemodified;
-    delete values.dueDatemodified;
-    values.completionDate = values.completionDatemodified;
-    delete values.completionDatemodified;
+    let itemarr = [];
+    items.map(e => {
+      itemarr.push(e.item);
+    });
+    values.salesOpportunityLines = itemarr;
+    console.log(values);
     await PostCrmSalesOpp(values)
       .then(res => props.success())
       .catch(error => props.error());
@@ -82,6 +85,11 @@ let AddSales = props => {
   const validationSchema = function(values) {
     return Yup.object().shape({
       // name: Yup.string().required("Name is required"),
+      locationId: Yup.string().required("Location is required"),
+      topic: Yup.string().required("Topic is required"),
+      currencyCode: Yup.string().required("Currency is required"),
+      status: Yup.string().required("Status is required"),
+      type: Yup.string().required("Type is required")
     });
   };
 
@@ -126,6 +134,7 @@ let AddSales = props => {
   let [mktCamp, setMktCamp] = useState([]);
   let [salestage, setsalestage] = useState([]);
   let [salesprob, setsalesprob] = useState([]);
+  let [location, setlocation] = useState([]);
   let [contactfield, setContactField] = useState({
     contactName: ""
   });
@@ -146,11 +155,14 @@ let AddSales = props => {
     const { data: mktCamp } = await GetListingForSalesOpportunityStage(0, 0);
     setMktCamp(mktCamp);
 
+    const { data: salesprob } = await GetListingForSaleProb(0, 0);
+    setsalesprob(salesprob);
+
     const { data: salestage } = await GetCrmMarkCampaign(0, 0);
     setsalestage(salestage);
 
-    const { data: salesprob } = await GetListingForSaleProb(0, 0);
-    setsalesprob(salesprob);
+    const { data: location } = await GetListingForLocation(0, 0);
+    setlocation(location);
 
     if (props.noteType === "item") {
       const { data: stockitem } = await GetCrmContacts(0, 0);
@@ -171,6 +183,25 @@ let AddSales = props => {
 
     // console.log(initialValues)
   }
+
+  let [items, setItems] = useState([]);
+  let getitems = (item, arr) => {
+    if (item === "add") {
+      let obj = [];
+      obj = items;
+      obj.push(arr);
+      setItems((items = obj));
+    } else if (item === "delete") {
+      let obj = [];
+      obj = items;
+      items.map((e, i) => {
+        if (e.id === arr) {
+          delete obj[i];
+        }
+      });
+      setItems((items = obj));
+    }
+  };
 
   function findFirstError(formName, hasError) {
     const form = document.forms[formName];
@@ -240,29 +271,42 @@ let AddSales = props => {
                       // onSelect={event => changeColor(event)}
                     >
                       <div className="row mb-1">
-                        <div className="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                          <Label for="locationId " style={classes.label}>
-                            Location
-                          </Label>
-                        </div>
-                        <div className="col-12 col-sm-12 col-md-6 col-lg-10 col-xl-10">
-                          <Input
-                            type="text"
-                            name="locationId"
-                            id="locationId"
-                            placeholder=""
-                            autoComplete={false}
-                            // valid={!errors.locationId}
-                            // invalid={touched.locationId && !!errors.locationId}
-                            // autoFocus={true}
-                            // required
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.locationId}
-                          />
-                          {/* <FormFeedback>{errors.locationId}</FormFeedback> */}
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                              <Label for="locationId " style={classes.label}>
+                                Location
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <Input
+                                type="select"
+                                name="locationId"
+                                id="locationId"
+                                placeholder=""
+                                autoComplete={false}
+                                valid={!errors.locationId}
+                                invalid={
+                                  touched.locationId && !!errors.locationId
+                                }
+                                autoFocus={true}
+                                required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.locationId}
+                              >
+                                <option selected />
+                                {location.map(e => (
+                                  <option value={e.locationId}>{e.name}</option>
+                                ))}
+                              </Input>
+                              <FormFeedback>{errors.locationId}</FormFeedback>
+                            </div>
+                          </div>
+                          <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"></div>
                         </div>
                       </div>
+
                       <br />
 
                       <Divider />
@@ -329,35 +373,7 @@ let AddSales = props => {
                             </div>
                           </div>
                         </div>
-                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                          <div className="row">
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                              <Label
-                                for="expectedSaleTime"
-                                style={classes.label}
-                              >
-                                Expected Sale Time
-                              </Label>
-                            </div>
-                            <div className="col-12 col-sm-12 col-md-6 col-lg-9 col-xl-9">
-                              <Input
-                                type="date"
-                                name="expectedSaleTime"
-                                id="expectedSaleTime"
-                                placeholder=""
-                                autoComplete={false}
-                                // valid={!errors.expectedSaleTime}
-                                // invalid={touched.expectedSaleTime && !!errors.expectedSaleTime}
-                                // autoFocus={true}
-                                // required
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.expectedSaleTime}
-                              />
-                              {/* <FormFeedback>{errors.expectedSaleTime}</FormFeedback> */}
-                            </div>
-                          </div>
-                        </div>
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"></div>
                       </div>
 
                       <div className="row mb-1">
@@ -373,20 +389,20 @@ let AddSales = props => {
                             id="topic"
                             placeholder=""
                             autoComplete={false}
-                            // valid={!errors.topic}
-                            // invalid={touched.topic && !!errors.topic}
-                            // autoFocus={true}
-                            // required
+                            valid={!errors.topic}
+                            invalid={touched.topic && !!errors.topic}
+                            autoFocus={true}
+                            required
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.topic}
                           />
-                          {/* <FormFeedback>{errors.topic}</FormFeedback> */}
+                          <FormFeedback>{errors.topic}</FormFeedback>
                         </div>
                       </div>
                       <div className="row mb-1">
                         <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                          <div className="row">
+                          {/* <div className="row">
                             <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
                               <Label for="documentCode" style={classes.label}>
                                 Document Code
@@ -407,7 +423,35 @@ let AddSales = props => {
                                 onBlur={handleBlur}
                                 value={values.documentCode}
                               />
-                              {/* <FormFeedback>{errors.documentCode}</FormFeedback> */}
+                               <FormFeedback>{errors.documentCode}</FormFeedback>
+                            </div>
+                          </div> */}
+
+                          <div className="row">
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                              <Label
+                                for="expectedSaleTime"
+                                style={classes.label}
+                              >
+                                Expected Sale Time
+                              </Label>
+                            </div>
+                            <div className="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                              <Input
+                                type="date"
+                                name="expectedSaleTime"
+                                id="expectedSaleTime"
+                                placeholder=""
+                                autoComplete={false}
+                                // valid={!errors.expectedSaleTime}
+                                // invalid={touched.expectedSaleTime && !!errors.expectedSaleTime}
+                                // autoFocus={true}
+                                // required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.expectedSaleTime}
+                              />
+                              {/* <FormFeedback>{errors.expectedSaleTime}</FormFeedback> */}
                             </div>
                           </div>
                         </div>
@@ -487,10 +531,10 @@ let AddSales = props => {
                                 id="type"
                                 placeholder=""
                                 autoComplete={false}
-                                // valid={!errors.type}
-                                // invalid={touched.type && !!errors.type}
-                                // autoFocus={true}
-                                // required
+                                valid={!errors.type}
+                                invalid={touched.type && !!errors.type}
+                                autoFocus={true}
+                                required
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 value={values.type}
@@ -503,7 +547,7 @@ let AddSales = props => {
                                   {"Existing Business"}
                                 </option>
                               </Input>
-                              {/* <FormFeedback>{errors.type}</FormFeedback> */}
+                              <FormFeedback>{errors.type}</FormFeedback>
                             </div>
                           </div>
                         </div>
@@ -523,11 +567,13 @@ let AddSales = props => {
                                 name="currencyCode"
                                 id="currencyCode"
                                 placeholder=""
-                                // autoComplete={false}
-                                // valid={!errors.currencyCode}
-                                // invalid={touched.currencyCode && !!errors.currencyCode}
-                                // autoFocus={true}
-                                // required
+                                autoComplete={false}
+                                valid={!errors.currencyCode}
+                                invalid={
+                                  touched.currencyCode && !!errors.currencyCode
+                                }
+                                autoFocus={true}
+                                required
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 value={values.currencyCode}
@@ -537,7 +583,7 @@ let AddSales = props => {
                                   <option value={e.code}>{e.name}</option>
                                 ))}
                               </Input>
-                              {/* <FormFeedback>{errors.leadId}</FormFeedback> */}
+                              <FormFeedback>{errors.currencyCode}</FormFeedback>
                             </div>
                           </div>
                         </div>
@@ -700,10 +746,10 @@ let AddSales = props => {
                                 id="status"
                                 placeholder=""
                                 autoComplete={false}
-                                // valid={!errors.status}
-                                // invalid={touched.status && !!errors.status}
-                                // autoFocus={true}
-                                // required
+                                valid={!errors.status}
+                                invalid={touched.status && !!errors.status}
+                                autoFocus={true}
+                                required
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 value={values.status}
@@ -721,7 +767,7 @@ let AddSales = props => {
                                   {"Completed Lost"}
                                 </option>
                               </Input>
-                              {/* <FormFeedback>{errors.salesOpportunityProbabilityId}</FormFeedback> */}
+                              <FormFeedback>{errors.status}</FormFeedback>
                             </div>
                           </div>
                         </div>
@@ -807,7 +853,7 @@ let AddSales = props => {
                         </div>
                       </div>
                       <br />
-                      <AddStockItem />
+                      <AddStockItem addtomain={getitems} />
                       <br />
                     </Tab>
                     <Tab

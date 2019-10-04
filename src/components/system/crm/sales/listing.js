@@ -3,7 +3,11 @@ import React, { useState, useEffect } from "react";
 // import "../../../../scss/override/listing.scss";
 import "../../../../scss/override/navlisting.scss";
 import EditCrmContactPerson from "./edit";
-import { GetCrmSalesOpp, DeleteCrmSalesOpp } from "../shared/salesopp";
+import {
+  GetCrmSalesOpp,
+  DeleteCrmSalesOpp,
+  GetCrmSalesOppquery
+} from "../shared/salesopp";
 import AddCrmContactPerson from "./add";
 import { Spinner, Collapse, Fade, Card, CardBody, Button } from "reactstrap";
 import { toast } from "react-toastify";
@@ -12,7 +16,7 @@ import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist//react-bootstrap-table-all.min.css";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { withRouter } from "react-router-dom";
-import Filters from './filters';
+import Filters from "./filters";
 
 let menuDiv = "";
 let EditshowModel = "";
@@ -97,6 +101,41 @@ let ListingSales = props => {
   useEffect(() => {
     getlistapi();
   }, []);
+
+  async function getlistafterfilters(values) {
+    let query = "";
+    let contactquery = "";
+    let propbquery = "";
+    let stagequery = "";
+    let search = "";
+    if (values.hasOwnProperty("salesOpportunityStageId")) {
+      stagequery = `salesOpportunityStageId=${values.salesOpportunityStageId}`;
+    }
+    if (values.hasOwnProperty("salesOpportunityProbabilityId")) {
+      propbquery = `salesOpportunityProbabilityId=${values.salesOpportunityProbabilityId}`;
+    }
+    if (values.hasOwnProperty("searchString")) {
+      search = `searchString=${values.searchString}`;
+    }
+    if (values.hasOwnProperty("contactPersonId")) {
+      contactquery = `contactPersonId=${values.contactPersonId}`;
+    }
+
+    query = `?${contactquery}&${propbquery}&${stagequery}&${search}`;
+
+    await GetCrmSalesOppquery(Page, PageSize, query).then(res => {
+      setAtlistVal((AtlistVal = res.data));
+      console.log(res.data);
+      setPaginate((paginate = JSON.parse(res.headers["x-pagination"])));
+    });
+
+    setTotalCount((totalcount = paginate.totalCount));
+    TotalPages = paginate.totalPages;
+    countforpagination = 0;
+    settabledistatus((Tabledistatus = false));
+    settabledistatus((Tabledistatus = true));
+    setMenucon(props.Showhead);
+  }
 
   async function getlistapi() {
     // if (props.callid) {
@@ -242,8 +281,6 @@ let ListingSales = props => {
   if (Tabledistatus) {
     Tabledisplay = (
       <div>
-        {filtercont}
-        <br />
         <BootstrapTable
           headerStyle={{ background: "#DDDDDD", maxHeight: "40px" }}
           data={AtlistVal}
@@ -363,9 +400,9 @@ let ListingSales = props => {
 
   // ------***********-----Filters------***********-------
 
-
-  if (props.showfilter) {
-    filtercont = <Filters />;
+  let [filtertoggle, setfiltertoggle] = useState(props.showfilter);
+  if (filtertoggle) {
+    filtercont = <Filters apply={getlistafterfilters} reset={getlistapi} />;
   } else {
     filtercont = "";
   }
@@ -375,6 +412,9 @@ let ListingSales = props => {
   function ChangeScreen(val) {
     setScreen(val);
     if (val === 1) {
+      if (filtertoggle === false) {
+        setfiltertoggle(true);
+      }
       refreshfn();
     }
   }
@@ -393,6 +433,9 @@ let ListingSales = props => {
           idforparent={props.idofParent}
         />
       );
+      if (filtertoggle === true) {
+        setfiltertoggle(false);
+      }
       break;
     case 3:
       screencontent = (
@@ -403,6 +446,9 @@ let ListingSales = props => {
           IDforAPI={idofEdit}
         />
       );
+      if (filtertoggle === true) {
+        setfiltertoggle(false);
+      }
       break;
   }
 
@@ -544,6 +590,8 @@ let ListingSales = props => {
   return (
     <div>
       {menucont}
+      <br />
+      {filtercont}
       <br />
       {screencontent}
       <br />

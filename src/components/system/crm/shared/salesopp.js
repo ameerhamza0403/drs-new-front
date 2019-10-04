@@ -1,8 +1,8 @@
-import { apiUrl } from '../../../../config.json'
+import { apiUrl } from "../../../../config.json";
 import axios from "axios";
 
 /* *************************Crm SalesOpp*********************** */
-let apiurlCrmSalesOpp = apiUrl + "/crm/MarketingCampaignTypes";
+let apiurlCrmSalesOpp = apiUrl + "/crm/SalesOpportunities";
 // let apiurlAbsenceType= 'https://reqres.in/api/users/2';
 
 function ApiwithidCrmSalesOpp(Id) {
@@ -13,6 +13,9 @@ function ApiwithbyPgCrmSalesOpp(Pg, PgSize) {
   return `${apiurlCrmSalesOpp}/${Pg}/${PgSize}`;
 }
 
+function ApiwithbyPgCrmSalesOppquery(Pg, PgSize, query) {
+  return `${apiurlCrmSalesOpp}/${Pg}/${PgSize}${query}`;
+}
 //-------- GetAPi
 export function GetCrmSalesOpp(pg, pgsize) {
   return axios.get(ApiwithbyPgCrmSalesOpp(pg, pgsize), {
@@ -26,6 +29,17 @@ export function GetCrmSalesOpp(pg, pgsize) {
   });
 }
 
+export function GetCrmSalesOppquery(pg, pgsize, query) {
+  return axios.get(ApiwithbyPgCrmSalesOppquery(pg, pgsize, query), {
+    headers: {
+      //"Authorization": authIt,
+      //"accept": "application/json",
+      //"Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      "Access-Control-Expose-Headers": "*"
+    }
+  });
+}
 //---------Edit APi
 export function GetCrmSalesOppById(id) {
   // console.log(id)
